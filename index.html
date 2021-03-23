@@ -8,12 +8,23 @@
 <div>
     <input type="text" id="a1">
     <button onclick="queding()">确定</button>
+    <br/>
+    <br/>
+
+
+    <input type="text" id="a2">
+    <button onclick="queding2()">确定</button>
 </div>
 <script>
     function queding(){
         const a = document.getElementById('a1').value;
 		document.getElementById('a1').value = ''
         window.open("https://www.administratorw.com/video.php?url="+a,'_blank')
+    }
+    function queding2(){
+        const a = document.getElementById('a2').value;
+        document.getElementById('a2').value = ''
+        window.open("https://wanneng.run/"+a,'_blank')
     }
 </script>
 </body>
