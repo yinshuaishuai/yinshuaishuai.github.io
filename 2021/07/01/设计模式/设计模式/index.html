@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<link rel="shortcut icon" type="image/x-icon" href="/ys_ico.ico">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>YS</title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_859455_eaq7v6w8ktj.css">
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_2608748_0d5oo5n1tdno.css">
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                首页
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                归档
+            </a>
+            
+
+            
+            <a href="/tags" class="header-nav-link">
+                标签
+            </a>
+            
+
+            
+            <a href="/about/" class="header-nav-link">
+                关于
+            </a>
+            
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="mobile-nav-title">
+            <a href="/" class="mobile-nav-title-link">YS's Blog</a>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">首页</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">归档</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-tag"></i>
+                <a href="/tags" class="mobile-nav-link">标签</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-about"></i>
+                <a href="/about/" class="mobile-nav-link">关于</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="main">
+    <div class="content-inner">
+        <div class="posts">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">设计模式</h2>
+            <div class="post-meta">
+                <span class="post-time">2021-07-01</span>
+                
+                <span class="post-category">
+                    
+                    <a class="category" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+                    
+                </span>
+                
+                <span class="post-visit"> 阅读次数：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">创建型模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">单例模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-text">简单工厂模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F"><span class="toc-text">工厂方法模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F"><span class="toc-text">抽象工厂模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-text">创建者模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">原型模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="toc-text">结构型模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">适配器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F"><span class="toc-text">桥接模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">过滤器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F"><span class="toc-text">组合模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">装饰器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F"><span class="toc-text">外观模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F"><span class="toc-text">享元模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F"><span class="toc-text">代理模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%8C%E4%B8%BA%E6%A8%A1%E5%BC%8F"><span class="toc-text">行为模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-text">访问者模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E6%A8%A1%E5%BC%8F"><span class="toc-text">模板模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F"><span class="toc-text">策略模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A9%BA%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">空对象模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F"><span class="toc-text">状态模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%82%E5%AF%9F%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-text">观察者模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F"><span class="toc-text">备忘录模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F"><span class="toc-text">中介者模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">迭代器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">解释器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F"><span class="toc-text">命令模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F"><span class="toc-text">责任链模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#J2EE%E6%A8%A1%E5%BC%8F"><span class="toc-text">J2EE模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MVC%E6%A8%A1%E5%BC%8F"><span class="toc-text">MVC模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E4%BB%A3%E8%A1%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">业务代表模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%84%E5%90%88%E5%AE%9E%E4%BD%93%E6%A8%A1%E5%BC%8F"><span class="toc-text">组合实体模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">数据访问对象模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E6%8E%A7%E5%88%B6%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">前端控制器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%A6%E6%88%AA%E8%BF%87%E6%BB%A4%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">拦截过滤器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%AE%9A%E4%BD%8D%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="toc-text">服务定位器模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E8%BE%93%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%BC%8F"><span class="toc-text">传输对象模式</span></a></li></ol></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">回到顶部</a>
+    </div>
+</div>
+        <div class="post-content">
+            <p><strong>设计模式：</strong> 是一套被反复使用、多人知晓的、经过分类编目的、代码设计经验的总结。使用设计模式是为了可重用代码、让代码更容易被他人理解、保证代码可靠性。毫无疑问，设计模式于己于他人于系统都是多赢的，设计模式使代码编制真正工程化，设计模式是软件工程的基石，如同大厦一块块砖石一样。项目中合理的运用设计模式可以完美的解决很多问题，每种模式在现在中都有相应的原理来与之对应，每一个模式描述了一个在我们周围不断重复发生的问题，以及该问题的核心解决方案，这也是他能被广泛应用的原因。  </p>
+<h2 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h2><blockquote>
+<p>对象实例化的模式，创建型模式用于解耦对象的实例化过程。<br>这些设计模式提供一种在创建对象的同时隐藏创建逻辑的方式，而不是使用new运算符直接实例化对象，这使得程序在判断针对某个给定实例需要创建哪些对象时更加灵活。  </p>
+</blockquote>
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><ul>
+<li>某个类只能有一个实例，提供一个全局的访问点。<br><a href="https://ysymj.gitee.io/2021/07/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">点击阅读&gt;&gt;</a></li>
+</ul>
+<h3 id="简单工厂模式"><a href="#简单工厂模式" class="headerlink" title="简单工厂模式"></a>简单工厂模式</h3><ul>
+<li>一个工厂类根据传入的参量决定创建出那一种产品类的实例。</li>
+</ul>
+<h3 id="工厂方法模式"><a href="#工厂方法模式" class="headerlink" title="工厂方法模式"></a>工厂方法模式</h3><ul>
+<li>定义一个创建对象的接口，让子类决定实例化那个类。</li>
+</ul>
+<h3 id="抽象工厂模式"><a href="#抽象工厂模式" class="headerlink" title="抽象工厂模式"></a>抽象工厂模式</h3><ul>
+<li>创建相关或依赖对象的家族，而无需明确指定具体类。</li>
+</ul>
+<h3 id="创建者模式"><a href="#创建者模式" class="headerlink" title="创建者模式"></a>创建者模式</h3><ul>
+<li>封装一个复杂对象的构建过程，并可以按步骤构造。</li>
+</ul>
+<h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><ul>
+<li>通过复制现有的实例来创建新的实例。</li>
+</ul>
+<h2 id="结构型模式"><a href="#结构型模式" class="headerlink" title="结构型模式"></a>结构型模式</h2><blockquote>
+<p>把类或对象结合在一起形成一个更大的结构。<br>这些设计模式关注类和对象等的结合，继承的概念被用来组合接口和定义组合对象获得新功能的方式。  </p>
+</blockquote>
+<h3 id="适配器模式"><a href="#适配器模式" class="headerlink" title="适配器模式"></a>适配器模式</h3><ul>
+<li>将一个类的方法接口转换成客户希望的另外一个接口。</li>
+</ul>
+<h3 id="桥接模式"><a href="#桥接模式" class="headerlink" title="桥接模式"></a>桥接模式</h3><ul>
+<li>将抽象部分和它的实现部分分离，使它们都可以独立的变化。</li>
+</ul>
+<h3 id="过滤器模式"><a href="#过滤器模式" class="headerlink" title="过滤器模式"></a>过滤器模式</h3><ul>
+<li>这种设计模式允许开发人员使用不同的标准来过滤一组对象，通过逻辑运算以解耦的方式把它们连接起来。</li>
+</ul>
+<h3 id="组合模式"><a href="#组合模式" class="headerlink" title="组合模式"></a>组合模式</h3><ul>
+<li>将对象组合成树形结构以表示“部分-整体”的层次结构。</li>
+</ul>
+<h3 id="装饰器模式"><a href="#装饰器模式" class="headerlink" title="装饰器模式"></a>装饰器模式</h3><ul>
+<li>动态的给对象添加新的功能。</li>
+</ul>
+<h3 id="外观模式"><a href="#外观模式" class="headerlink" title="外观模式"></a>外观模式</h3><ul>
+<li>对外提供一个统一的方法，来访问子系统中的一群接口。</li>
+</ul>
+<h3 id="享元模式"><a href="#享元模式" class="headerlink" title="享元模式"></a>享元模式</h3><ul>
+<li>通过共享技术来有效的支持大量细粒度的对象。</li>
+</ul>
+<h3 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h3><ul>
+<li>为其他对象提供一个代理以便控制整个对象的访问。</li>
+</ul>
+<h2 id="行为模式"><a href="#行为模式" class="headerlink" title="行为模式"></a>行为模式</h2><blockquote>
+<p>类和对象如何交互，及划分责任和算法。<br>这些设计模式特别关注对象之间的通信。  </p>
+</blockquote>
+<h3 id="访问者模式"><a href="#访问者模式" class="headerlink" title="访问者模式"></a>访问者模式</h3><ul>
+<li>在不改变数据结构的前提下，增加作用于一组对象元素的新功能。</li>
+</ul>
+<h3 id="模板模式"><a href="#模板模式" class="headerlink" title="模板模式"></a>模板模式</h3><ul>
+<li>定义一个算法结构，而将一些步骤延迟到子类实现。</li>
+</ul>
+<h3 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h3><ul>
+<li>定义一系列算法，把他们封装起来，并且使他们可以互相替换。</li>
+</ul>
+<h3 id="空对象模式"><a href="#空对象模式" class="headerlink" title="空对象模式"></a>空对象模式</h3><ul>
+<li>一个空对象取代NULL对象实例的检查。</li>
+</ul>
+<h3 id="状态模式"><a href="#状态模式" class="headerlink" title="状态模式"></a>状态模式</h3><ul>
+<li>允许一个对象在其对象内部状态改变时改变它的行为。</li>
+</ul>
+<h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><ul>
+<li>对象间的一对多的依赖关系。</li>
+</ul>
+<h3 id="备忘录模式"><a href="#备忘录模式" class="headerlink" title="备忘录模式"></a>备忘录模式</h3><ul>
+<li>在不破坏封装的前提下，保持对象的内部状态。</li>
+</ul>
+<h3 id="中介者模式"><a href="#中介者模式" class="headerlink" title="中介者模式"></a>中介者模式</h3><ul>
+<li>用一个中介对象来封装一系列的对象交互。</li>
+</ul>
+<h3 id="迭代器模式"><a href="#迭代器模式" class="headerlink" title="迭代器模式"></a>迭代器模式</h3><ul>
+<li>一种遍历访问聚合对象中各个元素的方法，不暴露该对象的内部结构。</li>
+</ul>
+<h3 id="解释器模式"><a href="#解释器模式" class="headerlink" title="解释器模式"></a>解释器模式</h3><ul>
+<li>给定一个语言，定义它的文法的一种表示，并定义一个解释器。</li>
+</ul>
+<h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><ul>
+<li>将命令请求封装为一个对象，使得可以用不同的请求来进行参数化。</li>
+</ul>
+<h3 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h3><ul>
+<li>将请求的发送者和接收者解耦，使的多个对象都有处理这个请求的机会。</li>
+</ul>
+<h2 id="J2EE模式"><a href="#J2EE模式" class="headerlink" title="J2EE模式"></a>J2EE模式</h2><blockquote>
+<p>这些设计模式特别关注表示层，这些模式是由Sun Java Center鉴定的。</p>
+</blockquote>
+<h3 id="MVC模式"><a href="#MVC模式" class="headerlink" title="MVC模式"></a>MVC模式</h3><ul>
+<li>MVC模式代表Model-View-Controller(模型-视图-控制器)模式。这种模式用于应用程序的分层开发。</li>
+</ul>
+<h3 id="业务代表模式"><a href="#业务代表模式" class="headerlink" title="业务代表模式"></a>业务代表模式</h3><ul>
+<li>用于对表示层和业务层解耦。</li>
+</ul>
+<h3 id="组合实体模式"><a href="#组合实体模式" class="headerlink" title="组合实体模式"></a>组合实体模式</h3><ul>
+<li>用在EJB持久化机制中，一个组合实体是一个EJB实体bean，代表了对象的图解。</li>
+</ul>
+<h3 id="数据访问对象模式"><a href="#数据访问对象模式" class="headerlink" title="数据访问对象模式"></a>数据访问对象模式</h3><ul>
+<li>用于把低级的数据访问API或操作从高级的业务服务中分离出来。</li>
+</ul>
+<h3 id="前端控制器模式"><a href="#前端控制器模式" class="headerlink" title="前端控制器模式"></a>前端控制器模式</h3><ul>
+<li>用来提供一个集中的请求处理机制，所有的请求都将由一个单一的处理程序处理。</li>
+</ul>
+<h3 id="拦截过滤器模式"><a href="#拦截过滤器模式" class="headerlink" title="拦截过滤器模式"></a>拦截过滤器模式</h3><ul>
+<li>用于对应用程序的请求或响应做一些预处理/后处理。</li>
+</ul>
+<h3 id="服务定位器模式"><a href="#服务定位器模式" class="headerlink" title="服务定位器模式"></a>服务定位器模式</h3><ul>
+<li>用在我们想使用JNDI查询定位各种服务的时候。</li>
+</ul>
+<h3 id="传输对象模式"><a href="#传输对象模式" class="headerlink" title="传输对象模式"></a>传输对象模式</h3><ul>
+<li>用于从客户端向服务器一次性传递带有多个属性的数据。</li>
+</ul>
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/java/" title="java">java</a>
+            
+        </div>
+        
+    </article>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2021/07/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">
+                <i class="iconfont icon-prev"></i>
+                <span class="nav-default">单例模式</span>
+                <span class="nav-mobile">上一篇</span>
+            </a>
+        
+        
+            <a class="next" href="/2021/06/12/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">
+                <span class="nav-default">通过gitee和hexo搭建个人博客</span>
+                <span class="nav-mobile">下一篇</span>
+                <i class="iconfont icon-next"></i>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+    <a class="social-link" target="_blank" href="https://github.com/yinshuaishuai">
+        <i class="iconfont icon-github"></i>
+    </a>
+    
+
+    
+    <a class="social-link" target="_blank" href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=1321098156@qq.com">
+        <i class="iconfont icon-youxiang"></i>
+    </a>
+    
+
+    
+    <a class="social-link" target="_blank" href="https://gitee.com/ysymj">
+        <i class="iconfont icon-gitee-fill-round"></i>
+    </a>
+    
+
+    
+        <a class="social-link" target="_blank" href="https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=1321098156">
+            <i class="iconfont icon-QQ"></i>
+        </a>
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+                2020 -
+            
+            2021
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://gitee.com/ysymj">YS</a>
+        </p>
+        <p class="theme-info"></p>
+<!--        <p class="theme-info">-->
+<!--            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - -->
+<!--            <a target="_blank" href="https://github.com/iJinxin/hexo-theme-sky">Sky</a>-->
+<!--        </p>-->
+    </div>
+</footer>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#comment-container',
+        appId: 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
+        appKey: 'BCtPpmnU41TOE7Wr5O0CJFgS'
+    })
+</script>
+</html>

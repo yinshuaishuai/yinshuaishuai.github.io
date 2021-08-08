@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<link rel="shortcut icon" type="image/x-icon" href="/ys_ico.ico">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
@@ -84,6 +85,87 @@
 <div class="main">
     <div class="content-inner">
         <div class="posts">
+    
+        <article class="post-abstract">
+            <div class="post-title">
+                <h2><a class="post-title-link" href="/2021/07/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">简单工厂模式</a></h2>
+            </div>
+            <div class="post-meta">
+                <span class="post-time">2021-07-12</span>
+                
+                <span class="post-category">
+                    
+                    <a class="category" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+                    
+                </span>
+                
+            </div>
+            <div class="post-content">
+                
+                    简单工厂模式属于创建型模式又叫静态工厂方法模式，它属于创建型模式。在简单工厂模式中，可以根据参数的不同返回不同类的实例。
+                    <div class="read-more">
+                        <a href="/2021/07/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/" class="read-more-link">
+                            阅读全文
+                            <i class="iconfont icon-readmore"></i>
+                        </a>
+                    </div>
+                
+            </div>
+        </article>
+    
+        <article class="post-abstract">
+            <div class="post-title">
+                <h2><a class="post-title-link" href="/2021/07/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/">单例模式</a></h2>
+            </div>
+            <div class="post-meta">
+                <span class="post-time">2021-07-02</span>
+                
+                <span class="post-category">
+                    
+                    <a class="category" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+                    
+                </span>
+                
+            </div>
+            <div class="post-content">
+                
+                    单例模式是java中最简单的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。这种模式设计到一个单一的类，该类负责创建自己的对象，同时保证只有单个对象被创建，这个类提供了一种访问其唯一的对象的方式，可以直接访问，不需要实例化该类的对象。
+                    <div class="read-more">
+                        <a href="/2021/07/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="read-more-link">
+                            阅读全文
+                            <i class="iconfont icon-readmore"></i>
+                        </a>
+                    </div>
+                
+            </div>
+        </article>
+    
+        <article class="post-abstract">
+            <div class="post-title">
+                <h2><a class="post-title-link" href="/2021/07/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></h2>
+            </div>
+            <div class="post-meta">
+                <span class="post-time">2021-07-01</span>
+                
+                <span class="post-category">
+                    
+                    <a class="category" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+                    
+                </span>
+                
+            </div>
+            <div class="post-content">
+                
+                    设计模式：是一套被反复使用、多数人知晓的、经过分类编目、代码设计经验的总结。使用设计模式是为了可重用代码、让代码更容易被人理解、保证代码可靠性。
+                    <div class="read-more">
+                        <a href="/2021/07/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="read-more-link">
+                            阅读全文
+                            <i class="iconfont icon-readmore"></i>
+                        </a>
+                    </div>
+                
+            </div>
+        </article>
     
         <article class="post-abstract">
             <div class="post-title">
@@ -194,14 +276,17 @@
 </footer>
 
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 <script src="/js/index.js"></script>
 
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
 <script>
-    
-
+    new Valine({
+        el: '#comment-container',
+        appId: 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
+        appKey: 'BCtPpmnU41TOE7Wr5O0CJFgS'
+    })
 </script>
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<link rel="shortcut icon" type="image/x-icon" href="/ys_ico.ico">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
@@ -101,7 +102,7 @@
         </div>
         <div class="post-toc" id="post-toc">
     <strong class="post-toc-title">目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-text">准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%81%E4%BA%91%E9%85%8D%E7%BD%AE"><span class="toc-text">码云配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85hexo"><span class="toc-text">安装hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0gitee"><span class="toc-text">上传gitee</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo%E5%8D%9A%E5%AE%A2%E8%AE%BF%E9%97%AE%E5%9B%BE%E7%89%87%E9%97%AE%E9%A2%98"><span class="toc-text">hexo博客访问图片问题</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-text">准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%81%E4%BA%91%E9%85%8D%E7%BD%AE"><span class="toc-text">码云配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85hexo"><span class="toc-text">安装hexo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8A%E4%BC%A0gitee"><span class="toc-text">上传gitee</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo%E5%8D%9A%E5%AE%A2%E8%AE%BF%E9%97%AE%E5%9B%BE%E7%89%87%E9%97%AE%E9%A2%98"><span class="toc-text">hexo博客访问图片问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%9A%E5%AE%A2%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD"><span class="toc-text">博客评论功能</span></a></li></ol>
     <div class="back-to-top" id="back-to-top">
         <a href="javascript:void(0);">回到顶部</a>
     </div>
@@ -146,6 +147,13 @@
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new test		# 生成新的文章</span><br></pre></td></tr></table></figure>
 <p>执行命令生成新的文章，在生成新的文章的时候，会在同级目录下生成一个同名的文件夹，将图片放在文件夹中，md文件中图片配置为同级目录即可</p>
+<h2 id="博客评论功能"><a href="#博客评论功能" class="headerlink" title="博客评论功能"></a>博客评论功能</h2><p>本博客评论功能是基于<code>valine</code>实现。<br>1.注册账号<br>需要登录leancloud（<a target="_blank" rel="noopener" href="https://console.leancloud.cn/">https://console.leancloud.cn/</a> ）网站注册账号<br><img src="/2021/06/12/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/leancloud%E7%99%BB%E5%BD%95.png" alt="leancloud登录"></p>
+<p>2.创建应用<br>登录后点击创建应用，应用名称随便填，一般免费版使用开发板即可，使用商用版也可以，不过需要费出一定的费用。<br><img src="/2021/06/12/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/leancloud%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8.png" alt="leancloud创建应用"></p>
+<p>3.查看应用key<br>一次点击<code>新建的应用-设置-应用凭证</code>，可以看到入下图，复制AppID和AppKey一会需要用到。<br><img src="/2021/06/12/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/leancloud-key%E6%9F%A5%E7%9C%8B.png" alt="leancloud-key查看"></p>
+<p>4.改代码<br>在项目的<code>_config.yml</code>中增加以下配置，其中的appId和appKey就是上面复制的AppID和AppKey。    </p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">comment:</span></span><br><span class="line">  <span class="attr">appId:</span> <span class="string">leancloud中的AppID</span></span><br><span class="line">  <span class="attr">appKey:</span> <span class="string">leancloud中的AppKey</span></span><br></pre></td></tr></table></figure>
+<p>修改模板文件，在对应的模板中增加以下代码，作者的是<code>post.ejs</code>，具体应该会根据模板的不同而有所不同。  </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;comment-container&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&#x27;//unpkg.com/valine/dist/Valine.min.js&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    <span class="keyword">new</span> Valine(&#123;</span></span><br><span class="line"><span class="javascript">        <span class="attr">el</span>: <span class="string">&#x27;#comment-container&#x27;</span>,</span></span><br><span class="line"><span class="javascript">        <span class="attr">appId</span>: <span class="string">&#x27;&lt;%- config.comment.appId %&gt;&#x27;</span>,</span></span><br><span class="line"><span class="javascript">        <span class="attr">appKey</span>: <span class="string">&#x27;&lt;%- config.comment.appKey %&gt;&#x27;</span></span></span><br><span class="line"><span class="javascript">    &#125;)</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
         </div>
         
@@ -159,6 +167,12 @@
 </div>
 <div class="paginator">
     
+        
+            <a class="prev" href="/2021/07/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+                <i class="iconfont icon-prev"></i>
+                <span class="nav-default">设计模式</span>
+                <span class="nav-mobile">上一篇</span>
+            </a>
         
         
             <a class="next" href="/2021/06/12/Maven%E9%A1%B9%E7%9B%AE%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">
@@ -217,14 +231,17 @@
 </footer>
 
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 <script src="/js/index.js"></script>
 
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
 <script>
-    
-
+    new Valine({
+        el: '#comment-container',
+        appId: 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
+        appKey: 'BCtPpmnU41TOE7Wr5O0CJFgS'
+    })
 </script>
 </html>
