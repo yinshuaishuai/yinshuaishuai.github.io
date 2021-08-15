@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<link rel="shortcut icon" type="image/x-icon" href="/ys_ico.ico">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>YS</title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_859455_eaq7v6w8ktj.css">
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_2608748_0d5oo5n1tdno.css">
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                首页
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                归档
+            </a>
+            
+
+            
+            <a href="/tags" class="header-nav-link">
+                标签
+            </a>
+            
+
+            
+            <a href="/about/" class="header-nav-link">
+                关于
+            </a>
+            
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="mobile-nav-title">
+            <a href="/" class="mobile-nav-title-link">YS's Blog</a>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">首页</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">归档</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-tag"></i>
+                <a href="/tags" class="mobile-nav-link">标签</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-about"></i>
+                <a href="/about/" class="mobile-nav-link">关于</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="main">
+    <div class="content-inner">
+        <div class="posts">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">工厂方法模式</h2>
+            <div class="post-meta">
+                <span class="post-time">2021-08-09</span>
+                
+                <span class="post-category">
+                    
+                    <a class="category" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+                    
+                </span>
+                
+                <span class="post-visit"> 阅读次数：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">适用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%82%B9%E5%92%8C%E7%BC%BA%E7%82%B9"><span class="toc-text">优点和缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%8A%BD%E8%B1%A1%E4%BA%A7%E5%93%81%E7%B1%BB"><span class="toc-text">创建抽象产品类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%85%B7%E4%BD%93%E4%BA%A7%E5%93%81%E7%B1%BB"><span class="toc-text">创建具体产品类</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UML%E5%9B%BE"><span class="toc-text">UML图</span></a></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">回到顶部</a>
+    </div>
+</div>
+        <div class="post-content">
+            <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>工厂方法模式属于类的创建型模式又被称为多态工厂模式。工厂方法模式的意义在于定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类中，核心工厂类不再负责产品的创建，仅负责声明具体工厂子类必须实现的接口。<br>这样进一步抽象画的好处是使得工厂方法模式可以使系统在不修改具体工厂角色的情况下引进新的产品。</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><blockquote>
+<p>1）创建对象需要大量重复的代码<br>2）客户端（应用层）不依赖于产品类实例如何被创建、实现等细节<br>3）一个类通过其子类来指定创建哪个对象  </p>
+</blockquote>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>用户只需要关系所需产品对应的工厂，无须关心创建细节。  </li>
+<li>加入新产品符合开闭原则，提高可扩展性。  </li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>类的个数容易过多，增加复杂度。  </li>
+<li>增加了系统的抽象性和理解难度。  </li>
+</ul>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="创建抽象产品类"><a href="#创建抽象产品类" class="headerlink" title="创建抽象产品类"></a>创建抽象产品类</h4><blockquote>
+<p>我们创建一个电脑的抽象产品类，他有一个抽象方法用于启动电脑</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 产品的抽象方法，由具体的产品类去实现</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建具体产品类"><a href="#创建具体产品类" class="headerlink" title="创建具体产品类"></a>创建具体产品类</h4><blockquote>
+<p>接着我们创建各个品牌的电脑，他们都继承了他们的父类Computer，并实现了父类的start方法。</p>
+</blockquote>
+<p><strong>联想电脑</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LenovoComputer</span> <span class="keyword">extends</span> <span class="title">Computer</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;联想电脑启动&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>惠普电脑</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HpComputer</span> <span class="keyword">extends</span> <span class="title">Computer</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;惠普电脑启动&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>华硕电脑</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsusComputer</span> <span class="keyword">extends</span> <span class="title">Computer</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;华硕电脑启动&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>创建一个工厂抽象类，具体创建产品的代码由工厂抽象类的子类去实现</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ComputerFactory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 工厂方法创建产品接口抽象化，将具体创建产品的代码写到工厂方法子类中</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Computer <span class="title">createComputer</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>创建联想电脑的工厂实现</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LenovoComputerFactory</span> <span class="keyword">extends</span> <span class="title">ComputerFactory</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Computer <span class="title">createComputer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> LenovoComputer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>创建惠普电脑的工厂实现</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HpComputerFactory</span> <span class="keyword">extends</span> <span class="title">ComputerFactory</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Computer <span class="title">createComputer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> HpComputer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>创建华硕电脑的工厂实现</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsusComputerFactory</span> <span class="keyword">extends</span> <span class="title">ComputerFactory</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Computer <span class="title">createComputer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AsusComputer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><em>客户端调用</em></strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//通过工厂方法的子类去创建对应的工厂类</span></span><br><span class="line">        <span class="comment">//每次增加新的产品，只需要新建一个抽象工厂方法的子类即可，不会对现有的产品产生影响</span></span><br><span class="line">        ComputerFactory computerFactory = <span class="keyword">new</span> HpComputerFactory();</span><br><span class="line">        Computer computer = computerFactory.createComputer();</span><br><span class="line">        computer.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML图"><a href="#UML图" class="headerlink" title="UML图"></a>UML图</h2><img src="http://www.plantuml.com/plantuml/svg/IqmgBYbAJ2vHICv9B2vMSCxFBIWjIIsgvdewjUtfvCPdNNjVR5puRDhEPvkdlj_Jywn_mfDziv_ldlzaHmEor8jrAvzEQ7coOnL4rzDryvxtRU0gA4tAoKnMI8HPKPQVcQ9GN99OLAAXQSrLoyK5iTEnkBGOPgz2QaL9QbuAfaE0baDCXLZ-V5OBilrS3lvbgKL5cIcf2b1BaUsghaLOvfEQbr-MJpVhF0heO5KYzZXq0mhb5rKg02tQllHfNzFpZRiX9WCPHCKbMDVJjHE0wd74ADnpoKMfYIMfC2xEw8Kv2Jqi44w5k0JPQlpX0vBjcFrqzwvdyoU0P9VtGa8LvbISBiITA0Qf8n59QP0wC2IrkAGQfWEOG4jWYJKtCJDF8xYaA3ClFJfM8R4elLXJ0QAH2oNls-ZfOKijN6Xv5gGCQunn8UKsa2AC44Er3nPS8AKWjtDXJmPmQSm8W4a10000">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/java/" title="java">java</a>
+            
+        </div>
+        
+    </article>
+</div>
+<div class="paginator">
+    
+        
+            <a class="prev" href="/2021/08/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">
+                <i class="iconfont icon-prev"></i>
+                <span class="nav-default">抽象工厂模式</span>
+                <span class="nav-mobile">上一篇</span>
+            </a>
+        
+        
+            <a class="next" href="/2021/07/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">
+                <span class="nav-default">简单工厂模式</span>
+                <span class="nav-mobile">下一篇</span>
+                <i class="iconfont icon-next"></i>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+    <a class="social-link" target="_blank" href="https://github.com/yinshuaishuai">
+        <i class="iconfont icon-github"></i>
+    </a>
+    
+
+    
+    <a class="social-link" target="_blank" href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=1321098156@qq.com">
+        <i class="iconfont icon-youxiang"></i>
+    </a>
+    
+
+    
+    <a class="social-link" target="_blank" href="https://gitee.com/ysymj">
+        <i class="iconfont icon-gitee-fill-round"></i>
+    </a>
+    
+
+    
+        <a class="social-link" target="_blank" href="https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=1321098156">
+            <i class="iconfont icon-QQ"></i>
+        </a>
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+                2020 -
+            
+            2021
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://gitee.com/ysymj">YS</a>
+        </p>
+        <p class="theme-info"></p>
+<!--        <p class="theme-info">-->
+<!--            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - -->
+<!--            <a target="_blank" href="https://github.com/iJinxin/hexo-theme-sky">Sky</a>-->
+<!--        </p>-->
+    </div>
+</footer>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#comment-container',
+        appId: 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
+        appKey: 'BCtPpmnU41TOE7Wr5O0CJFgS'
+    })
+</script>
+</html>
