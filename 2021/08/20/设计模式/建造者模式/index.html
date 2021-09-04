@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<link rel="shortcut icon" type="image/x-icon" href="/ys_ico.ico">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>YS</title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/css/gitment.css">
+
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_859455_eaq7v6w8ktj.css">
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_2608748_0d5oo5n1tdno.css">
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<header class="header">
+    <div class="header-inner">
+        <div class="header-title">
+
+        </div>
+        <nav class="header-nav">
+            
+            <a href="/" class="header-nav-link" >
+                首页
+            </a>
+            
+
+            
+            <a href="/archives" class="header-nav-link">
+                归档
+            </a>
+            
+
+            
+            <a href="/tags" class="header-nav-link">
+                标签
+            </a>
+            
+
+            
+            <a href="/about/" class="header-nav-link">
+                关于
+            </a>
+            
+        </nav>
+    </div>
+</header>
+<header class="mobile-header">
+    <div class="mobile-nav">
+        <div class="mobile-nav-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="mobile-nav-title">
+            <a href="/" class="mobile-nav-title-link">YS's Blog</a>
+        </div>
+
+    </div>
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-list">
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-home"></i>
+                <a href="/" class="mobile-nav-link">首页</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-archive"></i>
+                <a href="/archives" class="mobile-nav-link">归档</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-tag"></i>
+                <a href="/tags" class="mobile-nav-link">标签</a>
+            </li>
+            <li class="mobile-menu-item">
+                <i class="iconfont icon-about"></i>
+                <a href="/about/" class="mobile-nav-link">关于</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="main">
+    <div class="content-inner">
+        <div class="posts">
+    <article class="post-whole">
+        <div class="post-title">
+            <h2 class="title">创建者模式</h2>
+            <div class="post-meta">
+                <span class="post-time">2021-08-20</span>
+                
+                <span class="post-category">
+                    
+                    <a class="category" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+                    
+                </span>
+                
+                <span class="post-visit"> 阅读次数：<span id="busuanzi_value_page_pv"></span></span>
+            </div>
+        </div>
+        <div class="post-toc" id="post-toc">
+    <strong class="post-toc-title">目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-text">定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-text">优缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-text">问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%8A%E7%AB%AF"><span class="toc-text">弊端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">建造者模式代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E7%BB%84%E6%88%90"><span class="toc-text">结构组成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E5%AE%9E%E7%8E%B0%EF%BC%9A"><span class="toc-text">第一种实现：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%E6%96%B9%E6%B3%95UML%E7%B1%BB%E5%9B%BE"><span class="toc-text">第一种方法UML类图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="toc-text">第二种方法：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%E6%96%B9%E6%B3%95UML%E7%B1%BB%E5%9B%BE"><span class="toc-text">第二种方法UML类图</span></a></li></ol></li></ol>
+    <div class="back-to-top" id="back-to-top">
+        <a href="javascript:void(0);">回到顶部</a>
+    </div>
+</div>
+        <div class="post-content">
+            <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>将一个复杂对象的构造与它的表示分离，使同样的构建过程可以创建不同的表示，这样的设计模式被称为建造者模式。<br>它是将一个复杂的对象分解为多个简答的对象，然后一步一步构建而成。<br>它将变与不变相分离，即产品的组成部分是不变的，但每一部分是可以灵活选择的。</p>
+</blockquote>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>封装性号，构建和表示分离。</li>
+<li>扩展性好，各个具体的建造者相互独立，有利于系统的解耦。</li>
+<li>客户端不必知道产品内部组成的细节，建造者可以对创建过程逐步细化，而不对其他模块产生任何影响，便于控制细节风险。</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>产品的组成部分必须相同，这限制了其使用范围。</li>
+<li>如果产品的内部变化复杂，如果产品内部发生变化，则建造者也要同步修改，后期维护成本较大。</li>
+</ul>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><blockquote>
+<p>比如我们有一个计算机类，类里面有些属性是必填参数，有些是选填的，那么我们按照传统方式进行创建的话一般有两种方式：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String cpu;<span class="comment">//必须</span></span><br><span class="line">    <span class="keyword">private</span> String ram;<span class="comment">//必须</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> usbCount;<span class="comment">//可选</span></span><br><span class="line">    <span class="keyword">private</span> String keyboard;<span class="comment">//可选</span></span><br><span class="line">    <span class="keyword">private</span> String display;<span class="comment">//可选</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>第一种：折叠构造函数模式，通过重写含有不同参数的构造函数进行赋值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String cpu;<span class="comment">//必须</span></span><br><span class="line">    <span class="keyword">private</span> String ram;<span class="comment">//必须</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> usbCount;<span class="comment">//可选</span></span><br><span class="line">    <span class="keyword">private</span> String keyboard;<span class="comment">//可选</span></span><br><span class="line">    <span class="keyword">private</span> String display;<span class="comment">//可选</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Computer</span><span class="params">(String cpu, String ram)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(cpu,ram,<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Computer</span><span class="params">(String cpu, String ram, <span class="keyword">int</span> usbCount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(cpu,ram,usbCount,<span class="string">&quot;罗技键盘&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Computer</span><span class="params">(String cpu, String ram, <span class="keyword">int</span> usbCount, String keyboard)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(cpu,ram,usbCount,keyboard,<span class="string">&quot;三星显示器&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Computer</span><span class="params">(String cpu, String ram, <span class="keyword">int</span> usbCount, String keyboard, String display)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.cpu = cpu;</span><br><span class="line">        <span class="keyword">this</span>.ram = ram;</span><br><span class="line">        <span class="keyword">this</span>.usbCount = usbCount;</span><br><span class="line">        <span class="keyword">this</span>.keyboard = keyboard;</span><br><span class="line">        <span class="keyword">this</span>.display = display;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二种：Javabean模式，通过使用set方法进行赋值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String cpu;<span class="comment">//必须</span></span><br><span class="line">    <span class="keyword">private</span> String ram;<span class="comment">//必须</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> usbCount;<span class="comment">//可选</span></span><br><span class="line">    <span class="keyword">private</span> String keyboard;<span class="comment">//可选</span></span><br><span class="line">    <span class="keyword">private</span> String display;<span class="comment">//可选</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCpu</span><span class="params">(String cpu)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.cpu = cpu;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRam</span><span class="params">(String ram)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.ram = ram;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsbCount</span><span class="params">(<span class="keyword">int</span> usbCount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.usbCount = usbCount;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setKeyboard</span><span class="params">(String keyboard)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.keyboard = keyboard;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDisplay</span><span class="params">(String display)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.display = display;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="弊端"><a href="#弊端" class="headerlink" title="弊端"></a>弊端</h3><blockquote>
+<p>第一种主要是使用及阅读不方便，当你想要使用一个类的构造函数的时候，你首先要想清楚自己需要使用哪一个，然后还要搞清楚这个函数里面参数的含义，很容易混淆。<br>第二种主要是在构建类的过程中是分两步进行的，这个操作容易导致操作失误，出现问题。</p>
+</blockquote>
+<h2 id="建造者模式代码实现"><a href="#建造者模式代码实现" class="headerlink" title="建造者模式代码实现"></a>建造者模式代码实现</h2><h3 id="结构组成"><a href="#结构组成" class="headerlink" title="结构组成"></a>结构组成</h3><ul>
+<li><strong>产品角色</strong>：它是包含多个组成部件的复杂对象，由具体创建者来创建其各个零部件。</li>
+<li><strong>抽象建造者</strong>：它是一个包含创建产品各个子部件的抽象方法的接口，通常还包含一个返回复杂产品方法的getResult()。</li>
+<li><strong>具体建造者</strong>：实现Builder接口，完成复杂产品的各个部件的具体创建方法。</li>
+<li><strong>指挥者</strong>：它调用建造者对象中的部件构造与装配方法完成复杂对象的创建，在指挥者中不涉及具体产品的信息。</li>
+</ul>
+<h3 id="第一种实现："><a href="#第一种实现：" class="headerlink" title="第一种实现："></a>第一种实现：</h3><p>首先创建目标类，也就是我们的产品角色，要实现的产品定义</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 产品角色</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String cpu;<span class="comment">//必须</span></span><br><span class="line">    <span class="keyword">private</span> String ram;<span class="comment">//必须</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> usbCount;<span class="comment">//可选</span></span><br><span class="line">    <span class="keyword">private</span> String keyboard;<span class="comment">//可选</span></span><br><span class="line">    <span class="keyword">private</span> String display;<span class="comment">//可选</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Computer</span><span class="params">(String cpu, String ram)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.cpu = cpu;</span><br><span class="line">        <span class="keyword">this</span>.ram = ram;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUsbCount</span><span class="params">(<span class="keyword">int</span> usbCount)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.usbCount = usbCount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setKeyboard</span><span class="params">(String keyboard)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.keyboard = keyboard;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDisplay</span><span class="params">(String display)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.display = display;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Computer&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;cpu=&#x27;&quot;</span> + cpu + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, ram=&#x27;&quot;</span> + ram + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, usbCount=&quot;</span> + usbCount +</span><br><span class="line">                <span class="string">&quot;, keyboard=&#x27;&quot;</span> + keyboard + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, display=&#x27;&quot;</span> + display + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后创建抽象建造者，对具体建造实现类的一个抽象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 抽象创建者</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ComputerBuilder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">getUsbCount</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">getKeyboard</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">getDisplay</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Computer <span class="title">getComputer</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>指挥者负责创建流程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 指挥者</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ComputerDirector</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">makeComputer</span><span class="params">(ComputerBuilder builder)</span> </span>&#123;</span><br><span class="line">        builder.getKeyboard();</span><br><span class="line">        builder.getDisplay();</span><br><span class="line">        builder.getUsbCount();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体建造者，建造者的具体实现，创建产品对象，定义具体产品的创建规则，这已创建电脑举例</p>
+<p>华硕电脑创建者</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 具体创建者</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsusComputerBuilder</span> <span class="keyword">extends</span> <span class="title">ComputerBuilder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Computer computer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AsusComputerBuilder</span><span class="params">(String cpu, String ram)</span> </span>&#123;</span><br><span class="line">        computer = <span class="keyword">new</span> Computer(cpu, ram);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getUsbCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.setUsbCount(<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getKeyboard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.setKeyboard(<span class="string">&quot;华硕键盘&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getDisplay</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.setDisplay(<span class="string">&quot;华硕显示器&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Computer <span class="title">getComputer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> computer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>联想电脑建造者</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 具体创建者</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LenovoComputerBuilder</span> <span class="keyword">extends</span> <span class="title">ComputerBuilder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Computer computer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LenovoComputerBuilder</span><span class="params">(String cpu, String ram)</span> </span>&#123;</span><br><span class="line">        computer = <span class="keyword">new</span> Computer(cpu, ram);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getUsbCount</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.setUsbCount(<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getKeyboard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.setKeyboard(<span class="string">&quot;联想键盘&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getDisplay</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.setDisplay(<span class="string">&quot;联想显示器&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Computer <span class="title">getComputer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> computer;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ComputerDirector director = <span class="keyword">new</span> ComputerDirector();</span><br><span class="line"></span><br><span class="line">        ComputerBuilder asusBuilder = <span class="keyword">new</span> AsusComputerBuilder(<span class="string">&quot;英特尔i7&quot;</span>,<span class="string">&quot;金士顿&quot;</span>);</span><br><span class="line">        director.makeComputer(asusBuilder);</span><br><span class="line">        Computer asusComputer = asusBuilder.getComputer();</span><br><span class="line">        System.out.println(asusComputer);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        ComputerBuilder lenovoBuilder = <span class="keyword">new</span> LenovoComputerBuilder(<span class="string">&quot;英特尔i8&quot;</span>,<span class="string">&quot;三星&quot;</span>);</span><br><span class="line">        director.makeComputer(lenovoBuilder);</span><br><span class="line">        Computer lenovoComputer = lenovoBuilder.getComputer();</span><br><span class="line">        System.out.println(lenovoComputer);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第一种方法UML类图"><a href="#第一种方法UML类图" class="headerlink" title="第一种方法UML类图"></a>第一种方法UML类图</h3><img src="http://www.plantuml.com/plantuml/svg/pP8nJiCm68Ltdy9Z8z7s09KgGRl11ao8mN6io6fYH_RlYAggnCB0n1au0GTWu3GClGK9CNRYE4mCJ8dotl_olT-c1T4QRsHP6M0A7r2bU4s0uMjGNEIOLcQrN7v-F9rUtqDDaNAiSG7Ow7GZZO1MVNaxFJw7apksJoLHsQGXuxegoBwdcxJWr87EFDvP3oT1HuH8ga4H2fWEkbqONcHTnIxB-Mh9CvmpkBNOisGrwRcqvBzvjXrypE8MtTXSbyRNO7Uqvzhea9Wz01DPj8dTcekbziNzEP8tkJixCbv7gFWbX8gh7XxOiB3lUyM4hELVDeuc_glEFz-sN34AidSbloDBicDkBDn0sZtRj2xiXcbmyne8-1WkREsxUqnKhXDyEBOKiJicv_Er0qFnKnbwqAX6gmSp2BLyUB5OZrfx9SBZnIZA5m00">
+
+
+<h3 id="第二种方法："><a href="#第二种方法：" class="headerlink" title="第二种方法："></a>第二种方法：</h3><p>在<code>Computer</code>类中创建一个静态内部类<code>ComputerBuilder</code>，<code>ComputerBuilder</code>类的属性和<code>Computer</code>类相同，在<code>ComputerBuilder</code>类中创建设置函数，函数的返回类型为<code>ComputerBuilder</code>类型，通过设置函数对可选参数进行赋值，也可以把必选参数也用设置函数赋值，不过这里使用了<br>有参构造进行赋值，创建一个<code>build()</code>方法用来在<code>ComputerBuilder</code>中构建<code>Computer</code>实例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String cpu;<span class="comment">//必须</span></span><br><span class="line">    <span class="keyword">private</span> String ram;<span class="comment">//必须</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> usbCount;<span class="comment">//可选</span></span><br><span class="line">    <span class="keyword">private</span> String keyboard;<span class="comment">//可选</span></span><br><span class="line">    <span class="keyword">private</span> String display;<span class="comment">//可选</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Computer</span><span class="params">(ComputerBuilder computerBuilder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.cpu = computerBuilder.cpu;</span><br><span class="line">        <span class="keyword">this</span>.ram = computerBuilder.ram;</span><br><span class="line">        <span class="keyword">this</span>.usbCount = computerBuilder.usbCount;</span><br><span class="line">        <span class="keyword">this</span>.keyboard = computerBuilder.keyboard;</span><br><span class="line">        <span class="keyword">this</span>.display = computerBuilder.display;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ComputerBuilder</span></span>&#123;</span><br><span class="line">        <span class="keyword">private</span> String cpu;</span><br><span class="line">        <span class="keyword">private</span> String ram;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> usbCount;</span><br><span class="line">        <span class="keyword">private</span> String keyboard;</span><br><span class="line">        <span class="keyword">private</span> String display;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">ComputerBuilder</span><span class="params">(String cpu, String ram)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.cpu = cpu;</span><br><span class="line">            <span class="keyword">this</span>.ram = ram;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> ComputerBuilder <span class="title">setUsbCount</span><span class="params">(<span class="keyword">int</span> usbCount)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.usbCount = usbCount;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> ComputerBuilder <span class="title">setKeyboard</span><span class="params">(String keyboard)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.keyboard = keyboard;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> ComputerBuilder <span class="title">setDisplay</span><span class="params">(String display)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.display = display;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> Computer <span class="title">build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">new</span> Computer(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Computer&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;cpu=&#x27;&quot;</span> + cpu + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, ram=&#x27;&quot;</span> + ram + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, usbCount=&quot;</span> + usbCount +</span><br><span class="line">                <span class="string">&quot;, keyboard=&#x27;&quot;</span> + keyboard + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, display=&#x27;&quot;</span> + display + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="第二种方法UML类图"><a href="#第二种方法UML类图" class="headerlink" title="第二种方法UML类图"></a>第二种方法UML类图</h3><img src="http://www.plantuml.com/plantuml/svg/VP0z3i8m38Ntdi9ZAdvw09Y0ZH6O44EQHYYYVqeSfAf2Oc5WuWoSW0CmS1e6RW6506recUBe-TdVCmkfKZ1CebGZbv0xgHHhYXmcA4My19RgdkTTBxlRyMnhaaQ_ceWHjFA7YOwnK0-dstPlErSyynCgWyQ6GAWqf5b9rtues0UKl8k15c7m06VLl-ji75Q9PeJQW7N1wWCr1caAO8CR3FBTtYvjTHlQGN6S6GPI1lfd61isOh7-yunUsAIQuiS1Vc4XnPNDcQTSOVvkKqZnyQmJ4K14HMp6pHT0vLAva6yAusTOgzEnMHoRhT_jFdVS0G00">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        
+        <div class="post-tag">
+            
+            <a class="tag" href="/tags/java/" title="java">java</a>
+            
+        </div>
+        
+    </article>
+</div>
+<div class="paginator">
+    
+        
+        
+            <a class="next" href="/2021/08/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">
+                <span class="nav-default">抽象工厂模式</span>
+                <span class="nav-mobile">下一篇</span>
+                <i class="iconfont icon-next"></i>
+            </a>
+        
+    
+</div>
+<div id="comment-container"></div>
+    </div>
+</div>
+<footer class="footer-social">
+    
+    <a class="social-link" target="_blank" href="https://github.com/yinshuaishuai">
+        <i class="iconfont icon-github"></i>
+    </a>
+    
+
+    
+    <a class="social-link" target="_blank" href="https://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=1321098156@qq.com">
+        <i class="iconfont icon-youxiang"></i>
+    </a>
+    
+
+    
+    <a class="social-link" target="_blank" href="https://gitee.com/ysymj">
+        <i class="iconfont icon-gitee-fill-round"></i>
+    </a>
+    
+
+    
+        <a class="social-link" target="_blank" href="https://wpa.qq.com/msgrd?v=3&site=qq&menu=yes&uin=1321098156">
+            <i class="iconfont icon-QQ"></i>
+        </a>
+    
+
+    <div class="footer-copyright">
+        <p class="time-line">
+            &copy;
+            
+            
+                2020 -
+            
+            2021
+            &nbsp;<i class="iconfont icon-heart"></i>&nbsp;
+            <a target="_blank" href="https://gitee.com/ysymj">YS</a>
+        </p>
+        <p class="theme-info"></p>
+<!--        <p class="theme-info">-->
+<!--            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>  |  Theme - -->
+<!--            <a target="_blank" href="https://github.com/iJinxin/hexo-theme-sky">Sky</a>-->
+<!--        </p>-->
+    </div>
+</footer>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script src="/js/index.js"></script>
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#comment-container',
+        appId: 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
+        appKey: 'BCtPpmnU41TOE7Wr5O0CJFgS'
+    })
+</script>
+</html>
