@@ -639,6 +639,69 @@
       </tags>
   </entry>
   <entry>
+    <title>装饰器模式</title>
+    <url>/2021/09/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>在不改变原有对象的基础之上，将功能附加到对象上；<br>提供了比继承更有弹性的替代方案（扩展原有对象功能）  </p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>扩展一个类的功能或给一个类添加附加职责  </li>
+<li>动态的给一个对象添加功能，这些功能可以再动态的撤销  </li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>继承的有力补充，比继承灵活，不改变原有对象的情况下给一个对象扩展功能；  </li>
+<li>通过使用不同装饰类以及这些装饰类的排列组合，可以试想不同效果；  </li>
+<li>符合开闭原则。  </li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>会出现更多的代码，更多的类，增加程序复杂性；  </li>
+<li>动态装饰时，多层装饰时会更复杂。  </li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li>抽象构件角色： 定义一个抽象接口以规范准备接收附加责任的对象。  </li>
+<li>具体构件角色： 实现抽象构件，通过装饰角色为其添加一些职责。  </li>
+<li>抽象装饰角色： 继承抽象构件，并包含具体构件的实例，可以通过其子类扩展具体构件的功能。  </li>
+<li>具体装饰角色： 实现抽象装饰的相关方法，并给具体构件对象添加附加的责任。  </li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设我们去买煎饼，一个煎饼8元钱，可以加鸡蛋和香肠，以传统方式来实现，如果用户只是买一个煎饼，我们建一个煎饼类即可实现，如果用户想要加一个鸡蛋，可以新建一个类继承煎饼类来实现，但是如果用户想再加香肠呢？再鸡蛋呢？两个、三个…<br>很明显，如果再以简单的继承来去实现，我们的类会爆炸式的增加，所以我们可以引入装饰者模式，把鸡蛋和香肠作为装饰，可以动态添加。</p>
+<p>首先创建一个抽象构件角色：(煎饼以及作为装饰的抽象类)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">APancakes</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> String <span class="title">getDesc</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">cost</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体构件角色：(具体煎饼类，可以有多种煎饼)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Pancakes</span> <span class="keyword">extends</span> <span class="title">APancakes</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function">String <span class="title">getDesc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;煎饼&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">cost</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">8</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>抽象装饰角色：(具体装饰角色的抽象类，也可以使用对象类，具体根据业务情况决定)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractDecorator</span> <span class="keyword">extends</span> <span class="title">APancakes</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> APancakes aPancakes;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AbstractDecorator</span><span class="params">(APancakes aPancakes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.aPancakes = aPancakes;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function">String <span class="title">getDesc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> aPancakes.getDesc();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">cost</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> aPancakes.cost();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>具体装饰角色：(装饰角色的具体实现)<br>鸡蛋实现：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EggDecorator</span> <span class="keyword">extends</span> <span class="title">AbstractDecorator</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">EggDecorator</span><span class="params">(APancakes aPancakes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(aPancakes);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function">String <span class="title">getDesc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getDesc() + <span class="string">&quot;  加一个鸡蛋&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">cost</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.cost() + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>香肠实现：  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SausageDecorator</span> <span class="keyword">extends</span> <span class="title">AbstractDecorator</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SausageDecorator</span><span class="params">(APancakes aPancakes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(aPancakes);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function">String <span class="title">getDesc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.getDesc() + <span class="string">&quot;  加一根香肠&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">cost</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.cost() + <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体调用：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        APancakes aPancakes = <span class="keyword">new</span> Pancakes();</span><br><span class="line">        aPancakes = <span class="keyword">new</span> EggDecorator(aPancakes);</span><br><span class="line">        aPancakes = <span class="keyword">new</span> EggDecorator(aPancakes);</span><br><span class="line">        aPancakes = <span class="keyword">new</span> SausageDecorator(aPancakes);</span><br><span class="line"></span><br><span class="line">        System.out.println(aPancakes.getDesc()+aPancakes.cost());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如代码所示，想要加几个鸡蛋或者香肠，可以动态的去实现</p>
+<p>结果：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">煎饼  加一个鸡蛋  加一个鸡蛋  加一根香肠 12</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/hP8n3u8m48Nt_eeRTI6HLHSItKrmCmv7kJIDM4pl82R4_ow820eBqQdjlTntxrsA2Oj7BQ0pP8PeZqxZcHWgXPqKYxVEW27P4kl5SjrBrjMTEKjJl2lLGZh62kWcvD81jbBVCAZkggSqhn4d_94JlTnkIUSU9VTJlAkt9GeDDe3TRJrdsCwOYJaZ1xC2n5Wm6lexzq0iTV8YoQm65fJwA7ERmWMjMxIWumdG6-uQF-9jWk39K2E3RwN_2wDI-2uz0000">
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>设计模式</title>
     <url>/2021/07/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p><strong>设计模式：</strong> 是一套被反复使用、多人知晓的、经过分类编目的、代码设计经验的总结。使用设计模式是为了可重用代码、让代码更容易被他人理解、保证代码可靠性。毫无疑问，设计模式于己于他人于系统都是多赢的，设计模式使代码编制真正工程化，设计模式是软件工程的基石，如同大厦一块块砖石一样。项目中合理的运用设计模式可以完美的解决很多问题，每种模式在现在中都有相应的原理来与之对应，每一个模式描述了一个在我们周围不断重复发生的问题，以及该问题的核心解决方案，这也是他能被广泛应用的原因。  </p>
@@ -711,7 +774,7 @@
 <li>动态的给对象添加新的功能。</li>
 </ul>
 <h3 id="外观模式"><a href="#外观模式" class="headerlink" title="外观模式"></a>外观模式</h3><ul>
-<li>对外提供一个统一的方法，来访问子系统中的一群接口。</li>
+<li>对外提供一个统一的方法，来访问子系统中的一群接口。<br><a href="https://ysymj.gitee.io/2021/09/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">点击阅读&gt;&gt;</a></li>
 </ul>
 <h3 id="享元模式"><a href="#享元模式" class="headerlink" title="享元模式"></a>享元模式</h3><ul>
 <li>通过共享技术来有效的支持大量细粒度的对象。</li>
