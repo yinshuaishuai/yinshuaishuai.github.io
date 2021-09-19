@@ -58,6 +58,17 @@
       </tags>
   </entry>
   <entry>
+    <title>享元模式</title>
+    <url>/2021/09/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>享元模式</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>单例模式</title>
     <url>/2021/07/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p>单例模式是java中最简单的设计模式之一。这种类型的设计模式属于创建型模式，它提供了一种创建对象的最佳方式。这种模式设计到一个单一的类，该类负责创建自己的对象，同时保证只有单个对象被创建，这个类提供了一种访问其唯一的对象的方式，可以直接访问，不需要实例化该类的对象。  </p>
@@ -771,7 +782,7 @@
 <li>将对象组合成树形结构以表示“部分-整体”的层次结构。</li>
 </ul>
 <h3 id="装饰器模式"><a href="#装饰器模式" class="headerlink" title="装饰器模式"></a>装饰器模式</h3><ul>
-<li>动态的给对象添加新的功能。</li>
+<li>动态的给对象添加新的功能。<br><a href="https://ysymj.gitee.io/2021/09/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A3%85%E9%A5%B0%E5%99%A8%E6%A8%A1%E5%BC%8F/">点击阅读&gt;&gt;</a></li>
 </ul>
 <h3 id="外观模式"><a href="#外观模式" class="headerlink" title="外观模式"></a>外观模式</h3><ul>
 <li>对外提供一个统一的方法，来访问子系统中的一群接口。<br><a href="https://ysymj.gitee.io/2021/09/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/">点击阅读&gt;&gt;</a></li>
@@ -848,6 +859,90 @@
 <h3 id="传输对象模式"><a href="#传输对象模式" class="headerlink" title="传输对象模式"></a>传输对象模式</h3><ul>
 <li>用于从客户端向服务器一次性传递带有多个属性的数据。</li>
 </ul>
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>适配器模式</title>
+    <url>/2021/09/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>将一个类的接口转换成客户希望的另外一个接口，使得原本由于接口兼容而不能一起工作的那些类能一起工作。<br>适配器模式分为类结构型模式和对象结构型模式两种，前者类之间的耦合度比后者高，且要求程序员了解现有组件库中的相关组件的内部结构，所以应用相对较少些。  </p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>已经存在的类，它的方法和需求不匹配时（方法结果相似或相同）；  </li>
+<li>不是软件设计阶段考虑的设计模式，是随着软件维护，由于不同产品、不同厂家造成功能类似而接口不相同情况下的解决方案。  </li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>客户端通过适配器可以透明地调用目标接口；  </li>
+<li>复用了现存的类，程序员不需要修改原有代码而重用现有的适配者类；  </li>
+<li>将目标类和适配者类解耦，解决了目标类和适配者类接口不一致的问题；  </li>
+<li>符合开闭原则。  </li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>适配器编写过程需要全面考虑，可能会增加系统的复杂性；  </li>
+<li>增加系统代码可读的难度。  </li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li><strong>目标接口：</strong> 当前系统业务所期待的接口，它可以是抽象类或者接口；  </li>
+<li><strong>适配者类：</strong> 它是被访问和适配的现存组件库中的组件接口；  </li>
+<li><strong>适配器类：</strong> 它是一个转换器，通过继承或者引用适配者的对象，把适配者接口转换成目标接口，让客户按目标接口的格式访问适配者。   </li>
+</ul>
+<h2 id="类结构型模式"><a href="#类结构型模式" class="headerlink" title="类结构型模式"></a>类结构型模式</h2><h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p>我们生活中经常会给手机充电，但是标准电压是交流电220V，但是我们的手机一般是使用直流电5V的，我们可以用代码来演示一下这个过程的实现。  </p>
+<p>首先我们创建一个适配者类，也就是我们220V交流电</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AC220</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">outputAC220V</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> output = <span class="number">220</span>;</span><br><span class="line">        System.out.println(<span class="string">&quot;输出交流电&quot;</span> + output + <span class="string">&quot;V&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> output;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们创建目标接口，也就是我们需要的5V直流电  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DC5</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">outputDC5V</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建适配器类，也就是实现我们交流200V转换直流5V的类，可以理解为手机充电器</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PowerAdapter</span> <span class="keyword">extends</span> <span class="title">AC220</span> <span class="keyword">implements</span> <span class="title">DC5</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">outputDC5V</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> adapterInput = <span class="keyword">super</span>.outputAC220V();</span><br><span class="line">        <span class="comment">//业务处理</span></span><br><span class="line">        <span class="keyword">int</span> adapterOutput = adapterInput / <span class="number">44</span>;</span><br><span class="line">        System.out.println(<span class="string">&quot;使用PowerAdapter输入AC: &quot;</span> + adapterInput + <span class="string">&quot;V；输出DC: &quot;</span> + adapterOutput + <span class="string">&quot;V&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> adapterOutput;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试类调用</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        DC5 dc5 = <span class="keyword">new</span> PowerAdapter();</span><br><span class="line">        dc5.outputDC5V();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">输出交流电220V</span><br><span class="line">使用PowerAdapter输入AC: 220V; 输出DC: 5V</span><br></pre></td></tr></table></figure>
+
+<h3 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h3><img src="http://www.plantuml.com/plantuml/svg/POwn2i8m48RtFCMDTIbISDAbr0SG51TnYCbP3jea95SLIj_Tj6afudJaxlk_FwgH8K1P5SKMUk6wHqCAo33OZbt7q-6QRQ0Vn214FA1_IeLmh7QHNy7uZjX-XDIaFDat-b9B5nE07qQZbnvgNOCj6WwpvgyssURIvBjWu1KDB3cEboKDhIIJdTcJgMztaBuEItAq7_8yPK7yV6dPYoy0">
+
+
+<h2 id="对象结构型模式"><a href="#对象结构型模式" class="headerlink" title="对象结构型模式"></a>对象结构型模式</h2><h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><p>同样以上述实例做演示，代码实现只有适配器类中有所不同</p>
+<p>首先我们创建一个适配者类，也就是我们220V交流电</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AC220</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">outputAC220V</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> output = <span class="number">220</span>;</span><br><span class="line">        System.out.println(<span class="string">&quot;输出交流电&quot;</span> + output + <span class="string">&quot;V&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> output;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们创建目标接口，也就是我们需要的5V直流电</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">DC5</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">outputDC5V</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建适配器类，也就是实现我们交流200V转换直流5V的类，可以理解为手机充电器<br><code>类结构型模式</code>是通过继承<code>AC220</code>类来调用方法的，<code>对象结构模式则</code>是通过组合来做的</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PowerAdapter</span> <span class="keyword">implements</span> <span class="title">DC5</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> AC220 ac220 = <span class="keyword">new</span> AC220();</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">outputDC5V</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> adapterInput = ac220.outputAC220V();</span><br><span class="line">        <span class="comment">//业务处理</span></span><br><span class="line">        <span class="keyword">int</span> adapterOutput = adapterInput / <span class="number">44</span>;</span><br><span class="line">        System.out.println(<span class="string">&quot;使用PowerAdapter输入AC: &quot;</span> + adapterInput + <span class="string">&quot;V；输出DC: &quot;</span> + adapterOutput + <span class="string">&quot;V&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> adapterOutput;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试类调用</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        DC5 dc5 = <span class="keyword">new</span> PowerAdapter();</span><br><span class="line">        dc5.outputDC5V();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">输出交流电220V</span><br><span class="line">使用PowerAdapter输入AC: 220V; 输出DC: 5V</span><br></pre></td></tr></table></figure>
+
+<h3 id="UML类图-1"><a href="#UML类图-1" class="headerlink" title="UML类图"></a>UML类图</h3><img src="http://www.plantuml.com/plantuml/svg/POun3u8m48Nt_eeRqO4O4YTr8FW3J3Gknk4i9sa2fMaF60Z_tK8XXBZqqdVltljaYSv1cYN90NfXca-f92ZDK3Ti6fuMpsW7_I068Vo2x1SbmJKxUlzgz7zlEuqcEKNUwevicgFn5w0gKr95cjryQAngaMakHZc-5z3K1MLC-cC95JD9A7cGunNRCR8VRQrog53fwCvMwUBr1hI5Mov3vJcEznj68KOoBq-XOeE_g3y0">
+
+
+<h2 id="接口适配器"><a href="#接口适配器" class="headerlink" title="接口适配器"></a>接口适配器</h2><h3 id="代码实现-2"><a href="#代码实现-2" class="headerlink" title="代码实现"></a>代码实现</h3><p>接口适配器和上面两种略有不同<br>假设我们现在有一个接口，里面有多个方法，但是我们只想使用其中的一个方法，那么就可以使用一个抽象类，来继承这个接口，并实现这个接口的所有方法，不做任何业务逻辑处理，<br>我们具体想要实现逻辑的类，就可以继承这个抽象类，然后去重写自己想要使用的方法即可。</p>
+<p>首先有一个接口，里面有多个方法  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Interface1</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">m1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">m2</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">m3</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">m4</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">m5</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们只想用其中的<code>m1</code>方法，如果直接实现接口的话，需要实现所有的方法<br>我们就可以先创建一个抽象类，去实现这个接口，然后空实现所有的方法  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractAdapter</span> <span class="keyword">implements</span> <span class="title">Interface1</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">m1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">m2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">m3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">m4</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">m5</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们具体的业务类就可以继承这个抽象类，实现自己需要的方法就可以了</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> <span class="keyword">extends</span> <span class="title">AbstractAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">m1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//业务逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="UML图"><a href="#UML图" class="headerlink" title="UML图"></a>UML图</h3><img src="http://www.plantuml.com/plantuml/svg/ROwz3i8m30RtF8L76FitCNLavmNSn4YHaX3L1Y5LUVUsQajKaUryWx-pGMXyeYQu7rHDwlEo1dnrkTvsh3Cs6TkCtOf9AHnOHjG2sY4pzFlP6upBUx0-El8KX4zxyJqug-4t2rCwkxhWce9h2wxRt1AtDJs81UWh5Cn_OBabpG00">
+
+
+
+
 ]]></content>
       <categories>
         <category>java</category>
