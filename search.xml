@@ -361,61 +361,6 @@
       </tags>
   </entry>
   <entry>
-    <title>外观模式</title>
-    <url>/2021/09/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
-<p>外观模式又叫门面模式，是一种通过为多个复杂子系统提供一个一致的接口，而使这些子系统更加容易被访问的模式。该模式对外有一个统一接口，外部应用程序不用关心内部子系统的具体细节，这样会大大降低应用程序的复杂度，提高程序的可维护性。</p>
-</blockquote>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>外观模式包含以下主要角色：  </p>
-<ul>
-<li>外观角色： 为多个子系统提供一个共同的接口。  </li>
-<li>子系统角色： 实现系统的部分功能，客户可以通过外观角色访问它。  </li>
-<li>客户角色： 通过一个外观角色访问各个子系统的功能。   </li>
-</ul>
-<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
-<li>子系统越来越复杂，增加外观模式提供简单调用接口。  </li>
-<li>构建多层系统结构，利用外观对象作为每层的入口，简化层间调用。  </li>
-</ul>
-<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>简化了调用过程，无需深入了解子系统，防止带来风险。  </li>
-<li>减少系统依赖、松散耦合。  </li>
-<li>更好的划分访问层次。  </li>
-<li>符合迪米特法则，即最少知道原则。  </li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>增加子系统、扩展子系统行为容易引入风险。  </li>
-<li>不符合开闭原则。  </li>
-</ul>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设我们现在有三个系统，<code>SubSystem01</code>、<code>SubSystem02</code>、<code>SubSystem03</code>，每个系统里面都有各自的逻辑处理方法；<br>我们现在有一个需求，需要调用三个系统联合去处理一个业务，那么就需要分别创建出<code>SubSystem01</code>、<code>SubSystem02</code>、<code>SubSystem03</code>系统的实例，然后调用对应的方法执行业务逻辑，<br>如果对象的创建，或者需要调用的方法很繁琐，那么每次处理逻辑，都要进行这块调用的处理，就很麻烦；<br>所以我们可以将这几个系统作为子系统，然后以一个高层系统(外观角色)进行封装，对外暴露一个相对简单的接口。</p>
-<p>子系统1：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubSystem01</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;子系统01的method1方法被调用&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>子系统2：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubSystem02</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;子系统02的method2方法被调用&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>子系统3：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubSystem03</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method3</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;子系统03的method3方法被调用&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>外观角色：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Facade</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    SubSystem01 obj1 = <span class="keyword">new</span> SubSystem01();</span><br><span class="line">    SubSystem02 obj2 = <span class="keyword">new</span> SubSystem02();</span><br><span class="line">    SubSystem03 obj3 = <span class="keyword">new</span> SubSystem03();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span>&#123;</span><br><span class="line">        obj1.method1();</span><br><span class="line">        obj2.method2();</span><br><span class="line">        obj3.method3();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>调用：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Facade facade = <span class="keyword">new</span> Facade();</span><br><span class="line">        facade.method();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>结果：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">子系统01的method1方法被调用</span><br><span class="line">子系统02的method2方法被调用</span><br><span class="line">子系统03的method3方法被调用</span><br></pre></td></tr></table></figure>
-
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/TT6n3e8m40RW_PxYHXWmqeugeo-0ct4eq60DK4ABnY3lhXL2ggKtzl-QtlKWhvXIU6GvApWE0FYfjC_IfzAytiOeirkC1spumpuEmjsV94OIHn9NKYEf8wcHNzhsMILol4jHOCtrLHP1E8mm0apDskqDuEhOnyag9pvELpdzvIUkzCAKPdhHJ3H1gZlHbESBigvK8KuNvy_Ulw8eiOVn1SGNK03pF6wIUO5l">
-
-
-]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>工厂方法模式</title>
     <url>/2021/08/09/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
@@ -512,6 +457,61 @@
 
 
 
+
+
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>外观模式</title>
+    <url>/2021/09/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>外观模式又叫门面模式，是一种通过为多个复杂子系统提供一个一致的接口，而使这些子系统更加容易被访问的模式。该模式对外有一个统一接口，外部应用程序不用关心内部子系统的具体细节，这样会大大降低应用程序的复杂度，提高程序的可维护性。</p>
+</blockquote>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>外观模式包含以下主要角色：  </p>
+<ul>
+<li>外观角色： 为多个子系统提供一个共同的接口。  </li>
+<li>子系统角色： 实现系统的部分功能，客户可以通过外观角色访问它。  </li>
+<li>客户角色： 通过一个外观角色访问各个子系统的功能。   </li>
+</ul>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>子系统越来越复杂，增加外观模式提供简单调用接口。  </li>
+<li>构建多层系统结构，利用外观对象作为每层的入口，简化层间调用。  </li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>简化了调用过程，无需深入了解子系统，防止带来风险。  </li>
+<li>减少系统依赖、松散耦合。  </li>
+<li>更好的划分访问层次。  </li>
+<li>符合迪米特法则，即最少知道原则。  </li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>增加子系统、扩展子系统行为容易引入风险。  </li>
+<li>不符合开闭原则。  </li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设我们现在有三个系统，<code>SubSystem01</code>、<code>SubSystem02</code>、<code>SubSystem03</code>，每个系统里面都有各自的逻辑处理方法；<br>我们现在有一个需求，需要调用三个系统联合去处理一个业务，那么就需要分别创建出<code>SubSystem01</code>、<code>SubSystem02</code>、<code>SubSystem03</code>系统的实例，然后调用对应的方法执行业务逻辑，<br>如果对象的创建，或者需要调用的方法很繁琐，那么每次处理逻辑，都要进行这块调用的处理，就很麻烦；<br>所以我们可以将这几个系统作为子系统，然后以一个高层系统(外观角色)进行封装，对外暴露一个相对简单的接口。</p>
+<p>子系统1：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubSystem01</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;子系统01的method1方法被调用&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>子系统2：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubSystem02</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;子系统02的method2方法被调用&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>子系统3：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubSystem03</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method3</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;子系统03的method3方法被调用&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>外观角色：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Facade</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    SubSystem01 obj1 = <span class="keyword">new</span> SubSystem01();</span><br><span class="line">    SubSystem02 obj2 = <span class="keyword">new</span> SubSystem02();</span><br><span class="line">    SubSystem03 obj3 = <span class="keyword">new</span> SubSystem03();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span>&#123;</span><br><span class="line">        obj1.method1();</span><br><span class="line">        obj2.method2();</span><br><span class="line">        obj3.method3();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Facade facade = <span class="keyword">new</span> Facade();</span><br><span class="line">        facade.method();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">子系统01的method1方法被调用</span><br><span class="line">子系统02的method2方法被调用</span><br><span class="line">子系统03的method3方法被调用</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/TT6n3e8m40RW_PxYHXWmqeugeo-0ct4eq60DK4ABnY3lhXL2ggKtzl-QtlKWhvXIU6GvApWE0FYfjC_IfzAytiOeirkC1spumpuEmjsV94OIHn9NKYEf8wcHNzhsMILol4jHOCtrLHP1E8mm0apDskqDuEhOnyag9pvELpdzvIUkzCAKPdhHJ3H1gZlHbESBigvK8KuNvy_Ulw8eiOVn1SGNK03pF6wIUO5l">
 
 
 ]]></content>
@@ -803,6 +803,33 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HpComputer</span> <span class="keyword">extends</span> <span class="title">AComputer</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> needMouseFlag = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HpComputer</span><span class="params">(<span class="keyword">boolean</span> needMouseFlag)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.needMouseFlag = needMouseFlag;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 惠普生产键盘，但是鼠标可能生产可能不生产，可以将钩子的值作为变量通过构造函数设置</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">keyboard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;惠普键盘&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">needMouse</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.needMouseFlag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h3><img src="http://www.plantuml.com/plantuml/svg/fP31QiCm44Jl_eezEjzG2Ws1q4DAls4bJOBeMYiasSIO_7jCI5BNTN9eppFxTcROv9BO5hB2ETDweqri2n8DLKnQO0iSxNrWeKwzez64nWXklderd9QTCVbWVMHvR74-H-7-Ik5Rb8lsXTue9rUlNfQF6sqpPcoZAk100N0VT_rKLTTskSttWZWM13UfF5HldnrIyWxp23Ibx12qqpzpliMdkN-yV8_FterBTrpmcx8LFj0hxLaonXLR8zvEMFNYmIpaVnkS0G00">
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>策略模式</title>
+    <url>/2021/10/16/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>定义了算法家族，分别封装起来，让他们之间可以互相替换，此模式让算法的变化不会影响到使用算法的用户。<br>行为型</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>系统由很多类，而他们的区别仅仅在于他们的行为不同；</li>
+<li>一个系统需要动态地在几种算法中选择一种。</li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>符合开闭原则</li>
+<li>避免使用多重条件转移语句</li>
+<li>提高算法的保密性和安全性</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>客户端必须知道所有的策略类，并自行决定使用哪一个策略类。</li>
+<li>会产生很多策略类。</li>
+</ul>
 ]]></content>
       <categories>
         <category>java</category>
