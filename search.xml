@@ -830,6 +830,54 @@
 <li>客户端必须知道所有的策略类，并自行决定使用哪一个策略类。</li>
 <li>会产生很多策略类。</li>
 </ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li><strong>抽象策略类</strong>：定义了一个公共接口，各种不同的算法以不同的方法实现这个接口，环境角色使用这个接口调用不同的算法，一般使用接口或者抽象类实现。</li>
+<li><strong>环境策略类</strong>：实现了抽象策略定义的接口，提供具体的算法实现。</li>
+<li><strong>环境类</strong>：持有一个策略类的引用，最终给客户端调用。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设有一个饭店，里面有许多中菜，都是由大厨来做的，根据不同的策略，大厨就可以做出来不同的菜<br>抽象策略类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Strategy</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span>  <span class="title">friedDish</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>菜肴1<br>具体策略类   </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bouilli</span> <span class="keyword">implements</span> <span class="title">Strategy</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">friedDish</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;红烧肉&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>菜肴2<br>具体策略类  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RoastDuck</span> <span class="keyword">implements</span> <span class="title">Strategy</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">friedDish</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;烤鸭&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>菜肴3<br>具体策略类  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShreddedPotatoes</span> <span class="keyword">implements</span> <span class="title">Strategy</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">friedDish</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;土豆丝&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>厨房<br>环境类：  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Restaurant</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Strategy strategy;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Restaurant</span><span class="params">(Strategy strategy)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.strategy = strategy;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">friedDish</span><span class="params">()</span></span>&#123;</span><br><span class="line">        strategy.friedDish();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Restaurant restaurant = <span class="keyword">new</span> Restaurant(<span class="keyword">new</span> Bouilli());</span><br><span class="line">        restaurant.friedDish();</span><br><span class="line">        System.out.println(<span class="string">&quot;-------------------&quot;</span>);</span><br><span class="line"></span><br><span class="line">        Restaurant restaurant1 = <span class="keyword">new</span> Restaurant(<span class="keyword">new</span> ShreddedPotatoes());</span><br><span class="line">        restaurant1.friedDish();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果：  </p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">红烧肉</span><br><span class="line">-------------------</span><br><span class="line">土豆丝</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/fP113e9034NtSuekSU49I5mO3c3a17McIEF0a6c7n13kBW4LeZljgad_-xyjjqgnGajGQaIbwnq6qmTs05LaSWLBdUroCnfZFOh0CIJsde6RpbD3hSgR74oNBfujpFm6Xs5S3Su1HOjaRxzRb7KavyYTWg86aZ-M8L5C4LkTpeQfkiZznA_Va6UJB-F5SyMoB-4SiD5-vY_nc-2mFxnC7W00">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ]]></content>
       <categories>
         <category>java</category>
@@ -1143,7 +1191,7 @@
 <li>定义一个算法结构，而将一些步骤延迟到子类实现。<br><a href="https://ysymj.gitee.io/2021/10/10/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%A8%A1%E6%9D%BF%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/">点击阅读&gt;&gt;</a></li>
 </ul>
 <h3 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h3><ul>
-<li>定义一系列算法，把他们封装起来，并且使他们可以互相替换。</li>
+<li>定义一系列算法，把他们封装起来，并且使他们可以互相替换。<br><a href="https://ysymj.gitee.io/2021/10/16/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/">点击阅读&gt;&gt;</a></li>
 </ul>
 <h3 id="空对象模式"><a href="#空对象模式" class="headerlink" title="空对象模式"></a>空对象模式</h3><ul>
 <li>一个空对象取代NULL对象实例的检查。</li>
