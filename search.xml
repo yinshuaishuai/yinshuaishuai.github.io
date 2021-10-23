@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Linux命令</title>
+    <url>/2021/10/20/Linux%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h2><p>就是list的缩写，通过ls命令不仅可以查看linux文件夹包含的文件，而且可以查看文件的权限，查看目录等信息  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ls -a     # 列出所有目录所有文件，包含.开始的隐藏文件</span><br><span class="line">ls -A     # 列出除.及..的其他文件</span><br><span class="line">ls -r     # 反序排列</span><br><span class="line">ls -t     # 以文件修改时间排序</span><br><span class="line">ls -S     # 以文件大小排序</span><br><span class="line">ls -h     # 以易读大小排序</span><br><span class="line">ls -l     # 除了文件名之外，还将文件的权限、所有者、文件大小等信息详细列出来</span><br></pre></td></tr></table></figure>
+
+<h2 id="ll命令"><a href="#ll命令" class="headerlink" title="ll命令"></a>ll命令</h2><p>相当于<code>ls -l</code>命令的缩写，具体参数和<code>ls</code>命令相同</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ll</span><br></pre></td></tr></table></figure>
+
+<h2 id="cd命令"><a href="#cd命令" class="headerlink" title="cd命令"></a>cd命令</h2><p>cd命令语法:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd [目录名]</span><br></pre></td></tr></table></figure>
+<p>进入根目录</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /</span><br></pre></td></tr></table></figure>
+<p>进入用户目录</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd ~</span><br></pre></td></tr></table></figure>
+
+<h2 id="pwd命令"><a href="#pwd命令" class="headerlink" title="pwd命令"></a>pwd命令</h2><p>查看当前工作目录路径</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pwd         # 查看当前路径</span><br><span class="line">pwd -P      # 查看软连接的实际路径</span><br></pre></td></tr></table></figure>
+
+<h2 id="mkdir命令"><a href="#mkdir命令" class="headerlink" title="mkdir命令"></a>mkdir命令</h2><p>用于创建文件夹<br>可用选项：</p>
+<ul>
+<li><strong>-m</strong>：对新建目录设置存取权限，也可以使用<code>chmod</code>命令设置</li>
+<li><strong>-p</strong>：可以是一个路径名称，此时若路径中的某些目录尚不存在，加上此选项后，系统将自动创建那些不存在的目录，即一次可以创建多层目录<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mkdir t                     # 在当前工作目录下创建文件夹名称为t的目录</span><br><span class="line">mkdir -p /tmp/test/t1/t     # 创建多层目录</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="rm命令"><a href="#rm命令" class="headerlink" title="rm命令"></a>rm命令</h2><p>删除一个目录中的一个或者多个文件或者目录，如果没有使用-r选项，则rm不会删除目录。如果使用rm来删除文件，通常仍可以将该文件恢复原状。  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">rm [选项] 文件...</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">rm -i *.log         # 删除所有.log文件，删除前逐一询问确认</span><br><span class="line">rm -rf test         # 删除test目录以及其子目录中的所有文件并不用一一确认</span><br><span class="line">rm -- -f*           # 删除所有以f开头的文件</span><br></pre></td></tr></table></figure>
+
+<h2 id="rmdir命令"><a href="#rmdir命令" class="headerlink" title="rmdir命令"></a>rmdir命令</h2><p>从一个目录中删除一个或者多个子目录，删除某个目录时必须拥有其父目录的写权限（不能删除非空目录）  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">rmdir -p parent/chid/chid1      # 当parent子目录被删除后，它也成为空目录的话，也会一并删除</span><br></pre></td></tr></table></figure>
+
+<h2 id="mv命令"><a href="#mv命令" class="headerlink" title="mv命令"></a>mv命令</h2><p>移动文件或者修改文件名，根据第二个参数类型（如目录，则移动文件，如为文件名，则重命名该文件）<br>当第二个参数为目录时，第一个参数可以是多个以空格分隔的文件或者目录，然后移动第一个参数指定的多个文件到第二个参数指定的目录中。  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mv test.log test1.txt                   # 将test.log重命名为test1.txt</span><br><span class="line">mv log1.txt log2.txt log3.txt /test     # 将log1.txt log2.txt log3.txt三个文件移动到根目录下的test目录中</span><br><span class="line">mv -i log1.txt log2.txt                 # 将文件1改名为文件2，如果文件2已经存在，则询问是否覆盖</span><br><span class="line">mv * ../                                # 移动当前文件夹下的所有文件到上一级目录</span><br></pre></td></tr></table></figure>
+
+<h2 id="cp命令"><a href="#cp命令" class="headerlink" title="cp命令"></a>cp命令</h2><p>将源文件复制至目标文件，或将多个源文件复制到目标目录<br>注意：命令行复制，如果目标文件已经存在，会提示是否覆盖，而在shell脚本中，如果不加<code>-i</code>参数，则不会提示，而是直接覆盖</p>
+<ul>
+<li><strong>-i</strong>：提示</li>
+<li><strong>-r</strong>：复制目录及目录中的所有文件</li>
+<li><strong>-a</strong>：复制的文件与源文件时间保持一致<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cp -ai a.txt test       # 复制a.txt到test目录下，保持源文件时间，如果源文件存在，提示是否覆盖</span><br><span class="line">cp -s a.txt link_a.txt  # 为a.txt建立一个连接（快捷方式）</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>通过gitee和hexo搭建个人博客</title>
     <url>/2021/06/12/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
@@ -361,113 +409,6 @@
       </tags>
   </entry>
   <entry>
-    <title>工厂方法模式</title>
-    <url>/2021/08/09/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
-<p>工厂方法模式属于类的创建型模式又被称为多态工厂模式。工厂方法模式的意义在于定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类中，核心工厂类不再负责产品的创建，仅负责声明具体工厂子类必须实现的接口。<br>这样进一步抽象画的好处是使得工厂方法模式可以使系统在不修改具体工厂角色的情况下引进新的产品。</p>
-</blockquote>
-<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><blockquote>
-<p>1）创建对象需要大量重复的代码<br>2）客户端（应用层）不依赖于产品类实例如何被创建、实现等细节<br>3）一个类通过其子类来指定创建哪个对象  </p>
-</blockquote>
-<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>用户只需要关系所需产品对应的工厂，无须关心创建细节。  </li>
-<li>加入新产品符合开闭原则，提高可扩展性。  </li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>类的个数容易过多，增加复杂度。  </li>
-<li>增加了系统的抽象性和理解难度。  </li>
-</ul>
-<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="创建抽象产品类"><a href="#创建抽象产品类" class="headerlink" title="创建抽象产品类"></a>创建抽象产品类</h4><blockquote>
-<p>我们创建一个电脑的抽象产品类，他有一个抽象方法用于启动电脑</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 产品的抽象方法，由具体的产品类去实现</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="创建具体产品类"><a href="#创建具体产品类" class="headerlink" title="创建具体产品类"></a>创建具体产品类</h4><blockquote>
-<p>接着我们创建各个品牌的电脑，他们都继承了他们的父类Computer，并实现了父类的start方法。</p>
-</blockquote>
-<p><strong>联想电脑</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LenovoComputer</span> <span class="keyword">extends</span> <span class="title">Computer</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;联想电脑启动&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>惠普电脑</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HpComputer</span> <span class="keyword">extends</span> <span class="title">Computer</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;惠普电脑启动&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>华硕电脑</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsusComputer</span> <span class="keyword">extends</span> <span class="title">Computer</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;华硕电脑启动&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>创建一个工厂抽象类，具体创建产品的代码由工厂抽象类的子类去实现</p>
-</blockquote>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ComputerFactory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 工厂方法创建产品接口抽象化，将具体创建产品的代码写到工厂方法子类中</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Computer <span class="title">createComputer</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>创建联想电脑的工厂实现</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LenovoComputerFactory</span> <span class="keyword">extends</span> <span class="title">ComputerFactory</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Computer <span class="title">createComputer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> LenovoComputer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>创建惠普电脑的工厂实现</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HpComputerFactory</span> <span class="keyword">extends</span> <span class="title">ComputerFactory</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Computer <span class="title">createComputer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> HpComputer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>创建华硕电脑的工厂实现</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsusComputerFactory</span> <span class="keyword">extends</span> <span class="title">ComputerFactory</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Computer <span class="title">createComputer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AsusComputer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong><em>客户端调用</em></strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//通过工厂方法的子类去创建对应的工厂类</span></span><br><span class="line">        <span class="comment">//每次增加新的产品，只需要新建一个抽象工厂方法的子类即可，不会对现有的产品产生影响</span></span><br><span class="line">        ComputerFactory computerFactory = <span class="keyword">new</span> HpComputerFactory();</span><br><span class="line">        Computer computer = computerFactory.createComputer();</span><br><span class="line">        computer.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="UML图"><a href="#UML图" class="headerlink" title="UML图"></a>UML图</h2><img src="http://www.plantuml.com/plantuml/svg/IqmgBYbAJ2vHICv9B2vMSCxFBIWjIIsgvdewjUtfvCPdNNjVR5puRDhEPvkdlj_Jywn_mfDziv_ldlzaHmEor8jrAvzEQ7coOnL4rzDryvxtRU0gA4tAoKnMI8HPKPQVcQ9GN99OLAAXQSrLoyK5iTEnkBGOPgz2QaL9QbuAfaE0baDCXLZ-V5OBilrS3lvbgKL5cIcf2b1BaUsghaLOvfEQbr-MJpVhF0heO5KYzZXq0mhb5rKg02tQllHfNzFpZRiX9WCPHCKbMDVJjHE0wd74ADnpoKMfYIMfC2xEw8Kv2Jqi44w5k0JPQlpX0vBjcFrqzwvdyoU0P9VtGa8LvbISBiITA0Qf8n59QP0wC2IrkAGQfWEOG4jWYJKtCJDF8xYaA3ClFJfM8R4elLXJ0QAH2oNls-ZfOKijN6Xv5gGCQunn8UKsa2AC44Er3nPS8AKWjtDXJmPmQSm8W4a10000">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>外观模式</title>
     <url>/2021/09/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
@@ -584,6 +525,113 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String cpu;<span class="comment">//必须</span></span><br><span class="line">    <span class="keyword">private</span> String ram;<span class="comment">//必须</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> usbCount;<span class="comment">//可选</span></span><br><span class="line">    <span class="keyword">private</span> String keyboard;<span class="comment">//可选</span></span><br><span class="line">    <span class="keyword">private</span> String display;<span class="comment">//可选</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Computer</span><span class="params">(ComputerBuilder computerBuilder)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.cpu = computerBuilder.cpu;</span><br><span class="line">        <span class="keyword">this</span>.ram = computerBuilder.ram;</span><br><span class="line">        <span class="keyword">this</span>.usbCount = computerBuilder.usbCount;</span><br><span class="line">        <span class="keyword">this</span>.keyboard = computerBuilder.keyboard;</span><br><span class="line">        <span class="keyword">this</span>.display = computerBuilder.display;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ComputerBuilder</span></span>&#123;</span><br><span class="line">        <span class="keyword">private</span> String cpu;</span><br><span class="line">        <span class="keyword">private</span> String ram;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> usbCount;</span><br><span class="line">        <span class="keyword">private</span> String keyboard;</span><br><span class="line">        <span class="keyword">private</span> String display;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">ComputerBuilder</span><span class="params">(String cpu, String ram)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.cpu = cpu;</span><br><span class="line">            <span class="keyword">this</span>.ram = ram;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> ComputerBuilder <span class="title">setUsbCount</span><span class="params">(<span class="keyword">int</span> usbCount)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.usbCount = usbCount;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> ComputerBuilder <span class="title">setKeyboard</span><span class="params">(String keyboard)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.keyboard = keyboard;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> ComputerBuilder <span class="title">setDisplay</span><span class="params">(String display)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.display = display;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> Computer <span class="title">build</span><span class="params">()</span> </span>&#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">new</span> Computer(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Computer&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;cpu=&#x27;&quot;</span> + cpu + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, ram=&#x27;&quot;</span> + ram + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, usbCount=&quot;</span> + usbCount +</span><br><span class="line">                <span class="string">&quot;, keyboard=&#x27;&quot;</span> + keyboard + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, display=&#x27;&quot;</span> + display + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="第二种方法UML类图"><a href="#第二种方法UML类图" class="headerlink" title="第二种方法UML类图"></a>第二种方法UML类图</h3><img src="http://www.plantuml.com/plantuml/svg/VP0z3i8m38Ntdi9ZAdvw09Y0ZH6O44EQHYYYVqeSfAf2Oc5WuWoSW0CmS1e6RW6506recUBe-TdVCmkfKZ1CebGZbv0xgHHhYXmcA4My19RgdkTTBxlRyMnhaaQ_ceWHjFA7YOwnK0-dstPlErSyynCgWyQ6GAWqf5b9rtues0UKl8k15c7m06VLl-ji75Q9PeJQW7N1wWCr1caAO8CR3FBTtYvjTHlQGN6S6GPI1lfd61isOh7-yunUsAIQuiS1Vc4XnPNDcQTSOVvkKqZnyQmJ4K14HMp6pHT0vLAva6yAusTOgzEnMHoRhT_jFdVS0G00">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>工厂方法模式</title>
+    <url>/2021/08/09/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>工厂方法模式属于类的创建型模式又被称为多态工厂模式。工厂方法模式的意义在于定义一个创建产品对象的工厂接口，将实际创建工作推迟到子类中，核心工厂类不再负责产品的创建，仅负责声明具体工厂子类必须实现的接口。<br>这样进一步抽象画的好处是使得工厂方法模式可以使系统在不修改具体工厂角色的情况下引进新的产品。</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><blockquote>
+<p>1）创建对象需要大量重复的代码<br>2）客户端（应用层）不依赖于产品类实例如何被创建、实现等细节<br>3）一个类通过其子类来指定创建哪个对象  </p>
+</blockquote>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>用户只需要关系所需产品对应的工厂，无须关心创建细节。  </li>
+<li>加入新产品符合开闭原则，提高可扩展性。  </li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>类的个数容易过多，增加复杂度。  </li>
+<li>增加了系统的抽象性和理解难度。  </li>
+</ul>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="创建抽象产品类"><a href="#创建抽象产品类" class="headerlink" title="创建抽象产品类"></a>创建抽象产品类</h4><blockquote>
+<p>我们创建一个电脑的抽象产品类，他有一个抽象方法用于启动电脑</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 产品的抽象方法，由具体的产品类去实现</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建具体产品类"><a href="#创建具体产品类" class="headerlink" title="创建具体产品类"></a>创建具体产品类</h4><blockquote>
+<p>接着我们创建各个品牌的电脑，他们都继承了他们的父类Computer，并实现了父类的start方法。</p>
+</blockquote>
+<p><strong>联想电脑</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LenovoComputer</span> <span class="keyword">extends</span> <span class="title">Computer</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;联想电脑启动&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>惠普电脑</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HpComputer</span> <span class="keyword">extends</span> <span class="title">Computer</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;惠普电脑启动&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>华硕电脑</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsusComputer</span> <span class="keyword">extends</span> <span class="title">Computer</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;华硕电脑启动&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>创建一个工厂抽象类，具体创建产品的代码由工厂抽象类的子类去实现</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ComputerFactory</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 工厂方法创建产品接口抽象化，将具体创建产品的代码写到工厂方法子类中</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Computer <span class="title">createComputer</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>创建联想电脑的工厂实现</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LenovoComputerFactory</span> <span class="keyword">extends</span> <span class="title">ComputerFactory</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Computer <span class="title">createComputer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> LenovoComputer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>创建惠普电脑的工厂实现</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HpComputerFactory</span> <span class="keyword">extends</span> <span class="title">ComputerFactory</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Computer <span class="title">createComputer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> HpComputer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>创建华硕电脑的工厂实现</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AsusComputerFactory</span> <span class="keyword">extends</span> <span class="title">ComputerFactory</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Computer <span class="title">createComputer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> AsusComputer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong><em>客户端调用</em></strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//通过工厂方法的子类去创建对应的工厂类</span></span><br><span class="line">        <span class="comment">//每次增加新的产品，只需要新建一个抽象工厂方法的子类即可，不会对现有的产品产生影响</span></span><br><span class="line">        ComputerFactory computerFactory = <span class="keyword">new</span> HpComputerFactory();</span><br><span class="line">        Computer computer = computerFactory.createComputer();</span><br><span class="line">        computer.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML图"><a href="#UML图" class="headerlink" title="UML图"></a>UML图</h2><img src="http://www.plantuml.com/plantuml/svg/IqmgBYbAJ2vHICv9B2vMSCxFBIWjIIsgvdewjUtfvCPdNNjVR5puRDhEPvkdlj_Jywn_mfDziv_ldlzaHmEor8jrAvzEQ7coOnL4rzDryvxtRU0gA4tAoKnMI8HPKPQVcQ9GN99OLAAXQSrLoyK5iTEnkBGOPgz2QaL9QbuAfaE0baDCXLZ-V5OBilrS3lvbgKL5cIcf2b1BaUsghaLOvfEQbr-MJpVhF0heO5KYzZXq0mhb5rKg02tQllHfNzFpZRiX9WCPHCKbMDVJjHE0wd74ADnpoKMfYIMfC2xEw8Kv2Jqi44w5k0JPQlpX0vBjcFrqzwvdyoU0P9VtGa8LvbISBiITA0Qf8n59QP0wC2IrkAGQfWEOG4jWYJKtCJDF8xYaA3ClFJfM8R4elLXJ0QAH2oNls-ZfOKijN6Xv5gGCQunn8UKsa2AC44Er3nPS8AKWjtDXJmPmQSm8W4a10000">
+
 
 
 
@@ -855,7 +903,7 @@
 <p>结果：  </p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">红烧肉</span><br><span class="line">-------------------</span><br><span class="line">土豆丝</span><br></pre></td></tr></table></figure>
 
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/fP113e9034NtSuekSU49I5mO3c3a17McIEF0a6c7n13kBW4LeZljgad_-xyjjqgnGajGQaIbwnq6qmTs05LaSWLBdUroCnfZFOh0CIJsde6RpbD3hSgR74oNBfujpFm6Xs5S3Su1HOjaRxzRb7KavyYTWg86aZ-M8L5C4LkTpeQfkiZznA_Va6UJB-F5SyMoB-4SiD5-vY_nc-2mFxnC7W00">
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/fP112i9034NtSueiLV041HVI0uWzGPn9RN3QAPDCGKhlRcdL5jrfLe7yztyIRfHYYPQWq8XArplqfWli0Ch8v7AMQhFDp62CzIW2nv3OUmQkMqyrDIfliZTjkdYsCF4h7FfXCJW75CsJlVrkKLIHd2Dt2eeQIFvOXaGnHMnqF1l6QYDt8xzyGvvDDezdpmNRV0cdW9NsCt-ENmNlzeUNoGC0">
 
 
 
@@ -1093,6 +1141,52 @@
 
 
 ]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解释器模式</title>
+    <url>/2021/10/23/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A7%A3%E9%87%8A%E5%99%A8%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>给定一个语言，定义它的文法大的一种表示，并定义一个解释器，这个解释器使用该表示类解释语言中的句子。<br>为了解释一种语言，而为语言创建的解释器。<br>类型：行为型</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>某个特定类型问题发生频率足够高</li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>扩展性好。由于在解释器模式中适用类来表示语言的文法规则，因此可以通过继承等机制类改变或者扩展文法。</li>
+<li>容易实现。在语法树中的每个表达式节点都是类似的，所以实现其文法较为容易。</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>执行效率较低。解释器模式中通常适用大量的循环和递归调用，担当要解释大的句子较复杂时，其运行速度很慢，且代码的调试过程也比较麻烦。</li>
+<li>会引起类膨胀。解释器模式中的每条规则至少定义一个类，担当包含的文法规则很多时，类的个数将急剧增加，导致系统难以管理和维护。</li>
+<li>可应用大的场景比较少。在软件开发中，需要定义语言文法大的应用实力非常少，所以这种模式很少被适用到。 </li>
+</ul>
+<h2 id="模式结构"><a href="#模式结构" class="headerlink" title="模式结构"></a>模式结构</h2><ul>
+<li><strong>抽象表达式角色</strong>：定义解释器的接口，约定解释器的解释操作，主要包含解释方法<code>interpret()</code>。</li>
+<li><strong>终结符表达式角色</strong>：是抽象表达式的子类，用来实现文法中与终结符相关的操作，文法中的每条规则都对应于一个非终结符表达式。</li>
+<li><strong>非终结符表示式角色</strong>：也是抽象表达式的子类，用来表现文法中与非终结符相关的操作，文法中的每条规则都对应于一个非终结符 表达式。</li>
+<li><strong>环境角色</strong>：通常包含各个解释器需要的数据或是公共的功能，一般用来传递被所有解释器共享的数据，后面的解释器可以从这里获取这些值。</li>
+<li><strong>客户端</strong>：主要任务是将需要分析的句子表达式转换成使用解释器对象描述的抽象语法树，然后调用解释器的解释方法，当然也可以通过环境角色间接访问解释器的解释方法。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>比如我们创建一个对<code>6 100 11 + *</code>这个式子的解释器，解释规则是如果是数字就入栈，如果是符号就将入栈的后两个数字（先进后出）进行计算<br>抽象表达式类  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Interpreter</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">interpret</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>非终结符号表达式类<br>加法解释器类  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AddInterpreter</span> <span class="keyword">implements</span> <span class="title">Interpreter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Interpreter firstExpression, secondExpression;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AddInterpreter</span><span class="params">(Interpreter firstExpression, Interpreter secondExpression)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.firstExpression = firstExpression;</span><br><span class="line">        <span class="keyword">this</span>.secondExpression = secondExpression;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">interpret</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.firstExpression.interpret() + <span class="keyword">this</span>.secondExpression.interpret();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;+&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>非终结符号表达式类<br>乘法解释器类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MultiInterpreter</span> <span class="keyword">implements</span> <span class="title">Interpreter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Interpreter firstExpression, secondExpression;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MultiInterpreter</span><span class="params">(Interpreter firstExpression, Interpreter secondExpression)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.firstExpression = firstExpression;</span><br><span class="line">        <span class="keyword">this</span>.secondExpression = secondExpression;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">interpret</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.firstExpression.interpret() * <span class="keyword">this</span>.secondExpression.interpret();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;*&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>终结符号表达式类  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NumberInterpreter</span> <span class="keyword">implements</span> <span class="title">Interpreter</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> number;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NumberInterpreter</span><span class="params">(<span class="keyword">int</span> number)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.number = number;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NumberInterpreter</span><span class="params">(String number)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.number = Integer.parseInt(number);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">interpret</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.number;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>环境类  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExpressionParser</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Interpreter&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">parse</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">        String[] strItemArray = str.split(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (String symbol : strItemArray) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!isOperator(symbol)) &#123;</span><br><span class="line">                Interpreter numberInterpreter = <span class="keyword">new</span> NumberInterpreter(symbol);</span><br><span class="line">                stack.push(numberInterpreter);</span><br><span class="line">                System.out.printf(<span class="string">&quot;入栈：%d%n&quot;</span>, numberInterpreter.interpret());</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                Interpreter firstExpression = stack.pop();</span><br><span class="line">                Interpreter secondExpression = stack.pop();</span><br><span class="line">                System.out.printf(<span class="string">&quot;出栈：%d 和 %d%n&quot;</span>, firstExpression.interpret(), secondExpression.interpret());</span><br><span class="line">                Interpreter expressionObject = getExpressionObject(firstExpression, secondExpression, symbol);</span><br><span class="line">                System.out.printf(<span class="string">&quot;应用运算符：%s%n&quot;</span>, expressionObject.toString());</span><br><span class="line">                <span class="keyword">int</span> result = expressionObject.interpret();</span><br><span class="line">                NumberInterpreter resultExpression = <span class="keyword">new</span> NumberInterpreter(result);</span><br><span class="line">                stack.push(resultExpression);</span><br><span class="line">                System.out.println(String.format(<span class="string">&quot;阶段结果入栈： %d&quot;</span>,resultExpression.interpret()));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> result = stack.pop().interpret();</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isOperator</span><span class="params">(String symbol)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (symbol.equals(<span class="string">&quot;+&quot;</span>) || symbol.equals(<span class="string">&quot;*&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Interpreter <span class="title">getExpressionObject</span><span class="params">(Interpreter firstExpression, Interpreter secondExpression, String symbol)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (symbol.equals(<span class="string">&quot;+&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> AddInterpreter(firstExpression, secondExpression);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (symbol.equals(<span class="string">&quot;*&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MultiInterpreter(firstExpression, secondExpression);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>客户端  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String inputStr = <span class="string">&quot;6 100 11 + *&quot;</span>;</span><br><span class="line">        ExpressionParser expressionParser = <span class="keyword">new</span> ExpressionParser();</span><br><span class="line">        <span class="keyword">int</span> result = expressionParser.parse(inputStr);</span><br><span class="line">        System.out.println(<span class="string">&quot;解释器计算结果：&quot;</span> + result);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/lLEnJiCm4Dtz5JUc2EK76YenC31G8PMjOd0JjpgHE9RlqY9L_NTYQ6h7ZiA0nE8uT-_UypkVKREoUragU7OxOrM_mbcWPi0XaYsMuY94MKiYUAog48gDgLMZD5F4O2mU9OzvzsY9dpxxFo9izJsGAbjT-SXIc6vNOncfPBCaOJ8cNC3vCd16dbpcvkgbgnd_mLUiyoTdC6VDUrjtpKxPtyrvRuvEVrVT3fwGP1uKDZd5RTYYFan0v-x3-toLbaQDtx0iFuf0OGNaGl00MfskwPMRsK37E9RXACHshFQcY9t23xvdu_vpRB62HgA-bctVGTe33PLXFuiylqkkDaMCXpgXo1FN8XdBOWeLFSb9J3e4ap2HDDx1N7--0000">]]></content>
       <categories>
         <category>java</category>
       </categories>
