@@ -40,6 +40,110 @@
 <li><strong>-r</strong>：复制目录及目录中的所有文件</li>
 <li><strong>-a</strong>：复制的文件与源文件时间保持一致<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cp -ai a.txt test       # 复制a.txt到test目录下，保持源文件时间，如果源文件存在，提示是否覆盖</span><br><span class="line">cp -s a.txt link_a.txt  # 为a.txt建立一个连接（快捷方式）</span><br></pre></td></tr></table></figure></li>
 </ul>
+<h2 id="cat命令"><a href="#cat命令" class="headerlink" title="cat命令"></a>cat命令</h2><p>cat命令三大功能：<br>1.一次显示整个文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat filename</span><br></pre></td></tr></table></figure>
+<p>2.从键盘创建一个文件(只能创建文件，不能编辑已存在的文件)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat &gt; filename</span><br></pre></td></tr></table></figure>
+<p>3.将几个文件合并成一个文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat file1 file2 &gt; file</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>-b</strong>：对非空输出行号</li>
+<li><strong>-n</strong>：输出所有行号<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat -n log1.log log2.log        # 将log1.log的文件内容加上行号后输入到log2.log文件里面</span><br><span class="line">cat -b log1.lo log2.lo log.log  # 将log1.log和log2.log的文件内容加上行号（空白行不加）之后将内容附加到log.log里面</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="more命令"><a href="#more命令" class="headerlink" title="more命令"></a>more命令</h2><p>功能类似于cat，more会一页一页的显示方便使用者逐页阅读，而最基本的指令就算按空白键（space）就往下一页显示，按b键就会往回（back）一页显示<br><strong>命令参数：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">+n          # 从第n行开始显示</span><br><span class="line">-n          # 定义屏幕大小未n行</span><br><span class="line">+/pattern   # 再每个档案显示前搜索该字符串（pattern），然后从该字符串前两行之后开始显示</span><br><span class="line">-c          # 从顶部清屏，然后显示</span><br><span class="line">-d          # 提示“Press space to continue &#x27;q&#x27; to quit(按空格键继续，按q键退出)”，禁用响铃功能</span><br><span class="line">-l          # 忽略Ctrl+l（换页）字符</span><br><span class="line">-p          # 通过清除窗口而不是滚屏来对文件进行换页，与-c选项相似</span><br><span class="line">-s          # 把连续的多个空行显示为一行</span><br><span class="line">-u          # 把文件内容中的下划线去掉</span><br></pre></td></tr></table></figure>
+<p><strong>常用的操作命令：</strong>  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Enter       # 向下n行，需要定义，默认为1行</span><br><span class="line">Ctrl+f      # 向下滚动一屏</span><br><span class="line">空格键       # 向下滚动一屏</span><br><span class="line">Ctrl+B      # 返回上一屏</span><br><span class="line">=           # 输出当前行的行号</span><br><span class="line">:f          # 输出文件名和当前行号</span><br><span class="line">V           # 调用vi编辑器</span><br><span class="line">!           # 调用shell，并执行命令</span><br><span class="line">q           # 退出more</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">more +3 text.txt        # 显示文件中从第三行开始的内容</span><br><span class="line">ls -l | more -5         # 再所列出的文件目录信息中，借助管道符每次显示5行</span><br></pre></td></tr></table></figure>
+
+<h2 id="less命令"><a href="#less命令" class="headerlink" title="less命令"></a>less命令</h2><p>less与more类似，但使用less可以随意浏览文件，而more仅能向前移动，却不能向后移动，而且less在查看直接之前不会加载整个文件<br><strong>常用命令参数：</strong>  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-i          # 忽略搜索时的大小写</span><br><span class="line">-N          # 显示每行的行号</span><br><span class="line">-o          # &lt;文件名&gt; 将less输出的内容在指定文件中保存起来</span><br><span class="line">-s          # 显示连续空行为一行</span><br><span class="line">/字符串      # 向下搜索字符串的功能</span><br><span class="line">?字符串      # 向上搜索字符串的功能</span><br><span class="line">n           # 重复前一个搜索</span><br><span class="line">N           # 反向重复前一个搜索</span><br><span class="line">-x          # &lt;数字&gt; 将“tab”键显示为规定的数字空格</span><br><span class="line">b           # 向后翻一页</span><br><span class="line">d           # 向后翻半页</span><br><span class="line">h           # 显示帮助界面</span><br><span class="line">Q           # 退出less命令</span><br><span class="line">u           # 向前滚动半页</span><br><span class="line">y           # 向前滚动一行</span><br><span class="line">空格键       # 滚动一行</span><br><span class="line">回车键       # 滚动一行</span><br><span class="line">[pagediwn]  # 向下翻动一页</span><br><span class="line">[pageup]    # 向上翻动一页</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ps -aux | less -N       # ps查看进程信息，并通过less分页显示</span><br><span class="line">less 1.log z.log        # 查看多个文件(可以通过n查看下一个，p查看前一个)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ]]></content>
       <categories>
         <category>java</category>
@@ -103,6 +207,37 @@
       </categories>
       <tags>
         <tag>html</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>中介者模式</title>
+    <url>/2021/10/30/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>定义一个封装一组对象如何交互的对象；<br>通过使对象明确地相互引用来促进松散耦合，并允许独立的改变它们的交互；<br>行为型</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>系统对象之间存在复杂的引用关系，产生的相互依赖关系结构混乱且难以理解；</li>
+<li>交互的公共行为，如果需要改变行为则可以增加新的中介类。</li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>将一对多转化成了一对一，降低程序复杂度</li>
+<li>类之间的解耦</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>中介者过多，导致系统复杂</li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li><strong>抽象中介者角色</strong>：它是中介者的接口，提供了同事对象注册与转发同事对象信息的抽象方法。</li>
+<li><strong>具体中介者角色</strong>：实现中介者接口，定义一个List来管理同事对象，协调各个同事之间的交互关系，因此它依赖于同事角色。</li>
+<li><strong>抽象同事类角色</strong>：定义同事类的接口，保存中介者对象，提供同事对象交互的抽象方法，实现所有相互影响的同事类的公共功能。</li>
+<li><strong>具体同事类角色</strong>：是抽象同事类的实现者，当需要与其他同事对象交互时，由中介者对象负责后续的交互。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
       </tags>
   </entry>
   <entry>
@@ -984,6 +1119,53 @@
       </tags>
   </entry>
   <entry>
+    <title>状态模式</title>
+    <url>/2021/10/31/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%8A%B6%E6%80%81%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>允许一个对象在其内部状态改变时，改变它的行为；<br>行为型</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>一个对象存在多个状态（不同状态下行为不同），且状态可相互转换</li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>将不同的状态隔离</li>
+<li>把各种状态的转换逻辑，分布到State子类中，减少相互间依赖</li>
+<li>增加新的状态非常简单</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>状态对的业务场景等导致类数据增加，系统变复杂</li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li><strong>环境类角色</strong>：也称为上下文，它定义了客户端需要大的接口，内部维护一个当前状态，并负责具体的状态切换；</li>
+<li><strong>抽象状态角色</strong>：定义一个接口，用以封装环境对象中大的特定状态所对应的行为，可以有一个或多个行为。</li>
+<li><strong>具体状态角色</strong>：实现抽象状态所对应的行为，并且在需要的情况下进行状态切换。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设我们播放一个视频，一共有四种状态，播放、快进、暂停、停止，这四种状态，有的可以相互切换，有的不行<br>环境类角色，上下文，缓存一个当前状态，并负责切换状态  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoContext</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> VideoState videoState;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> VideoState <span class="title">getVideoState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> videoState;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setVideoState</span><span class="params">(VideoState videoState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.videoState = videoState;</span><br><span class="line">        <span class="keyword">this</span>.videoState.setVideoContext(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.videoState.play();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">speed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.videoState.speed();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pause</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.videoState.pause();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.videoState.stop();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>抽象状态角色，组合有上下文类，方便子类使用  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">VideoState</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> VideoContext videoContext;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setVideoContext</span><span class="params">(VideoContext videoContext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.videoContext = videoContext;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">()</span></span>;<span class="comment">//播放</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">speed</span><span class="params">()</span></span>;<span class="comment">//快进</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">pause</span><span class="params">()</span></span>;<span class="comment">//暂停</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span></span>;<span class="comment">//停止</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体状态角色<br>播放状态，可以和另外三种状态进行切换  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PlayState</span> <span class="keyword">extends</span> <span class="title">VideoState</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;正常播放视频状态&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">speed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.videoContext.setVideoState(<span class="keyword">new</span> SpeedState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pause</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.videoContext.setVideoState(<span class="keyword">new</span> PauseState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.videoContext.setVideoState(<span class="keyword">new</span> StopState());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>快进状态，可以和另外三种状态切换  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpeedState</span> <span class="keyword">extends</span> <span class="title">VideoState</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.videoContext.setVideoState(<span class="keyword">new</span> PlayState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">speed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;快进播放视频状态&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pause</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.videoContext.setVideoState(<span class="keyword">new</span> PauseState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.videoContext.setVideoState(<span class="keyword">new</span> StopState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>暂停状态，可以和另外三种状态切换  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PauseState</span> <span class="keyword">extends</span> <span class="title">VideoState</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.videoContext.setVideoState(<span class="keyword">new</span> PlayState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">speed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.videoContext.setVideoState(<span class="keyword">new</span> SpeedState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pause</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;暂停播放视频状态&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.videoContext.setVideoState(<span class="keyword">new</span> StopState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>停止状态，只能和播放状态切换，停止的情况下不能快进和暂停  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StopState</span> <span class="keyword">extends</span> <span class="title">VideoState</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">play</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.videoContext.setVideoState(<span class="keyword">new</span> PlayState());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">speed</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;ERROR, 停止状态不能快进&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pause</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;ERROR，停止状态不能暂停&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;停止播放视频状态&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试，视频开始是播放状态，我们有事需要离开一会，可以切换成暂停状态，回来想要快进看，由暂停直接切换到快进状态，看完之后切换到停止状态，从停止状态再切换到快进状态是不允许的。  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        VideoContext videoContext = <span class="keyword">new</span> VideoContext();</span><br><span class="line">        videoContext.setVideoState(<span class="keyword">new</span> PlayState());</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;当前状态：&quot;</span>+videoContext.getVideoState().getClass().getSimpleName());</span><br><span class="line"></span><br><span class="line">        videoContext.pause();</span><br><span class="line">        System.out.println(<span class="string">&quot;当前状态：&quot;</span>+videoContext.getVideoState().getClass().getSimpleName());</span><br><span class="line"></span><br><span class="line">        videoContext.speed();</span><br><span class="line">        System.out.println(<span class="string">&quot;当前状态：&quot;</span>+videoContext.getVideoState().getClass().getSimpleName());</span><br><span class="line"></span><br><span class="line">        videoContext.stop();</span><br><span class="line">        System.out.println(<span class="string">&quot;当前状态：&quot;</span>+videoContext.getVideoState().getClass().getSimpleName());</span><br><span class="line"></span><br><span class="line">        videoContext.speed();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果: </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">当前状态：PlayState</span><br><span class="line">当前状态：PauseState</span><br><span class="line">当前状态：SpeedState</span><br><span class="line">当前状态：StopState</span><br><span class="line">ERROR, 停止状态不能快进</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/rLGnRi8m5Drz2ezf9U00OQZK0nGfg4l5O18hifGcbls9YX03FKBLgMNgMd65SXgY7gDsJ1A7s7lPxF_-Vtx_VTjnHgJ4ZooXnNsH0tq1l45Si980DU48zB9ibo7YgsN6OXjDANIxu0PljarIMR04onxiP1tKy8oi7KoSqcGOvcGbNUT2mKrqYn1PIX0a1XntBHiLkk42Q0mqwJjHMflGsT4P3BnbjgPMWTLWE9bKRuVg_SUTTEvNPPsEtx_7Jm-LQLzpVRoUTdiFL-s6fjhjgyENziHOCLDAZ1DACCsJ2tFk7aegX8fWztpSU3ifxCkmXkQXiCTdf4QQrQVrVqcTwPhha1gfq7KedLDPVr0cIog1JV8pONaGWM1v-hJ0HAIogUokztGqkkszS6JTfo5elG85NgBMV1syhQD33FK-Y-buN7Vr1m00">]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>策略模式</title>
     <url>/2021/10/16/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
@@ -1516,7 +1698,7 @@
 <li>给定一个语言，定义它的文法的一种表示，并定义一个解释器。<br><a href="https://ysymj.gitee.io/2021/10/23/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A7%A3%E9%87%8A%E5%99%A8%E6%A8%A1%E5%BC%8F/">点击阅读&gt;&gt;</a></li>
 </ul>
 <h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><ul>
-<li>将命令请求封装为一个对象，使得可以用不同的请求来进行参数化。  </li>
+<li>将命令请求封装为一个对象，使得可以用不同的请求来进行参数化。<br><a href="https://ysymj.gitee.io/2021/10/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/">点击阅读&gt;&gt;</a></li>
 </ul>
 <h3 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h3><ul>
 <li>将请求的发送者和接收者解耦，使的多个对象都有处理这个请求的机会。  </li>
@@ -1548,6 +1730,91 @@
 <h3 id="传输对象模式"><a href="#传输对象模式" class="headerlink" title="传输对象模式"></a>传输对象模式</h3><ul>
 <li>用于从客户端向服务器一次性传递带有多个属性的数据。  </li>
 </ul>
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>访问者模式</title>
+    <url>/2021/10/31/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>封装作用于某数据结构（如List/Set/Map等）中的各元素的操作；<br>可以在不改变各元素的类的前提下，定义作用于这些元素的操作；<br>行为型</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>一个数据结构（如List/Set/Map等）包含很多类型对象</li>
+<li>数据结构与数据操作分离</li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>增加新的操作很容易，即增加一个新的访问者</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>增加新的数据结构困难</li>
+<li>具体元素变更比较麻烦</li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li><strong>抽象访问者角色</strong>：定义一个访问具体元素的接口，为每个具体元素类对应一个访问操作visit()，该操作中的参数类型标识了被访问的具体元素；</li>
+<li><strong>具体访问者角色</strong>：实现抽象访问者角色中声明的各个访问操作，确定访问者访问一个元素时该做什么；</li>
+<li><strong>抽象元素角色</strong>：声明一个包含接受操作accept()的接口，被接受的访问者对象作为accept()方法的参数；</li>
+<li><strong>具体元素角色</strong>：实现抽象元素角色提供的accept()操作，其方法通常都是visitor.visit(this)，另外具体元素中可能还包含本身业务逻辑的相关操作。</li>
+<li><strong>对象结构角色</strong>：是一个包含元素角色的容器，提供让访问者对象遍历容器中的多有元素的方法，通常由List/Set/Map等聚合类实现。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/">
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>责任链模式</title>
+    <url>/2021/10/30/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>为请求创建一个接收此次请求对象的链；<br>行为型</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>一个请求的处理需要多个对象当中的一个或几个协同处理；</li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>请求的发送者和接收者（请求的处理）解耦</li>
+<li>责任链可以动态组合</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>责任链太长或者处理时间过长，影响性能；</li>
+<li>责任链有可能过多。</li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li><strong>抽象处理者角色</strong>：定义一个处理请求的接口，包含抽象处理方法和一个后续连接。</li>
+<li><strong>具体处理者角色</strong>：实现抽象处理者的处理方法，判断能否处理本次请求，如果可以处理请求则处理，否则将该请求转给它的后继者。</li>
+<li><strong>客户类角色</strong>：创建处理链，并向链头的具体处理对象提交请求，它不关心处理细节和请求的传递过程。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设我们有一个文档，需要审核标题和内容，先审核标题，后审核内容，标题不合格直接结束<br>文档实体：  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Word</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTitle</span><span class="params">(String title)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getContent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContent</span><span class="params">(String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>抽象处理者角色：<br>里面保存了下一级审核的对象指向，以及审核的具体逻辑实现方法  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> Handler handler;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNext</span><span class="params">(Handler handler)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.handler = handler;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">examine</span><span class="params">(Word word)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体处理者角色：<br>标题审核，如果通过进行下一步审核，如果不通过，直接结束  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TitleHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">examine</span><span class="params">(Word word)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (word.getTitle() != <span class="keyword">null</span> &amp;&amp; !<span class="string">&quot;&quot;</span>.equals(word.getTitle()))&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;标题合格，通用审核&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (handler != <span class="keyword">null</span>)&#123;</span><br><span class="line">                handler.examine(word);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;标题不合格，不通过审核&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体处理者角色：<br>内容审核，如果通过进行下一步，如果不通过，结束  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContentHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">examine</span><span class="params">(Word word)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (word.getContent() != <span class="keyword">null</span> &amp;&amp; !<span class="string">&quot;&quot;</span>.equals(word.getContent()))&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;内容合格，通用审核&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (handler != <span class="keyword">null</span>)&#123;</span><br><span class="line">                handler.examine(word);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;内容不合格，不通过审核&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>客户角色类：<br>组装具体的责任链，设置审核先后层级  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        TitleHandler titleHandler = <span class="keyword">new</span> TitleHandler();</span><br><span class="line">        ContentHandler contentHandler = <span class="keyword">new</span> ContentHandler();</span><br><span class="line">        titleHandler.setNext(contentHandler);</span><br><span class="line"></span><br><span class="line">        Word word = <span class="keyword">new</span> Word();</span><br><span class="line">        word.setTitle(<span class="string">&quot;责任链模式&quot;</span>);</span><br><span class="line"><span class="comment">//        word.setContent(&quot;责任链模式内容&quot;);</span></span><br><span class="line"></span><br><span class="line">        titleHandler.examine(word);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">标题合格，通用审核</span><br><span class="line">内容不合格，不通过审核</span><br></pre></td></tr></table></figure>
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/fP2n3e8m48RtFiMDiF02kBaukKZYO1oEze9Di9ZsH1B2kqlRK974oQLD_zvzz_ydMtGEpfrLC8g7rJqomOcjDWsmvfRAhIexmsIu59CGM3ksA1bam1pGg9Pi87LCaaabxHRl6VUiMosXxxG2HtoaWRDDKGxZz667IXhmhWrbmUbhFl9W8CwjlD65CVF8g6Hc53_w_On4sCTGVp4gSkoZntoEaPUOTzGcY-kxN05juvREWDeLnJ8f2SN6qkfZdLQ8ZNFFyaR4rqwIkgBCppS0">
+
+
 ]]></content>
       <categories>
         <category>java</category>
