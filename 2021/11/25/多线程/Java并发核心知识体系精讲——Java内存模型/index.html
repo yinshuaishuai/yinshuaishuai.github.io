@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ys_ico.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/ys_ico.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ysymj.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="慕课网《Java并发核心知识体系精讲》课程学习笔记；本段主要将Java内存模型，并不是JVM内存结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java并发核心知识体系精讲——Java内存模型(二)">
+<meta property="og:url" content="http://ysymj.gitee.io/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="YS">
+<meta property="og:description" content="慕课网《Java并发核心知识体系精讲》课程学习笔记；本段主要将Java内存模型，并不是JVM内存结构">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ysymj.gitee.io/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/Java%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92%E5%BA%8F%E7%8E%B0%E8%B1%A1%E7%BB%93%E6%9E%9C%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92%E5%BA%8F%E7%9A%84%E5%A5%BD%E5%A4%84%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="article:published_time" content="2021-11-25T13:48:21.000Z">
+<meta property="article:modified_time" content="2021-11-25T13:58:43.253Z">
+<meta property="article:author" content="YS">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ysymj.gitee.io/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+
+<link rel="canonical" href="http://ysymj.gitee.io/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java并发核心知识体系精讲——Java内存模型(二) | YS</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">YS</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ysymj.gitee.io/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.png">
+      <meta itemprop="name" content="YS">
+      <meta itemprop="description" content="学海无涯苦作舟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YS">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java并发核心知识体系精讲——Java内存模型(二)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-25 21:48:21 / 修改时间：21:58:43" itemprop="dateCreated datePublished" datetime="2021-11-25T21:48:21+08:00">2021-11-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="post-meta-item leancloud_visitors" data-flag-title="Java并发核心知识体系精讲——Java内存模型(二)" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2>Java内存模型——底层原理</h2>
+
+<h2 id="自顶向下（学习方法）"><a href="#自顶向下（学习方法）" class="headerlink" title="自顶向下（学习方法）"></a>自顶向下（学习方法）</h2><ul>
+<li>先将试用场景，再讲用法，最后讲原理</li>
+<li>直观的了解、具体而感性的认识、有助于加深理解、最后分析源码</li>
+<li>兴趣：连这个原理有什么作用都不知道的话，我们肯定是没有兴趣的，而没有兴趣就意味着我们学不好</li>
+</ul>
+<h2 id="到底什么叫“底层原理”？本章研究的内容是什么？"><a href="#到底什么叫“底层原理”？本章研究的内容是什么？" class="headerlink" title="到底什么叫“底层原理”？本章研究的内容是什么？"></a>到底什么叫“底层原理”？本章研究的内容是什么？</h2><h3 id="从Java代码到CPU指令"><a href="#从Java代码到CPU指令" class="headerlink" title="从Java代码到CPU指令"></a>从Java代码到CPU指令</h3><ul>
+<li>最开始，我们编写的Java代码，是*.java文件</li>
+<li>在编译（javac命令）后，从刚刚的*.java文件会编译出一个新的java字节码文件（*.class）</li>
+<li>JVM会执行刚才生成的字节码文件（*.class），并把字节码文件转化为机器指令</li>
+<li>机器指令可以直接在CPU上执行，也就是最终的程序执行</li>
+</ul>
+<blockquote>
+<p>JVM实现会带来不同的”翻译“，不同的CPU平台的机器指令又千差万别，无法保证并发实现的效果一致（如果只是做一份编译，直接进行运行，不同的机器，对相同的编译内容理解也是不一样的，最终会导致运行结果不一致）<br>中断开始向下转移：转化过程的规范、原则（进行约束，以保证相同的代码最终能拿到相同的结果）</p>
+</blockquote>
+<h2 id="三兄弟：JVM内存结构-VS-Java内存模型-VS-Java对象模式"><a href="#三兄弟：JVM内存结构-VS-Java内存模型-VS-Java对象模式" class="headerlink" title="三兄弟：JVM内存结构 VS Java内存模型 VS Java对象模式"></a>三兄弟：JVM内存结构 VS Java内存模型 VS Java对象模式</h2><ul>
+<li>JVM内存结构：和Java虚拟机的运行时区域有关</li>
+<li>Java内存模型：和Java的并发编程有关</li>
+<li>Java对象模型：和Java对象在虚拟机中的表现形式有关</li>
+</ul>
+<h3 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h3><ul>
+<li>堆：整个运行区域最大的一块，主要存储实例对象，包括数组，如果这些对象不再有引用会被垃圾回收</li>
+<li>虚拟机栈：保存基本数据类型，以及对对象的引用</li>
+<li>方法区：已经加载的静态变量类信息以及常量信息包括永久引用</li>
+<li>本地方法栈：主要是Native方法</li>
+<li>程序计数器：主要存储当前线程所执行的字节码的行号数<br><img src="/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84%E5%9B%BE.png" alt="JVM内存结构图"></li>
+</ul>
+<h3 id="Java对象模型"><a href="#Java对象模型" class="headerlink" title="Java对象模型"></a>Java对象模型</h3><ul>
+<li>Java对象自身的存储模型</li>
+<li>JVM会给整个类创建一个instanceKlass，保存再方法区，用来再JVM层表示该Java类</li>
+<li>当我们再Java代码中，使用new创建一个对象的时候，JVM会创建一个instanceOopDesc对象，这个对象中包含了对象头以及实例数据<br><img src="/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/Java%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B%E5%9B%BE%E7%A4%BA.png" alt="Java对象模型图示"></li>
+</ul>
+<h2 id="JMM是什么？"><a href="#JMM是什么？" class="headerlink" title="JMM是什么？"></a>JMM是什么？</h2><h3 id="为什么需要JMM"><a href="#为什么需要JMM" class="headerlink" title="为什么需要JMM"></a>为什么需要JMM</h3><ul>
+<li>C语言不存在内存模型的概念</li>
+<li>依赖处理器，不同处理器结果不一样</li>
+<li>无法保证并发安全</li>
+<li>需要一个标准，让多线程运行的结果可预期</li>
+</ul>
+<h3 id="JMM是规范"><a href="#JMM是规范" class="headerlink" title="JMM是规范"></a>JMM是规范</h3><ul>
+<li>Java Memory Model</li>
+<li>是一组规范，需要各个JVM的实现来遵守JMM规范，以便于开发者可以利用这些规范，更方便地开发多线程程序</li>
+<li>如果没有这样的一个JMM内存模型来规范，那么很可能经过了不同JVM的不同规则的重排序之后，导致不同的虚拟机上运行的结果不一样，那是很大的问题</li>
+<li>volatile、synchronized、Lock等的原理都是JMM</li>
+<li>如果没有JMM，那就需要我们自己指定什么时候使用内存栅栏等，那是相当麻烦的，幸好有了JMM，让我们只需要用同步工具和关键字就可以开发并发程序</li>
+<li><h2 id="重排序"><a href="#重排序" class="headerlink" title="重排序"></a>重排序</h2></li>
+</ul>
+<h3 id="重排序的代码案例、什么是重排序"><a href="#重排序的代码案例、什么是重排序" class="headerlink" title="重排序的代码案例、什么是重排序"></a>重排序的代码案例、什么是重排序</h3><ul>
+<li><p>代码演示如下</p>
+</li>
+<li><p>4行赋值代码的执行顺序决定了最终x和y的结果，一共有3种情况：</p>
+<ul>
+<li>a=1;x=b(0);b=1;y=a(1)，最终结果是x=0，y=1</li>
+<li>b=1;y=a(0);a=1;x=b(1)，最终结果是x=1，y=0</li>
+<li>b=1;a=1;x=b(1);y=a(1)，最终结果是x=1，y=1<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OutOfOrderExecution</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> x = <span class="number">0</span>, y = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> a = <span class="number">0</span>, b = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        Thread one = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                a = <span class="number">1</span>;</span><br><span class="line">                x = b;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        Thread tow = <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                b = <span class="number">1</span>;</span><br><span class="line">                y = a;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">        one.start();</span><br><span class="line">        tow.start();</span><br><span class="line">        one.join();</span><br><span class="line">        tow.join();</span><br><span class="line">        System.out.println(<span class="string">&quot;x = &quot;</span> + x + <span class="string">&quot;, y = &quot;</span> + y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>根据上面的代码可以看出，一般意义来说，是不可能出现x=0和y=0的情况的，但是这种结果却又出现了</p>
+</li>
+<li><p>只有执行顺序为  y=a;a=1;x=b;b=1;  的时候才会出现x=0，y=0<br><img src="/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92%E5%BA%8F%E7%8E%B0%E8%B1%A1%E7%BB%93%E6%9E%9C%E5%9B%BE.png" alt="指令重排序现象结果图"></p>
+</li>
+<li><p><strong>什么是重排序</strong>：在线程1内部的两行代码的实际执行顺序和代码在Java文件中的顺序不一致，代码指令并不是严格按照代码语句顺序执行的，它们的顺序被改变了，这就是重排序，这里被颠倒的是y=a和b=1这两行语句</p>
+</li>
+</ul>
+<h3 id="重排序的好处：提高处理速度"><a href="#重排序的好处：提高处理速度" class="headerlink" title="重排序的好处：提高处理速度"></a>重排序的好处：提高处理速度</h3><blockquote>
+<p>如下图所示，左边三行代码，对应三段指令，当指令重拍之后，就会对应到右边的顺序，对a来说少了一次读和写操作<br><img src="/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8E%92%E5%BA%8F%E7%9A%84%E5%A5%BD%E5%A4%84%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="指令重排序的好处示意图"></p>
+</blockquote>
+<h3 id="重排序的3种情况：编译器优化、CPU指令重拍、内存的”重排序“"><a href="#重排序的3种情况：编译器优化、CPU指令重拍、内存的”重排序“" class="headerlink" title="重排序的3种情况：编译器优化、CPU指令重拍、内存的”重排序“"></a>重排序的3种情况：编译器优化、CPU指令重拍、内存的”重排序“</h3><ul>
+<li>编译器优化：包括JVM，JIT编译器等</li>
+<li>CPU指令重排：就算编译器不发生重拍，CPU也可能对指令进行重排</li>
+<li>内存的“重排序”：线程A的修改线程B看不到（表面看起来像重排，实质是并发问题），引出可见性的问题</li>
+</ul>
+<h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><h3 id="案例：演示什么是可见性"><a href="#案例：演示什么是可见性" class="headerlink" title="案例：演示什么是可见性"></a>案例：演示什么是可见性</h3><ul>
+<li>具体演示代码如下所示，开启两个线程，同时操作变量a和b</li>
+<li>一共会出现如下四种结果：</li>
+<li>a=3;b=2;(线程1刚修改了a，还未修改b，线程2进行打印)</li>
+<li>a=1;b=2;(线程2先于线程1运行)</li>
+<li>a=3;b=3;(线程1运行完毕，线程2打印运行)</li>
+<li>a=1;b=3;(从代码上看，这种情况几乎是不可能的，但是却真实出现了，线程1的操作对线程2来说，并不是完全可见的，线程2无法或者只能看到部分线程1的操作)<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FieldVisibility</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        FieldVisibility test = <span class="keyword">new</span> FieldVisibility();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                test.change();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">1</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">                test.print();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;b = &quot;</span> + b + <span class="string">&quot; a = &quot;</span> + a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">change</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        a = <span class="number">3</span>;</span><br><span class="line">        b = a;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="为什么会有可见性问题"><a href="#为什么会有可见性问题" class="headerlink" title="为什么会有可见性问题"></a>为什么会有可见性问题</h3><ul>
+<li>CPU有多级缓存，导致读的数据过期<ul>
+<li>高速缓存的容量比主内存小，但是速度仅次于寄存器，所以再CPU和主内存之间多了cache层</li>
+<li>线程间的对于共享变量的可见性问题不是直接由多个引起的，而是由多缓存引起的</li>
+<li>如果多有核心都只用一个缓存，那么也就不存在内存可见性问题了</li>
+<li>每个核心都会将自己需要的数据读到独占缓存中，数据修改后也是写入到缓存中，然后等待刷入到主存中，多以会导致有些核心读取的值是一个过期的值</li>
+</ul>
+</li>
+</ul>
+<h3 id="JMM的抽象：主内存和本地内存"><a href="#JMM的抽象：主内存和本地内存" class="headerlink" title="JMM的抽象：主内存和本地内存"></a>JMM的抽象：主内存和本地内存</h3><h4 id="什么是主内存和本地内存"><a href="#什么是主内存和本地内存" class="headerlink" title="什么是主内存和本地内存"></a>什么是主内存和本地内存</h4><ul>
+<li>Java作为高级语言，屏蔽了这些底层细节，用JMM定义了一套读写内存数据的规范，虽然我们不再需要关心一级缓存和二级缓存的问题，但是，JMM抽象了主内存和本地内存的概念。</li>
+<li>这里说的本地内存并不是真的一块给每个线程分配的内存，而是JMM的一个抽象，是对于寄存器、一级缓存、二级缓存等的抽象</li>
+</ul>
+<h4 id="主内存和本地内存的关系"><a href="#主内存和本地内存的关系" class="headerlink" title="主内存和本地内存的关系"></a>主内存和本地内存的关系</h4><ul>
+<li>JMM有一些规定<ul>
+<li>所有的变量都是存储再主内存中，同时每个线程也有自己独立的工作内存，工作内存中的变量内容是主内存中的拷贝</li>
+<li>线程不能直接读写主内存中的变量，而是只能操作自己工作内存中的变量，然后同步到主内存中</li>
+<li>主内存是多个线程共享的，但线程间不共享工作内存，如果线程间=需要通信，必须借助主内存中转来完成</li>
+</ul>
+</li>
+<li>所有的共享变量存在于主内存中，每个线程有自己的本地内存，而且线程读写共享数据也是通过本地内存交换的，所以才导致了可见性问题</li>
+</ul>
+<h3 id="Happens-Before原则"><a href="#Happens-Before原则" class="headerlink" title="Happens-Before原则"></a>Happens-Before原则</h3><ul>
+<li>单线程原则<ul>
+<li>排在后面的语句一定能看到前面的语句的操作</li>
+<li>不影响重排序，如果重排序了，那么排在后面的也是能看到前面的语句的操作的</li>
+</ul>
+</li>
+<li>锁操作（synchronized和Lock）<ul>
+<li>如果一个线程对某把锁进行了解锁，另一个线程对这把锁进行了加锁，那么后面的线程一定能看到前面线程解锁前的所有操作</li>
+</ul>
+</li>
+<li>volatile变量<ul>
+<li>如果变量被volatile变量修饰，只要写入了就一定能被其他线程获取到</li>
+</ul>
+</li>
+<li>线程启动<ul>
+<li>子线程在启动的时候，能看到之前主线程的所有操作</li>
+</ul>
+</li>
+<li>线程join<ul>
+<li>一旦针对某个线程进行了join，那么后面的语句一定能看到这个线程join之前的所有操作</li>
+</ul>
+</li>
+<li>传递<ul>
+<li>一份代码中有很多行，原则上第一行执行完第二行一定能看到第一行的操作，第三行也一定能看到第二行的操作，所以第三行也可以看到第一行的操作</li>
+</ul>
+</li>
+<li>中断<ul>
+<li>一个线程被其他线程中断(interrupt)时，那么检测中断(isInterrupted)或者抛出InterruptedException一定能看到</li>
+</ul>
+</li>
+<li>构造方法<ul>
+<li>finalize()方法一定能看到构造方法中的最后一行语句（不做重点）</li>
+</ul>
+</li>
+<li>工具类的happens-Before原则<ul>
+<li>线程安全的容器get一定能看到在此之前的put等存入动作</li>
+<li>CountDownLath</li>
+<li>Semaphore</li>
+<li>Future</li>
+<li>线程池</li>
+<li>CyclicBarrier</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>近朱者赤：给b加了volatile，不仅b被影响，也可以实现轻量级同步<br>b之前的写入操作（对应代码b = a）对读取b后面的代码（print b）都可见，所以在writerThread里面对a的赋值，一定会对readerThread里面的读取可见，所以这里面的a即使不加volatile，只要b读到3，就可以由happens-before原则保证读取到的都是3，而不可能读取到1<br>（因为a对b进行了赋值，所以该语句的上一句，也就是对a的赋值操作，也必须完成之后，并且可见a之后，才能对b进行赋值操作）</p>
+</blockquote>
+<h3 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h3><h4 id="volatile是什么？"><a href="#volatile是什么？" class="headerlink" title="volatile是什么？"></a>volatile是什么？</h4><ul>
+<li>volatile是一种同步机制，比synchronized或者Lock相关类更轻量，因为使用volatile并不会发生上下文切换等开销很大的行为</li>
+<li>如果一个变量被修饰成volatile，那么JVM就知道了这个变量可能会被并发修改</li>
+<li>但是开销小，相应的能力也小，虽然说volatile是用来同步的保证线程安全的，但是volatile做不到synchronized那样的原子保护，volatile仅在很有限的场景下才能发挥作用</li>
+</ul>
+<h4 id="volatile的适用场景"><a href="#volatile的适用场景" class="headerlink" title="volatile的适用场景"></a>volatile的适用场景</h4><ul>
+<li>不适用：a++</li>
+<li>适用场景1：boolean flag，如果一个共享变量自始至终只被各个线程赋值，而没有其他操作，那么就可以用volatile来代替synchronized或者代替原子变量，因为赋值自身是有原子性的，而volatile又保证了可见性，所以就足以保证线程安全</li>
+<li>适用场景2：作为刷新之前变量的触发器</li>
+</ul>
+<h4 id="volatile的两点作用"><a href="#volatile的两点作用" class="headerlink" title="volatile的两点作用"></a>volatile的两点作用</h4><ul>
+<li>可见性：读一个volatile变量之前，需要先使相应的本地缓存失效，这样就必须到主内存读取最新值，写一个volatile属性会立即刷入到主内存</li>
+<li>禁止指令重排序优化：解决单例双重锁乱序问题</li>
+</ul>
+<h4 id="volatile和synchronized的关系"><a href="#volatile和synchronized的关系" class="headerlink" title="volatile和synchronized的关系"></a>volatile和synchronized的关系</h4><ul>
+<li>volatile在这方面可以看做是轻量版的synchronized：如果一个共享变量自始至终只被各个线程赋值，而没有其他的操作，那么就可以用volatile来代替synchronized或者代替原子变量，因为赋值操作自身是有原子性的，而volatile又保证了可见性，所以就足以保证线程安全</li>
+</ul>
+<h4 id="volatile小结"><a href="#volatile小结" class="headerlink" title="volatile小结"></a>volatile小结</h4><ul>
+<li>volatile修饰符适用于一下场景：某个属性被多个线程共享，其中有一个线程修改了此属性，其他线程可以立即得到修改后的值，比如boolean flag，或者作为触发器，实现轻量级同步</li>
+<li>volatile属性的读写操作都是无锁的，它不能替代synchronized因为它没有提供原子性和互斥性，因为无锁，不需要花费时间在获取锁和释放锁上，所以说它是低成本的</li>
+<li>volatile只能作用于属性，我们用volatile修饰属性，这样compilers就不会对这个属性做指令重排序</li>
+<li>volatile提供了可见性，任何一个线程对其的修改将立马对其他线程可见。volatile属性不会被线程缓存，始终从主内存中读取</li>
+<li>volatile提供了happens-before保证，对volatile变量v的写入happens-before所有其他线程后续对v的读操作</li>
+<li>volatile可以使得long和double的赋值是原子的，后面马上会讲long和double的原子性</li>
+</ul>
+<h3 id="能保证可见性的措施"><a href="#能保证可见性的措施" class="headerlink" title="能保证可见性的措施"></a>能保证可见性的措施</h3><ul>
+<li>除了volatile可以保证可见性之外，synchronized、Lock、并发集合、Thread.join()和Thread.start()等都可以保证可见性</li>
+<li>具体看happens-before原则的规定</li>
+</ul>
+<h3 id="升华：对synchronized可见性的正确理解"><a href="#升华：对synchronized可见性的正确理解" class="headerlink" title="升华：对synchronized可见性的正确理解"></a>升华：对synchronized可见性的正确理解</h3><ul>
+<li>synchronized不仅保证了原子性，还保证了可见性</li>
+<li>synchronized不仅让被保护的代码安全，还近朱者赤（synchronized加锁时可以看到所有加锁前的操作，所以另一个线程在加锁的时候，也可以看到这个线程加锁前的操作）</li>
+</ul>
+<h2 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h2><h3 id="什么是原子性"><a href="#什么是原子性" class="headerlink" title="什么是原子性"></a>什么是原子性</h3><ul>
+<li>一系列的操作，要么全部执行成功，要么全部不执行，不会出现执行一半的情况，整个操作是不可分割的（ATM即取钱）</li>
+<li>i++不是原子性的（首先会先读取i的值，然后执行加1操作，然后写回去，这三步操作，两个线程完全是可能交替执行的）</li>
+<li>用synchronized实现原子性</li>
+</ul>
+<h3 id="Java中的原子操作有那些？"><a href="#Java中的原子操作有那些？" class="headerlink" title="Java中的原子操作有那些？"></a>Java中的原子操作有那些？</h3><ul>
+<li>除了long和double之外的基本类型（int,byte,boolean,short,char,float）的赋值操作</li>
+<li>所有引用referebce的赋值操作，不管是32位机器还是64位的机器</li>
+<li>java.concurrent.Atomic.* 包中所有类都是原子类</li>
+</ul>
+<h3 id="long和double的原子性"><a href="#long和double的原子性" class="headerlink" title="long和double的原子性"></a>long和double的原子性</h3><ul>
+<li>问题描述：官方文档、对于64位值的写入，可以分为两个32位的操作进行写入，读取错误、使用volatile解决</li>
+<li>结论：在32位的JVM上，long和double的操作不是原子性的，但是在64位的JVM上是原子性的</li>
+<li>实际开发中：商用Java虚拟机中不会出现这种问题</li>
+</ul>
+<h3 id="原子操作-原子操作-！-原子操作"><a href="#原子操作-原子操作-！-原子操作" class="headerlink" title="原子操作 + 原子操作 ！= 原子操作"></a>原子操作 + 原子操作 ！= 原子操作</h3><ul>
+<li>简单的把原子操作组合在一起，并不能保证整体依然具有原子性</li>
+<li>比如去ATM取两次钱是独立的原子操作，但是期间可能把银行卡借给其他人，也就是被其他线程打断或修改。</li>
+<li>全同步的HashMap也不完全安全（比如先从中取出一个值，进行判断然后修改，然后再put，这一系列操作并不是原子性的，所以可能会出现问题，类似i++）</li>
+</ul>
+<h2 id="常见面试问题"><a href="#常见面试问题" class="headerlink" title="常见面试问题"></a>常见面试问题</h2><ul>
+<li><p>JMM应用实例：单例模式8中写法、单例和并发编程的关系</p>
+<ul>
+<li><p>单例模式的作用（为什么要使用单例模式）</p>
+<blockquote>
+<p>节省内存和计算（假如某一资源在获取后就不会经常变动，而获取的过程又很耗费cpu或内存，可以使用单例）<br>保证结果正确（有时候可能会做一些统计，为了速度，可以使用多线程进行统计，但是最终还是要有一个全局的单例计数器）<br>方便管理（比如一些工具类）</p>
+</blockquote>
+</li>
+<li><p>单例模式适用场景</p>
+<blockquote>
+<p>无状态的工具类：比如日志工具类，不管是在哪里使用，我们需要的只是他帮我们记录日志信息，除此之外，并不需要在它的实例对象上存储任何状态，这时候我们就只需要一个实例对象即可<br>全局信息类：比如我们在一个类上记录网站的访问次数，我们不希望有的访问记录在对象A上，有的却在对象B上，这个时候我们就让这个类成为单例</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>讲一讲Java内存模型</p>
+</li>
+<li><p>volatile和synchronized的异同</p>
+</li>
+<li><p>什么是原子操作？Java中有那些原子操作？生产对象的过程是不是原子操作？</p>
+</li>
+<li><p>什么是内存可见性</p>
+</li>
+<li><p>64位的double和long写入的时候是原子的吗？</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 多线程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/16/Java%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4%E5%A4%A7%E5%85%A8/" rel="prev" title="Java字节码指令大全">
+      <i class="fa fa-chevron-left"></i> Java字节码指令大全
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94%E6%AD%BB%E9%94%81/" rel="next" title="Java并发核心知识体系精讲——死锁(三)">
+      Java并发核心知识体系精讲——死锁(三) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">Java内存模型——底层原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%EF%BC%88%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">自顶向下（学习方法）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%B0%E5%BA%95%E4%BB%80%E4%B9%88%E5%8F%AB%E2%80%9C%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%E2%80%9D%EF%BC%9F%E6%9C%AC%E7%AB%A0%E7%A0%94%E7%A9%B6%E7%9A%84%E5%86%85%E5%AE%B9%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">到底什么叫“底层原理”？本章研究的内容是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8EJava%E4%BB%A3%E7%A0%81%E5%88%B0CPU%E6%8C%87%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">从Java代码到CPU指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E5%85%84%E5%BC%9F%EF%BC%9AJVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84-VS-Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B-VS-Java%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">三兄弟：JVM内存结构 VS Java内存模型 VS Java对象模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84"><span class="nav-number">4.1.</span> <span class="nav-text">JVM内存结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.2.</span> <span class="nav-text">Java对象模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JMM%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">JMM是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81JMM"><span class="nav-number">5.1.</span> <span class="nav-text">为什么需要JMM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JMM%E6%98%AF%E8%A7%84%E8%8C%83"><span class="nav-number">5.2.</span> <span class="nav-text">JMM是规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E6%8E%92%E5%BA%8F"><span class="nav-number">6.</span> <span class="nav-text">重排序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%8E%92%E5%BA%8F%E7%9A%84%E4%BB%A3%E7%A0%81%E6%A1%88%E4%BE%8B%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E9%87%8D%E6%8E%92%E5%BA%8F"><span class="nav-number">6.1.</span> <span class="nav-text">重排序的代码案例、什么是重排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%8E%92%E5%BA%8F%E7%9A%84%E5%A5%BD%E5%A4%84%EF%BC%9A%E6%8F%90%E9%AB%98%E5%A4%84%E7%90%86%E9%80%9F%E5%BA%A6"><span class="nav-number">6.2.</span> <span class="nav-text">重排序的好处：提高处理速度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%8E%92%E5%BA%8F%E7%9A%843%E7%A7%8D%E6%83%85%E5%86%B5%EF%BC%9A%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96%E3%80%81CPU%E6%8C%87%E4%BB%A4%E9%87%8D%E6%8B%8D%E3%80%81%E5%86%85%E5%AD%98%E7%9A%84%E2%80%9D%E9%87%8D%E6%8E%92%E5%BA%8F%E2%80%9C"><span class="nav-number">6.3.</span> <span class="nav-text">重排序的3种情况：编译器优化、CPU指令重拍、内存的”重排序“</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="nav-number">7.</span> <span class="nav-text">可见性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%EF%BC%9A%E6%BC%94%E7%A4%BA%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%AF%E8%A7%81%E6%80%A7"><span class="nav-number">7.1.</span> <span class="nav-text">案例：演示什么是可见性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E6%9C%89%E5%8F%AF%E8%A7%81%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">7.2.</span> <span class="nav-text">为什么会有可见性问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JMM%E7%9A%84%E6%8A%BD%E8%B1%A1%EF%BC%9A%E4%B8%BB%E5%86%85%E5%AD%98%E5%92%8C%E6%9C%AC%E5%9C%B0%E5%86%85%E5%AD%98"><span class="nav-number">7.3.</span> <span class="nav-text">JMM的抽象：主内存和本地内存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%B8%BB%E5%86%85%E5%AD%98%E5%92%8C%E6%9C%AC%E5%9C%B0%E5%86%85%E5%AD%98"><span class="nav-number">7.3.1.</span> <span class="nav-text">什么是主内存和本地内存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E5%86%85%E5%AD%98%E5%92%8C%E6%9C%AC%E5%9C%B0%E5%86%85%E5%AD%98%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">7.3.2.</span> <span class="nav-text">主内存和本地内存的关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Happens-Before%E5%8E%9F%E5%88%99"><span class="nav-number">7.4.</span> <span class="nav-text">Happens-Before原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#volatile%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">7.5.</span> <span class="nav-text">volatile关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#volatile%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">7.5.1.</span> <span class="nav-text">volatile是什么？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#volatile%E7%9A%84%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">7.5.2.</span> <span class="nav-text">volatile的适用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#volatile%E7%9A%84%E4%B8%A4%E7%82%B9%E4%BD%9C%E7%94%A8"><span class="nav-number">7.5.3.</span> <span class="nav-text">volatile的两点作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#volatile%E5%92%8Csynchronized%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">7.5.4.</span> <span class="nav-text">volatile和synchronized的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#volatile%E5%B0%8F%E7%BB%93"><span class="nav-number">7.5.5.</span> <span class="nav-text">volatile小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%BD%E4%BF%9D%E8%AF%81%E5%8F%AF%E8%A7%81%E6%80%A7%E7%9A%84%E6%8E%AA%E6%96%BD"><span class="nav-number">7.6.</span> <span class="nav-text">能保证可见性的措施</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%87%E5%8D%8E%EF%BC%9A%E5%AF%B9synchronized%E5%8F%AF%E8%A7%81%E6%80%A7%E7%9A%84%E6%AD%A3%E7%A1%AE%E7%90%86%E8%A7%A3"><span class="nav-number">7.7.</span> <span class="nav-text">升华：对synchronized可见性的正确理解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="nav-number">8.</span> <span class="nav-text">原子性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="nav-number">8.1.</span> <span class="nav-text">什么是原子性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E6%9C%89%E9%82%A3%E4%BA%9B%EF%BC%9F"><span class="nav-number">8.2.</span> <span class="nav-text">Java中的原子操作有那些？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#long%E5%92%8Cdouble%E7%9A%84%E5%8E%9F%E5%AD%90%E6%80%A7"><span class="nav-number">8.3.</span> <span class="nav-text">long和double的原子性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C-%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C-%EF%BC%81-%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C"><span class="nav-number">8.4.</span> <span class="nav-text">原子操作 + 原子操作 ！&#x3D; 原子操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98"><span class="nav-number">9.</span> <span class="nav-text">常见面试问题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YS"
+      src="/images/author.png">
+  <p class="site-author-name" itemprop="name">YS</p>
+  <div class="site-description" itemprop="description">学海无涯苦作舟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YS</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
+      appKey     : 'BCtPpmnU41TOE7Wr5O0CJFgS',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
