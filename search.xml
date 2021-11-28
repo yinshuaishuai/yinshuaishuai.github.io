@@ -1721,7 +1721,7 @@
 <td align="left"></td>
 </tr>
 </tbody></table>
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -1873,12 +1873,117 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
       <tags>
         <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java并发成神之路-精通JUC并发工具十八般武艺——ThreadLocal(二)</title>
+    <url>/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94ThreadLocal/</url>
+    <content><![CDATA[<h1 id="两大使用场景——ThreadLocal的用途"><a href="#两大使用场景——ThreadLocal的用途" class="headerlink" title="两大使用场景——ThreadLocal的用途"></a>两大使用场景——ThreadLocal的用途</h1><ul>
+<li>场景1：每个线程需要一个独享的对象（通常是工具类，典型需要使用的类有SimpleDateFormat和Random）<blockquote>
+<p>SimpleDateFormat为线程不安全的，如果在方法中每次都创建一个SimpleDateFormat对象<br>如果访问量较高，会导致格式化出来的时间有部分是重复的<br>可以通过使用ThreadLocal，针对每一个线程创建一个SimpleDateFormat对象，这样同一个线程的不同任务是排队进行的，不同线程使用的是不同的对象，就可以解决并发问题  </p>
+</blockquote>
+</li>
+<li>场景2：每个线程内需要保存全局变量（例如在拦截器中获取用户信息，可以让不同方法直接使用，避免参数传递的麻烦）<blockquote>
+<p>假设当前用户信息需要被线程内所有方法共享，一个比较繁琐的解决发难就是把user作为阐述层层传递，从方法1到方法2到方法3，以次类推，但是这样做代码冗余，且不利于维护<br>使用ThreadLocal，当前线程中公共变量，可以在当前线程中的任何一个方法中调用获取相应的变量值</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="ThreadLocal的两个作用"><a href="#ThreadLocal的两个作用" class="headerlink" title="ThreadLocal的两个作用"></a>ThreadLocal的两个作用</h2><ul>
+<li>让某个需要用到的对象在线程间隔离（每个线程都有自己的独立的对象）</li>
+<li>在任何方法中都可以轻松的获取到对象</li>
+</ul>
+<h2 id="根据共享对象的生产时机不同，选择initialValue或set来保存对象"><a href="#根据共享对象的生产时机不同，选择initialValue或set来保存对象" class="headerlink" title="根据共享对象的生产时机不同，选择initialValue或set来保存对象"></a>根据共享对象的生产时机不同，选择<code>initialValue</code>或<code>set</code>来保存对象</h2><ul>
+<li>场景一：<code>initialValue</code><blockquote>
+<p>在ThreadLocal第一个get的时候，把对象给初始化出来，对象的初始化时机可以由我们控制</p>
+</blockquote>
+</li>
+<li>场景二：<code>set</code><blockquote>
+<p>如果需要保存到ThreadLocal里面的对象的生产时机不由我们随意控制，例如拦截器生成的用户信息，用ThreadLocal.set()直接放到我们的ThreadLocal中去，以便后续使用</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="使用ThreadLocal带来的好处"><a href="#使用ThreadLocal带来的好处" class="headerlink" title="使用ThreadLocal带来的好处"></a>使用ThreadLocal带来的好处</h1><ul>
+<li>达到线程安全的目的</li>
+<li>不需要加锁，提高执行效率</li>
+<li>更高效的利用内存、节省开销：相比于每一个任务都新建一个SimpleDateFormat，显然用ThreadLocal可以节省内存和开销</li>
+<li>免去传参的繁琐：无论是场景一的工具类，还是场景二的用户名，都可以在任何地方直接通过ThreadLocal拿到，再也不需要每次都传同样的参数，ThreadLocal使得代码耦合度更低，更优雅</li>
+</ul>
+<h1 id="主要方法介绍"><a href="#主要方法介绍" class="headerlink" title="主要方法介绍"></a>主要方法介绍</h1><ul>
+<li><p><code>T initialValue()</code></p>
+<blockquote>
+<p>该方法会返回当前线程对应的”初始值“，这是一个延迟加载的方法，只有再调用<code>get()</code>的时候，才会触发<br>当线程第一个吃用<code>get()</code>方法访问变量时，将调用此方法，除非线程先调用了<code>set()</code>方法，在这种情况下，不会为线程调用本<code>initialValue()</code>方法<br>通常每个线程最调用一次此方法，但如果已经调用了<code>remove()</code>，再调用<code>get()</code>，则可以再次调用此方法<br>如果不重写本方法，这个放回就会返回null，一般使用匿名内部类的方法来重写<code>initialValue()</code>方法，以便再后续使用中，可以初始化副本对象<br>该方法没有默认实现，如果我们需要到该方法，需要自己实现，通常使用匿名内部类的方式</p>
+</blockquote>
+</li>
+<li><p><code>void set(T t)</code></p>
+<blockquote>
+<p>为这个线程设置一个新值</p>
+</blockquote>
+</li>
+<li><p><code>T get()</code></p>
+<blockquote>
+<p>得到这个线程对应的value，如果是首次调用<code>get()</code>（没有调用<code>set()</code>方法直接调用<code>get()</code>），则会调用<code>initialValue()</code>方法获取这个值<br><code>get()</code>方法是先取出当前线程的<code>ThreadLocalMap</code>，然后调用<code>map.getEntry</code>方法，把本<code>ThreadLocal</code>的引用作为参数传进去，取出map中属于本<code>ThreadLocal</code>的value<br>注意，这个map以及map中的key和value都是保存再线程中的，而不是保存再ThreadLocal中的</p>
+</blockquote>
+</li>
+<li><p><code>void remove()</code></p>
+<blockquote>
+<p>删除对应这个线程的值</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="ThreadLocalMap类"><a href="#ThreadLocalMap类" class="headerlink" title="ThreadLocalMap类"></a>ThreadLocalMap类</h1><ul>
+<li>ThreadLocalMap类是每个线程Thread类里面的变量，里面最重要的是一个键值对数组<code>Entry[] table</code>，可以认为是一个map，键值对：<ul>
+<li>键：这个ThreadLocal</li>
+<li>值：实际需要的成员变量，比如user或者SimpleDateFormat对象</li>
+</ul>
+</li>
+<li>当发现hash冲突的时候，ThreadLocalMap采用的是线性探测法，也就是如果发生冲突，就继续找下一个空位置，而不是采用链表拉链</li>
+</ul>
+<h1 id="ThreadLocal注意点"><a href="#ThreadLocal注意点" class="headerlink" title="ThreadLocal注意点"></a>ThreadLocal注意点</h1><h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><ul>
+<li>什么是内存泄漏：某个对象不再有用，但是占用的内存却不能被回收</li>
+<li>key的泄漏：ThreadLocalMap中的Entry继承自WeakReference，是弱引用<ul>
+<li>弱引用的特点是，如果这个对象只被弱引用关联（没有任何强引用关联），那么这个对象就可以被回收，所以弱引用不会阻止GC</li>
+</ul>
+</li>
+<li>value的泄漏<ul>
+<li>ThreadLocalMap的每个Entry都是一个对key的弱引用，同时，每个Entry都包含了一个对value的强引用</li>
+<li>正常情况下，当线程终止，保存再ThreadLocal里面的value会被垃圾回收，因为没有任何强引用了</li>
+<li>但是如果线程不终止（比如线程需要保持很久，使用线程池的场景，线程一直被重复使用），那么key对应的value就不能被回收，因为又以下的调用链：<ul>
+<li>Thread -&gt; ThreadLocalMap -&gt; Entry(key为null) -&gt; value</li>
+</ul>
+</li>
+<li>因为value和Thread之间还存在这个强引用链路，所以导致value无法回收，就可能出现OOM</li>
+<li>JDK已经考虑到了这个问题，多以在set，remove，rehash方法中会扫描key为null的Entry，并把相应的value设置成null，这样value对象就可以被回收</li>
+<li>但是如果一个ThreadLocal不被使用，那么实际上set,remove,rehash方法也不会被调用到，如果同时线程又不停止，那么调用链就一直存在，那么就导致了value的内存泄漏</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何避免内存泄漏（阿里规约）"><a href="#如何避免内存泄漏（阿里规约）" class="headerlink" title="如何避免内存泄漏（阿里规约）"></a>如何避免内存泄漏（阿里规约）</h2><ul>
+<li>调用remove方法，就会删除相应的Entry对象，可以避免内存泄漏，所以使用完ThreadLocal之后，应该调用remove方法</li>
+</ul>
+<h2 id="控制针问题"><a href="#控制针问题" class="headerlink" title="控制针问题"></a>控制针问题</h2><ul>
+<li>当ThreadLocal.get()方法出来的值，直接被基本类型接受的时候，如果值是空，那么在转为基本类型的时候会抛出控制在异常</li>
+</ul>
+<h2 id="共享对象"><a href="#共享对象" class="headerlink" title="共享对象"></a>共享对象</h2><ul>
+<li>如果每个线程中ThreadLocal.set()进去的东西本来就是多个线程共享的同一个对象，比如static对象，那么多个线程的ThreadLocal.get()取的还是这个共享对象本身，还是会有并发访问的问题</li>
+</ul>
+<h2 id="如果使用ThreadLocal就可以解决问题，那么不要强制使用"><a href="#如果使用ThreadLocal就可以解决问题，那么不要强制使用" class="headerlink" title="如果使用ThreadLocal就可以解决问题，那么不要强制使用"></a>如果使用ThreadLocal就可以解决问题，那么不要强制使用</h2><ul>
+<li>例如在任务数很少的时候，在局部变量中可以新建对象就可以解决问题，那么就不需要使用到ThreadLocal</li>
+</ul>
+<h2 id="优先使用框架的支持，而不是自己创造"><a href="#优先使用框架的支持，而不是自己创造" class="headerlink" title="优先使用框架的支持，而不是自己创造"></a>优先使用框架的支持，而不是自己创造</h2><ul>
+<li>例如spring中，如果可以使用RequestContextHolder，那么就不需要自己维护ThreadLocal，因为自己可能会忘记调用remove()方法，造成内存泄漏</li>
+</ul>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>多线程</tag>
       </tags>
   </entry>
   <entry>
@@ -1930,87 +2035,12 @@
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">comment:</span></span><br><span class="line">  <span class="attr">appId:</span> <span class="string">leancloud中的AppID</span></span><br><span class="line">  <span class="attr">appKey:</span> <span class="string">leancloud中的AppKey</span></span><br></pre></td></tr></table></figure>
 <p>修改模板文件，在对应的模板中增加以下代码，作者的是<code>post.ejs</code>，具体应该会根据模板的不同而有所不同。  </p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;comment-container&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&#x27;//unpkg.com/valine/dist/Valine.min.js&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    <span class="keyword">new</span> Valine(&#123;</span></span><br><span class="line"><span class="javascript">        <span class="attr">el</span>: <span class="string">&#x27;#comment-container&#x27;</span>,</span></span><br><span class="line"><span class="javascript">        <span class="attr">appId</span>: <span class="string">&#x27;&lt;%- config.comment.appId %&gt;&#x27;</span>,</span></span><br><span class="line"><span class="javascript">        <span class="attr">appKey</span>: <span class="string">&#x27;&lt;%- config.comment.appKey %&gt;&#x27;</span></span></span><br><span class="line"><span class="javascript">    &#125;)</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>web</category>
       </categories>
       <tags>
         <tag>html</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>中介者模式</title>
-    <url>/2021/10/30/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
-<p>定义一个封装一组对象如何交互的对象；<br>通过使对象明确地相互引用来促进松散耦合，并允许独立的改变它们的交互；<br>行为型</p>
-</blockquote>
-<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
-<li>系统对象之间存在复杂的引用关系，产生的相互依赖关系结构混乱且难以理解；</li>
-<li>交互的公共行为，如果需要改变行为则可以增加新的中介类。</li>
-</ul>
-<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>将一对多转化成了一对一，降低程序复杂度</li>
-<li>类之间的解耦</li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>中介者过多，导致系统复杂</li>
-</ul>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
-<li><strong>抽象中介者角色</strong>：它是中介者的接口，提供了同事对象注册与转发同事对象信息的抽象方法。</li>
-<li><strong>具体中介者角色</strong>：实现中介者接口，定义一个List来管理同事对象，协调各个同事之间的交互关系，因此它依赖于同事角色。</li>
-<li><strong>抽象同事类角色</strong>：定义同事类的接口，保存中介者对象，提供同事对象交互的抽象方法，实现所有相互影响的同事类的公共功能。</li>
-<li><strong>具体同事类角色</strong>：是抽象同事类的实现者，当需要与其他同事对象交互时，由中介者对象负责后续的交互。</li>
-</ul>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设有一个中介小刘，做房产中介，有两个房东来找租客<br>抽象中介者角色，可以理解为中介这一个行业  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Mediator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Colleague colleague)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">relay</span><span class="params">(Colleague cl)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>具体中介者角色<br>中介小刘，聚合了同事角色，也就是聚合了房东，保留房东的联系方式，两个方法，一个保存房东联系方式，一个给房东联系的方法</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XiaoLiuMediator</span> <span class="keyword">extends</span> <span class="title">Mediator</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Colleague&gt; colleagues = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Colleague colleague)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!colleagues.contains(colleague)) &#123;</span><br><span class="line">            colleagues.add(colleague);</span><br><span class="line">            colleague.setMedium(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">relay</span><span class="params">(Colleague cl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Colleague ob : colleagues) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!ob.equals(cl)) &#123;</span><br><span class="line">                ob.receive();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>抽象同事类角色<br>聚合了一个中介，有三个方法，一个是保存中介信息，一个是联系中介租房的，一个是讨价还价的  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Colleague</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> Mediator mediator;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMedium</span><span class="params">(Mediator mediator)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mediator = mediator;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>具体同事类角色1  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LandlordColleague1</span> <span class="keyword">extends</span> <span class="title">Colleague</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;2000少一分都不行。&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我有房子要出租。&quot;</span>);</span><br><span class="line">        mediator.relay(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>具体同事类角色2  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LandlordColleague2</span> <span class="keyword">extends</span> <span class="title">Colleague</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;1800一分都不能少。&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我也有房子要出租。&quot;</span>);</span><br><span class="line">        mediator.relay(<span class="keyword">this</span>); <span class="comment">//请中介者转发</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>客户端调用  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Mediator mediator = <span class="keyword">new</span> XiaoLiuMediator();</span><br><span class="line"></span><br><span class="line">        Colleague l1 = <span class="keyword">new</span> LandlordColleague1();</span><br><span class="line">        Colleague l2 = <span class="keyword">new</span> LandlordColleague2();</span><br><span class="line"></span><br><span class="line">        mediator.register(l1);</span><br><span class="line">        mediator.register(l2);</span><br><span class="line"></span><br><span class="line">        l1.send();</span><br><span class="line">        System.out.println(<span class="string">&quot;-------------------&quot;</span>);</span><br><span class="line">        l2.send();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结果：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">我有房子要出租。</span><br><span class="line">1800一分都不能少。</span><br><span class="line">-------------------</span><br><span class="line">我也有房子要出租。</span><br><span class="line">2000少一分都不行。</span><br></pre></td></tr></table></figure>
-
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/bP9FQuCm6CRl-HJlCIjKsAxhXB6hEss7mTZXhRv883KbUNKhnUy-jJKnLXcx1Nt-_F8exXrRp1boZSx1AnKAsLWuYsEzroe770MDKGLOAfLZilB5Q4rOrWJvUBfxNFDeF4qDkbEsGbmQFnIQJDM-c7wOgYAGT21MDSW4MTUyyp5fA7Rm11LzmxErU1fKgGmmVtF3kPs9Ru1xIOUCyLf1qbCQffof21iUheSOnH7tYleWRuHT3RHh8-Qa6f9h8xjkD3dTDSEgqCOMdl7UJnjXH_U-Tim7kOGFSElv3__9X-M2IVuxEGv-nyYZ-82gacziLLL-VW7QqerEF-XccmOA4NXssut_F48iJ9GaQH0iN35wFmrEalcVBCHmXSZXdtZdBm00">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
       </tags>
   </entry>
   <entry>
@@ -2125,12 +2155,87 @@
 </blockquote>
 </li>
 </ul>
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
       <tags>
         <tag>多线程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>中介者模式</title>
+    <url>/2021/10/30/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>定义一个封装一组对象如何交互的对象；<br>通过使对象明确地相互引用来促进松散耦合，并允许独立的改变它们的交互；<br>行为型</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>系统对象之间存在复杂的引用关系，产生的相互依赖关系结构混乱且难以理解；</li>
+<li>交互的公共行为，如果需要改变行为则可以增加新的中介类。</li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>将一对多转化成了一对一，降低程序复杂度</li>
+<li>类之间的解耦</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>中介者过多，导致系统复杂</li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li><strong>抽象中介者角色</strong>：它是中介者的接口，提供了同事对象注册与转发同事对象信息的抽象方法。</li>
+<li><strong>具体中介者角色</strong>：实现中介者接口，定义一个List来管理同事对象，协调各个同事之间的交互关系，因此它依赖于同事角色。</li>
+<li><strong>抽象同事类角色</strong>：定义同事类的接口，保存中介者对象，提供同事对象交互的抽象方法，实现所有相互影响的同事类的公共功能。</li>
+<li><strong>具体同事类角色</strong>：是抽象同事类的实现者，当需要与其他同事对象交互时，由中介者对象负责后续的交互。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设有一个中介小刘，做房产中介，有两个房东来找租客<br>抽象中介者角色，可以理解为中介这一个行业  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Mediator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Colleague colleague)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">relay</span><span class="params">(Colleague cl)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体中介者角色<br>中介小刘，聚合了同事角色，也就是聚合了房东，保留房东的联系方式，两个方法，一个保存房东联系方式，一个给房东联系的方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XiaoLiuMediator</span> <span class="keyword">extends</span> <span class="title">Mediator</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Colleague&gt; colleagues = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Colleague colleague)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!colleagues.contains(colleague)) &#123;</span><br><span class="line">            colleagues.add(colleague);</span><br><span class="line">            colleague.setMedium(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">relay</span><span class="params">(Colleague cl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Colleague ob : colleagues) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!ob.equals(cl)) &#123;</span><br><span class="line">                ob.receive();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>抽象同事类角色<br>聚合了一个中介，有三个方法，一个是保存中介信息，一个是联系中介租房的，一个是讨价还价的  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Colleague</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> Mediator mediator;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMedium</span><span class="params">(Mediator mediator)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mediator = mediator;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体同事类角色1  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LandlordColleague1</span> <span class="keyword">extends</span> <span class="title">Colleague</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;2000少一分都不行。&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我有房子要出租。&quot;</span>);</span><br><span class="line">        mediator.relay(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体同事类角色2  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LandlordColleague2</span> <span class="keyword">extends</span> <span class="title">Colleague</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;1800一分都不能少。&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我也有房子要出租。&quot;</span>);</span><br><span class="line">        mediator.relay(<span class="keyword">this</span>); <span class="comment">//请中介者转发</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>客户端调用  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Mediator mediator = <span class="keyword">new</span> XiaoLiuMediator();</span><br><span class="line"></span><br><span class="line">        Colleague l1 = <span class="keyword">new</span> LandlordColleague1();</span><br><span class="line">        Colleague l2 = <span class="keyword">new</span> LandlordColleague2();</span><br><span class="line"></span><br><span class="line">        mediator.register(l1);</span><br><span class="line">        mediator.register(l2);</span><br><span class="line"></span><br><span class="line">        l1.send();</span><br><span class="line">        System.out.println(<span class="string">&quot;-------------------&quot;</span>);</span><br><span class="line">        l2.send();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">我有房子要出租。</span><br><span class="line">1800一分都不能少。</span><br><span class="line">-------------------</span><br><span class="line">我也有房子要出租。</span><br><span class="line">2000少一分都不行。</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/bP9FQuCm6CRl-HJlCIjKsAxhXB6hEss7mTZXhRv883KbUNKhnUy-jJKnLXcx1Nt-_F8exXrRp1boZSx1AnKAsLWuYsEzroe770MDKGLOAfLZilB5Q4rOrWJvUBfxNFDeF4qDkbEsGbmQFnIQJDM-c7wOgYAGT21MDSW4MTUyyp5fA7Rm11LzmxErU1fKgGmmVtF3kPs9Ru1xIOUCyLf1qbCQffof21iUheSOnH7tYleWRuHT3RHh8-Qa6f9h8xjkD3dTDSEgqCOMdl7UJnjXH_U-Tim7kOGFSElv3__9X-M2IVuxEGv-nyYZ-82gacziLLL-VW7QqerEF-XccmOA4NXssut_F48iJ9GaQH0iN35wFmrEalcVBCHmXSZXdtZdBm00">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
       </tags>
   </entry>
   <entry>
@@ -2178,7 +2283,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -2268,7 +2373,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -2356,7 +2461,7 @@
 <li>jdk在反射的底层代码中限制了枚举不能通过<code>newInstance()</code>方法获取对象，里面判断类型是否是枚举，如果是直接抛出异常。  </li>
 <li>枚举类型在序列化时是将枚举值的name存放到文件中的，反序列化时通过调用<code>valueOf()</code>方法获取对象。  </li>
 </ul>
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -2428,7 +2533,7 @@
 <p>解决办法：第一，不实现Cloneable接口，第二，在clone方法中返回会getInstance()方法</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> <span class="keyword">implements</span> <span class="title">Cloneable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">new</span> Singleton();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Singleton <span class="title">clone</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">com.ys.Singleton@7f31245a</span><br><span class="line">com.ys.Singleton@7f31245a</span><br></pre></td></tr></table></figure>
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -2488,7 +2593,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -2552,7 +2657,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -2607,7 +2712,7 @@
 <h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/TT6n3e8m40RW_PxYHXWmqeugeo-0ct4eq60DK4ABnY3lhXL2ggKtzl-QtlKWhvXIU6GvApWE0FYfjC_IfzAytiOeirkC1spumpuEmjsV94OIHn9NKYEf8wcHNzhsMILol4jHOCtrLHP1E8mm0apDskqDuEhOnyag9pvELpdzvIUkzCAKPdhHJ3H1gZlHbESBigvK8KuNvy_Ulw8eiOVn1SGNK03pF6wIUO5l">
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -2714,7 +2819,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -2831,7 +2936,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -2895,7 +3000,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -2961,7 +3066,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -3003,7 +3108,7 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HpComputer</span> <span class="keyword">extends</span> <span class="title">AComputer</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> needMouseFlag = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">HpComputer</span><span class="params">(<span class="keyword">boolean</span> needMouseFlag)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.needMouseFlag = needMouseFlag;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 惠普生产键盘，但是鼠标可能生产可能不生产，可以将钩子的值作为变量通过构造函数设置</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">keyboard</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;惠普键盘&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">needMouse</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.needMouseFlag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h3><img src="http://www.plantuml.com/plantuml/svg/fP31QiCm44Jl_eezEjzG2Ws1q4DAls4bJOBeMYiasSIO_7jCI5BNTN9eppFxTcROv9BO5hB2ETDweqri2n8DLKnQO0iSxNrWeKwzez64nWXklderd9QTCVbWVMHvR74-H-7-Ik5Rb8lsXTue9rUlNfQF6sqpPcoZAk100N0VT_rKLTTskSttWZWM13UfF5HldnrIyWxp23Ibx12qqpzpliMdkN-yV8_FterBTrpmcx8LFj0hxLaonXLR8zvEMFNYmIpaVnkS0G00">
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -3050,7 +3155,7 @@
 <p>结果: </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">当前状态：PlayState</span><br><span class="line">当前状态：PauseState</span><br><span class="line">当前状态：SpeedState</span><br><span class="line">当前状态：StopState</span><br><span class="line">ERROR, 停止状态不能快进</span><br></pre></td></tr></table></figure>
 
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/rLGnRi8m5Drz2ezf9U00OQZK0nGfg4l5O18hifGcbls9YX03FKBLgMNgMd65SXgY7gDsJ1A7s7lPxF_-Vtx_VTjnHgJ4ZooXnNsH0tq1l45Si980DU48zB9ibo7YgsN6OXjDANIxu0PljarIMR04onxiP1tKy8oi7KoSqcGOvcGbNUT2mKrqYn1PIX0a1XntBHiLkk42Q0mqwJjHMflGsT4P3BnbjgPMWTLWE9bKRuVg_SUTTEvNPPsEtx_7Jm-LQLzpVRoUTdiFL-s6fjhjgyENziHOCLDAZ1DACCsJ2tFk7aegX8fWztpSU3ifxCkmXkQXiCTdf4QQrQVrVqcTwPhha1gfq7KedLDPVr0cIog1JV8pONaGWM1v-hJ0HAIogUokztGqkkszS6JTfo5elG85NgBMV1syhQD33FK-Y-buN7Vr1m00">]]></content>
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/rLGnRi8m5Drz2ezf9U00OQZK0nGfg4l5O18hifGcbls9YX03FKBLgMNgMd65SXgY7gDsJ1A7s7lPxF_-Vtx_VTjnHgJ4ZooXnNsH0tq1l45Si980DU48zB9ibo7YgsN6OXjDANIxu0PljarIMR04onxiP1tKy8oi7KoSqcGOvcGbNUT2mKrqYn1PIX0a1XntBHiLkk42Q0mqwJjHMflGsT4P3BnbjgPMWTLWE9bKRuVg_SUTTEvNPPsEtx_7Jm-LQLzpVRoUTdiFL-s6fjhjgyENziHOCLDAZ1DACCsJ2tFk7aegX8fWztpSU3ifxCkmXkQXiCTdf4QQrQVrVqcTwPhha1gfq7KedLDPVr0cIog1JV8pONaGWM1v-hJ0HAIogUokztGqkkszS6JTfo5elG85NgBMV1syhQD33FK-Y-buN7Vr1m00"><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -3125,7 +3230,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -3203,7 +3308,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -3276,7 +3381,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -3339,7 +3444,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -3420,7 +3525,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -3468,7 +3573,7 @@
 <p>结果：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">入栈：6</span><br><span class="line">入栈：100</span><br><span class="line">入栈：11</span><br><span class="line">出栈：11 和 100</span><br><span class="line">应用运算符：+</span><br><span class="line">阶段结果入栈： 111</span><br><span class="line">出栈：111 和 6</span><br><span class="line">应用运算符：*</span><br><span class="line">阶段结果入栈： 666</span><br><span class="line">解释器计算结果：666</span><br></pre></td></tr></table></figure>
 
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/lLEnJiCm4Dtz5JUcYEO76YenC30K8PKDCRY9Mvr87CjtAKXL_vqOcjgnep0WiJZEtRlt_CvdrApiNfOA7jtEMDMlS1Ae6N28P8kLE0jHrf88xgigX69ZQjKepHGn68j7oMFUFLhYXy_-ZmXRVGkaobPNFh8IfjlLM4OgsIn9c8m95t0w3voH9vUvkjfqDUC_-8fr_kGCvgnvRqzTirFsTtFUcwFJtrNNWoSacGU5JKvnMxQe3nFGkVlmFf-bfL7ZjopBzo9GM0Ev4Do1LX-NzDhDRA1Z7Cjm568xLdjHn4xX1z-pSVyvjbX18r5VobxVGDe33PLXFulbyYQvsXGn7kg88i_pnBL8nhAOGaLFSXAJ3i4aJ2IDTp3Ndoy0">]]></content>
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/lLEnJiCm4Dtz5JUcYEO76YenC30K8PKDCRY9Mvr87CjtAKXL_vqOcjgnep0WiJZEtRlt_CvdrApiNfOA7jtEMDMlS1Ae6N28P8kLE0jHrf88xgigX69ZQjKepHGn68j7oMFUFLhYXy_-ZmXRVGkaobPNFh8IfjlLM4OgsIn9c8m95t0w3voH9vUvkjfqDUC_-8fr_kGCvgnvRqzTirFsTtFUcwFJtrNNWoSacGU5JKvnMxQe3nFGkVlmFf-bfL7ZjopBzo9GM0Ev4Do1LX-NzDhDRA1Z7Cjm568xLdjHn4xX1z-pSVyvjbX18r5VobxVGDe33PLXFulbyYQvsXGn7kg88i_pnBL8nhAOGaLFSXAJ3i4aJ2IDTp3Ndoy0"><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -3623,7 +3728,7 @@
 <h3 id="传输对象模式"><a href="#传输对象模式" class="headerlink" title="传输对象模式"></a>传输对象模式</h3><ul>
 <li>用于从客户端向服务器一次性传递带有多个属性的数据。  </li>
 </ul>
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -3682,7 +3787,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -3727,7 +3832,7 @@
 <h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/fP2n3e8m48RtFiMDiF02kBaukKZYO1oEze9Di9ZsH1B2kqlRK974oQLD_zvzz_ydMtGEpfrLC8g7rJqomOcjDWsmvfRAhIexmsIu59CGM3ksA1bam1pGg9Pi87LCaaabxHRl6VUiMosXxxG2HtoaWRDDKGxZz667IXhmhWrbmUbhFl9W8CwjlD65CVF8g6Hc53_w_On4sCTGVp4gSkoZntoEaPUOTzGcY-kxN05juvREWDeLnJ8f2SN6qkfZdLQ8ZNFFyaR4rqwIkgBCppS0">
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -3805,7 +3910,7 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -3889,12 +3994,518 @@
 
 
 
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
       <tags>
         <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java并发成神之路-精通JUC并发工具十八般武艺——线程池(一)</title>
+    <url>/2021/11/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E6%B1%A0/</url>
+    <content><![CDATA[<h1 id="并发工具类——分类"><a href="#并发工具类——分类" class="headerlink" title="并发工具类——分类"></a>并发工具类——分类</h1><ul>
+<li>为了并发安全：互斥同步、非互斥同步、无同步方案</li>
+<li>管理线程、提高效率</li>
+<li>线程协作<blockquote class="pullquote mindmap mindmap-md"><ul>
+<li>并发工具类的分类<ul>
+<li>为了线程安全（从底层原理来看）<ul>
+<li>互斥同步<ul>
+<li>使用各种互斥同步的锁<ul>
+<li>synchronized</li>
+<li>ReentrantLock</li>
+<li>ReadWriteLock</li>
+<li>…</li>
+</ul>
+</li>
+<li>使用同步的工具类<ul>
+<li>Collections.synchronizedList(new ArrayList&lt;&gt;())等</li>
+<li>Vector等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>非互斥同步<ul>
+<li>atomic包，原子类<ul>
+<li>Atomic*基本类型原子类<ul>
+<li>AtomicInteger：整型原子类</li>
+<li>AtomicLong：长整型原子类</li>
+<li>AtomicBoolean：布尔型原子类</li>
+</ul>
+</li>
+<li>Atomic*Array数组类型原子类(数组里面的元素，都可以保证原子性)<ul>
+<li>AtomicIntegerArray：整型数组原子类</li>
+<li>AtomicLongArray：长整型数组原子类</li>
+<li>AtomicReferenceArray：引用类型数组原子类</li>
+</ul>
+</li>
+<li>Atomic*Reference引用类型子类<ul>
+<li>AtomicReference：引用类型原子类</li>
+<li>AtomicStampedReference：引用类型原子类的升级，带时间戳，可以解决ABA问题</li>
+<li>AtomicMarkableReference</li>
+</ul>
+</li>
+<li>Atomic*FieldUpdater升级原子类<ul>
+<li>用Atomic*FieldUpdater等升级自己的变量</li>
+<li>AtomicIntegerFieldUpdater：原子更新整型字段的更新器</li>
+<li>AtomicLongFieldUpdater：原子更新长整型字段的更新器</li>
+</ul>
+</li>
+<li>Adder加法器<ul>
+<li>LongAdder</li>
+<li>DoubleAdder</li>
+</ul>
+</li>
+<li>Accumulator累加器<ul>
+<li>LongAccumulator</li>
+<li>DoubleAccumulator</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>结合互斥和非互斥同步<ul>
+<li>线程安全的并发容器<ul>
+<li>ConcurrentHashMap</li>
+<li>CopyOnWriteArrayList</li>
+<li>并发队列<ul>
+<li>阻塞队列<ul>
+<li>ArrayBlockingQueue</li>
+<li>LinkedBlockingQueue</li>
+<li>PriorityBlockingQueue</li>
+<li>SynchronousQueue</li>
+<li>DelayedQueue</li>
+<li>TransferQueue</li>
+<li>…</li>
+</ul>
+</li>
+<li>非阻塞队列<ul>
+<li>ConcurrentLinkedQueue</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ConcurrentSkipListMap和ConcurrentSkipListSet</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>无同步方、不可变<ul>
+<li>final关键字</li>
+<li>线程封闭<ul>
+<li>ThreadLocal</li>
+<li>栈封闭</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>为了线程安全（从使用者角度来看）<ul>
+<li>避免共享变量<ul>
+<li>线程封闭<ul>
+<li>ThreadLocal</li>
+<li>栈封闭</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>共享变量，但是可以限制和处理<ul>
+<li>互斥同步<ul>
+<li>使用各种互斥同步的锁<ul>
+<li>synchronized</li>
+<li>Lock接口相关的类</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>final关键字</li>
+</ul>
+</li>
+<li>使用成熟工具类<ul>
+<li>线程安全的并发容器<ul>
+<li>ConcurrentHashMap</li>
+<li>CopyOnWriteArrayList</li>
+<li>并发队列<ul>
+<li>阻塞队列<ul>
+<li>ArrayBlockingQueue</li>
+<li>LinkedBlockingQueue</li>
+<li>PriorityBlockingQueue</li>
+<li>SynchronousQueue</li>
+<li>DelayedQueue</li>
+<li>TransferQueue</li>
+<li>…</li>
+</ul>
+</li>
+<li>非阻塞队列<ul>
+<li>ConcurrentLinkedQueue</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ConcurrentSkipListMap和ConcurrentSkipListSet</li>
+<li>使用同步的工具类<ul>
+<li>Collections.synchronizedList(new ArrayList&lt;&gt;())等</li>
+<li>Vector等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>atomic包，原子类<ul>
+<li>Atomic*基本类型原子类<ul>
+<li>AtomicInteger：整型原子类</li>
+<li>AtomicLong：长整型原子类</li>
+<li>AtomicBoolean：布尔型原子类</li>
+</ul>
+</li>
+<li>Atomic*Array数组类型原子类(数组里面的元素，都可以保证原子性)<ul>
+<li>AtomicIntegerArray：整型数组原子类</li>
+<li>AtomicLongArray：长整型数组原子类</li>
+<li>AtomicReferenceArray：引用类型数组原子类</li>
+</ul>
+</li>
+<li>Atomic*Reference引用类型子类<ul>
+<li>AtomicReference：引用类型原子类</li>
+<li>AtomicStampedReference：引用类型原子类的升级，带时间戳，可以解决ABA问题</li>
+<li>AtomicMarkableReference</li>
+</ul>
+</li>
+<li>Atomic*FieldUpdater升级原子类<ul>
+<li>用Atomic*FieldUpdater等升级自己的变量</li>
+<li>AtomicIntegerFieldUpdater：原子更新整型字段的更新器</li>
+<li>AtomicLongFieldUpdater：原子更新长整型字段的更新器</li>
+</ul>
+</li>
+<li>Adder加法器<ul>
+<li>LongAdder</li>
+<li>DoubleAdder</li>
+</ul>
+</li>
+<li>Accumulator累加器<ul>
+<li>LongAccumulator</li>
+<li>DoubleAccumulator</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>为了方便管理线程、提高效率<ul>
+<li>线程池相关<ul>
+<li>Executor</li>
+<li>Executors</li>
+<li>ExecutorService</li>
+<li>常见线程池<ul>
+<li>FixedThreadPool</li>
+<li>CachedThreadPool</li>
+<li>ScheduledThreadPool</li>
+<li>SingleThreadExecutor</li>
+<li>ForkJoinPool</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>能获取子线程的运行结果<ul>
+<li>Callable</li>
+<li>Future</li>
+<li>FutureTask</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>为了线程之间配合，来满足业务逻辑<ul>
+<li>CountDownLath</li>
+<li>CyclicBarrier</li>
+<li>Semaphore</li>
+<li>Condition</li>
+<li>Exchanger</li>
+<li>Phaser</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote></li>
+</ul>
+<h1 id="线程池的自我介绍"><a href="#线程池的自我介绍" class="headerlink" title="线程池的自我介绍"></a>线程池的自我介绍</h1><h2 id="线程池的重要性"><a href="#线程池的重要性" class="headerlink" title="线程池的重要性"></a>线程池的重要性</h2><ul>
+<li>如果不使用线程池，每个任务都需要新开一个线程处理<ul>
+<li>一个线程还好，如果是几千的任务，每次都创建线程</li>
+</ul>
+</li>
+<li>这样开销太大，我们希望有固定的数量的线程，来执行这几千个任务，这样就避免了反复创建并销毁线程所带来的开销问题</li>
+</ul>
+<h2 id="为什么要使用线程池"><a href="#为什么要使用线程池" class="headerlink" title="为什么要使用线程池"></a>为什么要使用线程池</h2><ul>
+<li>问题一：反复创建线程开销大</li>
+<li>问题二：过多的线程会占用太多内存</li>
+<li>解决以上两个问题的思路<ul>
+<li>用少量的线程——避免内存占用过多</li>
+<li>让这部分线程都保持工作，且可以反复执行任务——避免生命周期的损耗</li>
+</ul>
+</li>
+</ul>
+<h2 id="线程池的好处"><a href="#线程池的好处" class="headerlink" title="线程池的好处"></a>线程池的好处</h2><ul>
+<li>加快相应速度</li>
+<li>合理利用CPU和内存</li>
+<li>统一管理</li>
+</ul>
+<h2 id="线程池适合应用的场景"><a href="#线程池适合应用的场景" class="headerlink" title="线程池适合应用的场景"></a>线程池适合应用的场景</h2><ul>
+<li>服务器接受到大量请求时，使用线程池技术是非常合适的，它可以大大减少线程的创建和销毁次数，提高服务器的工作效率</li>
+<li>实际上，在开发中，如果需要创建5个以上的线程，那么就可以使用线程池来管理</li>
+</ul>
+<h1 id="创建和停止线程池"><a href="#创建和停止线程池" class="headerlink" title="创建和停止线程池"></a>创建和停止线程池</h1><h2 id="线程池构造函数的参数"><a href="#线程池构造函数的参数" class="headerlink" title="线程池构造函数的参数"></a>线程池构造函数的参数</h2><table>
+<thead>
+<tr>
+<th align="center">参数名</th>
+<th align="center">类型</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">corePoolSize</td>
+<td align="center">int</td>
+<td align="center">核心线程数，详解见下文</td>
+</tr>
+<tr>
+<td align="center">maximumPoolSize</td>
+<td align="center">int</td>
+<td align="center">最大线程数，详解见下文</td>
+</tr>
+<tr>
+<td align="center">keepAliveTime</td>
+<td align="center">long</td>
+<td align="center">保持存活时间</td>
+</tr>
+<tr>
+<td align="center">unit</td>
+<td align="center">TimeUnit</td>
+<td align="center">保持存活时间的单位</td>
+</tr>
+<tr>
+<td align="center">workQueue</td>
+<td align="center">BlockingQueue</td>
+<td align="center">任务存储队列</td>
+</tr>
+<tr>
+<td align="center">threadFactory</td>
+<td align="center">ThreadFactory</td>
+<td align="center">当线程池需要新的线程的时候，会使用threadFactory来生成新的线程</td>
+</tr>
+<tr>
+<td align="center">Handler</td>
+<td align="center">RejectedExecutionHandler</td>
+<td align="center">由于线程池也无法接受你所提交的任务的拒绝策略</td>
+</tr>
+</tbody></table>
+<h3 id="参数中corePoolSize和macPoolSize"><a href="#参数中corePoolSize和macPoolSize" class="headerlink" title="参数中corePoolSize和macPoolSize"></a>参数中<code>corePoolSize</code>和<code>macPoolSize</code></h3><ul>
+<li><code>corePoolSize</code>指的是核心线程数：线程池在完成初始化后，默认情况下，线程池中并没有任何线程，线程池会等待有任务到来时，再创建新线程去执行任务</li>
+<li>线程池有可能会在核心线程数的基础上，额外增加一些线程，但是这些增加的线程数有一个上限，这就是最大量<code>maximumPoolSize</code></li>
+</ul>
+<h3 id="添加线程规则"><a href="#添加线程规则" class="headerlink" title="添加线程规则"></a>添加线程规则</h3><ul>
+<li>如果线程数小于<code>corePoolSize</code>，即使其他工作线程处于空闲状态，也会创建一个新的线程来运行新任务</li>
+<li>如果线程数等于（或大于）<code>corePoolSize</code>但少于<code>maximumPoolSize</code>，则将任务放入队列</li>
+<li>如果队列已满，并且线程数小于<code>maximumPoolSize</code>，则创建一个新的线程来运任务</li>
+<li>如果队列已满，并且线程数大于或等于<code>maximumPoolSize</code>，则拒绝该任务</li>
+<li>是否需要增加线程的判断顺序是：<ul>
+<li><code>corePoolSize</code></li>
+<li><code>workQueue</code></li>
+<li><code>maximumPoolSize</code></li>
+</ul>
+</li>
+</ul>
+<div id="flowchart-0" class="flow-chart"></div>
+
+<h3 id="增减线程的特点"><a href="#增减线程的特点" class="headerlink" title="增减线程的特点"></a>增减线程的特点</h3><ul>
+<li>通过设置<code>corePoolSize</code>和<code>maximumPoolSize</code>相同，就可以创建一个固定大小的线程池</li>
+<li>线程池希望保持较少的线程数，并且只有在负载变得很大的时候才增加它</li>
+<li>通过设置<code>maximumPoolSize</code>为很高的值，例如Integer.MAX_VALUE，可以允许线程池容纳任意数量的并发任务</li>
+<li>是只有队列填满的时候才会创建对于<code>corePoolSize</code>的线程，所以如果你使用的是无界队列（例如<code>LinkedBockingQueue</code>），那么线程数就不会超过<code>corePoolSize</code></li>
+</ul>
+<h3 id="keepAliveTime"><a href="#keepAliveTime" class="headerlink" title="keepAliveTime"></a><code>keepAliveTime</code></h3><ul>
+<li>如果线程池当前的线程数对于<code>corePoolSize</code>，那么如果多余的线程空闲时间超过<code>keepAliveTime</code>，它们就会被终止</li>
+</ul>
+<h3 id="ThreadFactory用来创建线程"><a href="#ThreadFactory用来创建线程" class="headerlink" title="ThreadFactory用来创建线程"></a><code>ThreadFactory</code>用来创建线程</h3><ul>
+<li>新的线程是由<code>ThreadFactory</code>创建的，默认使用<code>Executors.defaultThreadFactory()</code>，创建出来的线程都在同一个线程组，拥有同样的NORM_PRIORITY优先级并且都不是守护线程，如果自己指定ThreadFactory，那么就可以改变线程名、线程组、优先级、是否是守护线程等。</li>
+<li>通常情况下我们使用默认的<code>ThreadFactory</code>就可以了</li>
+</ul>
+<h3 id="工作队列"><a href="#工作队列" class="headerlink" title="工作队列"></a>工作队列</h3><ul>
+<li>有3中最常见的队列类型：<ul>
+<li>直接交接：<code>SynchronousQueue</code>(没有队列，里面不存任务，直接交给线程执行)</li>
+<li>无界队列：<code>LinkedBlockingQueue</code>(队列没有界限，永远不会被塞满，但是可能会内存溢出)</li>
+<li>有界队列：<code>ArrayBlockingQueue</code>(可以设置队列大小)</li>
+</ul>
+</li>
+</ul>
+<h2 id="线程池应该手动创建还是自动创建"><a href="#线程池应该手动创建还是自动创建" class="headerlink" title="线程池应该手动创建还是自动创建"></a>线程池应该手动创建还是自动创建</h2><ul>
+<li>手动创建更好，因为这样可以让我们更加明确线程池的运行规则，避免资源耗尽的风险</li>
+<li>让我们来看看自动创建线程池（也就是直接调用JDK封装好的构造函数）可能带来那些问题</li>
+</ul>
+<h3 id="newFixedThreadPool"><a href="#newFixedThreadPool" class="headerlink" title="newFixedThreadPool"></a><code>newFixedThreadPool</code></h3><ul>
+<li>创建一个定长的线程池</li>
+<li>由于传进去的LinkedBlockQueue是没有容量上限的，所以当请求数越来越多，并且无法及时处理完毕的时候，也就是请求堆积的时候，会容易造成占用大量的内存，可能会导致OOM。<blockquote>
+<p>OOM的代码如下，任务数调到最大，每个线程都直接休眠，任务一直无法完成，就会全部堆积在队列中，最终导致队列OOM</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FixedThreadPoolOOM</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> ExecutorService executorService = Executors.newFixedThreadPool(<span class="number">1</span>);</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; Integer.MAX_VALUE; i++) &#123;</span><br><span class="line">            executorService.execute(<span class="keyword">new</span> SubThread());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">1000000000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="newSingleThreadExecutor"><a href="#newSingleThreadExecutor" class="headerlink" title="newSingleThreadExecutor"></a><code>newSingleThreadExecutor</code></h3></li>
+<li>创建一个单线程的线程池</li>
+<li>可以看出，这里和刚才的<code>newFixedThreadPool</code>的原理基本是一样的，只不过是把线程数直接设置成了1，所以这也会导致同样的问题，也就是当请求堆积的时候，可能会占用大量内存</li>
+</ul>
+<h3 id="newCachedThreadPool"><a href="#newCachedThreadPool" class="headerlink" title="newCachedThreadPool"></a><code>newCachedThreadPool</code></h3><ul>
+<li>可以缓存的线程池</li>
+<li>这里的弊端在于第二个参数<code>maximumPoolSize</code>被设置为了<code>Integer.MAX_VALUE</code>，这可能会创建数量非常多的线程，甚至导致OOM</li>
+</ul>
+<h3 id="newScheduledThreadPool"><a href="#newScheduledThreadPool" class="headerlink" title="newScheduledThreadPool"></a><code>newScheduledThreadPool</code></h3><ul>
+<li>支持定时及周期性任务执行的线程池</li>
+<li>可以在指定时间后执行任务，也可以在指定时间后每隔多久执行一次任务</li>
+</ul>
+<h3 id="workStealingPool是JDK8加入的"><a href="#workStealingPool是JDK8加入的" class="headerlink" title="workStealingPool是JDK8加入的"></a>workStealingPool是JDK8加入的</h3><ul>
+<li>子任务：适合有子任务的场景（比如遍历二叉树，一个任务会创建多个子任务）</li>
+<li>窃取：当其他的线程执行完任务之后，如果某一个线程的子任务还没有执行完毕，其他线程就会帮他执行，任务执行是没有顺序的</li>
+</ul>
+<h3 id="正确的创建线程池的方法"><a href="#正确的创建线程池的方法" class="headerlink" title="正确的创建线程池的方法"></a>正确的创建线程池的方法</h3><ul>
+<li>根据不同的业务场景，自己设置线程池参数，比如我们的内存有多大，我们想给线程取什么名字等待</li>
+</ul>
+<h2 id="线程池里的线程数量设定为多少比较合适"><a href="#线程池里的线程数量设定为多少比较合适" class="headerlink" title="线程池里的线程数量设定为多少比较合适"></a>线程池里的线程数量设定为多少比较合适</h2><ul>
+<li>CPU密集性（加密、计算hash等）：最佳线程数为CPU核心数的1-2倍左右。</li>
+<li>耗时IO型（读写数据库、文件、网络读写等）：最佳线程数一般会大于CPU核心数很多倍，以JVM线程监控显示繁忙情况为依据，保证线程空闲可以衔接上</li>
+<li>参考Brain Goetz推荐的计算方法：<ul>
+<li>线程数 = CPU核心数 * （1 + 平均等待时间 / 平均工作时间）</li>
+</ul>
+</li>
+</ul>
+<h1 id="停止线程池的正确方法"><a href="#停止线程池的正确方法" class="headerlink" title="停止线程池的正确方法"></a>停止线程池的正确方法</h1><ul>
+<li><code>shutdown()</code><ul>
+<li>并不会立即停止线程池，而是通知线程池进行停止</li>
+<li>线程池会将正在等待的以及正在执行的任务执行完毕之后再停止</li>
+<li>但是再执行该方法之后，就无法再向线程池提交任务</li>
+</ul>
+</li>
+<li><code>isShutdown()</code><ul>
+<li>判断线程池是否已经执行过了<code>shutdown</code></li>
+<li>并不是返回true就是线程池已经结束，而是开始准备结束</li>
+</ul>
+</li>
+<li><code>isTerminated()</code><ul>
+<li>判断线程池是否真的结束</li>
+</ul>
+</li>
+<li><code>awaitTermination(long timeout, TimeUnit unit)</code><ul>
+<li>会阻塞线程，阻塞时间根据参数指定</li>
+<li>然后返回一个布尔类型的结果</li>
+<li>结果是判断线程池是否关闭</li>
+<li>阻塞一定的时间，然后判断线程池是否已经关闭</li>
+</ul>
+</li>
+<li><code>shutdownNow</code><ul>
+<li>立即关闭线程池</li>
+<li>会多所有正在执行任务发出中断指令</li>
+<li>有一个List的返回值，返回的是所有正在等待中的任务的集合</li>
+</ul>
+</li>
+</ul>
+<h1 id="任务太多，怎么拒绝？"><a href="#任务太多，怎么拒绝？" class="headerlink" title="任务太多，怎么拒绝？"></a>任务太多，怎么拒绝？</h1><h2 id="决绝时机"><a href="#决绝时机" class="headerlink" title="决绝时机"></a>决绝时机</h2><ul>
+<li>当线程池关闭时，提交新任务会被拒绝</li>
+<li>当线程池对最大线程和工作队列容量使用有限制边界并且已经饱和的时候会拒绝任务</li>
+</ul>
+<h2 id="4中决绝策略"><a href="#4中决绝策略" class="headerlink" title="4中决绝策略"></a>4中决绝策略</h2><ul>
+<li>AbortPolicy<ul>
+<li>直接抛出异常</li>
+</ul>
+</li>
+<li>DiscardPolicy<ul>
+<li>直接丢弃任务，并且不会通知</li>
+</ul>
+</li>
+<li>DiscardOldestPolicy<ul>
+<li>丢弃最老的任务，将新的放进队列</li>
+</ul>
+</li>
+<li>CallerRunPolicy<ul>
+<li>让提交任务的线程去执行任务（同步执行）</li>
+</ul>
+</li>
+</ul>
+<h1 id="钩子方法，给线程池加点料"><a href="#钩子方法，给线程池加点料" class="headerlink" title="钩子方法，给线程池加点料"></a>钩子方法，给线程池加点料</h1><blockquote>
+<p>具体实现如以下代码所示，代码的功能是实现一个可以暂停的线程池，等待一定时间后还能被唤醒<br>继承<code>ThreadPoolExecutor</code>类，并重写<code>beforeExecute</code>方法，这个方法会在线程执行每一个任务之前执行<br>通过标记位，实现对线程的暂停和恢复</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PauseableThreadPool</span> <span class="keyword">extends</span> <span class="title">ThreadPoolExecutor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isPaused;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Lock lock = <span class="keyword">new</span> ReentrantLock();</span><br><span class="line">    <span class="keyword">private</span> Condition unpaused = lock.newCondition();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        PauseableThreadPool pauseableThreadPool = <span class="keyword">new</span> PauseableThreadPool(<span class="number">10</span>,<span class="number">20</span>,<span class="number">10L</span>,TimeUnit.SECONDS,<span class="keyword">new</span> LinkedBlockingQueue&lt;&gt;());</span><br><span class="line">        Runnable runnable = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(<span class="string">&quot;我被执行了&quot;</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">10</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++) &#123;</span><br><span class="line">            pauseableThreadPool.execute(runnable);</span><br><span class="line">        &#125;</span><br><span class="line">        Thread.sleep(<span class="number">1500</span>);</span><br><span class="line">        pauseableThreadPool.pause();</span><br><span class="line">        System.out.println(<span class="string">&quot;线程池被暂停了&quot;</span>);</span><br><span class="line">        Thread.sleep(<span class="number">1500</span>);</span><br><span class="line">        pauseableThreadPool.resume();</span><br><span class="line">        System.out.println(<span class="string">&quot;线程池被恢复了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">beforeExecute</span><span class="params">(Thread t, Runnable r)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.beforeExecute(t, r);</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (isPaused) &#123;</span><br><span class="line">                unpaused.await();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">pause</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            isPaused = <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">resume</span><span class="params">()</span></span>&#123;</span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            isPaused = <span class="keyword">false</span>;</span><br><span class="line">            unpaused.signalAll();</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PauseableThreadPool</span><span class="params">(<span class="keyword">int</span> corePoolSize, <span class="keyword">int</span> maximumPoolSize, <span class="keyword">long</span> keepAliveTime, TimeUnit unit, BlockingQueue&lt;Runnable&gt; workQueue)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="实现原理，源码分析"><a href="#实现原理，源码分析" class="headerlink" title="实现原理，源码分析"></a>实现原理，源码分析</h1><h2 id="线程池组成部分"><a href="#线程池组成部分" class="headerlink" title="线程池组成部分"></a>线程池组成部分</h2><ul>
+<li>线程池管理器</li>
+<li>工作线程</li>
+<li>任务队列</li>
+<li>任务接口（Task）</li>
+</ul>
+<h2 id="Executor家族"><a href="#Executor家族" class="headerlink" title="Executor家族"></a>Executor家族</h2><ul>
+<li>线程池、<code>ThreadPoolExecutor</code>、<code>ExecutorService</code>、<code>Executor</code>、<code>Executors</code>等这么多和线程池相关的类，大家都是什么关系呢？<img src="http://www.plantuml.com/plantuml/svg/oymhIIrAIqnELN2jI4qkBSalggxboiGG34ujAii4ybChIbBpKegH5ISc5PSK9IQNA2Jd91ONApX2kUWwCtCBSb9pK_DAYj4D1Pe1qHgIKPIQc1AGdvy3Km6t3uUfrRK0"></li>
+<li><code>Executor</code><blockquote>
+<p>线程池的最顶级接口，只提供了执行线程的方法</p>
+</blockquote>
+</li>
+<li><code>ExecutorService</code><blockquote>
+<p>对<code>Executor</code>接口的继承，同时添加了一些其他的方法，比如停止线程池的方法等</p>
+</blockquote>
+</li>
+<li><code>ThreadPoolExecutor</code><blockquote>
+<p>线程池的最终实现类</p>
+</blockquote>
+</li>
+<li><code>Executors</code><blockquote>
+<p>一个工具类，提供了一些创建线程池的方法</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="线程池实现线程复用的原理"><a href="#线程池实现线程复用的原理" class="headerlink" title="线程池实现线程复用的原理"></a>线程池实现线程复用的原理</h2><ul>
+<li>相同线程执行不同任务<blockquote>
+<p>下面代码是从<code>ThreadPoolExecutor</code>类中摘取的启动任务的方法<br>从代码中可以看出来，主要是通过while循环，判断当前任务不为空，或者能取到下一个任务<br>而任务的类型就是<code>Runnable</code>类型的，之后就直接执行它的<code>run()</code>方法运行任务</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">final void runWorker(Worker w) &#123;</span><br><span class="line">    Thread wt = Thread.currentThread();</span><br><span class="line">    Runnable task = w.firstTask;</span><br><span class="line">    w.firstTask = null;</span><br><span class="line">    w.unlock(); // allow interrupts</span><br><span class="line">    boolean completedAbruptly = true;</span><br><span class="line">    try &#123;</span><br><span class="line">        while (task != null || (task = getTask()) != null) &#123;</span><br><span class="line">            w.lock();</span><br><span class="line">            // If pool is stopping, ensure thread is interrupted;</span><br><span class="line">            // if not, ensure thread is not interrupted.  This</span><br><span class="line">            // requires a recheck in second case to deal with</span><br><span class="line">            // shutdownNow race while clearing interrupt</span><br><span class="line">            if ((runStateAtLeast(ctl.get(), STOP) ||</span><br><span class="line">                 (Thread.interrupted() &amp;&amp;</span><br><span class="line">                  runStateAtLeast(ctl.get(), STOP))) &amp;&amp;</span><br><span class="line">                !wt.isInterrupted())</span><br><span class="line">                wt.interrupt();</span><br><span class="line">            try &#123;</span><br><span class="line">                beforeExecute(wt, task);</span><br><span class="line">                Throwable thrown = null;</span><br><span class="line">                try &#123;</span><br><span class="line">                    task.run();</span><br><span class="line">                &#125; catch (RuntimeException x) &#123;</span><br><span class="line">                    thrown = x; throw x;</span><br><span class="line">                &#125; catch (Error x) &#123;</span><br><span class="line">                    thrown = x; throw x;</span><br><span class="line">                &#125; catch (Throwable x) &#123;</span><br><span class="line">                    thrown = x; throw new Error(x);</span><br><span class="line">                &#125; finally &#123;</span><br><span class="line">                    afterExecute(task, thrown);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; finally &#123;</span><br><span class="line">                task = null;</span><br><span class="line">                w.completedTasks++;</span><br><span class="line">                w.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        completedAbruptly = false;</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        processWorkerExit(w, completedAbruptly);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="线程池状态"><a href="#线程池状态" class="headerlink" title="线程池状态"></a>线程池状态</h2><ul>
+<li>RUNNING：接受新任务并且处理排队任务</li>
+<li>SHUTDOWN：不接受新的任务，但是处理排队中的任务</li>
+<li>STOP：不接受新的任务，也不处理排队中的任务，并且中断正在进行中的任务</li>
+<li>TIDYING，中文是整洁，理解了中文就容易理解这个状态了：所有任务都已经终止，<code>workerCount</code>为0时，线程会转换到<code>TIDYING</code>状态，并将运行<code>terminate()</code>钩子方法</li>
+<li>TERMINATED：<code>terminate()</code>运行完成</li>
+</ul>
+<h1 id="使用线程池的注意点"><a href="#使用线程池的注意点" class="headerlink" title="使用线程池的注意点"></a>使用线程池的注意点</h1><ul>
+<li>避免任务堆积</li>
+<li>避免线程数过度增加</li>
+<li>排查线程泄漏（线程一直无法回收）</li>
+</ul>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/flowchart/1.6.5/flowchart.min.js"></script><textarea id="flowchart-0-code" style="display: none">st=>start: 开始
+o1=>operation: 提交任务
+c1=>condition: 核心线程池是否已满？
+c2=>condition: 队列是否已满？
+c3=>condition: 线程池是否已满？
+o2=>operation: 按照策略处理无法执行的任务
+o3=>operation: 创建核心线程执行任务
+o4=>operation: 任务添加到队列
+o5=>operation: 创建非核心线程执行任务
+st->o1
+o1->c1
+c1(yes)->c2
+c1(no)->o3
+c2(yes)->c3
+c2(no)->o4
+c3(yes)->o2
+c3(no)->o5
+e=>end: 结束
+o2->e
+o3->e
+o4->e
+o5->e</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>多线程</tag>
       </tags>
   </entry>
   <entry>
@@ -4128,7 +4739,7 @@
 <li><p>64位的double和long写入的时候是原子的吗？</p>
 </li>
 </ul>
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -4339,7 +4950,7 @@
 <li><p>什么是活跃性问题？活锁、饥饿和死锁有什么区别？</p>
 </li>
 </ul>
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -4586,7 +5197,7 @@
 <p>最常用的阶段一般为：validate、compile、test、package、verify、install、site、deploy。</p>
 <p>详细介绍可以查看：<a href="http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html">http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html</a></p>
 <h3 id="Maven-POM-标签大全详解"><a href="#Maven-POM-标签大全详解" class="headerlink" title="Maven POM 标签大全详解"></a>Maven POM 标签大全详解</h3><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://maven.apache.org/POM/4.0.0http://maven.apache.org/maven-v4_0_0.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--父项目的坐标。如果项目中没有规定某个元素的值，那么父项目中的对应值即为项目的默认值。 坐标包括group ID，artifact ID和 </span></span><br><span class="line"><span class="comment">        version。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--被继承的父项目的构件标识符 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--被继承的父项目的全球唯一标识符 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--被继承的父项目的版本 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 父项目的pom.xml文件的相对路径。相对路径允许你选择一个不同的路径。默认值是../pom.xml。Maven首先在构建当前项目的地方寻找父项 </span></span><br><span class="line"><span class="comment">            目的pom，其次在文件系统的这个位置（relativePath位置），然后在本地仓库，最后在远程仓库寻找父项目的pom。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">relativePath</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--声明项目描述符遵循哪一个POM模型版本。模型本身的版本很少改变，虽然如此，但它仍然是必不可少的，这是为了当Maven引入了新的特性或者其他模型变更的时候，确保稳定性。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--项目的全球唯一标识符，通常使用全限定的包名区分该项目和其他项目。并且构建时生成的路径也是由此生成， 如com.mycompany.app生成的相对路径为：/com/mycompany/app --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>asia.banseon<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 构件的标识符，它和group ID一起唯一标识一个构件。换句话说，你不能有两个不同的项目拥有同样的artifact ID和groupID；在某个 </span></span><br><span class="line"><span class="comment">        特定的group ID下，artifact ID也必须是唯一的。构件是项目产生的或使用的一个东西，Maven为项目产生的构件包括：JARs，源 码，二进制发布和WARs等。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>banseon-maven2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--项目产生的构件类型，例如jar、war、ear、pom。插件可以创建他们自己的构件类型，所以前面列的不是全部构件类型 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--项目当前版本，格式为:主版本.次版本.增量版本-限定版本号 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--项目的名称, Maven产生的文档用 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>banseon-maven<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--项目主页的URL, Maven产生的文档用 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://www.baidu.com/banseon<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 项目的详细描述, Maven 产生的文档用。 当这个元素能够用HTML格式描述时（例如，CDATA中的文本会被解析器忽略，就可以包含HTML标 </span></span><br><span class="line"><span class="comment">        签）， 不鼓励使用纯文本描述。如果你需要修改产生的web站点的索引页面，你应该修改你自己的索引页文件，而不是调整这里的文档。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>A maven project to study maven.<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--描述了这个项目构建环境中的前提条件。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">prerequisites</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--构建该项目或使用该插件所需要的Maven的最低版本 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">maven</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">prerequisites</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--项目的问题管理系统(Bugzilla, Jira, Scarab,或任何你喜欢的问题管理系统)的名称和URL，本例为 jira --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">issueManagement</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--问题管理系统（例如jira）的名字， --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">system</span>&gt;</span>jira<span class="tag">&lt;/<span class="name">system</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--该项目使用的问题管理系统的URL --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://jira.baidu.com/banseon<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">issueManagement</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--项目持续集成信息 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ciManagement</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--持续集成系统的名字，例如continuum --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">system</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--该项目使用的持续集成系统的URL（如果持续集成系统有web接口的话）。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--构建完成时，需要通知的开发者/用户的配置项。包括被通知者信息和通知条件（错误，失败，成功，警告） --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">notifiers</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--配置一种方式，当构建中断时，以该方式通知用户/开发者 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">notifier</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--传送通知的途径 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">type</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--发生错误时是否通知 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">sendOnError</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--构建失败时是否通知 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">sendOnFailure</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--构建成功时是否通知 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">sendOnSuccess</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--发生警告时是否通知 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">sendOnWarning</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--不赞成使用。通知发送到哪里 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">address</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--扩展配置项 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">configuration</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">notifier</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">notifiers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ciManagement</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--项目创建年份，4位数字。当产生版权信息时需要使用这个值。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">inceptionYear</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--项目相关邮件列表信息 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mailingLists</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--该元素描述了项目相关的所有邮件列表。自动产生的网站引用这些信息。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mailingList</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--邮件的名称 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">name</span>&gt;</span>Demo<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--发送邮件的地址或链接，如果是邮件地址，创建文档时，mailto: 链接会被自动创建 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">post</span>&gt;</span>banseon@126.com<span class="tag">&lt;/<span class="name">post</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--订阅邮件的地址或链接，如果是邮件地址，创建文档时，mailto: 链接会被自动创建 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">subscribe</span>&gt;</span>banseon@126.com<span class="tag">&lt;/<span class="name">subscribe</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--取消订阅邮件的地址或链接，如果是邮件地址，创建文档时，mailto: 链接会被自动创建 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">unsubscribe</span>&gt;</span>banseon@126.com<span class="tag">&lt;/<span class="name">unsubscribe</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--你可以浏览邮件信息的URL --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">archive</span>&gt;</span>http:/hi.baidu.com/banseon/demo/dev/<span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">mailingList</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mailingLists</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--项目开发者列表 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">developers</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--某个项目开发者的信息 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">developer</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--SCM里项目开发者的唯一标识符 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>HELLO WORLD<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--项目开发者的全名 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">name</span>&gt;</span>banseon<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--项目开发者的email --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">email</span>&gt;</span>banseon@126.com<span class="tag">&lt;/<span class="name">email</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--项目开发者的主页的URL --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">url</span> /&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--项目开发者在项目中扮演的角色，角色元素描述了各种角色 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">roles</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">role</span>&gt;</span>Project Manager<span class="tag">&lt;/<span class="name">role</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">role</span>&gt;</span>Architect<span class="tag">&lt;/<span class="name">role</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">roles</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--项目开发者所属组织 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">organization</span>&gt;</span>demo<span class="tag">&lt;/<span class="name">organization</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--项目开发者所属组织的URL --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">organizationUrl</span>&gt;</span>http://hi.baidu.com/banseon<span class="tag">&lt;/<span class="name">organizationUrl</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--项目开发者属性，如即时消息如何处理等 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dept</span>&gt;</span>No<span class="tag">&lt;/<span class="name">dept</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--项目开发者所在时区， -11到12范围内的整数。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">timezone</span>&gt;</span>-5<span class="tag">&lt;/<span class="name">timezone</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">developer</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">developers</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--项目的其他贡献者列表 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">contributors</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--项目的其他贡献者。参见developers/developer元素 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">contributor</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">name</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">email</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">url</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">organization</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">organizationUrl</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">roles</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">timezone</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">properties</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">contributor</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">contributors</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--该元素描述了项目所有License列表。 应该只列出该项目的license列表，不要列出依赖项目的 license列表。如果列出多个license，用户可以选择它们中的一个而不是接受所有license。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">licenses</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--描述了项目的license，用于生成项目的web站点的license页面，其他一些报表和validation也会用到该元素。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">license</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--license用于法律上的名称 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">name</span>&gt;</span>Apache 2<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--官方的license正文页面的URL --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://www.baidu.com/banseon/LICENSE-2.0.txt<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--项目分发的主要方式： repo，可以从Maven库下载 manual， 用户必须手动下载和安装依赖 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">distribution</span>&gt;</span>repo<span class="tag">&lt;/<span class="name">distribution</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--关于license的补充信息 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">comments</span>&gt;</span>A business-friendly OSS license<span class="tag">&lt;/<span class="name">comments</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">license</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">licenses</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--SCM(Source Control Management)标签允许你配置你的代码库，供Maven web站点和其它插件使用。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scm</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--SCM的URL,该URL描述了版本库和如何连接到版本库。欲知详情，请看SCMs提供的URL格式和列表。该连接只读。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">connection</span>&gt;</span></span><br><span class="line">            scm:svn:http://svn.baidu.com/banseon/maven/banseon/banseon-maven2-trunk(dao-trunk)</span><br><span class="line">        <span class="tag">&lt;/<span class="name">connection</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--给开发者使用的，类似connection元素。即该连接不仅仅只读 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">developerConnection</span>&gt;</span></span><br><span class="line">            scm:svn:http://svn.baidu.com/banseon/maven/banseon/dao-trunk</span><br><span class="line">        <span class="tag">&lt;/<span class="name">developerConnection</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--当前代码的标签，在开发阶段默认为HEAD --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">tag</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--指向项目的可浏览SCM库（例如ViewVC或者Fisheye）的URL。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://svn.baidu.com/banseon<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">scm</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--描述项目所属组织的各种属性。Maven产生的文档用 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">organization</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--组织的全名 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>demo<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--组织主页的URL --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://www.baidu.com/banseon<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">organization</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--构建项目需要的信息 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--该元素设置了项目源码目录，当构建项目的时候，构建系统会编译目录里的源码。该路径是相对于pom.xml的相对路径。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">sourceDirectory</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--该元素设置了项目脚本源码目录，该目录和源码目录不同：绝大多数情况下，该目录下的内容 会被拷贝到输出目录(因为脚本是被解释的，而不是被编译的)。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scriptSourceDirectory</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--该元素设置了项目单元测试使用的源码目录，当测试项目的时候，构建系统会编译目录里的源码。该路径是相对于pom.xml的相对路径。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">testSourceDirectory</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--被编译过的应用程序class文件存放的目录。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">outputDirectory</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--被编译过的测试class文件存放的目录。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">testOutputDirectory</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--使用来自该项目的一系列构建扩展 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">extensions</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--描述使用到的构建扩展。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">extension</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--构建扩展的groupId --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--构建扩展的artifactId --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--构建扩展的版本 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">version</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">extension</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">extensions</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--当项目没有规定目标（Maven2 叫做阶段）时的默认值 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">defaultGoal</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--这个元素描述了项目相关的所有资源路径列表，例如和项目相关的属性文件，这些资源被包含在最终的打包文件里。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--这个元素描述了项目相关或测试相关的所有资源路径 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!-- 描述了资源的目标路径。该路径相对target/classes目录（例如$&#123;project.build.outputDirectory&#125;）。举个例 </span></span><br><span class="line"><span class="comment">                    子，如果你想资源在特定的包里(org.apache.maven.messages)，你就必须该元素设置为org/apache/maven /messages。然而，如果你只是想把资源放到源码目录结构里，就不需要该配置。 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">targetPath</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--是否使用参数值代替参数名。参数值取自properties元素或者文件里配置的属性，文件在filters元素里列出。 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">filtering</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--描述存放资源的目录，该路径相对POM路径 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">directory</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--包含的模式列表，例如**/*.xml. --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">includes</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--排除的模式列表，例如**/*.xml --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">excludes</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--这个元素描述了单元测试相关的所有资源路径，例如和单元测试相关的属性文件。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">testResources</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--这个元素描述了测试相关的所有资源路径，参见build/resources/resource元素的说明 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">testResource</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">targetPath</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">filtering</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">directory</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">includes</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">excludes</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">testResource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">testResources</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--构建产生的所有文件存放的目录 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">directory</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--产生的构件的文件名，默认值是$&#123;artifactId&#125;-$&#123;version&#125;。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">finalName</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--当filtering开关打开时，使用到的过滤器属性文件列表 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">filters</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--子项目可以引用的默认插件信息。该插件配置项直到被引用时才会被解析或绑定到生命周期。给定插件的任何本地配置都会覆盖这里的配置 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">pluginManagement</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--使用的插件列表 。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--plugin元素包含描述插件所需要的信息。 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--插件在仓库里的group ID --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">groupId</span> /&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--插件在仓库里的artifact ID --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">artifactId</span> /&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--被使用的插件的版本（或版本范围） --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">version</span> /&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--是否从该插件下载Maven扩展（例如打包和类型处理器），由于性能原因，只有在真需要下载时，该元素才被设置成enabled。 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">extensions</span> /&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--在构建生命周期中执行一组目标的配置。每个目标可能有不同的配置。 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--execution元素包含了插件执行需要的信息 --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">                            <span class="comment">&lt;!--执行目标的标识符，用于标识构建过程中的目标，或者匹配继承过程中需要合并的执行目标 --&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">id</span> /&gt;</span></span><br><span class="line">                            <span class="comment">&lt;!--绑定了目标的构建生命周期阶段，如果省略，目标会被绑定到源数据里配置的默认阶段 --&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">phase</span> /&gt;</span></span><br><span class="line">                            <span class="comment">&lt;!--配置的执行目标 --&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">goals</span> /&gt;</span></span><br><span class="line">                            <span class="comment">&lt;!--配置是否被传播到子POM --&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">inherited</span> /&gt;</span></span><br><span class="line">                            <span class="comment">&lt;!--作为DOM对象的配置 --&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">configuration</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--项目引入插件所需要的额外依赖 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--参见dependencies/dependency元素 --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">                            ......</span><br><span class="line">                        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--任何配置是否被传播到子项目 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">inherited</span> /&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--作为DOM对象的配置 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">configuration</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">pluginManagement</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--使用的插件列表 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--参见build/pluginManagement/plugins/plugin元素 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">version</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">extensions</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">id</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">phase</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">goals</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">inherited</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">configuration</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--参见dependencies/dependency元素 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">                        ......</span><br><span class="line">                    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">goals</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">inherited</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">configuration</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--在列的项目构建profile，如果被激活，会修改构建处理 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">profiles</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--根据环境参数或命令行参数激活某个构建处理 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--构建配置的唯一标识符。即用于命令行激活，也用于在继承时合并具有相同标识符的profile。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span> /&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--自动触发profile的条件逻辑。Activation是profile的开启钥匙。profile的力量来自于它 能够在某些特定的环境中自动使用某些特定的值；这些环境通过activation元素指定。activation元素并不是激活profile的唯一方式。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">activation</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--profile默认是否激活的标志 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">activeByDefault</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--当匹配的jdk被检测到，profile被激活。例如，1.4激活JDK1.4，1.4.0_2，而!1.4激活所有版本不是以1.4开头的JDK。 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">jdk</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--当匹配的操作系统属性被检测到，profile被激活。os元素可以定义一些操作系统相关的属性。 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">os</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--激活profile的操作系统的名字 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">name</span>&gt;</span>Windows XP<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--激活profile的操作系统所属家族(如 &#x27;windows&#x27;) --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">family</span>&gt;</span>Windows<span class="tag">&lt;/<span class="name">family</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--激活profile的操作系统体系结构 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">arch</span>&gt;</span>x86<span class="tag">&lt;/<span class="name">arch</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--激活profile的操作系统版本 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.2600<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">os</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--如果Maven检测到某一个属性（其值可以在POM中通过$&#123;名称&#125;引用），其拥有对应的名称和值，Profile就会被激活。如果值 字段是空的，那么存在属性名称字段就会激活profile，否则按区分大小写方式匹配属性值字段 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--激活profile的属性的名称 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">name</span>&gt;</span>mavenVersion<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--激活profile的属性的值 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">value</span>&gt;</span>2.0.3<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--提供一个文件名，通过检测该文件的存在或不存在来激活profile。missing检查文件是否存在，如果不存在则激活 profile。另一方面，exists则会检查文件是否存在，如果存在则激活profile。 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">file</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--如果指定的文件存在，则激活profile。 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">exists</span>&gt;</span>/usr/local/hudson/hudson-home/jobs/maven-guide-zh-to-production/workspace/</span><br><span class="line">                    <span class="tag">&lt;/<span class="name">exists</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--如果指定的文件不存在，则激活profile。 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">missing</span>&gt;</span>/usr/local/hudson/hudson-home/jobs/maven-guide-zh-to-production/workspace/</span><br><span class="line">                    <span class="tag">&lt;/<span class="name">missing</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">activation</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--构建项目所需要的信息。参见build元素 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">defaultGoal</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">resources</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">resource</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">targetPath</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">filtering</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">directory</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">includes</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">excludes</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">resource</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">resources</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">testResources</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">testResource</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">targetPath</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">filtering</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">directory</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">includes</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">excludes</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">testResource</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">testResources</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">directory</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">finalName</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">filters</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">pluginManagement</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--参见build/pluginManagement/plugins/plugin元素 --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">groupId</span> /&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">artifactId</span> /&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">version</span> /&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">extensions</span> /&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">                                    <span class="tag">&lt;<span class="name">id</span> /&gt;</span></span><br><span class="line">                                    <span class="tag">&lt;<span class="name">phase</span> /&gt;</span></span><br><span class="line">                                    <span class="tag">&lt;<span class="name">goals</span> /&gt;</span></span><br><span class="line">                                    <span class="tag">&lt;<span class="name">inherited</span> /&gt;</span></span><br><span class="line">                                    <span class="tag">&lt;<span class="name">configuration</span> /&gt;</span></span><br><span class="line">                                <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">                                <span class="comment">&lt;!--参见dependencies/dependency元素 --&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">                                    ......</span><br><span class="line">                                <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">goals</span> /&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">inherited</span> /&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">configuration</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">pluginManagement</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--参见build/pluginManagement/plugins/plugin元素 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">groupId</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">artifactId</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">version</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">extensions</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">id</span> /&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">phase</span> /&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">goals</span> /&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">inherited</span> /&gt;</span></span><br><span class="line">                                <span class="tag">&lt;<span class="name">configuration</span> /&gt;</span></span><br><span class="line">                            <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">                            <span class="comment">&lt;!--参见dependencies/dependency元素 --&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">                                ......</span><br><span class="line">                            <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">goals</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">inherited</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">configuration</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--模块（有时称作子项目） 被构建成项目的一部分。列出的每个模块元素是指向该模块的目录的相对路径 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">modules</span> /&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--发现依赖和扩展的远程仓库列表。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--参见repositories/repository元素 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">enabled</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">updatePolicy</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">checksumPolicy</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">enabled</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">updatePolicy</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">checksumPolicy</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">id</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">name</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">url</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">layout</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--发现插件的远程仓库列表，这些插件用于构建和报表 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--包含需要连接到远程插件仓库的信息.参见repositories/repository元素 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">enabled</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">updatePolicy</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">checksumPolicy</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">enabled</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">updatePolicy</span> /&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">checksumPolicy</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">id</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">name</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">url</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">layout</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--该元素描述了项目相关的所有依赖。 这些依赖组成了项目构建过程中的一个个环节。它们自动从项目定义的仓库中下载。要获取更多信息，请看项目依赖机制。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--参见dependencies/dependency元素 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">                    ......</span><br><span class="line">                <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--不赞成使用. 现在Maven忽略该元素. --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">reports</span> /&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--该元素包括使用报表插件产生报表的规范。当用户执行&quot;mvn site&quot;，这些报表就会运行。 在页面导航栏能看到所有报表的链接。参见reporting元素 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">reporting</span>&gt;</span></span><br><span class="line">                ......</span><br><span class="line">            <span class="tag">&lt;/<span class="name">reporting</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--参见dependencyManagement元素 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--参见dependencies/dependency元素 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">                        ......</span><br><span class="line">                    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--参见distributionManagement元素 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">distributionManagement</span>&gt;</span></span><br><span class="line">                ......</span><br><span class="line">            <span class="tag">&lt;/<span class="name">distributionManagement</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--参见properties元素 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">properties</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">profiles</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--模块（有时称作子项目） 被构建成项目的一部分。列出的每个模块元素是指向该模块的目录的相对路径 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modules</span> /&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--发现依赖和扩展的远程仓库列表。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--包含需要连接到远程仓库的信息 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--如何处理远程仓库里发布版本的下载 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--true或者false表示该仓库是否为下载某种类型构件（发布版，快照版）开启。 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">enabled</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--该元素指定更新发生的频率。Maven会比较本地POM和远程POM的时间戳。这里的选项是：always（一直），daily（默认，每日），interval：X（这里X是以分钟为单位的时间间隔），或者never（从不）。 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">updatePolicy</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--当Maven验证构件校验文件失败时该怎么做：ignore（忽略），fail（失败），或者warn（警告）。 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">checksumPolicy</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 如何处理远程仓库里快照版本的下载。有了releases和snapshots这两组配置，POM就可以在每个单独的仓库中，为每种类型的构件采取不同的 </span></span><br><span class="line"><span class="comment">                策略。例如，可能有人会决定只为开发目的开启对快照版本下载的支持。参见repositories/repository/releases元素 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">enabled</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">updatePolicy</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">checksumPolicy</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--远程仓库唯一标识符。可以用来匹配在settings.xml文件里配置的远程仓库 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>banseon-repository-proxy<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--远程仓库名称 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">name</span>&gt;</span>banseon-repository-proxy<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--远程仓库URL，按protocol://hostname/path形式 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://192.168.1.169:9999/repository/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 用于定位和排序构件的仓库布局类型-可以是default（默认）或者legacy（遗留）。Maven 2为其仓库提供了一个默认的布局；然 </span></span><br><span class="line"><span class="comment">                而，Maven 1.x有一种不同的布局。我们可以使用该元素指定布局是default（默认）还是legacy（遗留）。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">layout</span>&gt;</span>default<span class="tag">&lt;/<span class="name">layout</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--发现插件的远程仓库列表，这些插件用于构建和报表 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--包含需要连接到远程插件仓库的信息.参见repositories/repository元素 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">            ......</span><br><span class="line">        <span class="tag">&lt;/<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">    <span class="comment">&lt;!--该元素描述了项目相关的所有依赖。 这些依赖组成了项目构建过程中的一个个环节。它们自动从项目定义的仓库中下载。要获取更多信息，请看项目依赖机制。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--依赖的group ID --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--依赖的artifact ID --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-artifact<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--依赖的版本号。 在Maven 2里, 也可以配置成版本号的范围。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.8.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 依赖类型，默认类型是jar。它通常表示依赖的文件的扩展名，但也有例外。一个类型可以被映射成另外一个扩展名或分类器。类型经常和使用的打包方式对应， </span></span><br><span class="line"><span class="comment">                尽管这也有例外。一些类型的例子：jar，war，ejb-client和test-jar。如果设置extensions为 true，就可以在 plugin里定义新的类型。所以前面的类型的例子不完整。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 依赖的分类器。分类器可以区分属于同一个POM，但不同构建方式的构件。分类器名被附加到文件名的版本号后面。例如，如果你想要构建两个单独的构件成 </span></span><br><span class="line"><span class="comment">                JAR，一个使用Java 1.4编译器，另一个使用Java 6编译器，你就可以使用分类器来生成两个单独的JAR构件。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">classifier</span>&gt;</span><span class="tag">&lt;/<span class="name">classifier</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--依赖范围。在项目发布过程中，帮助决定哪些构件被包括进来。欲知详情请参考依赖机制。 - compile ：默认范围，用于编译 - provided：类似于编译，但支持你期待jdk或者容器提供，类似于classpath </span></span><br><span class="line"><span class="comment">                - runtime: 在执行时需要使用 - test: 用于test任务时使用 - system: 需要外在提供相应的元素。通过systemPath来取得 </span></span><br><span class="line"><span class="comment">                - systemPath: 仅用于范围为system。提供相应的路径 - optional: 当项目自身被依赖时，标注依赖是否传递。用于连续依赖时使用 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--仅供system范围使用。注意，不鼓励使用这个元素，并且在新的版本中该元素可能被覆盖掉。该元素为依赖规定了文件系统上的路径。需要绝对路径而不是相对路径。推荐使用属性匹配绝对路径，例如$&#123;java.home&#125;。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">systemPath</span>&gt;</span><span class="tag">&lt;/<span class="name">systemPath</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--当计算传递依赖时， 从依赖构件列表里，列出被排除的依赖构件集。即告诉maven你只依赖指定的项目，不依赖项目的依赖。此元素主要用于解决版本冲突问题 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">exclusions</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">exclusion</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">exclusion</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">exclusions</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--可选依赖，如果你在项目B中把C依赖声明为可选，你就需要在依赖于B的项目（例如项目A）中显式的引用对C的依赖。可选依赖阻断依赖的传递性。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--不赞成使用. 现在Maven忽略该元素. --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">reports</span>&gt;</span><span class="tag">&lt;/<span class="name">reports</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--该元素描述使用报表插件产生报表的规范。当用户执行&quot;mvn site&quot;，这些报表就会运行。 在页面导航栏能看到所有报表的链接。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">reporting</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--true，则，网站不包括默认的报表。这包括&quot;项目信息&quot;菜单中的报表。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">excludeDefaults</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--所有产生的报表存放到哪里。默认值是$&#123;project.build.directory&#125;/site。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">outputDirectory</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--使用的报表插件和他们的配置。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--plugin元素包含描述报表插件需要的信息 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--报表插件在仓库里的group ID --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">groupId</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--报表插件在仓库里的artifact ID --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">artifactId</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--被使用的报表插件的版本（或版本范围） --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">version</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--任何配置是否被传播到子项目 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">inherited</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--报表插件的配置 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">configuration</span> /&gt;</span></span><br><span class="line">                <span class="comment">&lt;!--一组报表的多重规范，每个规范可能有不同的配置。一个规范（报表集）对应一个执行目标 。例如，有1，2，3，4，5，6，7，8，9个报表。1，2，5构成A报表集，对应一个执行目标。2，5，8构成B报表集，对应另一个执行目标 --&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">reportSets</span>&gt;</span></span><br><span class="line">                    <span class="comment">&lt;!--表示报表的一个集合，以及产生该集合的配置 --&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">reportSet</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--报表集合的唯一标识符，POM继承时用到 --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">id</span> /&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--产生报表集合时，被使用的报表的配置 --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">configuration</span> /&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--配置是否被继承到子POMs --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">inherited</span> /&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--这个集合里使用到哪些报表 --&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">reports</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">reportSet</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">reportSets</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">reporting</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 继承自该项目的所有子项目的默认依赖信息。这部分的依赖信息不会被立即解析,而是当子项目声明一个依赖（必须描述group ID和 artifact </span></span><br><span class="line"><span class="comment">        ID信息），如果group ID和artifact ID以外的一些信息没有描述，则通过group ID和artifact ID 匹配到这里的依赖，并使用这里的依赖信息。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--参见dependencies/dependency元素 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">                ......</span><br><span class="line">            <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--项目分发信息，在执行mvn deploy后表示要发布的位置。有了这些信息就可以把网站部署到远程服务器或者把构件部署到远程仓库。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">distributionManagement</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--部署项目产生的构件到远程仓库需要的信息 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--是分配给快照一个唯一的版本号（由时间戳和构建流水号）？还是每次都使用相同的版本号？参见repositories/repository元素 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">uniqueVersion</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>banseon-maven2<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">name</span>&gt;</span>banseon maven2<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">url</span>&gt;</span>file://$&#123;basedir&#125;/target/deploy<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">layout</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--构件的快照部署到哪里？如果没有配置该元素，默认部署到repository元素配置的仓库，参见distributionManagement/repository元素 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">snapshotRepository</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">uniqueVersion</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>banseon-maven2<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">name</span>&gt;</span>Banseon-maven2 Snapshot Repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">url</span>&gt;</span>scp://svn.baidu.com/banseon:/usr/local/maven-snapshot<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">layout</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">snapshotRepository</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--部署项目的网站需要的信息 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">site</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--部署位置的唯一标识符，用来匹配站点和settings.xml文件里的配置 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>banseon-site<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--部署位置的名称 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">name</span>&gt;</span>business api website<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--部署位置的URL，按protocol://hostname/path形式 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">url</span>&gt;</span></span><br><span class="line">                scp://svn.baidu.com/banseon:/var/www/localhost/banseon-web</span><br><span class="line">            <span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">site</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--项目下载页面的URL。如果没有该元素，用户应该参考主页。使用该元素的原因是：帮助定位那些不在仓库里的构件（由于license限制）。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">downloadUrl</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--如果构件有了新的group ID和artifact ID（构件移到了新的位置），这里列出构件的重定位信息。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">relocation</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--构件新的group ID --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span> /&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--构件新的artifact ID --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span> /&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--构件新的版本号 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span> /&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--显示给用户的，关于移动的额外信息，例如原因。 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">message</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">relocation</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 给出该构件在远程仓库的状态。不得在本地项目中设置该元素，因为这是工具自动更新的。有效的值有：none（默认），converted（仓库管理员从 </span></span><br><span class="line"><span class="comment">            Maven 1 POM转换过来），partner（直接从伙伴Maven 2仓库同步过来），deployed（从Maven 2实例部 署），verified（被核实时正确的和最终的）。 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">status</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">distributionManagement</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--以值替代名称，Properties可以在整个POM中使用，也可以作为触发条件（见settings.xml配置文件里activation元素的说明）。格式是&lt;name&gt;value&lt;/name&gt;。 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>
@@ -5186,7 +5797,7 @@
 <li>线程在运行的时候，会在线程内部缓存一些数据，如果使用锁，会强制同步线程的缓存数据和主内存的数据</li>
 <li>使线程缓存数据失效，只能使用主内存数据  </li>
 </ul>
-]]></content>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
       </categories>

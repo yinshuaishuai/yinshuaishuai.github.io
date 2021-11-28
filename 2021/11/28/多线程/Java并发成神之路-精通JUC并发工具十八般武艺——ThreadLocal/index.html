@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ys_ico.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/ys_ico.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ysymj.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="慕课网《Java并发成神之路-精通JUC并发工具十八般武艺》课程学习笔记；本课程主要将Java并发相关的工具类，以及一些相关算法。本文只要讲ThreadLocal相关的一些内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java并发成神之路-精通JUC并发工具十八般武艺——ThreadLocal(二)">
+<meta property="og:url" content="http://ysymj.gitee.io/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94ThreadLocal/index.html">
+<meta property="og:site_name" content="YS">
+<meta property="og:description" content="慕课网《Java并发成神之路-精通JUC并发工具十八般武艺》课程学习笔记；本课程主要将Java并发相关的工具类，以及一些相关算法。本文只要讲ThreadLocal相关的一些内容。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-28T03:48:51.000Z">
+<meta property="article:modified_time" content="2021-11-28T06:26:15.054Z">
+<meta property="article:author" content="YS">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://ysymj.gitee.io/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94ThreadLocal/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java并发成神之路-精通JUC并发工具十八般武艺——ThreadLocal(二) | YS</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">YS</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ysymj.gitee.io/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94ThreadLocal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.png">
+      <meta itemprop="name" content="YS">
+      <meta itemprop="description" content="学海无涯苦作舟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YS">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java并发成神之路-精通JUC并发工具十八般武艺——ThreadLocal(二)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-28 11:48:51 / 修改时间：14:26:15" itemprop="dateCreated datePublished" datetime="2021-11-28T11:48:51+08:00">2021-11-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94ThreadLocal/" class="post-meta-item leancloud_visitors" data-flag-title="Java并发成神之路-精通JUC并发工具十八般武艺——ThreadLocal(二)" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94ThreadLocal/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94ThreadLocal/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="两大使用场景——ThreadLocal的用途"><a href="#两大使用场景——ThreadLocal的用途" class="headerlink" title="两大使用场景——ThreadLocal的用途"></a>两大使用场景——ThreadLocal的用途</h1><ul>
+<li>场景1：每个线程需要一个独享的对象（通常是工具类，典型需要使用的类有SimpleDateFormat和Random）<blockquote>
+<p>SimpleDateFormat为线程不安全的，如果在方法中每次都创建一个SimpleDateFormat对象<br>如果访问量较高，会导致格式化出来的时间有部分是重复的<br>可以通过使用ThreadLocal，针对每一个线程创建一个SimpleDateFormat对象，这样同一个线程的不同任务是排队进行的，不同线程使用的是不同的对象，就可以解决并发问题  </p>
+</blockquote>
+</li>
+<li>场景2：每个线程内需要保存全局变量（例如在拦截器中获取用户信息，可以让不同方法直接使用，避免参数传递的麻烦）<blockquote>
+<p>假设当前用户信息需要被线程内所有方法共享，一个比较繁琐的解决发难就是把user作为阐述层层传递，从方法1到方法2到方法3，以次类推，但是这样做代码冗余，且不利于维护<br>使用ThreadLocal，当前线程中公共变量，可以在当前线程中的任何一个方法中调用获取相应的变量值</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="ThreadLocal的两个作用"><a href="#ThreadLocal的两个作用" class="headerlink" title="ThreadLocal的两个作用"></a>ThreadLocal的两个作用</h2><ul>
+<li>让某个需要用到的对象在线程间隔离（每个线程都有自己的独立的对象）</li>
+<li>在任何方法中都可以轻松的获取到对象</li>
+</ul>
+<h2 id="根据共享对象的生产时机不同，选择initialValue或set来保存对象"><a href="#根据共享对象的生产时机不同，选择initialValue或set来保存对象" class="headerlink" title="根据共享对象的生产时机不同，选择initialValue或set来保存对象"></a>根据共享对象的生产时机不同，选择<code>initialValue</code>或<code>set</code>来保存对象</h2><ul>
+<li>场景一：<code>initialValue</code><blockquote>
+<p>在ThreadLocal第一个get的时候，把对象给初始化出来，对象的初始化时机可以由我们控制</p>
+</blockquote>
+</li>
+<li>场景二：<code>set</code><blockquote>
+<p>如果需要保存到ThreadLocal里面的对象的生产时机不由我们随意控制，例如拦截器生成的用户信息，用ThreadLocal.set()直接放到我们的ThreadLocal中去，以便后续使用</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="使用ThreadLocal带来的好处"><a href="#使用ThreadLocal带来的好处" class="headerlink" title="使用ThreadLocal带来的好处"></a>使用ThreadLocal带来的好处</h1><ul>
+<li>达到线程安全的目的</li>
+<li>不需要加锁，提高执行效率</li>
+<li>更高效的利用内存、节省开销：相比于每一个任务都新建一个SimpleDateFormat，显然用ThreadLocal可以节省内存和开销</li>
+<li>免去传参的繁琐：无论是场景一的工具类，还是场景二的用户名，都可以在任何地方直接通过ThreadLocal拿到，再也不需要每次都传同样的参数，ThreadLocal使得代码耦合度更低，更优雅</li>
+</ul>
+<h1 id="主要方法介绍"><a href="#主要方法介绍" class="headerlink" title="主要方法介绍"></a>主要方法介绍</h1><ul>
+<li><p><code>T initialValue()</code></p>
+<blockquote>
+<p>该方法会返回当前线程对应的”初始值“，这是一个延迟加载的方法，只有再调用<code>get()</code>的时候，才会触发<br>当线程第一个吃用<code>get()</code>方法访问变量时，将调用此方法，除非线程先调用了<code>set()</code>方法，在这种情况下，不会为线程调用本<code>initialValue()</code>方法<br>通常每个线程最调用一次此方法，但如果已经调用了<code>remove()</code>，再调用<code>get()</code>，则可以再次调用此方法<br>如果不重写本方法，这个放回就会返回null，一般使用匿名内部类的方法来重写<code>initialValue()</code>方法，以便再后续使用中，可以初始化副本对象<br>该方法没有默认实现，如果我们需要到该方法，需要自己实现，通常使用匿名内部类的方式</p>
+</blockquote>
+</li>
+<li><p><code>void set(T t)</code></p>
+<blockquote>
+<p>为这个线程设置一个新值</p>
+</blockquote>
+</li>
+<li><p><code>T get()</code></p>
+<blockquote>
+<p>得到这个线程对应的value，如果是首次调用<code>get()</code>（没有调用<code>set()</code>方法直接调用<code>get()</code>），则会调用<code>initialValue()</code>方法获取这个值<br><code>get()</code>方法是先取出当前线程的<code>ThreadLocalMap</code>，然后调用<code>map.getEntry</code>方法，把本<code>ThreadLocal</code>的引用作为参数传进去，取出map中属于本<code>ThreadLocal</code>的value<br>注意，这个map以及map中的key和value都是保存再线程中的，而不是保存再ThreadLocal中的</p>
+</blockquote>
+</li>
+<li><p><code>void remove()</code></p>
+<blockquote>
+<p>删除对应这个线程的值</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="ThreadLocalMap类"><a href="#ThreadLocalMap类" class="headerlink" title="ThreadLocalMap类"></a>ThreadLocalMap类</h1><ul>
+<li>ThreadLocalMap类是每个线程Thread类里面的变量，里面最重要的是一个键值对数组<code>Entry[] table</code>，可以认为是一个map，键值对：<ul>
+<li>键：这个ThreadLocal</li>
+<li>值：实际需要的成员变量，比如user或者SimpleDateFormat对象</li>
+</ul>
+</li>
+<li>当发现hash冲突的时候，ThreadLocalMap采用的是线性探测法，也就是如果发生冲突，就继续找下一个空位置，而不是采用链表拉链</li>
+</ul>
+<h1 id="ThreadLocal注意点"><a href="#ThreadLocal注意点" class="headerlink" title="ThreadLocal注意点"></a>ThreadLocal注意点</h1><h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><ul>
+<li>什么是内存泄漏：某个对象不再有用，但是占用的内存却不能被回收</li>
+<li>key的泄漏：ThreadLocalMap中的Entry继承自WeakReference，是弱引用<ul>
+<li>弱引用的特点是，如果这个对象只被弱引用关联（没有任何强引用关联），那么这个对象就可以被回收，所以弱引用不会阻止GC</li>
+</ul>
+</li>
+<li>value的泄漏<ul>
+<li>ThreadLocalMap的每个Entry都是一个对key的弱引用，同时，每个Entry都包含了一个对value的强引用</li>
+<li>正常情况下，当线程终止，保存再ThreadLocal里面的value会被垃圾回收，因为没有任何强引用了</li>
+<li>但是如果线程不终止（比如线程需要保持很久，使用线程池的场景，线程一直被重复使用），那么key对应的value就不能被回收，因为又以下的调用链：<ul>
+<li>Thread -&gt; ThreadLocalMap -&gt; Entry(key为null) -&gt; value</li>
+</ul>
+</li>
+<li>因为value和Thread之间还存在这个强引用链路，所以导致value无法回收，就可能出现OOM</li>
+<li>JDK已经考虑到了这个问题，多以在set，remove，rehash方法中会扫描key为null的Entry，并把相应的value设置成null，这样value对象就可以被回收</li>
+<li>但是如果一个ThreadLocal不被使用，那么实际上set,remove,rehash方法也不会被调用到，如果同时线程又不停止，那么调用链就一直存在，那么就导致了value的内存泄漏</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何避免内存泄漏（阿里规约）"><a href="#如何避免内存泄漏（阿里规约）" class="headerlink" title="如何避免内存泄漏（阿里规约）"></a>如何避免内存泄漏（阿里规约）</h2><ul>
+<li>调用remove方法，就会删除相应的Entry对象，可以避免内存泄漏，所以使用完ThreadLocal之后，应该调用remove方法</li>
+</ul>
+<h2 id="控制针问题"><a href="#控制针问题" class="headerlink" title="控制针问题"></a>控制针问题</h2><ul>
+<li>当ThreadLocal.get()方法出来的值，直接被基本类型接受的时候，如果值是空，那么在转为基本类型的时候会抛出控制在异常</li>
+</ul>
+<h2 id="共享对象"><a href="#共享对象" class="headerlink" title="共享对象"></a>共享对象</h2><ul>
+<li>如果每个线程中ThreadLocal.set()进去的东西本来就是多个线程共享的同一个对象，比如static对象，那么多个线程的ThreadLocal.get()取的还是这个共享对象本身，还是会有并发访问的问题</li>
+</ul>
+<h2 id="如果使用ThreadLocal就可以解决问题，那么不要强制使用"><a href="#如果使用ThreadLocal就可以解决问题，那么不要强制使用" class="headerlink" title="如果使用ThreadLocal就可以解决问题，那么不要强制使用"></a>如果使用ThreadLocal就可以解决问题，那么不要强制使用</h2><ul>
+<li>例如在任务数很少的时候，在局部变量中可以新建对象就可以解决问题，那么就不需要使用到ThreadLocal</li>
+</ul>
+<h2 id="优先使用框架的支持，而不是自己创造"><a href="#优先使用框架的支持，而不是自己创造" class="headerlink" title="优先使用框架的支持，而不是自己创造"></a>优先使用框架的支持，而不是自己创造</h2><ul>
+<li>例如spring中，如果可以使用RequestContextHolder，那么就不需要自己维护ThreadLocal，因为自己可能会忘记调用remove()方法，造成内存泄漏</li>
+</ul>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 多线程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E6%B1%A0/" rel="prev" title="Java并发成神之路-精通JUC并发工具十八般武艺——线程池(一)">
+      <i class="fa fa-chevron-left"></i> Java并发成神之路-精通JUC并发工具十八般武艺——线程池(一)
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A4%E5%A4%A7%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF%E2%80%94%E2%80%94ThreadLocal%E7%9A%84%E7%94%A8%E9%80%94"><span class="nav-number">1.</span> <span class="nav-text">两大使用场景——ThreadLocal的用途</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ThreadLocal%E7%9A%84%E4%B8%A4%E4%B8%AA%E4%BD%9C%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">ThreadLocal的两个作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B9%E6%8D%AE%E5%85%B1%E4%BA%AB%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%94%9F%E4%BA%A7%E6%97%B6%E6%9C%BA%E4%B8%8D%E5%90%8C%EF%BC%8C%E9%80%89%E6%8B%A9initialValue%E6%88%96set%E6%9D%A5%E4%BF%9D%E5%AD%98%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.2.</span> <span class="nav-text">根据共享对象的生产时机不同，选择initialValue或set来保存对象</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8ThreadLocal%E5%B8%A6%E6%9D%A5%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="nav-number">2.</span> <span class="nav-text">使用ThreadLocal带来的好处</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">主要方法介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ThreadLocalMap%E7%B1%BB"><span class="nav-number">4.</span> <span class="nav-text">ThreadLocalMap类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ThreadLocal%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="nav-number">5.</span> <span class="nav-text">ThreadLocal注意点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F"><span class="nav-number">5.1.</span> <span class="nav-text">内存泄漏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%EF%BC%88%E9%98%BF%E9%87%8C%E8%A7%84%E7%BA%A6%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">如何避免内存泄漏（阿里规约）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E9%92%88%E9%97%AE%E9%A2%98"><span class="nav-number">5.3.</span> <span class="nav-text">控制针问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%AF%B9%E8%B1%A1"><span class="nav-number">5.4.</span> <span class="nav-text">共享对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E4%BD%BF%E7%94%A8ThreadLocal%E5%B0%B1%E5%8F%AF%E4%BB%A5%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98%EF%BC%8C%E9%82%A3%E4%B9%88%E4%B8%8D%E8%A6%81%E5%BC%BA%E5%88%B6%E4%BD%BF%E7%94%A8"><span class="nav-number">5.5.</span> <span class="nav-text">如果使用ThreadLocal就可以解决问题，那么不要强制使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E6%A1%86%E6%9E%B6%E7%9A%84%E6%94%AF%E6%8C%81%EF%BC%8C%E8%80%8C%E4%B8%8D%E6%98%AF%E8%87%AA%E5%B7%B1%E5%88%9B%E9%80%A0"><span class="nav-number">5.6.</span> <span class="nav-text">优先使用框架的支持，而不是自己创造</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YS"
+      src="/images/author.png">
+  <p class="site-author-name" itemprop="name">YS</p>
+  <div class="site-description" itemprop="description">学海无涯苦作舟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YS</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
+      appKey     : 'BCtPpmnU41TOE7Wr5O0CJFgS',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

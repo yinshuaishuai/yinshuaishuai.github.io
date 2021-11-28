@@ -324,7 +324,7 @@
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">comment:</span></span><br><span class="line">  <span class="attr">appId:</span> <span class="string">leancloud中的AppID</span></span><br><span class="line">  <span class="attr">appKey:</span> <span class="string">leancloud中的AppKey</span></span><br></pre></td></tr></table></figure>
 <p>修改模板文件，在对应的模板中增加以下代码，作者的是<code>post.ejs</code>，具体应该会根据模板的不同而有所不同。  </p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;comment-container&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&#x27;//unpkg.com/valine/dist/Valine.min.js&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    <span class="keyword">new</span> Valine(&#123;</span></span><br><span class="line"><span class="javascript">        <span class="attr">el</span>: <span class="string">&#x27;#comment-container&#x27;</span>,</span></span><br><span class="line"><span class="javascript">        <span class="attr">appId</span>: <span class="string">&#x27;&lt;%- config.comment.appId %&gt;&#x27;</span>,</span></span><br><span class="line"><span class="javascript">        <span class="attr">appKey</span>: <span class="string">&#x27;&lt;%- config.comment.appKey %&gt;&#x27;</span></span></span><br><span class="line"><span class="javascript">    &#125;)</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">
     </div>
 
     
@@ -424,7 +424,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
