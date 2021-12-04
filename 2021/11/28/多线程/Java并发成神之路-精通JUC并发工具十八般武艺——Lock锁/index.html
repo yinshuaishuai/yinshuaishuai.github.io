@@ -38,7 +38,7 @@
 <meta property="og:image" content="http://ysymj.gitee.io/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94Lock%E9%94%81/%E5%85%AC%E5%B9%B3%E9%94%81%E6%8A%A2%E9%94%81%E7%BB%93%E6%9E%9C%E7%A4%BA%E6%84%8F%E5%9B%BE2.png">
 <meta property="og:image" content="http://ysymj.gitee.io/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94Lock%E9%94%81/%E8%87%AA%E6%97%8B%E9%94%81%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png">
 <meta property="article:published_time" content="2021-11-28T10:07:44.000Z">
-<meta property="article:modified_time" content="2021-12-03T13:37:59.834Z">
+<meta property="article:modified_time" content="2021-12-04T04:54:42.195Z">
 <meta property="article:author" content="YS">
 <meta property="article:tag" content="多线程">
 <meta name="twitter:card" content="summary">
@@ -236,7 +236,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-03 21:37:59" itemprop="dateModified" datetime="2021-12-03T21:37:59+08:00">2021-12-03</time>
+                <time title="修改时间：2021-12-04 12:54:42" itemprop="dateModified" datetime="2021-12-04T12:54:42+08:00">2021-12-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -507,8 +507,8 @@
 <li>在自旋的过程中，一直消耗CPU，所以虽然自旋锁的起始开销低于悲观锁，但是随着自旋时间的增长，开销也是线性增长的</li>
 </ul>
 <h2 id="原理和源码分析"><a href="#原理和源码分析" class="headerlink" title="原理和源码分析"></a>原理和源码分析</h2><ul>
-<li>在Java1.5版本及以上的并发框架java.util.concurrent的atomic包下的类基本都是自旋锁的实现</li>
-<li>AtomicInteger的实现：自旋锁的实现原理CAS，AtomicInteger中调用unsafe进行自增操作的源码中的do-while循环就是一个自旋操作，如果修改过程中遇到其他线程竞争导致没修改成功，就在while里死循环，直至修改成功<blockquote>
+<li>在Java1.5版本及以上的并发框架<code>java.util.concurrent</code>的atomic包下的类基本都是自旋锁的实现</li>
+<li><code>AtomicInteger</code>的实现：自旋锁的实现原理CAS，<code>AtomicInteger</code>中调用<code>unsafe</code>进行自增操作的源码中的<code>do-while</code>循环就是一个自旋操作，如果修改过程中遇到其他线程竞争导致没修改成功，就在while里死循环，直至修改成功<blockquote>
 <p>如图所示<br><img src="/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94Lock%E9%94%81/%E8%87%AA%E6%97%8B%E9%94%81%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="自旋锁源码图示"><br>自旋锁实现代码如下所示  </p>
 </blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpinLock</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> AtomicReference&lt;Thread&gt; sign = <span class="keyword">new</span> AtomicReference&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread thread = Thread.currentThread();</span><br><span class="line">        <span class="keyword">while</span> (!sign.compareAndSet(<span class="keyword">null</span>, thread)) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread thread = Thread.currentThread();</span><br><span class="line">        sign.compareAndSet(thread, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpinLock spinLock = <span class="keyword">new</span> SpinLock();</span><br><span class="line">        Runnable runnable = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">&quot;开始尝试获取自旋锁&quot;</span>);</span><br><span class="line">                spinLock.lock();</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">&quot;获得自旋锁&quot;</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">300</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    spinLock.unlock();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName()+<span class="string">&quot;释放了自旋锁&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">new</span> Thread(runnable).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(runnable).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
@@ -518,7 +518,7 @@
 <li>另外，自旋锁适用于临界区比较短小的情况，否则如果临界区很大（线程一旦拿到锁，很久之后才会释放），那也是不合适的</li>
 </ul>
 <h1 id="可中断锁：顾名思义，就是可以相应中断的锁"><a href="#可中断锁：顾名思义，就是可以相应中断的锁" class="headerlink" title="可中断锁：顾名思义，就是可以相应中断的锁"></a>可中断锁：顾名思义，就是可以相应中断的锁</h1><ul>
-<li>在Java中synchronized就是不可中断锁，而Lock是可中断锁，因为tryLock(time)和lockInterruptibly都能响应中断</li>
+<li>在Java中<code>synchronized</code>就是不可中断锁，而<code>Lock</code>是可中断锁，因为<code>tryLock(time)</code>和<code>lockInterruptibly</code>都能响应中断</li>
 <li>如果某一线程A正在执行锁中的代码，另一个线程B正在等待获取该锁，可能由于等待时间过长，线程B不想等待了，想先处理其他事情，我们可以中断它，这种就是可中断锁</li>
 </ul>
 <h1 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h1><h2 id="Java虚拟机对锁的优化"><a href="#Java虚拟机对锁的优化" class="headerlink" title="Java虚拟机对锁的优化"></a>Java虚拟机对锁的优化</h2><ul>
@@ -555,7 +555,10 @@
     <a href="/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94ThreadLocal/" rel="prev" title="Java并发成神之路-精通JUC并发工具十八般武艺——ThreadLocal(二)">
       <i class="fa fa-chevron-left"></i> Java并发成神之路-精通JUC并发工具十八般武艺——ThreadLocal(二)
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/12/04/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E5%8E%9F%E5%AD%90%E7%B1%BB/" rel="next" title="Java并发成神之路-精通JUC并发工具十八般武艺——原子类(四)">
+      Java并发成神之路-精通JUC并发工具十八般武艺——原子类(四) <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -631,7 +634,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

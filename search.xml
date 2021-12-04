@@ -315,6 +315,129 @@
       </tags>
   </entry>
   <entry>
+    <title>Java并发成神之路-精通JUC并发工具十八般武艺——原子类(四)</title>
+    <url>/2021/12/04/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E5%8E%9F%E5%AD%90%E7%B1%BB/</url>
+    <content><![CDATA[<h1 id="什么是原子类，有什么作用？"><a href="#什么是原子类，有什么作用？" class="headerlink" title="什么是原子类，有什么作用？"></a>什么是原子类，有什么作用？</h1><ul>
+<li>不可分割</li>
+<li>一个操作是不可中断的，即便是多线程的情况下也可以保证</li>
+<li>java.util.concurrent.atomic</li>
+<li>原子类的作用和锁类似，是为了保证并发情况下线程安全。不过原子类相比于锁，有一定的优势：<ul>
+<li>粒度更细：原子变量可以把竞争范围缩小到变量级别，这是我们可以获得的最细粒度的情况了，通常锁的粒度都要大于原子变量的粒度</li>
+<li>效率更高：通常，使用原子类的效率会比使用锁的效率更高，除了高度竞争的情况</li>
+</ul>
+</li>
+</ul>
+<h1 id="6类原子类纵览"><a href="#6类原子类纵览" class="headerlink" title="6类原子类纵览"></a>6类原子类纵览</h1><table>
+<thead>
+<tr>
+<th align="left">类型描述</th>
+<th align="left">原子类</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Atomic*基本类型原子类</td>
+<td align="left">AtomicInteger<br>AtomicLong<br>AtomicBoolean</td>
+</tr>
+<tr>
+<td align="left">Atomic*array数组类型原子类</td>
+<td align="left">AtomicIntegerArray<br>AtomicLongArray<br>AtomicReferenceArray</td>
+</tr>
+<tr>
+<td align="left">Atomic*Reference引用类型原子类</td>
+<td align="left">AtomicReference<br>AtomicStampedReference<br>AtomicMarkableReference</td>
+</tr>
+<tr>
+<td align="left">Atomic*FieldUpdater升级类型原子类</td>
+<td align="left">AtomicIntegerFieldUpdater<br>AtomicLongFieldUpdater<br>AtomicReferenceFieldUpdater</td>
+</tr>
+<tr>
+<td align="left">Adder累加器</td>
+<td align="left">LongAdder<br>DoubleAdder</td>
+</tr>
+<tr>
+<td align="left">Accumulator累加器</td>
+<td align="left">LongAccumulator<br>DoubleAccumulator</td>
+</tr>
+</tbody></table>
+<h1 id="Atomic-基本类型原子类，以AtomicInteger为例"><a href="#Atomic-基本类型原子类，以AtomicInteger为例" class="headerlink" title="Atomic*基本类型原子类，以AtomicInteger为例"></a>Atomic*基本类型原子类，以AtomicInteger为例</h1><h2 id="AtomicInteger常用方法"><a href="#AtomicInteger常用方法" class="headerlink" title="AtomicInteger常用方法"></a>AtomicInteger常用方法</h2><ul>
+<li>public final int get()//获取当前的值</li>
+<li>public final int getAndSet()//获取当前的值，并设置新值</li>
+<li>public final int getAndIncrement()//获取当前的值，并自增</li>
+<li>public final int getAndDecrement()//获取当前值，并自减</li>
+<li>public final int getAndAdd(int delta)//获取当前值，并加上预期的值</li>
+<li>boolean compareAndSet(int expect,int update)//如果输入的数组等于预期值，则以原子方式将该值设置为输入值(先判断当前值是否是expect，如果是则修改为update的值，不是返回false)</li>
+</ul>
+<h1 id="Atomic-Array数组类型原子类"><a href="#Atomic-Array数组类型原子类" class="headerlink" title="Atomic*Array数组类型原子类"></a>Atomic*Array数组类型原子类</h1><ul>
+<li>里面的每个元素都是原子类，都是线程安全的</li>
+</ul>
+<h1 id="Atomic-Reference引用类型原子类"><a href="#Atomic-Reference引用类型原子类" class="headerlink" title="Atomic*Reference引用类型原子类"></a>Atomic*Reference引用类型原子类</h1><ul>
+<li>AtomicReference：AtomicReference类的作用，和AtomicInteger并没有本质区别，AtomicInteger可以让一个整数保证原子性，而AtomicReference可以让一个对象保证原子性，当然AtomicReference的功能明显比AtomicInteger强，因为一个对象里面可以包含很多属性。</li>
+<li>用法和AtomicInteger类似<blockquote>
+<p>代码如下所示：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpinLock</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> AtomicReference&lt;Thread&gt; sign = <span class="keyword">new</span> AtomicReference&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread thread = Thread.currentThread();</span><br><span class="line">        <span class="keyword">while</span> (!sign.compareAndSet(<span class="keyword">null</span>, thread)) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread thread = Thread.currentThread();</span><br><span class="line">        sign.compareAndSet(thread, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpinLock spinLock = <span class="keyword">new</span> SpinLock();</span><br><span class="line">        Runnable runnable = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">&quot;开始尝试获取自旋锁&quot;</span>);</span><br><span class="line">                spinLock.lock();</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">&quot;获得自旋锁&quot;</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">300</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    spinLock.unlock();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName()+<span class="string">&quot;释放了自旋锁&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">new</span> Thread(runnable).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(runnable).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="把普通变量升级为原子类：用AtomicIntegerFieldUpdater升级原有变量"><a href="#把普通变量升级为原子类：用AtomicIntegerFieldUpdater升级原有变量" class="headerlink" title="把普通变量升级为原子类：用AtomicIntegerFieldUpdater升级原有变量"></a>把普通变量升级为原子类：用<code>AtomicIntegerFieldUpdater</code>升级原有变量</h1></li>
+<li><code>AtomicIntegerFieldUpdater</code>对普通变量进行升级</li>
+<li>使用场景：偶尔需要一个原子get-set操作（大多数情况的时候不会有并发情况，只有在某一时间段，或者某一个操作的时候才会有）<blockquote>
+<p>代码如下所示，在使用的时候使用<code>AtomicIntegerFieldUpdater</code>处理即可</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AtomicIntegerFieldUpdaterDemo</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> Candidate tom;</span><br><span class="line">    <span class="keyword">static</span> Candidate peter;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> AtomicIntegerFieldUpdater&lt;Candidate&gt; sourceUpdater =</span><br><span class="line">            AtomicIntegerFieldUpdater.newUpdater(Candidate.class, <span class="string">&quot;score&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++) &#123;</span><br><span class="line">            peter.score++;</span><br><span class="line">            sourceUpdater.getAndIncrement(tom);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Candidate</span> </span>&#123;</span><br><span class="line">        <span class="keyword">volatile</span> <span class="keyword">int</span> score;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        tom = <span class="keyword">new</span> Candidate();</span><br><span class="line">        peter = <span class="keyword">new</span> Candidate();</span><br><span class="line">        AtomicIntegerFieldUpdaterDemo a = <span class="keyword">new</span> AtomicIntegerFieldUpdaterDemo();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(a);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(a);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        t1.join();</span><br><span class="line">        t2.join();</span><br><span class="line">        System.out.println(<span class="string">&quot;普通变量：&quot;</span>+peter.score);</span><br><span class="line">        System.out.println(<span class="string">&quot;升级后的记过：&quot;</span>+tom.score);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="AtomicIntegerFieldUpdater的注意点"><a href="#AtomicIntegerFieldUpdater的注意点" class="headerlink" title="AtomicIntegerFieldUpdater的注意点"></a>AtomicIntegerFieldUpdater的注意点</h2></li>
+<li>可见范围（如果变量是不可见的就不能操作）</li>
+<li>不支持static</li>
+</ul>
+<h1 id="Adder累加器"><a href="#Adder累加器" class="headerlink" title="Adder累加器"></a>Adder累加器</h1><ul>
+<li>是Java8中引入的，相对是比较新的一个类</li>
+<li>高并发下LongAdder比AtomicLong效率高，不过本质是空间换时间</li>
+<li>竞争激烈的时候，LongAdder把不同的线程对应到不同的Cell上进行修改，降低了冲突的概率，是多段锁的概念，提高了并发性<blockquote>
+<p>使用<code>AtomicLong</code>和<code>LongAdder</code>进行自增操作，如下代码所示<br>使用20个线程执行10000个任务，每个任务里面是自增一万次，总计一亿次<br><code>LongAdder</code>的耗时要远远低于<code>AtomicLong</code><br><code>AtomicLong</code>每次执行加1之后，都需要把结果刷到主内存中，以保证其他线程可见<br><code>LongAdder</code>则不需要，只是每个线程单独计数，之后在进行汇总</p>
+</blockquote>
+</li>
+</ul>
+<p>AtomicLong  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AtomicLongDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        AtomicLong counter = <span class="keyword">new</span> AtomicLong(<span class="number">0</span>);</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(<span class="number">20</span>);</span><br><span class="line">        <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++) &#123;</span><br><span class="line">            executorService.submit(<span class="keyword">new</span> Task(counter));</span><br><span class="line">        &#125;</span><br><span class="line">        executorService.shutdown();</span><br><span class="line">        <span class="keyword">while</span> (!executorService.isTerminated())&#123;&#125;</span><br><span class="line">        <span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">        System.out.println(counter.get());</span><br><span class="line">        System.out.println(<span class="string">&quot;AtomicLong耗时：&quot;</span>+(end-start));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Task</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> AtomicLong count;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Task</span><span class="params">(AtomicLong count)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.count = count;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++) &#123;</span><br><span class="line">                count.getAndIncrement();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">100000000</span><br><span class="line">AtomicLong耗时：1773</span><br></pre></td></tr></table></figure>
+<p>LongAdder  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LongAdderDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        LongAdder counter = <span class="keyword">new</span> LongAdder();</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(<span class="number">20</span>);</span><br><span class="line">        <span class="keyword">long</span> start = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++) &#123;</span><br><span class="line">            executorService.submit(<span class="keyword">new</span> Task(counter));</span><br><span class="line">        &#125;</span><br><span class="line">        executorService.shutdown();</span><br><span class="line">        <span class="keyword">while</span> (!executorService.isTerminated())&#123;&#125;</span><br><span class="line">        <span class="keyword">long</span> end = System.currentTimeMillis();</span><br><span class="line">        System.out.println(counter.sum());</span><br><span class="line">        System.out.println(<span class="string">&quot;LongAdder 耗时：&quot;</span>+(end-start));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Task</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> LongAdder count;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Task</span><span class="params">(LongAdder count)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.count = count;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10000</span>; i++) &#123;</span><br><span class="line">                count.increment();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">100000000</span><br><span class="line">LongAdder 耗时：172</span><br></pre></td></tr></table></figure>
+
+<h2 id="LongAdder带来的改进和原理"><a href="#LongAdder带来的改进和原理" class="headerlink" title="LongAdder带来的改进和原理"></a>LongAdder带来的改进和原理</h2><ul>
+<li>在内部，这个<code>LongAdder</code>的实现原理和刚才的<code>AtomicLong</code>是有不同的，刚才的<code>AtomicLong</code>的实现原理是每一次加法都需要做同步，所以在高并发的时候会导致冲突比较多，也就降低了效率</li>
+<li>而此时的<code>LongAdder</code>，每个线程会有自己的一个计数器，仅用来在自己线程内计数，这样一来就不会有其他线程的计数器干扰</li>
+<li>第一线程的计数器数值为1的时候，可能线程2的计数器的值已经是3了，他们之间并不存在竞争关系，所以在加和的过程中，根本不需要同步机制，也不需要刚才的flush和refresh，这里也没有一个公共的counter来给所有线程统一计数</li>
+<li><code>LongAdder</code>引入分段累加的概念，内部有一个<code>base</code>变量和一个<code>Cell[]</code>数组共同参与计数：<ul>
+<li><code>base</code>变量：竞争不激烈，直接累加到该变量上</li>
+<li><code>Cell[]</code>数组：竞争激烈，各个线程分散累加到自己的槽<code>Cell[i]</code>中</li>
+</ul>
+</li>
+<li><code>sum()</code>方法源码<blockquote>
+<p>如下图所示，方法注释中也有讲解，由于是将Cell[]数组和base中的所有值相加，当循环Cell[]数组的时候，如果里面的值又有变动，最终获得结果就可能不精确，循环过的对象在发生改变，无法将值再累计到结果上<br>如果调用方法的时候Cell[]数组不会再发生改变，得到的值就是精确结果<br><img src="/2021/12/04/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E5%8E%9F%E5%AD%90%E7%B1%BB/LongAdder%E7%B1%BBsum%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81.png" alt="LongAdder类sum方法源码"></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="对比AtomicLong和LongAdder"><a href="#对比AtomicLong和LongAdder" class="headerlink" title="对比AtomicLong和LongAdder"></a>对比<code>AtomicLong</code>和<code>LongAdder</code></h2><ul>
+<li>在低争用下，<code>AtomicLong</code>和<code>LongAdder</code>这两个类具有相似的特征，但是在竞争激烈的情况下，<code>LongAdder</code>的预期吞吐量要高的多，但要消耗更多的空间</li>
+<li><code>LongAdder</code>适合的场景是统计求和和计数的场景，而且<code>LongAdder</code>基本只提供了add方法，而<code>AtomicLong</code>还具有cas方法</li>
+</ul>
+<h1 id="Accumulator累加器"><a href="#Accumulator累加器" class="headerlink" title="Accumulator累加器"></a>Accumulator累加器</h1><ul>
+<li><code>Accumulator</code>和<code>Adder</code>非常相似，<code>Accumulator</code>就是一个更通用版本的<code>Adder</code><blockquote>
+<p>具体代码实现如下所示，可以实现1-9的叠加，构造函数中的表达式里面的算法可以根据需要进行更该</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LongAccumulatorDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        LongAccumulator accumulator = <span class="keyword">new</span> LongAccumulator((x, y) -&gt; x + y, <span class="number">0</span>);</span><br><span class="line">        ExecutorService executorService = Executors.newFixedThreadPool(<span class="number">8</span>);</span><br><span class="line">        IntStream.range(<span class="number">1</span>,<span class="number">10</span>).forEach(i-&gt;executorService.submit(()-&gt;accumulator.accumulate(i)));</span><br><span class="line">        System.out.println(accumulator.get());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2></li>
+<li>适用于需要大量计算，并且可以并行计算的场景</li>
+<li>不保证计算的顺序（如上代码，使用了线程池，不能保证那个线程先执行，也许是1+3+4+2…）</li>
+</ul>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>多线程</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>synchronized关键字</title>
     <url>/2021/11/14/%E5%A4%9A%E7%BA%BF%E7%A8%8B/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/</url>
     <content><![CDATA[<h1 id="synchronized的作用"><a href="#synchronized的作用" class="headerlink" title="synchronized的作用"></a>synchronized的作用</h1><ul>
@@ -741,70 +864,6 @@
       </tags>
   </entry>
   <entry>
-    <title>备忘录模式</title>
-    <url>/2021/10/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
-<p>保存一个对象的某个状态，以便于在适当的时候恢复对象。<br>“后悔药”<br>行为型</p>
-</blockquote>
-<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
-<li>保存及恢复数据相关业务场景</li>
-<li>后悔的时候，即像恢复到之前的状态</li>
-</ul>
-<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>为用户提供一种可恢复机制</li>
-<li>存档信息的封装</li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>资源占用。如果类的成员过多，势必会占用比较大大的资源，而且每一次保存都会消耗一定的内存。</li>
-</ul>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
-<li><strong>发起人角色</strong>：记录当前时刻的内部状态信息，提供创建备忘录和恢复备忘录数据的功能，实现其他业务功能，它可以访问备忘录里面的所有信息。</li>
-<li><strong>备忘录角色</strong>：负责存储发起人的内部状态，在需要的时候提供这些内部状态给发起人。</li>
-<li><strong>管理者角色</strong>：对备忘录进行管理，提供保存与获取备忘录的功能，但其不能对备忘录的内同进行访问与修改。</li>
-</ul>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设一个场景，我们有一个文档，需要保存不同的版本内容，方便进行回滚操作<br>创建发起人角色： </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Word</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Word</span><span class="params">(String title, String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getContent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTitle</span><span class="params">(String title)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContent</span><span class="params">(String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//构建需要保存的备忘录对象，或者直接存数据库</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> WordMemento <span class="title">saveToMemento</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> WordMemento(<span class="keyword">this</span>.title,<span class="keyword">this</span>.content);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//回退</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undoFormMemento</span><span class="params">(WordMemento wordMemento)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = wordMemento.getTitle();</span><br><span class="line">        <span class="keyword">this</span>.content = wordMemento.getContent();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Word&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;title=&#x27;&quot;</span> + title + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, content=&#x27;&quot;</span> + content + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>创建备忘录角色：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordMemento</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WordMemento</span><span class="params">(String title, String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getContent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;WordMemento&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;title=&#x27;&quot;</span> + title + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, content=&#x27;&quot;</span> + content + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>创建管理者角色：  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordMementoManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Stack&lt;WordMemento&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回备忘录保存的上一个版本</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> WordMemento <span class="title">getMemento</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> stack.pop();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addMemento</span><span class="params">(WordMemento wordMemento)</span></span>&#123;</span><br><span class="line">        stack.push(wordMemento);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试：  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        WordMementoManager wordMementoManager = <span class="keyword">new</span> WordMementoManager();</span><br><span class="line">        Word word = <span class="keyword">new</span> Word(<span class="string">&quot;java设计模式A&quot;</span>,<span class="string">&quot;设计模式内同A&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;创建文档，文档内容：&quot;</span>+word);</span><br><span class="line">        WordMemento wordMemento = word.saveToMemento();</span><br><span class="line">        wordMementoManager.addMemento(wordMemento);</span><br><span class="line">        System.out.println(<span class="string">&quot;保存第一版文档，文档内容：&quot;</span>+wordMemento);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;修改文档&quot;</span>);</span><br><span class="line"></span><br><span class="line">        word.setTitle(<span class="string">&quot;java设计模式B&quot;</span>);</span><br><span class="line">        word.setContent(<span class="string">&quot;设计模式内同B&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;第二版文档，文档内容：&quot;</span>+word);</span><br><span class="line">        WordMemento wordMemento1 = word.saveToMemento();</span><br><span class="line">        wordMementoManager.addMemento(wordMemento1);</span><br><span class="line">        System.out.println(<span class="string">&quot;保存第二版文档，文档内容：&quot;</span>+wordMemento1);</span><br><span class="line"></span><br><span class="line">        word.setTitle(<span class="string">&quot;java设计模式C&quot;</span>);</span><br><span class="line">        word.setContent(<span class="string">&quot;设计模式内同C&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;第三版文档，文档内容：&quot;</span>+word);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;----------------------------------&quot;</span>);</span><br><span class="line"></span><br><span class="line">        WordMemento memento = wordMementoManager.getMemento();</span><br><span class="line">        word.undoFormMemento(memento);</span><br><span class="line">        System.out.println(<span class="string">&quot;文档回退，回退后内容：&quot;</span>+word);</span><br><span class="line"></span><br><span class="line">        WordMemento memento1 = wordMementoManager.getMemento();</span><br><span class="line">        word.undoFormMemento(memento1);</span><br><span class="line">        System.out.println(<span class="string">&quot;文档再次回退，回退后内容：&quot;</span>+word);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结果：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">创建文档，文档内容：Word&#123;title=&#x27;java设计模式A&#x27;, content=&#x27;设计模式内同A&#x27;&#125;</span><br><span class="line">保存第一版文档，文档内容：WordMemento&#123;title=&#x27;java设计模式A&#x27;, content=&#x27;设计模式内同A&#x27;&#125;</span><br><span class="line">修改文档</span><br><span class="line">第二版文档，文档内容：Word&#123;title=&#x27;java设计模式B&#x27;, content=&#x27;设计模式内同B&#x27;&#125;</span><br><span class="line">保存第二版文档，文档内容：WordMemento&#123;title=&#x27;java设计模式B&#x27;, content=&#x27;设计模式内同B&#x27;&#125;</span><br><span class="line">第三版文档，文档内容：Word&#123;title=&#x27;java设计模式C&#x27;, content=&#x27;设计模式内同C&#x27;&#125;</span><br><span class="line">----------------------------------</span><br><span class="line">文档回退，回退后内容：Word&#123;title=&#x27;java设计模式B&#x27;, content=&#x27;设计模式内同B&#x27;&#125;</span><br><span class="line">文档再次回退，回退后内容：Word&#123;title=&#x27;java设计模式A&#x27;, content=&#x27;设计模式内同A&#x27;&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/Iyv9B2vM2CylIb6evYeeoYnBB4bL22ufoinBLoZ9BCb9jKONJSxFAqdDAm6AboRbP2Q3zMeWwz11KwcfK5sBhDWtDHSecgzGd5YM6f8FvMbe8XILvMUcA9JcfUIxvHVbmkIHTPOZs21jjLnSoN1lmDHGu1kObGGzXSrYtyIynFJK8YJxqpBp4dE0sXEJissG5Def58E456mLybBBeT9s6fhMNFhwB_PFUJfxtjCbxK_tptYwT-gJ_NEVhftnV5RBanrTJtOqFDcnwdbdnxCvQx05Qdfg2I945L23D34bXOZGHFWg9BMu1EGFY150rvR0JCfDpCo31azqh49YKNenE3n0Mi59IK_F3jbLNCZMsUZgQc49CAXE6pqziBrS809e36R80W00">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>原型模式</title>
     <url>/2021/09/05/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
@@ -868,6 +927,130 @@
 <p>解决办法：第一，不实现Cloneable接口，第二，在clone方法中返回会getInstance()方法</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> <span class="keyword">implements</span> <span class="title">Cloneable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">new</span> Singleton();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Singleton <span class="title">clone</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">com.ys.Singleton@7f31245a</span><br><span class="line">com.ys.Singleton@7f31245a</span><br></pre></td></tr></table></figure>
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>命令模式</title>
+    <url>/2021/10/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>将”请求“封装成对象，以便于使用不同的请求。<br>命令模式解决了应用程序中对象的职责以及它们之间的通信方式<br>行为型</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>请求调用者和请求接收者需要解耦，使得调用者和接收者不直接交互</li>
+<li>需要抽象出等待执行的行为</li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>降低耦合</li>
+<li>容易扩展新命令或者一组命令</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>命令的无限扩展会增加类的数量，提高系统实现复杂度</li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li><strong>抽象命令类角色</strong>：声明执行命令的接口，拥有执行命令的抽象方法<code>execute()</code>。</li>
+<li><strong>具体命令类角色</strong>：是抽象命令类的具体实现类，它拥有接收者对象，开通过调用接收者的功能来完成命令要执行的操作。</li>
+<li><strong>实现者/接收者角色</strong>：执行命令功能的相关操作，是具体命令对象业务的真正实现者。</li>
+<li><strong>调用者/请求者角色</strong>：是请求的发送者，它通常拥有很多的命令对象，并通过访问命令对象来执行相关请求，它不直接访问接收者。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设我们有一台电脑，电脑接收命令，就是接收者，操作人员发送命令，就是调用者<br>创建 抽象命令类角色  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建电脑，也就是具体命令的实现，具体命令类角色  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Computer</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(name+<span class="string">&quot;被打开了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(name+<span class="string">&quot;被关闭了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建具体命令角色，开机  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OpenCommand</span> <span class="keyword">implements</span> <span class="title">Command</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Computer computer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">OpenCommand</span><span class="params">(Computer computer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.computer = computer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.open();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体命令角色，关机   </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CloseCommand</span> <span class="keyword">implements</span> <span class="title">Command</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Computer computer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CloseCommand</span><span class="params">(Computer computer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.computer = computer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用者，收集命令并执行  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Operator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Command&gt; commands = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCommand</span><span class="params">(Command command)</span></span>&#123;</span><br><span class="line">        commands.add(command);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">executeCommand</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Command command : commands) &#123;</span><br><span class="line">            command.execute();</span><br><span class="line">        &#125;</span><br><span class="line">        commands.clear();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试：  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Computer computer = <span class="keyword">new</span> Computer(<span class="string">&quot;编号为A的电脑 &quot;</span>);</span><br><span class="line">        OpenCommand openCommand = <span class="keyword">new</span> OpenCommand(computer);</span><br><span class="line">        CloseCommand closeCommand = <span class="keyword">new</span> CloseCommand(computer);</span><br><span class="line">        Operator operator = <span class="keyword">new</span> Operator();</span><br><span class="line">        operator.addCommand(openCommand);</span><br><span class="line">        operator.addCommand(closeCommand);</span><br><span class="line">        operator.executeCommand();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">编号为A的电脑 被打开了</span><br><span class="line">编号为A的电脑 被关闭了</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/dP5BYiCm38RtEeMMII4dw0DAjeLPp0bSHos6-87jTgO4txrnY1ttiMbtGh_qwvFKQcakdYnkcgPPuOyXrMefcUgWVPJQNZjA6WWrAYV62USK3d3LeaFw9pvsLVKQ0W3lcNEOdGOmLboP9_prLgWpAYPf3UPox0NFPLKXrZY4f4_-UYIiwgSaZsnZ5iCoj5W5XJGzILBU9To59CFnESWyXKFrKlK2bXUFGe0qEj_LCgzjlaXnp2_fIelFyPOZJLp5Pmx2-Stikuj-CN2uHKL_kBUMtQQANVnmEO1rNK4pBJOtr-zHKdMKmnq0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>备忘录模式</title>
+    <url>/2021/10/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>保存一个对象的某个状态，以便于在适当的时候恢复对象。<br>“后悔药”<br>行为型</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>保存及恢复数据相关业务场景</li>
+<li>后悔的时候，即像恢复到之前的状态</li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>为用户提供一种可恢复机制</li>
+<li>存档信息的封装</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>资源占用。如果类的成员过多，势必会占用比较大大的资源，而且每一次保存都会消耗一定的内存。</li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li><strong>发起人角色</strong>：记录当前时刻的内部状态信息，提供创建备忘录和恢复备忘录数据的功能，实现其他业务功能，它可以访问备忘录里面的所有信息。</li>
+<li><strong>备忘录角色</strong>：负责存储发起人的内部状态，在需要的时候提供这些内部状态给发起人。</li>
+<li><strong>管理者角色</strong>：对备忘录进行管理，提供保存与获取备忘录的功能，但其不能对备忘录的内同进行访问与修改。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设一个场景，我们有一个文档，需要保存不同的版本内容，方便进行回滚操作<br>创建发起人角色： </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Word</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Word</span><span class="params">(String title, String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getContent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTitle</span><span class="params">(String title)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContent</span><span class="params">(String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//构建需要保存的备忘录对象，或者直接存数据库</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> WordMemento <span class="title">saveToMemento</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> WordMemento(<span class="keyword">this</span>.title,<span class="keyword">this</span>.content);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//回退</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undoFormMemento</span><span class="params">(WordMemento wordMemento)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = wordMemento.getTitle();</span><br><span class="line">        <span class="keyword">this</span>.content = wordMemento.getContent();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Word&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;title=&#x27;&quot;</span> + title + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, content=&#x27;&quot;</span> + content + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建备忘录角色：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordMemento</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WordMemento</span><span class="params">(String title, String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getContent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;WordMemento&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;title=&#x27;&quot;</span> + title + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, content=&#x27;&quot;</span> + content + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建管理者角色：  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordMementoManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Stack&lt;WordMemento&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回备忘录保存的上一个版本</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> WordMemento <span class="title">getMemento</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> stack.pop();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addMemento</span><span class="params">(WordMemento wordMemento)</span></span>&#123;</span><br><span class="line">        stack.push(wordMemento);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试：  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        WordMementoManager wordMementoManager = <span class="keyword">new</span> WordMementoManager();</span><br><span class="line">        Word word = <span class="keyword">new</span> Word(<span class="string">&quot;java设计模式A&quot;</span>,<span class="string">&quot;设计模式内同A&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;创建文档，文档内容：&quot;</span>+word);</span><br><span class="line">        WordMemento wordMemento = word.saveToMemento();</span><br><span class="line">        wordMementoManager.addMemento(wordMemento);</span><br><span class="line">        System.out.println(<span class="string">&quot;保存第一版文档，文档内容：&quot;</span>+wordMemento);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;修改文档&quot;</span>);</span><br><span class="line"></span><br><span class="line">        word.setTitle(<span class="string">&quot;java设计模式B&quot;</span>);</span><br><span class="line">        word.setContent(<span class="string">&quot;设计模式内同B&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;第二版文档，文档内容：&quot;</span>+word);</span><br><span class="line">        WordMemento wordMemento1 = word.saveToMemento();</span><br><span class="line">        wordMementoManager.addMemento(wordMemento1);</span><br><span class="line">        System.out.println(<span class="string">&quot;保存第二版文档，文档内容：&quot;</span>+wordMemento1);</span><br><span class="line"></span><br><span class="line">        word.setTitle(<span class="string">&quot;java设计模式C&quot;</span>);</span><br><span class="line">        word.setContent(<span class="string">&quot;设计模式内同C&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;第三版文档，文档内容：&quot;</span>+word);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;----------------------------------&quot;</span>);</span><br><span class="line"></span><br><span class="line">        WordMemento memento = wordMementoManager.getMemento();</span><br><span class="line">        word.undoFormMemento(memento);</span><br><span class="line">        System.out.println(<span class="string">&quot;文档回退，回退后内容：&quot;</span>+word);</span><br><span class="line"></span><br><span class="line">        WordMemento memento1 = wordMementoManager.getMemento();</span><br><span class="line">        word.undoFormMemento(memento1);</span><br><span class="line">        System.out.println(<span class="string">&quot;文档再次回退，回退后内容：&quot;</span>+word);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">创建文档，文档内容：Word&#123;title=&#x27;java设计模式A&#x27;, content=&#x27;设计模式内同A&#x27;&#125;</span><br><span class="line">保存第一版文档，文档内容：WordMemento&#123;title=&#x27;java设计模式A&#x27;, content=&#x27;设计模式内同A&#x27;&#125;</span><br><span class="line">修改文档</span><br><span class="line">第二版文档，文档内容：Word&#123;title=&#x27;java设计模式B&#x27;, content=&#x27;设计模式内同B&#x27;&#125;</span><br><span class="line">保存第二版文档，文档内容：WordMemento&#123;title=&#x27;java设计模式B&#x27;, content=&#x27;设计模式内同B&#x27;&#125;</span><br><span class="line">第三版文档，文档内容：Word&#123;title=&#x27;java设计模式C&#x27;, content=&#x27;设计模式内同C&#x27;&#125;</span><br><span class="line">----------------------------------</span><br><span class="line">文档回退，回退后内容：Word&#123;title=&#x27;java设计模式B&#x27;, content=&#x27;设计模式内同B&#x27;&#125;</span><br><span class="line">文档再次回退，回退后内容：Word&#123;title=&#x27;java设计模式A&#x27;, content=&#x27;设计模式内同A&#x27;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/Iyv9B2vM2CylIb6evYeeoYnBB4bL22ufoinBLoZ9BCb9jKONJSxFAqdDAm6AboRbP2Q3zMeWwz11KwcfK5sBhDWtDHSecgzGd5YM6f8FvMbe8XILvMUcA9JcfUIxvHVbmkIHTPOZs21jjLnSoN1lmDHGu1kObGGzXSrYtyIynFJK8YJxqpBp4dE0sXEJissG5Def58E456mLybBBeT9s6fhMNFhwB_PFUJfxtjCbxK_tptYwT-gJ_NEVhftnV5RBanrTJtOqFDcnwdbdnxCvQx05Qdfg2I945L23D34bXOZGHFWg9BMu1EGFY150rvR0JCfDpCo31azqh49YKNenE3n0Mi59IK_F3jbLNCZMsUZgQc49CAXE6pqziBrS809e36R80W00">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
       <categories>
         <category>java</category>
@@ -1017,66 +1200,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>命令模式</title>
-    <url>/2021/10/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
-<p>将”请求“封装成对象，以便于使用不同的请求。<br>命令模式解决了应用程序中对象的职责以及它们之间的通信方式<br>行为型</p>
-</blockquote>
-<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
-<li>请求调用者和请求接收者需要解耦，使得调用者和接收者不直接交互</li>
-<li>需要抽象出等待执行的行为</li>
-</ul>
-<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>降低耦合</li>
-<li>容易扩展新命令或者一组命令</li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>命令的无限扩展会增加类的数量，提高系统实现复杂度</li>
-</ul>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
-<li><strong>抽象命令类角色</strong>：声明执行命令的接口，拥有执行命令的抽象方法<code>execute()</code>。</li>
-<li><strong>具体命令类角色</strong>：是抽象命令类的具体实现类，它拥有接收者对象，开通过调用接收者的功能来完成命令要执行的操作。</li>
-<li><strong>实现者/接收者角色</strong>：执行命令功能的相关操作，是具体命令对象业务的真正实现者。</li>
-<li><strong>调用者/请求者角色</strong>：是请求的发送者，它通常拥有很多的命令对象，并通过访问命令对象来执行相关请求，它不直接访问接收者。</li>
-</ul>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设我们有一台电脑，电脑接收命令，就是接收者，操作人员发送命令，就是调用者<br>创建 抽象命令类角色  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>创建电脑，也就是具体命令的实现，具体命令类角色  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Computer</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(name+<span class="string">&quot;被打开了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(name+<span class="string">&quot;被关闭了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>创建具体命令角色，开机  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OpenCommand</span> <span class="keyword">implements</span> <span class="title">Command</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Computer computer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">OpenCommand</span><span class="params">(Computer computer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.computer = computer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.open();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>具体命令角色，关机   </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CloseCommand</span> <span class="keyword">implements</span> <span class="title">Command</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Computer computer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CloseCommand</span><span class="params">(Computer computer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.computer = computer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>调用者，收集命令并执行  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Operator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Command&gt; commands = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCommand</span><span class="params">(Command command)</span></span>&#123;</span><br><span class="line">        commands.add(command);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">executeCommand</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Command command : commands) &#123;</span><br><span class="line">            command.execute();</span><br><span class="line">        &#125;</span><br><span class="line">        commands.clear();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试：  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Computer computer = <span class="keyword">new</span> Computer(<span class="string">&quot;编号为A的电脑 &quot;</span>);</span><br><span class="line">        OpenCommand openCommand = <span class="keyword">new</span> OpenCommand(computer);</span><br><span class="line">        CloseCommand closeCommand = <span class="keyword">new</span> CloseCommand(computer);</span><br><span class="line">        Operator operator = <span class="keyword">new</span> Operator();</span><br><span class="line">        operator.addCommand(openCommand);</span><br><span class="line">        operator.addCommand(closeCommand);</span><br><span class="line">        operator.executeCommand();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结果：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">编号为A的电脑 被打开了</span><br><span class="line">编号为A的电脑 被关闭了</span><br></pre></td></tr></table></figure>
-
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/dP5BYiCm38RtEeMMII4dw0DAjeLPp0bSHos6-87jTgO4txrnY1ttiMbtGh_qwvFKQcakdYnkcgPPuOyXrMefcUgWVPJQNZjA6WWrAYV62USK3d3LeaFw9pvsLVKQ0W3lcNEOdGOmLboP9_prLgWpAYPf3UPox0NFPLKXrZY4f4_-UYIiwgSaZsnZ5iCoj5W5XJGzILBU9To59CFnESWyXKFrKlK2bXUFGe0qEj_LCgzjlaXnp2_fIelFyPOZJLp5Pmx2-Stikuj-CN2uHKL_kBUMtQQANVnmEO1rNK4pBJOtr-zHKdMKmnq0">
 
 
 
@@ -2112,6 +2235,84 @@
       </tags>
   </entry>
   <entry>
+    <title>迭代器模式</title>
+    <url>/2021/10/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>提供一种方法，顺序访问一个集合对象中的各个元素，而又不暴露该的对象的内部表示。<br>行为型</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>访问一个集合对象的内容而无需暴露它的内部表示</li>
+<li>为遍历不同的集合结构提供一个统一的接口</li>
+</ul>
+<p>##优点和缺点</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>分离了集合对象的遍历行为</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>类的个数成对增加</li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li>*<em>抽象聚合角色</em> ：定义存储、添加、删除、集合对象以及创建迭代器对象的接口</li>
+<li><strong>具体聚合角色</strong> ：实现抽象集合，返回一个具体迭代器的实例</li>
+<li><strong>抽象迭代器角色</strong> ：定义访问和遍历聚合元素的接口，通常包括hasNext()，first()，next()等方法</li>
+<li><strong>具体迭代器角色</strong> ：实现抽象迭代器接口中所定义的方法，完成对聚合对象的遍历，记录遍历的当前位置</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>创建抽象聚合接口，定义方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Aggregate</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Object obj)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Object obj)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Iterator <span class="title">getIterator</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实现抽象聚合接口</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteAggregate</span> <span class="keyword">implements</span> <span class="title">Aggregate</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Object&gt; list = <span class="keyword">new</span> ArrayList&lt;Object&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        list.add(obj);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        list.remove(obj);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Iterator <span class="title">getIterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">new</span> ConcreteIterator(list));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建迭代器接口</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Iterator</span> </span>&#123;</span><br><span class="line">    <span class="function">Object <span class="title">first</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">Object <span class="title">next</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建迭代器接口具体实现</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Object&gt; list = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> index = -<span class="number">1</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConcreteIterator</span><span class="params">(List&lt;Object&gt; list)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.list = list;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (index &lt; list.size() - <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">first</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        index = <span class="number">0</span>;</span><br><span class="line">        Object obj = list.get(index);</span><br><span class="line">        ;</span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Object obj = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.hasNext()) &#123;</span><br><span class="line">            obj = list.get(++index);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用迭代器</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Aggregate ag = <span class="keyword">new</span> ConcreteAggregate();</span><br><span class="line">        ag.add(<span class="string">&quot;中山大学&quot;</span>);</span><br><span class="line">        ag.add(<span class="string">&quot;华南理工&quot;</span>);</span><br><span class="line">        ag.add(<span class="string">&quot;韶关学院&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;聚合的内容有：&quot;</span>);</span><br><span class="line">        Iterator it = ag.getIterator();</span><br><span class="line">        <span class="keyword">while</span> (it.hasNext()) &#123;</span><br><span class="line">            Object ob = it.next();</span><br><span class="line">            System.out.println(ob.toString() + <span class="string">&quot;\t&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">聚合的内容有:</span><br><span class="line">中山大学	</span><br><span class="line">华南理工	</span><br><span class="line">韶关学院	</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/XL7BZi8m3BptAtmi1v3sp4D2Urff1T-GfgORb2R8CGLKyU-aK4BQ8FOGoSuuuvc9Ceoq4n9XNLM4bM24DZiS2wqaD5QL8CeotnPxb0oss4_c0v2mjWs-nNyyiM1BK24_wzp3rooJMZW7tzP8GiRNObKVDDPes0tLa6gwwbSvNZnMhK3x1fPWy0Hh8d69mNoaScG1ski_9gA9zpQw0Mz4XVJ2M9lrF3j5ZZibVM_mV6yBQpKA0t_2RVgh99B05YKIRVWOo57hUPZm0lqfyUoHwLT8PRmdJvZY21B54JOqcm8cFF0cqn-VhH8jDm00">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>适配器模式</title>
     <url>/2021/09/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
@@ -2183,84 +2384,6 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> <span class="keyword">extends</span> <span class="title">AbstractAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">m1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//业务逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h3 id="UML图"><a href="#UML图" class="headerlink" title="UML图"></a>UML图</h3><img src="http://www.plantuml.com/plantuml/svg/ROwz3i8m30RtF8L76FitCNLavmNSn4YHaX3L1Y5LUVUsQajKaUryWx-pGMXyeYQu7rHDwlEo1dnrkTvsh3Cs6TkCtOf9AHnOHjG2sY4pzFlP6upBUx0-El8KX4zxyJqug-4t2rCwkxhWce9h2wxRt1AtDJs81UWh5Cn_OBabpG00">
-
-
-
-
-<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">]]></content>
-      <categories>
-        <category>java</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>迭代器模式</title>
-    <url>/2021/10/13/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%BF%AD%E4%BB%A3%E5%99%A8%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
-<p>提供一种方法，顺序访问一个集合对象中的各个元素，而又不暴露该的对象的内部表示。<br>行为型</p>
-</blockquote>
-<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
-<li>访问一个集合对象的内容而无需暴露它的内部表示</li>
-<li>为遍历不同的集合结构提供一个统一的接口</li>
-</ul>
-<p>##优点和缺点</p>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>分离了集合对象的遍历行为</li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>类的个数成对增加</li>
-</ul>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
-<li>*<em>抽象聚合角色</em> ：定义存储、添加、删除、集合对象以及创建迭代器对象的接口</li>
-<li><strong>具体聚合角色</strong> ：实现抽象集合，返回一个具体迭代器的实例</li>
-<li><strong>抽象迭代器角色</strong> ：定义访问和遍历聚合元素的接口，通常包括hasNext()，first()，next()等方法</li>
-<li><strong>具体迭代器角色</strong> ：实现抽象迭代器接口中所定义的方法，完成对聚合对象的遍历，记录遍历的当前位置</li>
-</ul>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>创建抽象聚合接口，定义方法</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Aggregate</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Object obj)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Object obj)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Iterator <span class="title">getIterator</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>实现抽象聚合接口</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteAggregate</span> <span class="keyword">implements</span> <span class="title">Aggregate</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Object&gt; list = <span class="keyword">new</span> ArrayList&lt;Object&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        list.add(obj);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        list.remove(obj);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Iterator <span class="title">getIterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">new</span> ConcreteIterator(list));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>创建迭代器接口</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Iterator</span> </span>&#123;</span><br><span class="line">    <span class="function">Object <span class="title">first</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">Object <span class="title">next</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>创建迭代器接口具体实现</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConcreteIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Object&gt; list = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> index = -<span class="number">1</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConcreteIterator</span><span class="params">(List&lt;Object&gt; list)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.list = list;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (index &lt; list.size() - <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">first</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        index = <span class="number">0</span>;</span><br><span class="line">        Object obj = list.get(index);</span><br><span class="line">        ;</span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Object obj = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.hasNext()) &#123;</span><br><span class="line">            obj = list.get(++index);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>调用迭代器</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Aggregate ag = <span class="keyword">new</span> ConcreteAggregate();</span><br><span class="line">        ag.add(<span class="string">&quot;中山大学&quot;</span>);</span><br><span class="line">        ag.add(<span class="string">&quot;华南理工&quot;</span>);</span><br><span class="line">        ag.add(<span class="string">&quot;韶关学院&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;聚合的内容有：&quot;</span>);</span><br><span class="line">        Iterator it = ag.getIterator();</span><br><span class="line">        <span class="keyword">while</span> (it.hasNext()) &#123;</span><br><span class="line">            Object ob = it.next();</span><br><span class="line">            System.out.println(ob.toString() + <span class="string">&quot;\t&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">聚合的内容有:</span><br><span class="line">中山大学	</span><br><span class="line">华南理工	</span><br><span class="line">韶关学院	</span><br></pre></td></tr></table></figure>
-
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/XL7BZi8m3BptAtmi1v3sp4D2Urff1T-GfgORb2R8CGLKyU-aK4BQ8FOGoSuuuvc9Ceoq4n9XNLM4bM24DZiS2wqaD5QL8CeotnPxb0oss4_c0v2mjWs-nNyyiM1BK24_wzp3rooJMZW7tzP8GiRNObKVDDPes0tLa6gwwbSvNZnMhK3x1fPWy0Hh8d69mNoaScG1ski_9gA9zpQw0Mz4XVJ2M9lrF3j5ZZibVM_mV6yBQpKA0t_2RVgh99B05YKIRVWOo57hUPZm0lqfyUoHwLT8PRmdJvZY21B54JOqcm8cFF0cqn-VhH8jDm00">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3927,8 +4050,8 @@
 <li>在自旋的过程中，一直消耗CPU，所以虽然自旋锁的起始开销低于悲观锁，但是随着自旋时间的增长，开销也是线性增长的</li>
 </ul>
 <h2 id="原理和源码分析"><a href="#原理和源码分析" class="headerlink" title="原理和源码分析"></a>原理和源码分析</h2><ul>
-<li>在Java1.5版本及以上的并发框架java.util.concurrent的atomic包下的类基本都是自旋锁的实现</li>
-<li>AtomicInteger的实现：自旋锁的实现原理CAS，AtomicInteger中调用unsafe进行自增操作的源码中的do-while循环就是一个自旋操作，如果修改过程中遇到其他线程竞争导致没修改成功，就在while里死循环，直至修改成功<blockquote>
+<li>在Java1.5版本及以上的并发框架<code>java.util.concurrent</code>的atomic包下的类基本都是自旋锁的实现</li>
+<li><code>AtomicInteger</code>的实现：自旋锁的实现原理CAS，<code>AtomicInteger</code>中调用<code>unsafe</code>进行自增操作的源码中的<code>do-while</code>循环就是一个自旋操作，如果修改过程中遇到其他线程竞争导致没修改成功，就在while里死循环，直至修改成功<blockquote>
 <p>如图所示<br><img src="/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94Lock%E9%94%81/%E8%87%AA%E6%97%8B%E9%94%81%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="自旋锁源码图示"><br>自旋锁实现代码如下所示  </p>
 </blockquote>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpinLock</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> AtomicReference&lt;Thread&gt; sign = <span class="keyword">new</span> AtomicReference&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread thread = Thread.currentThread();</span><br><span class="line">        <span class="keyword">while</span> (!sign.compareAndSet(<span class="keyword">null</span>, thread)) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Thread thread = Thread.currentThread();</span><br><span class="line">        sign.compareAndSet(thread, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpinLock spinLock = <span class="keyword">new</span> SpinLock();</span><br><span class="line">        Runnable runnable = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">&quot;开始尝试获取自旋锁&quot;</span>);</span><br><span class="line">                spinLock.lock();</span><br><span class="line">                System.out.println(Thread.currentThread().getName() + <span class="string">&quot;获得自旋锁&quot;</span>);</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="number">300</span>);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    spinLock.unlock();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName()+<span class="string">&quot;释放了自旋锁&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">new</span> Thread(runnable).start();</span><br><span class="line">        <span class="keyword">new</span> Thread(runnable).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
@@ -3938,7 +4061,7 @@
 <li>另外，自旋锁适用于临界区比较短小的情况，否则如果临界区很大（线程一旦拿到锁，很久之后才会释放），那也是不合适的</li>
 </ul>
 <h1 id="可中断锁：顾名思义，就是可以相应中断的锁"><a href="#可中断锁：顾名思义，就是可以相应中断的锁" class="headerlink" title="可中断锁：顾名思义，就是可以相应中断的锁"></a>可中断锁：顾名思义，就是可以相应中断的锁</h1><ul>
-<li>在Java中synchronized就是不可中断锁，而Lock是可中断锁，因为tryLock(time)和lockInterruptibly都能响应中断</li>
+<li>在Java中<code>synchronized</code>就是不可中断锁，而<code>Lock</code>是可中断锁，因为<code>tryLock(time)</code>和<code>lockInterruptibly</code>都能响应中断</li>
 <li>如果某一线程A正在执行锁中的代码，另一个线程B正在等待获取该锁，可能由于等待时间过长，线程B不想等待了，想先处理其他事情，我们可以中断它，这种就是可中断锁</li>
 </ul>
 <h1 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h1><h2 id="Java虚拟机对锁的优化"><a href="#Java虚拟机对锁的优化" class="headerlink" title="Java虚拟机对锁的优化"></a>Java虚拟机对锁的优化</h2><ul>
