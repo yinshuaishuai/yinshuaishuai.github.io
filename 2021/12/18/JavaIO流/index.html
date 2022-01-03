@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ys_ico.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/ys_ico.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ysymj.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在Java程序中，对于数据的输入&#x2F;输出操作以“流（stream）”方式进行；Java提供了各种各样的“流”类，用以获取不同类的数据。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaIO流">
+<meta property="og:url" content="http://ysymj.gitee.io/2021/12/18/JavaIO%E6%B5%81/index.html">
+<meta property="og:site_name" content="YS">
+<meta property="og:description" content="在Java程序中，对于数据的输入&#x2F;输出操作以“流（stream）”方式进行；Java提供了各种各样的“流”类，用以获取不同类的数据。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/bP1H2i9034J_FSLUnIA285he2RBRgQwsIyqcq2AzUq4_AhZ5zJTvaymCsIXCJenhAKPp2BrA9GpgdjFcFIjzZ_fZOJ08Gfs6zxv5BbkCWYqpZNyS5t0kNU6X2EwN7RC8X7su5Deq-K_EzWOdkVIEX5BiLx2bevURTF_hggCFE6bdqpdMTQN6goLtprJD">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/IqmgBYbAJ2vHICv9B2vMy2yjAIWj2IufIatChQxbWWYwPUQa8aief5QKfEQbu5PTabf4lFg0p8BK5EALErMMf3eM5ILM4g_5FoahDRc4e7e5k0QNn994hCen_OPmLsbQMceH3f_WqHTGb9b7Z780">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/VOzH2eCm44J_UufSfHKA1Id5dc2JZ3LKWsmsK17lhY1OQsW-TtcxyuPq42OZohGKWgf05ZnEftMynBe6mwvhXO_0suGg6k8pCmrvxERxA4zXK9S7hwuLS9vvkFwFbjgO9SlvL_vFwJpkiTD9tc_rlHiEPDBhAnb3eycy3mVxVkCq0m00">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/IqmgBYbAJ2vHICv9B2vM22_AB4ajggxbWd2TIjFIKejIKo322gaL9QbvAHYgd3CIYnoBYX8hyIlpBoqfA2q9BYbAJSp5hz8jCmV8nQyc8BC0XxiKu6g0TcNcfHEqAnLD1QP3gsi1">
+<meta property="article:published_time" content="2021-12-18T03:31:12.000Z">
+<meta property="article:modified_time" content="2022-01-03T04:47:23.839Z">
+<meta property="article:author" content="YS">
+<meta property="article:tag" content="IO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.plantuml.com/plantuml/svg/bP1H2i9034J_FSLUnIA285he2RBRgQwsIyqcq2AzUq4_AhZ5zJTvaymCsIXCJenhAKPp2BrA9GpgdjFcFIjzZ_fZOJ08Gfs6zxv5BbkCWYqpZNyS5t0kNU6X2EwN7RC8X7su5Deq-K_EzWOdkVIEX5BiLx2bevURTF_hggCFE6bdqpdMTQN6goLtprJD">
+
+<link rel="canonical" href="http://ysymj.gitee.io/2021/12/18/JavaIO%E6%B5%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JavaIO流 | YS</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">YS</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ysymj.gitee.io/2021/12/18/JavaIO%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.png">
+      <meta itemprop="name" content="YS">
+      <meta itemprop="description" content="学海无涯苦作舟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YS">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JavaIO流
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-18 11:31:12" itemprop="dateCreated datePublished" datetime="2021-12-18T11:31:12+08:00">2021-12-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-03 12:47:23" itemprop="dateModified" datetime="2022-01-03T12:47:23+08:00">2022-01-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/12/18/JavaIO%E6%B5%81/" class="post-meta-item leancloud_visitors" data-flag-title="JavaIO流" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/12/18/JavaIO%E6%B5%81/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/18/JavaIO%E6%B5%81/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="IO流概述"><a href="#IO流概述" class="headerlink" title="IO流概述"></a>IO流概述</h1><blockquote>
+<p>在Java程序中，对于数据的输入/输出操作以“流（stream）”方式进行；Java提供了各种各样的“流”类，用以获取不同类的数据；程序中通过标准的方法输出或输入数据。Java的流类型一般位于<code>java.io</code>包中<br>数据源data source，提供原始数据的原始媒介。常见的：数据库、文件、其他程序、网络连接、IO设备（既可以做数据的源头，也可以做数据的目的地）<br>流是一个抽象、动态的概念，是一连串连续动态的数据集合。<br>数据元就像水箱，流就像水管中留着的水流，程序就是我们最终的用户。流是一个抽象、动态的概念，是一连串连续动态的数据集合。</p>
+</blockquote>
+<h2 id="IO流分类"><a href="#IO流分类" class="headerlink" title="IO流分类"></a>IO流分类</h2><ul>
+<li><p>按流的方向分类：</p>
+<ul>
+<li>输入流：数据流向是数据源到程序（以<code>InputStream</code>、<code>Reader</code>结尾的流）</li>
+<li>输出流：数据流向是程序到目的地（以<code>OutPutStream</code>、<code>Writer</code>结尾的流）<br>输入输出流的划分是相对于程序而言的，并不是相对数据源</li>
+</ul>
+</li>
+<li><p>按处理的数据单元分类：</p>
+<ul>
+<li>字节流：以字节为单位获取数据，命名上以<code>Stream</code>结尾的流一般是字节流，顶级类 <code>InputStream</code>、<code>OutPutStream</code></li>
+<li>字符流：以字符为单位获取数据，命名上以<code>Reader</code>、<code>Writer</code>结尾的一般是字符流，顶级类<code>Reader</code>、<code>Writer</code></li>
+</ul>
+</li>
+<li><p>按处理对象不同分类：</p>
+<ul>
+<li>节点流：可以直接从数据源或目的地读写数据，如<code>FileInputStream</code>、<code>FileReader</code>等</li>
+<li>处理流：不直接连接到数据源或目的地，是“处理流的流”，通过对其他流的处理提高程序的性能，如BufferedInputStream、BufferedReader等。处理流也叫包装流<br>节点流处于IO操作的第一线，所有操作必须通过它们进行，处理流可以对节点流进行包装，提高性能或提高程序的灵活性</li>
+</ul>
+</li>
+</ul>
+<h2 id="IO流体系结构"><a href="#IO流体系结构" class="headerlink" title="IO流体系结构"></a>IO流体系结构</h2><h3 id="字节流"><a href="#字节流" class="headerlink" title="字节流"></a>字节流</h3><ul>
+<li><code>InputStream</code>和<code>OutPUtStream</code>是Java语言中最基本的两个字节输入输出类，其他所有字节输出输入流类都继承这两个基类</li>
+<li>这两个类都是抽象类，不能创建它们的实例，只能使用它们的子类</li>
+<li><code>FilterInputStream</code>和<code>FilterOutPutStream</code>是所有包装流的父类</li>
+</ul>
+<img src="http://www.plantuml.com/plantuml/svg/bP1H2i9034J_FSLUnIA285he2RBRgQwsIyqcq2AzUq4_AhZ5zJTvaymCsIXCJenhAKPp2BrA9GpgdjFcFIjzZ_fZOJ08Gfs6zxv5BbkCWYqpZNyS5t0kNU6X2EwN7RC8X7su5Deq-K_EzWOdkVIEX5BiLx2bevURTF_hggCFE6bdqpdMTQN6goLtprJD">
+
+<img src="http://www.plantuml.com/plantuml/svg/IqmgBYbAJ2vHICv9B2vMy2yjAIWj2IufIatChQxbWWYwPUQa8aief5QKfEQbu5PTabf4lFg0p8BK5EALErMMf3eM5ILM4g_5FoahDRc4e7e5k0QNn994hCen_OPmLsbQMceH3f_WqHTGb9b7Z780">
+
+<h2 id="字符流"><a href="#字符流" class="headerlink" title="字符流"></a>字符流</h2><ul>
+<li><code>Reader</code>和<code>Writer</code>，Java语言中最基本的两个字符输入输出类</li>
+<li>其他所有字符输入输出流都继承自这两个基类</li>
+<li>这两个类都是抽象类，不能创建它们的实例，只能使用它们的子类<br>字符流只适合读写文本之类的，不适合音频文件</li>
+</ul>
+<img src="http://www.plantuml.com/plantuml/svg/VOzH2eCm44J_UufSfHKA1Id5dc2JZ3LKWsmsK17lhY1OQsW-TtcxyuPq42OZohGKWgf05ZnEftMynBe6mwvhXO_0suGg6k8pCmrvxERxA4zXK9S7hwuLS9vvkFwFbjgO9SlvL_vFwJpkiTD9tc_rlHiEPDBhAnb3eycy3mVxVkCq0m00">
+
+<img src="http://www.plantuml.com/plantuml/svg/IqmgBYbAJ2vHICv9B2vM22_AB4ajggxbWd2TIjFIKejIKo322gaL9QbvAHYgd3CIYnoBYX8hyIlpBoqfA2q9BYbAJSp5hz8jCmV8nQyc8BC0XxiKu6g0TcNcfHEqAnLD1QP3gsi1">
+
+<h1 id="File类的使用"><a href="#File类的使用" class="headerlink" title="File类的使用"></a><code>File</code>类的使用</h1><ul>
+<li><code>File</code>类用来代表文件和文件夹</li>
+<li>主要作用有两个：<ul>
+<li>获取文件或者文件加的属性</li>
+<li>实现对文件、文件夹的创建和删除</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th align="center">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">file.isFile()</td>
+<td align="center">是否是文件</td>
+</tr>
+<tr>
+<td align="center">file.isDirectory()</td>
+<td align="center">是否是目录</td>
+</tr>
+<tr>
+<td align="center">file.exists()</td>
+<td align="center">是否存在</td>
+</tr>
+<tr>
+<td align="center">file.length()</td>
+<td align="center">文件大小（字节）</td>
+</tr>
+<tr>
+<td align="center">file.lastModified()</td>
+<td align="center">最后修改时间（毫秒值）</td>
+</tr>
+<tr>
+<td align="center">file.canRead()</td>
+<td align="center">是否可读</td>
+</tr>
+<tr>
+<td align="center">file.canWrite()</td>
+<td align="center">是否可写</td>
+</tr>
+<tr>
+<td align="center">file.canExecute()</td>
+<td align="center">是否可执行</td>
+</tr>
+<tr>
+<td align="center">file.getPath()</td>
+<td align="center">获取文件全路径</td>
+</tr>
+<tr>
+<td align="center">file.getParent()</td>
+<td align="center">获取文件父级目录</td>
+</tr>
+<tr>
+<td align="center">file.getParentFile()</td>
+<td align="center">获取父级文件</td>
+</tr>
+<tr>
+<td align="center">file.getAbsolutePath()</td>
+<td align="center">返回全路径</td>
+</tr>
+<tr>
+<td align="center">file.mkdir()</td>
+<td align="center">创建一级目录</td>
+</tr>
+<tr>
+<td align="center">file.mkdirs()</td>
+<td align="center">创建多级目录</td>
+</tr>
+<tr>
+<td align="center">file.createNewFile()</td>
+<td align="center">创建新文件</td>
+</tr>
+<tr>
+<td align="center">file.getName()</td>
+<td align="center">获取文件名称</td>
+</tr>
+<tr>
+<td align="center">file.list()</td>
+<td align="center">获取文件夹内文件的名称集合</td>
+</tr>
+<tr>
+<td align="center">file.listFiles()</td>
+<td align="center">获取文件夹内文件的集合</td>
+</tr>
+<tr>
+<td align="center">file.delete()</td>
+<td align="center">删除文件</td>
+</tr>
+</tbody></table>
+<h1 id="文件流"><a href="#文件流" class="headerlink" title="文件流"></a>文件流</h1><h2 id="文件字节流FileInputStream和FileOutPutStream"><a href="#文件字节流FileInputStream和FileOutPutStream" class="headerlink" title="文件字节流FileInputStream和FileOutPutStream"></a>文件字节流<code>FileInputStream</code>和<code>FileOutPutStream</code></h2><ul>
+<li><code>FileInputStream</code>和<code>FileOutPutStream</code>是字节流，数据源和目的地是文件</li>
+<li>实现复制文件的功能<ul>
+<li>复制文件需要分别创建一个输入流和输出流完成文件读写</li>
+<li>需要创建一个中转站，借助循环和中转站完成复制</li>
+<li>流使用完毕一定要关闭，这和垃圾回收没有关系<br>代码如下<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestCopyFile</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;E:\\壁纸.zip&quot;</span>);</span><br><span class="line">             FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;E:\\壁纸2.zip&quot;</span>))&#123;</span><br><span class="line">            <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">            <span class="keyword">int</span> len;</span><br><span class="line">            <span class="keyword">while</span> ((len = fis.read(bytes)) != -<span class="number">1</span>)&#123;</span><br><span class="line">                fos.write(bytes,<span class="number">0</span>,len);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">catch</span> (IOException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="文件字符流FileReader和FileWriter"><a href="#文件字符流FileReader和FileWriter" class="headerlink" title="文件字符流FileReader和FileWriter"></a>文件字符流<code>FileReader</code>和<code>FileWriter</code></h2><ul>
+<li><code>FileReader</code>和<code>FileWriter</code>是字符流，数据源和目的地是文件</li>
+<li>实现复制文件的功能，代码如下：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestCopyFile1</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> ( Reader rd = <span class="keyword">new</span> FileReader(<span class="string">&quot;E:\\readme.txt&quot;</span>);</span><br><span class="line">              Writer wt = <span class="keyword">new</span> FileWriter(<span class="string">&quot;E:\\readme2.txt&quot;</span>);)&#123;</span><br><span class="line">            <span class="keyword">char</span>[] chars= <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">1024</span>];</span><br><span class="line">            <span class="keyword">int</span> len;</span><br><span class="line">            <span class="keyword">while</span> ((len = rd.read(chars)) != -<span class="number">1</span>)&#123;</span><br><span class="line">                wt.write(chars,<span class="number">0</span>,len);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其实只有字节流，没有字符流。字符流的底层还是字节流，进行了封装转换可以更简单的来处理非英文字符<br>字节流可以完成所有类型文件的复制（文本、音频、视频、图片、chm），字符流只能完成文本的复制（txt），doc不是文本文件，字符流一般只用来操作普通的文本文件</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="缓冲流"><a href="#缓冲流" class="headerlink" title="缓冲流"></a>缓冲流</h1><h2 id="缓冲字节流BufferedInputStream和BufferedOutPutStream"><a href="#缓冲字节流BufferedInputStream和BufferedOutPutStream" class="headerlink" title="缓冲字节流BufferedInputStream和BufferedOutPutStream"></a>缓冲字节流<code>BufferedInputStream</code>和<code>BufferedOutPutStream</code></h2><ul>
+<li>原理是在内存中创建一个缓冲区，默认大小是<code>8192</code>字节，输入流每次去缓冲区中获取，如果缓存区为空，会去磁盘一次读取8192字节，然后再根据自定义的中转站大小向输出流中转</li>
+<li>输出流也是默认创建一个8192的缓存区，等缓冲区满了或者最后关毕流的时候会一次性写入磁盘，减少于磁盘的交互，提升性能  </li>
+<li>代码如下所示  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestCopyFile2</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (BufferedInputStream bis = <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">&quot;E:\\照片.zip&quot;</span>));</span><br><span class="line">             BufferedOutputStream bos = <span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(<span class="string">&quot;E:\\照片2.zip&quot;</span>)))&#123;</span><br><span class="line">            <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">            <span class="keyword">int</span> len;</span><br><span class="line">            <span class="keyword">while</span> ((len = bis.read(bytes)) != -<span class="number">1</span>)&#123;</span><br><span class="line">                bos.write(bytes,<span class="number">0</span>,len);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="缓冲字符流BufferedReader和BufferedWriter"><a href="#缓冲字符流BufferedReader和BufferedWriter" class="headerlink" title="缓冲字符流BufferedReader和BufferedWriter"></a>缓冲字符流<code>BufferedReader</code>和<code>BufferedWriter</code></h2><ul>
+<li>实现一次读取一行</li>
+<li>需要注意换行符问题<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestCopyFile3</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (BufferedReader br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> FileReader(<span class="string">&quot;E:\\readme.txt&quot;</span>));</span><br><span class="line">             BufferedWriter bw = <span class="keyword">new</span> BufferedWriter(<span class="keyword">new</span> FileWriter(<span class="string">&quot;E:\\readme2.txt&quot;</span>)))&#123;</span><br><span class="line">             String str;</span><br><span class="line">             <span class="keyword">while</span> ((str = br.readLine()) != <span class="keyword">null</span>)&#123;</span><br><span class="line">                 bw.write(str);</span><br><span class="line">                 bw.newLine();</span><br><span class="line">             &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="数据流和对象流"><a href="#数据流和对象流" class="headerlink" title="数据流和对象流"></a>数据流和对象流</h1><blockquote>
+<p>之前使用文件流、缓冲流读取文件只能按照字节、数组方式读取，最方便的也是按行读取，能否很方便的实现各种基本类型和引用类型数据的读写，并保留其本身的类型。<br>数据流<code>DataInputStream</code>和<code>DataOutPutStream</code>和对象流<code>ObjectInputStream</code>和<code>ObjectOutPutStream</code>可以解决这个问题，最大的优势就是提供了方便操作各种数据类型的方法，直接调用，简单方便</p>
+</blockquote>
+<p>注意：</p>
+<ul>
+<li>只有字节流，没有字符流</li>
+<li>都是处理流，不是节点流</li>
+<li>数据流只能操作基本类型和字符串，对象流还可以操作对象</li>
+<li>写入的是二进制数据，无法直接通过记事本等查看</li>
+<li>写入的数据需要使用对应的输入输出流来读取</li>
+</ul>
+<h2 id="数据流DataInputStream和DataOutPutStream"><a href="#数据流DataInputStream和DataOutPutStream" class="headerlink" title="数据流DataInputStream和DataOutPutStream"></a>数据流<code>DataInputStream</code>和<code>DataOutPutStream</code></h2><ul>
+<li><code>DataInputStream</code>和<code>DataOutPutStream</code>只能读取基本数据类型</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataStream</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"><span class="comment">//        writer();</span></span><br><span class="line">        reader();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (DataOutputStream dos = <span class="keyword">new</span> DataOutputStream(<span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(<span class="string">&quot;E:\\readme.txt&quot;</span>)));)&#123;</span><br><span class="line">            dos.writeInt(<span class="number">10</span>);</span><br><span class="line">            dos.writeBoolean(<span class="keyword">true</span>);</span><br><span class="line">            dos.writeUTF(<span class="string">&quot;今天的天气还是不错的&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (DataInputStream dis = <span class="keyword">new</span> DataInputStream(<span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">&quot;E:\\readme.txt&quot;</span>)));)&#123;</span><br><span class="line">            System.out.println(dis.readInt());</span><br><span class="line">            System.out.println(dis.readBoolean());</span><br><span class="line">            System.out.println(dis.readUTF());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="对象流ObjectInputStream和ObjectOutPutStream"><a href="#对象流ObjectInputStream和ObjectOutPutStream" class="headerlink" title="对象流ObjectInputStream和ObjectOutPutStream"></a>对象流<code>ObjectInputStream</code>和<code>ObjectOutPutStream</code></h2><ul>
+<li>可以读写基本数据类型和引用数据类型</li>
+<li>包含<code>DataInputStream</code>和<code>DataOutPutStream</code>的所有功能</li>
+<li>想要写入的对象类必须实现<code>Serializable</code>序列化接口<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ObjectStream</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"><span class="comment">//        writer();</span></span><br><span class="line">        reader();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">writer</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(<span class="keyword">new</span> BufferedOutputStream(<span class="keyword">new</span> FileOutputStream(<span class="string">&quot;E:\\readme.txt&quot;</span>)));)&#123;</span><br><span class="line">            oos.writeInt(<span class="number">10</span>);</span><br><span class="line">            oos.writeBoolean(<span class="keyword">true</span>);</span><br><span class="line">            oos.writeUTF(<span class="string">&quot;今天的天气还是不错的&quot;</span>);</span><br><span class="line">            oos.writeObject(<span class="keyword">new</span> Date());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">reader</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">&quot;E:\\readme.txt&quot;</span>)));)&#123;</span><br><span class="line">            System.out.println(ois.readInt());</span><br><span class="line">            System.out.println(ois.readBoolean());</span><br><span class="line">            System.out.println(ois.readUTF());</span><br><span class="line">            System.out.println(((Date)ois.readObject()).toLocaleString());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="序列化和反序列化"><a href="#序列化和反序列化" class="headerlink" title="序列化和反序列化"></a>序列化和反序列化</h2><h3 id="什么是序列化和反序列化"><a href="#什么是序列化和反序列化" class="headerlink" title="什么是序列化和反序列化"></a>什么是序列化和反序列化</h3><ul>
+<li>序列化：<code>Serialization</code>，将对象的状态信息转换为可以存储或者传输的形式的过程<ul>
+<li>对象（内存）—&gt; 字节数组  字节序列（外存、网络）</li>
+</ul>
+</li>
+<li>反序列化：<code>DeSerialization</code> 将字节数组转换成对象<ul>
+<li>字节数组 字节序列（外存、网络）—–&gt; 对象（内存）</li>
+</ul>
+</li>
+</ul>
+<h3 id="什么时候需要序列化和反序列化"><a href="#什么时候需要序列化和反序列化" class="headerlink" title="什么时候需要序列化和反序列化"></a>什么时候需要序列化和反序列化</h3><ul>
+<li>存储或传输 比如存储到外存（硬盘）中，传输到网络</li>
+</ul>
+<h3 id="如何实现序列化和反序列化"><a href="#如何实现序列化和反序列化" class="headerlink" title="如何实现序列化和反序列化"></a>如何实现序列化和反序列化</h3><ul>
+<li>相应的类要实现<code>Serializable</code>接口</li>
+<li>静态变量是不参与序列化的</li>
+<li>用 transient 关键字修饰的字段也不参与序列化</li>
+</ul>
+<h1 id="其他流"><a href="#其他流" class="headerlink" title="其他流"></a>其他流</h1><h2 id="打印流"><a href="#打印流" class="headerlink" title="打印流"></a>打印流</h2><ul>
+<li><code>PrintStream</code>和<code>PrintWriter</code></li>
+<li>只有输入流，没有输出流</li>
+<li><code>System.out</code>、<code>System.err</code>是<code>PrintStream</code>的实例变量</li>
+<li>代码如下所示: <code>System.out.println()</code>就是使用<code>PrintStream</code>做的打印<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PrintStreamTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (PrintStream ps = <span class="keyword">new</span> PrintStream(<span class="string">&quot;E:\\readme.txt&quot;</span>))&#123;</span><br><span class="line">            ps.println(<span class="number">12</span>);</span><br><span class="line">            ps.println(<span class="number">2.3</span>);</span><br><span class="line">            ps.println(<span class="keyword">true</span>);</span><br><span class="line">            ps.println(<span class="string">&quot;今天天气不错啊&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="转换流"><a href="#转换流" class="headerlink" title="转换流"></a>转换流</h2><ul>
+<li>InputStreamReader和OutputStreamWriter</li>
+<li>实现字节流到字符流的转换，是适配器设计模式的应用</li>
+<li>只能从字节流转成字符流，可以带来处理字符的便利，没有字符流转换成字节流的转换流，因为没有这种需求</li>
+<li>将字节流转换成字符流，实现从键盘输入保存到文件  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestCopyFile4</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (BufferedReader br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in));</span><br><span class="line">             PrintStream bw = <span class="keyword">new</span> PrintStream(<span class="string">&quot;E:\\readme2.txt&quot;</span>))&#123;</span><br><span class="line">             String str;</span><br><span class="line">             <span class="keyword">while</span> (!<span class="string">&quot;bye&quot;</span>.equals(str = br.readLine()))&#123;</span><br><span class="line">                 bw.println(str);</span><br><span class="line">             &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="字节数组流"><a href="#字节数组流" class="headerlink" title="字节数组流"></a>字节数组流</h2><ul>
+<li><code>ByteArrayInputStream</code>和<code>ByteArrayOutPutStream</code></li>
+<li>是节点流，数据源是字节数组，可以实现各种基本和引用数据类型与字节数组之间的相互转换</li>
+</ul>
+<p>Java IO流的设计使用了装饰模式，动态组装流 ，可以减少子类的数量，是继承的一种替代方案</p>
+<h1 id="XML，可扩展标记语言"><a href="#XML，可扩展标记语言" class="headerlink" title="XML，可扩展标记语言"></a>XML，可扩展标记语言</h1><ul>
+<li><p>XML，Extensible Markup Language(可扩展标记语言)，由SGML语言发展而来，允许用户自定义标签，可以将标签和内容有效分离。它主键演变成为一种跨平台的数据交互格式（一种在不同平台、不同系统之间的数据交换格式），一种轻量级的持久化方案（保存简单数据，无需使用数据库）</p>
+</li>
+<li><p>XML只是纯文本，只是一种独立于软件、硬件的数据存储和传输攻击，它可以对外提供一些信息，但由于C、Java这些编程语言不同，XML无法提供任何“动态行为”。</p>
+</li>
+<li><p>和HTML提供预定义标签不同，开发者可以自定义任务标签，因此具有很强的扩张性，不同于HTML侧重于数据的展示，XML更加关注数据的存储和传输，不同于HTML可以使用浏览器来解析并显示，XML需要自行编写软件或程序，才能传递、接收、显示这个文档</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">students</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">student</span> <span class="attr">id</span> = <span class="string">&quot;001&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>张三<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">age</span>&gt;</span>23<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">score</span>&gt;</span>98<span class="tag">&lt;/<span class="name">score</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">student</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">student</span> <span class="attr">id</span>=<span class="string">&quot;002&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>李四<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">age</span>&gt;</span>24<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">score</span>&gt;</span>96<span class="tag">&lt;/<span class="name">score</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">student</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">students</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="一个XML文件分为如下几个部分"><a href="#一个XML文件分为如下几个部分" class="headerlink" title="一个XML文件分为如下几个部分"></a>一个XML文件分为如下几个部分</h2></li>
+<li><p>文档声明</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>元素</p>
+<blockquote>
+<p><code>&lt;name&gt;</code>称为开始标签，<code>&lt;/name&gt;</code>称为结束标签，”李四“表示标签的内容。<br>开始标签、内容、结束标签组合成元素。元素是XML文档的主要部分，元素内容可以是普通文本，也可以是子元素，比如<code>student</code>元素的内部就是有多个子标签<br>一个XML文档有且仅有一个根元素，比如<code>students</code></p>
+</blockquote>
+</li>
+<li><p>属性</p>
+<blockquote>
+<p>元素<code>&lt;student id=&quot;001&quot;&gt;</code>中的id就是属性名，001是属性值，属性值要使用双引号括起来，属性加载一个元素的开始开始标签上，用来对元素进行描述<br>一个元素可以有多个属性，空格隔开<br>属性没有先后顺序，同一个XML元素不允许有同名属性</p>
+</blockquote>
+</li>
+<li><p>注释</p>
+<blockquote>
+<p><code>&lt;!-- 学生信息 --&gt;</code><br>对XML内容进行解释说明的文字</p>
+</blockquote>
+</li>
+<li><p>CDATA标记、字符实体</p>
+<blockquote>
+<p>有时元素文本中会有一些特殊字符，比如<code>&lt;、&gt;、&quot;、&amp;</code>等，这些字符在XML文档结构本身中已经用到了，此时主要通过两种办法，实现正确解释这些特殊字符<br>方法1，个别的特殊字符，可以使用字符实体替换</p>
+</blockquote>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">字符实体</th>
+<th align="center">特殊字符</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>&amp;lt;</code></td>
+<td align="center"><code>&lt;</code></td>
+<td align="center">小于</td>
+</tr>
+<tr>
+<td align="center"><code>&amp;gt;</code></td>
+<td align="center"><code>&gt;</code></td>
+<td align="center">大于</td>
+</tr>
+<tr>
+<td align="center"><code>&amp;amp;</code></td>
+<td align="center"><code>&amp;</code></td>
+<td align="center">和号</td>
+</tr>
+<tr>
+<td align="center"><code>&amp;apos;</code></td>
+<td align="center"><code>&#39;</code></td>
+<td align="center">单引号</td>
+</tr>
+<tr>
+<td align="center"><code>&amp;aqot;</code></td>
+<td align="center"><code>&quot;</code></td>
+<td align="center">双引号</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>严格地讲，在XML中仅有字符<code>&lt;</code>和<code>&amp;</code>是非法的，单引号、双引号和大于号是合法的，但是把它们替换成实体引用是个好习惯<br>方法2，大量特殊字符可以使用CDATA标记来处理<br>CDATA标记中的所有字符都会被当作普通字符来处理，而不是XML标签<br>CDATA标记语法<br><code>&lt;!CDATA[[要显示的字符]]&gt;</code></p>
+</blockquote>
+<h2 id="格式良好的XML文档，遵循XML文档的基本规则"><a href="#格式良好的XML文档，遵循XML文档的基本规则" class="headerlink" title="格式良好的XML文档，遵循XML文档的基本规则"></a>格式良好的XML文档，遵循XML文档的基本规则</h2><ul>
+<li>元素正确嵌套</li>
+<li>XML文件的第一行必须是xml声明</li>
+<li>XML文件只能有一个根节点</li>
+<li>英文字符的大小写是有差异的</li>
+<li>开始的控制标记与结束的控制标记缺一不可</li>
+<li>属性值的设置必须被双引号包围起来</li>
+</ul>
+<h2 id="有效的XML文档"><a href="#有效的XML文档" class="headerlink" title="有效的XML文档"></a>有效的XML文档</h2><ul>
+<li>首先必须是格式良好的（语法约束）</li>
+<li>使用DTD和XSD（XML Scheme）定义语义约束</li>
+</ul>
+<h2 id="内部DTD"><a href="#内部DTD" class="headerlink" title="内部DTD"></a>内部DTD</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">students</span>[</span></span><br><span class="line"><span class="meta">        <span class="meta">&lt;!ELEMENT <span class="meta-keyword">students</span> (<span class="meta-keyword">student</span>+)&gt;</span></span></span><br><span class="line"><span class="meta">        <span class="meta">&lt;!ELEMENT <span class="meta-keyword">student</span> (<span class="meta-keyword">name</span>,<span class="meta-keyword">age</span>,<span class="meta-keyword">score</span>)&gt;</span></span></span><br><span class="line"><span class="meta">        <span class="meta">&lt;!ATTLIST <span class="meta-keyword">student</span> <span class="meta-keyword">id</span> <span class="meta-keyword">CDATA</span> <span class="meta-keyword">#REQUIRED</span>&gt;</span></span></span><br><span class="line"><span class="meta">        <span class="meta">&lt;!ELEMENT <span class="meta-keyword">name</span> (<span class="meta-keyword">#PCDATA</span>)&gt;</span></span></span><br><span class="line"><span class="meta">        <span class="meta">&lt;!ELEMENT <span class="meta-keyword">age</span> (<span class="meta-keyword">#PCDATA</span>)&gt;</span></span></span><br><span class="line"><span class="meta">        <span class="meta">&lt;!ELEMENT <span class="meta-keyword">score</span> (<span class="meta-keyword">#PCDATA</span>)&gt;</span></span></span><br><span class="line"><span class="meta">        ]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">students</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">student</span> <span class="attr">id</span>=<span class="string">&quot;001&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>张三<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">age</span>&gt;</span>23<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">score</span>&gt;</span>98<span class="tag">&lt;/<span class="name">score</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">student</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">student</span> <span class="attr">id</span>=<span class="string">&quot;002&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>李四<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">age</span>&gt;</span>24<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">score</span>&gt;</span>96<span class="tag">&lt;/<span class="name">score</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">student</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">students</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="外部DTD"><a href="#外部DTD" class="headerlink" title="外部DTD"></a>外部DTD</h2><p>新建一个dtd文件，将内容复制进去<br>student.dtd</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!ELEMENT students (student+)&gt;</span><br><span class="line">&lt;!ELEMENT student (name|age|score)+&gt;</span><br><span class="line">&lt;!ATTLIST student id CDATA #REQUIRED&gt;</span><br><span class="line">&lt;!ELEMENT name (#PCDATA)&gt;</span><br><span class="line">&lt;!ELEMENT age (#PCDATA)&gt;</span><br><span class="line">&lt;!ELEMENT score (#PCDATA)&gt;</span><br></pre></td></tr></table></figure>
+<p>在xml中引用<br><code>&lt;!DOCTYPE 根元素 SYSTEM &quot;外部DTD文件路径&quot;&gt;</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">students</span> <span class="meta-keyword">SYSTEM</span> <span class="meta-string">&quot;student.dtd&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">students</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">student</span> <span class="attr">id</span>=<span class="string">&quot;001&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">age</span>&gt;</span>23<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>张三<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">score</span>&gt;</span>98<span class="tag">&lt;/<span class="name">score</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">student</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">student</span> <span class="attr">id</span>=<span class="string">&quot;002&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>李四<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">age</span>&gt;</span>24<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">score</span>&gt;</span>96<span class="tag">&lt;/<span class="name">score</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">student</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">students</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="公用DTD"><a href="#公用DTD" class="headerlink" title="公用DTD"></a>公用DTD</h2><ul>
+<li>其实也算一种外部DTD，是有某个权威机构定制的，供特定行业或者公众使用</li>
+<li>公用DTD用过PUBLIC关键字引入，而不是SYSTEM</li>
+<li>另外还要再增加一个标识名</li>
+<li><code>&lt;!DOCTYPE 跟元素 PUBLIC &quot;DTD标识名&quot; &quot;公用DTD的URI&quot;&gt;</code></li>
+</ul>
+<h1 id="DOM解析XML"><a href="#DOM解析XML" class="headerlink" title="DOM解析XML"></a>DOM解析XML</h1><h2 id="XML解析的四种方式"><a href="#XML解析的四种方式" class="headerlink" title="XML解析的四种方式"></a>XML解析的四种方式</h2><ul>
+<li>DOM和SAX是XML解析的两种规范，目前主流的XML解析器都会为DOM和SAX提供实现</li>
+<li>使用这两种技术解析XML比较繁琐，代码冗长，可读性也不高</li>
+<li>所以Java领域中又出现了两个开源XML解析器：DOM4J和JDOM</li>
+<li>其中DOM4J是面向接口编程</li>
+<li>而JDOM是面向实现编程</li>
+<li>DOM4J比JDOM更灵活，性能表现也比较优异</li>
+<li>DOM<ul>
+<li>基于XML树结构</li>
+<li>比较耗资源</li>
+<li>适用于多次访问XML</li>
+</ul>
+</li>
+<li>SAX<ul>
+<li>基于事件</li>
+<li>耗资源小</li>
+<li>适用于数据量比较大的XML</li>
+</ul>
+</li>
+<li>JDOM<ul>
+<li>比DOM更快</li>
+<li>JDOM仅使用具体类而不使用接口</li>
+</ul>
+</li>
+<li>DOM4J<ul>
+<li>非常优秀的Java XML API </li>
+<li>性能优异</li>
+<li>功能强大</li>
+<li>开放源码</li>
+</ul>
+</li>
+</ul>
+<h2 id="DOM：Document-Object-Model-文档对象模型"><a href="#DOM：Document-Object-Model-文档对象模型" class="headerlink" title="DOM：Document Object Model 文档对象模型"></a>DOM：Document Object Model 文档对象模型</h2><p>使用该技术解析XML文档时，会根据要操作的文档，构建一颗驻留内存中的树，然后就可以使用DOM接口来操作这棵树。<br>由于树是驻留再内存中，所以非常方便各种操作。<br>但是也因为这棵树包含了XML文档的所有内容，是比较耗费资源的，该方式适合小文档的解析、适合多次访问的文档的解析</p>
+<h2 id="SAX：Simple-API-for-XML"><a href="#SAX：Simple-API-for-XML" class="headerlink" title="SAX：Simple API for XML"></a>SAX：Simple API for XML</h2><p>是基于事件的解析，它是为了解决DOM解析的资源耗费而出现的。<br>SAX在解析一份XML文档时，会以次发出文档开始、元素开始、元素结束、文档结束等事件。<br>该方式不需要是事先调入整个文档，优势是占用资源少，内存耗费小，一般在解析数据量比较大的文档时采用该方式。</p>
+<h2 id="DOM4J：DOM-for-JAVA"><a href="#DOM4J：DOM-for-JAVA" class="headerlink" title="DOM4J：DOM for JAVA"></a>DOM4J：DOM for JAVA</h2><p>开源XML解析工具，完全支持DOM、SAX机制，具有性能优异、功能强大和操作简单等特点。越来越多的Java软件都在使用DOM4J处理XML</p>
+<h2 id="JDOM：Java-DOM"><a href="#JDOM：Java-DOM" class="headerlink" title="JDOM：Java DOM"></a>JDOM：Java DOM</h2><p>JDOM的目的是成为Java特定义文档模型。<br>行至半路，一部分人产生了新的想法，而这些想法又无法在JDOM中实现，干脆就从该项目中分离出来，单独取开发另外一套专属的XML API，这就是DOM4J。<br>因此，两者具有相同的设计目的，用法也非常相似。<br>从组中解决来看，JDOM的主要API以类为主，DOM4J的API以接口为主。</p>
+<h2 id="使用DOM解析XML"><a href="#使用DOM解析XML" class="headerlink" title="使用DOM解析XML"></a>使用DOM解析XML</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDOM</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ParserConfigurationException, IOException, SAXException </span>&#123;</span><br><span class="line">        <span class="comment">//1.创建DOM解析器工厂</span></span><br><span class="line">        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();</span><br><span class="line">        <span class="comment">//2.由DOM解析器工厂创建DOM解析器</span></span><br><span class="line">        DocumentBuilder db = dbf.newDocumentBuilder();</span><br><span class="line">        <span class="comment">//3.由DOM解析器解析文档，生成DOM树</span></span><br><span class="line">        Document doc = db.parse(<span class="string">&quot;E:\\project\\java\\leetcode\\src\\main\\java\\com\\ys\\io\\xml\\student.xml&quot;</span>);</span><br><span class="line">        NodeList nodeList = doc.getElementsByTagName(<span class="string">&quot;students&quot;</span>);</span><br><span class="line">        Element root = (Element)nodeList.item(<span class="number">0</span>);</span><br><span class="line">        NodeList students = root.getElementsByTagName(<span class="string">&quot;student&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; students.getLength(); i++) &#123;</span><br><span class="line">            Element item = (Element)students.item(i);</span><br><span class="line">            String id = item.getAttribute(<span class="string">&quot;id&quot;</span>);</span><br><span class="line">            System.out.println(id);</span><br><span class="line">            NodeList childNodes = item.getChildNodes();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; childNodes.getLength(); j++) &#123;</span><br><span class="line">                Node node = childNodes.item(j);</span><br><span class="line">                <span class="keyword">if</span> (node.getNodeType() == Node.ELEMENT_NODE)&#123;</span><br><span class="line">                    Element element = (Element)node;</span><br><span class="line">                    System.out.println(element.getNodeName()+<span class="string">&quot;---&gt;&quot;</span>+element.getTextContent());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>缺点：  </p>
+<ul>
+<li>前面三个步骤，每次都要书写一遍，能否封装好</li>
+<li><code>getChildNodes()</code>不仅包括<code>Element</code>，也包括空白形成的<code>Text</code>，遍历时需要进行筛选</li>
+<li><code>getChildNodes()</code>也包括注释，也包括外部<code>DTD</code>引用，大部分情况下并不是用户需要的</li>
+</ul>
+<h2 id="使用DOM4J解析XML"><a href="#使用DOM4J解析XML" class="headerlink" title="使用DOM4J解析XML"></a>使用DOM4J解析XML</h2><table>
+<thead>
+<tr>
+<th align="center">Attribute</th>
+<th align="center">定义了XML的属性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Node</td>
+<td align="center">DOM4J树中所有节点的根接口</td>
+</tr>
+<tr>
+<td align="center">Branch</td>
+<td align="center">指包含子节点的节点，如元素（Element）和文档（Docuemnts）</td>
+</tr>
+<tr>
+<td align="center">Document</td>
+<td align="center">代表XML文档</td>
+</tr>
+<tr>
+<td align="center">Element</td>
+<td align="center">代表XML元素</td>
+</tr>
+<tr>
+<td align="center">CharacterData</td>
+<td align="center">所有文本元素的父接口，如CDATA、Comment、Text</td>
+</tr>
+<tr>
+<td align="center">CDATA</td>
+<td align="center">代表XML CDATA区域</td>
+</tr>
+<tr>
+<td align="center">Comment</td>
+<td align="center">代表XML注释内容</td>
+</tr>
+<tr>
+<td align="center">DocumentType</td>
+<td align="center">代表XML DOCTYPE声明</td>
+</tr>
+<tr>
+<td align="center">processingInstruction</td>
+<td align="center">代表XML处理指令</td>
+</tr>
+<tr>
+<td align="center">Attribute</td>
+<td align="center">代表XML元素的属性</td>
+</tr>
+</tbody></table>
+<p>添加DOM4J的依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>dom4j<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>dom4j<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.6.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="DOM4J解析XML代码如下"><a href="#DOM4J解析XML代码如下" class="headerlink" title="DOM4J解析XML代码如下"></a>DOM4J解析XML代码如下</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDom4j1</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> DocumentException </span>&#123;</span><br><span class="line">        <span class="comment">//1.根据XML文档创建DOM4J树</span></span><br><span class="line">        SAXReader reader = <span class="keyword">new</span> SAXReader();</span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">&quot;E:\\project\\java\\leetcode\\src\\main\\java\\com\\ys\\io\\xml\\student.xml&quot;</span>);</span><br><span class="line">        Document document = reader.read(file);</span><br><span class="line">        <span class="comment">//2.获取DOM4j树的跟节点students</span></span><br><span class="line">        Element rootElement = document.getRootElement();</span><br><span class="line">        <span class="comment">//3.获取students的子节点student</span></span><br><span class="line">        <span class="comment">//List&lt;Element&gt; elements = rootElement.elements();</span></span><br><span class="line">        Iterator&lt;Element&gt; it = rootElement.elementIterator();</span><br><span class="line">        <span class="comment">//4.对student的属性和子节点进行解析</span></span><br><span class="line">        <span class="keyword">while</span> (it.hasNext()) &#123;</span><br><span class="line">            Element next = it.next();</span><br><span class="line"><span class="comment">//            Attribute id = next.attribute(&quot;id&quot;);</span></span><br><span class="line"><span class="comment">//            System.out.println(id.getName()+&quot;--&gt;&quot;+id.getValue());</span></span><br><span class="line">            Iterator&lt;Attribute&gt; it2 = next.attributeIterator();</span><br><span class="line">            <span class="keyword">while</span> (it2.hasNext()) &#123;</span><br><span class="line">                Attribute attribute = it2.next();</span><br><span class="line">                System.out.println(attribute.getName() + <span class="string">&quot;--&gt;&quot;</span> + attribute.getValue());</span><br><span class="line">            &#125;</span><br><span class="line">            List&lt;Element&gt; elements = next.elements();</span><br><span class="line">            <span class="keyword">for</span> (Element element : elements) &#123;</span><br><span class="line">                System.out.println(element.getName()+<span class="string">&quot;---&gt;&quot;</span>+element.getStringValue());</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="DOM4J创建XML代码如下"><a href="#DOM4J创建XML代码如下" class="headerlink" title="DOM4J创建XML代码如下"></a>DOM4J创建XML代码如下</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDom4j2</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">//1.创建一个DocumentFactory对象</span></span><br><span class="line">        <span class="comment">//DocumentFactory factory = new DocumentFactory();</span></span><br><span class="line">        <span class="comment">//2.使用DocumentFactory创建Document</span></span><br><span class="line">        <span class="comment">//Document document = factory.createDocument();</span></span><br><span class="line">        Document document = DocumentHelper.createDocument();</span><br><span class="line">        document.addComment(<span class="string">&quot;学生信息&quot;</span>);</span><br><span class="line">        <span class="comment">//3.给Document指定一个跟节点students</span></span><br><span class="line">        Element rootElement = document.addElement(<span class="string">&quot;students&quot;</span>);</span><br><span class="line">        <span class="comment">//4.给students添加一个子节点student</span></span><br><span class="line">        Element element = rootElement.addElement(<span class="string">&quot;student&quot;</span>);</span><br><span class="line">        <span class="comment">//5.给student节点添加一个属性节点：id</span></span><br><span class="line">        element.addAttribute(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;001&quot;</span>);</span><br><span class="line">        <span class="comment">//6.给student节点添加子节点：name age  score</span></span><br><span class="line">        Element name = element.addElement(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">        name.addText(<span class="string">&quot;王五&quot;</span>);</span><br><span class="line">        Element age = element.addElement(<span class="string">&quot;age&quot;</span>);</span><br><span class="line">        age.addText(<span class="string">&quot;25&quot;</span>);</span><br><span class="line">        Element score = element.addElement(<span class="string">&quot;score&quot;</span>);</span><br><span class="line">        score.addText(<span class="string">&quot;98.5&quot;</span>);</span><br><span class="line">        <span class="comment">//7.将上面的DOM4J树写入文件</span></span><br><span class="line">        <span class="comment">//默认写入的xml内容是不换行的，没有格式，可以创建一个格式</span></span><br><span class="line">        OutputFormat format = OutputFormat.createPrettyPrint();</span><br><span class="line">        Writer writer = <span class="keyword">new</span> FileWriter(<span class="string">&quot;E:\\project\\java\\leetcode\\src\\main\\java\\com\\ys\\io\\xml\\student1.xml&quot;</span>);</span><br><span class="line">        XMLWriter xmlWriter = <span class="keyword">new</span> XMLWriter(writer,format);</span><br><span class="line">        xmlWriter.write(document);</span><br><span class="line">        xmlWriter.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="DOM4J修改XML代码如下"><a href="#DOM4J修改XML代码如下" class="headerlink" title="DOM4J修改XML代码如下"></a>DOM4J修改XML代码如下</h3><p>在XML末尾添加子节点，默认就是在末尾添加</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDom4j3</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> DocumentException, IOException </span>&#123;</span><br><span class="line">        <span class="comment">//1.根据XML文档创建DOM4J树</span></span><br><span class="line">        SAXReader reader = <span class="keyword">new</span> SAXReader();</span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">&quot;E:\\project\\java\\leetcode\\src\\main\\java\\com\\ys\\io\\xml\\student1.xml&quot;</span>);</span><br><span class="line">        Document document = reader.read(file);</span><br><span class="line">        <span class="comment">//2.获取根节点</span></span><br><span class="line">        Element rootElement = document.getRootElement();</span><br><span class="line">        <span class="comment">//3.给students添加一个子节点student</span></span><br><span class="line">        Element element = rootElement.addElement(<span class="string">&quot;student&quot;</span>);</span><br><span class="line">        <span class="comment">//4.给student节点添加一个属性节点：id</span></span><br><span class="line">        element.addAttribute(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;002&quot;</span>);</span><br><span class="line">        <span class="comment">//5.给student节点添加子节点：name age  score</span></span><br><span class="line">        Element name = element.addElement(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">        name.addText(<span class="string">&quot;李四&quot;</span>);</span><br><span class="line">        Element age = element.addElement(<span class="string">&quot;age&quot;</span>);</span><br><span class="line">        age.addText(<span class="string">&quot;56&quot;</span>);</span><br><span class="line">        Element score = element.addElement(<span class="string">&quot;score&quot;</span>);</span><br><span class="line">        score.addText(<span class="string">&quot;99.5&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//7.将上面的DOM4J树写入文件</span></span><br><span class="line">        <span class="comment">//默认写入的xml内容是不换行的，没有格式，可以创建一个格式</span></span><br><span class="line">        OutputFormat format = OutputFormat.createPrettyPrint();</span><br><span class="line">        Writer writer = <span class="keyword">new</span> FileWriter(<span class="string">&quot;E:\\project\\java\\leetcode\\src\\main\\java\\com\\ys\\io\\xml\\student1.xml&quot;</span>);</span><br><span class="line">        XMLWriter xmlWriter = <span class="keyword">new</span> XMLWriter(writer,format);</span><br><span class="line">        xmlWriter.write(document);</span><br><span class="line">        xmlWriter.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在XML中间插入节点  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDom4j4</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> DocumentException, IOException </span>&#123;</span><br><span class="line">        <span class="comment">//1.根据XML文档创建DOM4J树</span></span><br><span class="line">        SAXReader reader = <span class="keyword">new</span> SAXReader();</span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">&quot;E:\\project\\java\\leetcode\\src\\main\\java\\com\\ys\\io\\xml\\student1.xml&quot;</span>);</span><br><span class="line">        Document document = reader.read(file);</span><br><span class="line">        <span class="comment">//2.获取根节点</span></span><br><span class="line">        Element rootElement = document.getRootElement();</span><br><span class="line">        <span class="comment">//获取根节点的所有子节点</span></span><br><span class="line">        List elements = rootElement.elements();</span><br><span class="line">        <span class="comment">//3.新建一个子节点</span></span><br><span class="line">        Element element = DocumentHelper.createElement(<span class="string">&quot;student&quot;</span>);</span><br><span class="line">        <span class="comment">//4.给student节点添加一个属性节点：id</span></span><br><span class="line">        element.addAttribute(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;003&quot;</span>);</span><br><span class="line">        <span class="comment">//5.给student节点添加子节点：name age  score</span></span><br><span class="line">        Element name = element.addElement(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">        name.addText(<span class="string">&quot;张三&quot;</span>);</span><br><span class="line">        Element age = element.addElement(<span class="string">&quot;age&quot;</span>);</span><br><span class="line">        age.addText(<span class="string">&quot;78&quot;</span>);</span><br><span class="line">        Element score = element.addElement(<span class="string">&quot;score&quot;</span>);</span><br><span class="line">        score.addText(<span class="string">&quot;55.5&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//将新新建的子节点写入到节点树中</span></span><br><span class="line">        elements.add(<span class="number">1</span>,element);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//7.将上面的DOM4J树写入文件</span></span><br><span class="line">        <span class="comment">//默认写入的xml内容是不换行的，没有格式，可以创建一个格式</span></span><br><span class="line">        OutputFormat format = OutputFormat.createPrettyPrint();</span><br><span class="line">        Writer writer = <span class="keyword">new</span> FileWriter(<span class="string">&quot;E:\\project\\java\\leetcode\\src\\main\\java\\com\\ys\\io\\xml\\student1.xml&quot;</span>);</span><br><span class="line">        XMLWriter xmlWriter = <span class="keyword">new</span> XMLWriter(writer,format);</span><br><span class="line">        xmlWriter.write(document);</span><br><span class="line">        xmlWriter.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据条件删除某一个元素   </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDom4j5</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> DocumentException, IOException </span>&#123;</span><br><span class="line">    <span class="comment">//1.根据XML文档创建DOM4J树</span></span><br><span class="line">    SAXReader reader = <span class="keyword">new</span> SAXReader();</span><br><span class="line">    File file = <span class="keyword">new</span> File(<span class="string">&quot;E:\\project\\java\\leetcode\\src\\main\\java\\com\\ys\\io\\xml\\student1.xml&quot;</span>);</span><br><span class="line">    Document document = reader.read(file);</span><br><span class="line">    <span class="comment">//2.获取根节点</span></span><br><span class="line">    Element rootElement = document.getRootElement();</span><br><span class="line">    <span class="comment">//获取根节点的所有子节点</span></span><br><span class="line">    List&lt;Element&gt; elements = rootElement.elements();</span><br><span class="line">    <span class="keyword">int</span> index = -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; elements.size(); i++) &#123;</span><br><span class="line">      String id = elements.get(i).attribute(<span class="string">&quot;id&quot;</span>).getValue();</span><br><span class="line">      <span class="keyword">if</span> (<span class="string">&quot;003&quot;</span>.equals(id)) &#123;</span><br><span class="line">        index = i;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (index == -<span class="number">1</span>) &#123;</span><br><span class="line">      System.out.println(<span class="string">&quot;没有找到需要删除的元素&quot;</span>);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      elements.remove(index);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//7.将上面的DOM4J树写入文件</span></span><br><span class="line">    <span class="comment">//默认写入的xml内容是不换行的，没有格式，可以创建一个格式</span></span><br><span class="line">    OutputFormat format = OutputFormat.createPrettyPrint();</span><br><span class="line">    Writer writer = <span class="keyword">new</span> FileWriter(<span class="string">&quot;E:\\project\\java\\leetcode\\src\\main\\java\\com\\ys\\io\\xml\\student1.xml&quot;</span>);</span><br><span class="line">    XMLWriter xmlWriter = <span class="keyword">new</span> XMLWriter(writer, format);</span><br><span class="line">    xmlWriter.write(document);</span><br><span class="line">    xmlWriter.close();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据条件修改某一个元素  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestDom4j6</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> DocumentException, IOException </span>&#123;</span><br><span class="line">        <span class="comment">//1.根据XML文档创建DOM4J树</span></span><br><span class="line">        SAXReader reader = <span class="keyword">new</span> SAXReader();</span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">&quot;E:\\project\\java\\leetcode\\src\\main\\java\\com\\ys\\io\\xml\\student1.xml&quot;</span>);</span><br><span class="line">        Document document = reader.read(file);</span><br><span class="line">        <span class="comment">//2.获取根节点</span></span><br><span class="line">        Element rootElement = document.getRootElement();</span><br><span class="line">        <span class="comment">//获取根节点的所有子节点</span></span><br><span class="line">        List&lt;Element&gt; elements = rootElement.elements();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; elements.size(); i++) &#123;</span><br><span class="line">            Element element = elements.get(i);</span><br><span class="line">            String id = element.attribute(<span class="string">&quot;id&quot;</span>).getValue();</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;001&quot;</span>.equals(id))&#123;</span><br><span class="line">                element.attribute(<span class="string">&quot;id&quot;</span>).setValue(<span class="string">&quot;003&quot;</span>);</span><br><span class="line">                Element name = element.element(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">                name.setText(<span class="string">&quot;天奇&quot;</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//7.将上面的DOM4J树写入文件</span></span><br><span class="line">        <span class="comment">//默认写入的xml内容是不换行的，没有格式，可以创建一个格式</span></span><br><span class="line">        OutputFormat format = OutputFormat.createPrettyPrint();</span><br><span class="line">        Writer writer = <span class="keyword">new</span> FileWriter(<span class="string">&quot;E:\\project\\java\\leetcode\\src\\main\\java\\com\\ys\\io\\xml\\student1.xml&quot;</span>);</span><br><span class="line">        XMLWriter xmlWriter = <span class="keyword">new</span> XMLWriter(writer,format);</span><br><span class="line">        xmlWriter.write(document);</span><br><span class="line">        xmlWriter.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/IO/" rel="tag"><i class="fa fa-tag"></i> IO</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/11/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E5%AE%9E%E7%8E%B0%E9%AB%98%E6%80%A7%E8%83%BD%E7%BC%93%E5%AD%98/" rel="prev" title="Java并发成神之路-精通JUC并发工具十八般武艺——实现高性能缓存(十)">
+      <i class="fa fa-chevron-left"></i> Java并发成神之路-精通JUC并发工具十八般武艺——实现高性能缓存(十)
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IO%E6%B5%81%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">IO流概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IO%E6%B5%81%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">IO流分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IO%E6%B5%81%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">IO流体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E6%B5%81"><span class="nav-number">1.2.1.</span> <span class="nav-text">字节流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E6%B5%81"><span class="nav-number">1.3.</span> <span class="nav-text">字符流</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#File%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">File类的使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%B5%81"><span class="nav-number">3.</span> <span class="nav-text">文件流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%AD%97%E8%8A%82%E6%B5%81FileInputStream%E5%92%8CFileOutPutStream"><span class="nav-number">3.1.</span> <span class="nav-text">文件字节流FileInputStream和FileOutPutStream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%AD%97%E7%AC%A6%E6%B5%81FileReader%E5%92%8CFileWriter"><span class="nav-number">3.2.</span> <span class="nav-text">文件字符流FileReader和FileWriter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%93%E5%86%B2%E6%B5%81"><span class="nav-number">4.</span> <span class="nav-text">缓冲流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%86%B2%E5%AD%97%E8%8A%82%E6%B5%81BufferedInputStream%E5%92%8CBufferedOutPutStream"><span class="nav-number">4.1.</span> <span class="nav-text">缓冲字节流BufferedInputStream和BufferedOutPutStream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%86%B2%E5%AD%97%E7%AC%A6%E6%B5%81BufferedReader%E5%92%8CBufferedWriter"><span class="nav-number">4.2.</span> <span class="nav-text">缓冲字符流BufferedReader和BufferedWriter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81%E5%92%8C%E5%AF%B9%E8%B1%A1%E6%B5%81"><span class="nav-number">5.</span> <span class="nav-text">数据流和对象流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B5%81DataInputStream%E5%92%8CDataOutPutStream"><span class="nav-number">5.1.</span> <span class="nav-text">数据流DataInputStream和DataOutPutStream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E6%B5%81ObjectInputStream%E5%92%8CObjectOutPutStream"><span class="nav-number">5.2.</span> <span class="nav-text">对象流ObjectInputStream和ObjectOutPutStream</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E5%92%8C%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">5.3.</span> <span class="nav-text">序列化和反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BA%8F%E5%88%97%E5%8C%96%E5%92%8C%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">5.3.1.</span> <span class="nav-text">什么是序列化和反序列化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E5%BA%8F%E5%88%97%E5%8C%96%E5%92%8C%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">5.3.2.</span> <span class="nav-text">什么时候需要序列化和反序列化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%BA%8F%E5%88%97%E5%8C%96%E5%92%8C%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">5.3.3.</span> <span class="nav-text">如何实现序列化和反序列化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%B5%81"><span class="nav-number">6.</span> <span class="nav-text">其他流</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%8D%B0%E6%B5%81"><span class="nav-number">6.1.</span> <span class="nav-text">打印流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E6%B5%81"><span class="nav-number">6.2.</span> <span class="nav-text">转换流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E6%95%B0%E7%BB%84%E6%B5%81"><span class="nav-number">6.3.</span> <span class="nav-text">字节数组流</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#XML%EF%BC%8C%E5%8F%AF%E6%89%A9%E5%B1%95%E6%A0%87%E8%AE%B0%E8%AF%AD%E8%A8%80"><span class="nav-number">7.</span> <span class="nav-text">XML，可扩展标记语言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AAXML%E6%96%87%E4%BB%B6%E5%88%86%E4%B8%BA%E5%A6%82%E4%B8%8B%E5%87%A0%E4%B8%AA%E9%83%A8%E5%88%86"><span class="nav-number">7.1.</span> <span class="nav-text">一个XML文件分为如下几个部分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E8%89%AF%E5%A5%BD%E7%9A%84XML%E6%96%87%E6%A1%A3%EF%BC%8C%E9%81%B5%E5%BE%AAXML%E6%96%87%E6%A1%A3%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%A7%84%E5%88%99"><span class="nav-number">7.2.</span> <span class="nav-text">格式良好的XML文档，遵循XML文档的基本规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E6%95%88%E7%9A%84XML%E6%96%87%E6%A1%A3"><span class="nav-number">7.3.</span> <span class="nav-text">有效的XML文档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E9%83%A8DTD"><span class="nav-number">7.4.</span> <span class="nav-text">内部DTD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%96%E9%83%A8DTD"><span class="nav-number">7.5.</span> <span class="nav-text">外部DTD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AC%E7%94%A8DTD"><span class="nav-number">7.6.</span> <span class="nav-text">公用DTD</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DOM%E8%A7%A3%E6%9E%90XML"><span class="nav-number">8.</span> <span class="nav-text">DOM解析XML</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#XML%E8%A7%A3%E6%9E%90%E7%9A%84%E5%9B%9B%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">8.1.</span> <span class="nav-text">XML解析的四种方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOM%EF%BC%9ADocument-Object-Model-%E6%96%87%E6%A1%A3%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B"><span class="nav-number">8.2.</span> <span class="nav-text">DOM：Document Object Model 文档对象模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SAX%EF%BC%9ASimple-API-for-XML"><span class="nav-number">8.3.</span> <span class="nav-text">SAX：Simple API for XML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOM4J%EF%BC%9ADOM-for-JAVA"><span class="nav-number">8.4.</span> <span class="nav-text">DOM4J：DOM for JAVA</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDOM%EF%BC%9AJava-DOM"><span class="nav-number">8.5.</span> <span class="nav-text">JDOM：Java DOM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8DOM%E8%A7%A3%E6%9E%90XML"><span class="nav-number">8.6.</span> <span class="nav-text">使用DOM解析XML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8DOM4J%E8%A7%A3%E6%9E%90XML"><span class="nav-number">8.7.</span> <span class="nav-text">使用DOM4J解析XML</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM4J%E8%A7%A3%E6%9E%90XML%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B"><span class="nav-number">8.7.1.</span> <span class="nav-text">DOM4J解析XML代码如下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM4J%E5%88%9B%E5%BB%BAXML%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B"><span class="nav-number">8.7.2.</span> <span class="nav-text">DOM4J创建XML代码如下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM4J%E4%BF%AE%E6%94%B9XML%E4%BB%A3%E7%A0%81%E5%A6%82%E4%B8%8B"><span class="nav-number">8.7.3.</span> <span class="nav-text">DOM4J修改XML代码如下</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YS"
+      src="/images/author.png">
+  <p class="site-author-name" itemprop="name">YS</p>
+  <div class="site-description" itemprop="description">学海无涯苦作舟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YS</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
+      appKey     : 'BCtPpmnU41TOE7Wr5O0CJFgS',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
