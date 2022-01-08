@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .main {
+        width: 60%;
+        margin: 0 auto;
+    }
+    pre {
+        font-family: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas", "Ubuntu Mono", "Courier New", "andale mono", "lucida console", monospace;
+        display: block;
+        padding: 8px 12px;
+        margin: 0 0 8px;
+        font-size: 13px;
+        word-break: break-all;
+        word-wrap: break-word;
+        color: #2e2e2e;
+        background-color: #fafafa;
+        border: 1px solid #dfdfdf;
+        border-radius: 2px;
+    }
+    pre {
+        display: block;
+        font-size: 90%;
+        color: #2e2e2e;
+    }
+    pre {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        overflow: auto;
+    }
+    pre, code, kbd, samp {
+        font-family: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas", "Ubuntu Mono", "Courier New", "andale mono", "lucida console", monospace;
+        font-size: 1em;
+    }
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    user agent stylesheet
+    pre {
+        display: block;
+        font-family: monospace;
+        white-space: pre;
+        margin: 1em 0px;
+    }
+    .md {
+        color: #2e2e2e;
+        word-wrap: break-word;
+    }
+    .tab-width-8 {
+        -moz-tab-size: 8;
+        tab-size: 8;
+    }
+    body, .form-control, .search form, .search form {
+        font-size: .875rem;
+    }
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #2e2e2e;
+        text-align: left;
+        background-color: #fff;
+    }
+    :root {
+        --blue: #007bff;
+        --indigo: #6610f2;
+        --purple: #6d49cb;
+        --pink: #e83e8c;
+        --red: #dc3545;
+        --orange: #fd7e14;
+        --yellow: #ffc107;
+        --green: #28a745;
+        --teal: #20c997;
+        --cyan: #17a2b8;
+        --white: #fff;
+        --gray: #919191;
+        --gray-dark: #4f4f4f;
+        --primary: #007bff;
+        --secondary: #f0f0f0;
+        --success: #108548;
+        --info: #1f75cb;
+        --warning: #fc9403;
+        --danger: #dd2b0e;
+        --light: #dbdbdb;
+        --dark: #4f4f4f;
+        --breakpoint-xs: 0;
+        --breakpoint-sm: 576px;
+        --breakpoint-md: 768px;
+        --breakpoint-lg: 992px;
+        --breakpoint-xl: 1200px;
+        --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        --font-family-monospace: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas", "Ubuntu Mono", "Courier New", "andale mono", "lucida console", monospace;
+    }
+    html {
+        font-family: sans-serif;
+        line-height: 1.15;
+        -webkit-text-size-adjust: 100%;
+        -webkit-tap-highlight-color: transparent;
+    }
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    img {
+        width: 100%;
+    }</style>
+<body>
+<div class="main"><p data-nodeid="45633" class="">在上一课时我们了解了 LoadBalance 接口定义以及 AbstractLoadBalance 抽象类的内容，还详细介绍了 ConsistentHashLoadBalance 以及 RandomLoadBalance 这两个实现类的核心原理和大致实现。本课时我们将继续介绍 LoadBalance 的剩余三个实现。</p>
+<h3 data-nodeid="45634">LeastActiveLoadBalance</h3>
+<p data-nodeid="45635">LeastActiveLoadBalance 使用的是<strong data-nodeid="45685">最小活跃数负载均衡算法</strong>。它认为当前活跃请求数越小的 Provider 节点，剩余的处理能力越多，处理请求的效率也就越高，那么该 Provider 在单位时间内就可以处理更多的请求，所以我们应该优先将请求分配给该 Provider 节点。</p>
+<p data-nodeid="45636">LeastActiveLoadBalance 需要配合 ActiveLimitFilter 使用，ActiveLimitFilter 会记录每个接口方法的活跃请求数，在 LeastActiveLoadBalance 进行负载均衡时，只会从活跃请求数最少的 Invoker 集合里挑选 Invoker。</p>
+<p data-nodeid="45637">在 LeastActiveLoadBalance 的实现中，首先会选出所有活跃请求数最小的 Invoker 对象，之后的逻辑与 RandomLoadBalance 完全一样，即按照这些 Invoker 对象的权重挑选最终的 Invoker 对象。下面是 LeastActiveLoadBalance.doSelect() 方法的具体实现：</p>
+<pre class="lang-java" data-nodeid="45638"><code data-language="java"><span class="hljs-keyword">protected</span> &lt;T&gt; <span class="hljs-function">Invoker&lt;T&gt; <span class="hljs-title">doSelect</span><span class="hljs-params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>{
+&nbsp; &nbsp; <span class="hljs-comment">// 初始化Invoker数量</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> length = invokers.size();
+&nbsp; &nbsp; <span class="hljs-comment">// 记录最小的活跃请求数</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> leastActive = -<span class="hljs-number">1</span>;
+&nbsp; &nbsp; <span class="hljs-comment">// 记录活跃请求数最小的Invoker集合的个数</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> leastCount = <span class="hljs-number">0</span>;
+&nbsp; &nbsp; <span class="hljs-comment">// 记录活跃请求数最小的Invoker在invokers数组中的下标位置&nbsp;</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span>[] leastIndexes = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[length];
+&nbsp; &nbsp; <span class="hljs-comment">// 记录活跃请求数最小的Invoker集合中，每个Invoker的权重值</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span>[] weights = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[length];
+&nbsp; &nbsp; <span class="hljs-comment">// 记录活跃请求数最小的Invoker集合中，所有Invoker的权重值之和</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> totalWeight = <span class="hljs-number">0</span>;
+&nbsp; &nbsp; <span class="hljs-comment">// 记录活跃请求数最小的Invoker集合中，第一个Invoker的权重值</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> firstWeight = <span class="hljs-number">0</span>;
+&nbsp; &nbsp; <span class="hljs-comment">// 活跃请求数最小的集合中，所有Invoker的权重值是否相同</span>
+&nbsp; &nbsp; <span class="hljs-keyword">boolean</span> sameWeight = <span class="hljs-keyword">true</span>;
+&nbsp; &nbsp; <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; length; i++) { <span class="hljs-comment">// 遍历所有Invoker，获取活跃请求数最小的Invoker集合</span>
+&nbsp; &nbsp; &nbsp; &nbsp; Invoker&lt;T&gt; invoker = invokers.get(i);
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 获取该Invoker的活跃请求数</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">int</span> active = RpcStatus.getStatus(invoker.getUrl(), invocation.getMethodName()).getActive();
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 获取该Invoker的权重</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">int</span> afterWarmup = getWeight(invoker, invocation);
+&nbsp; &nbsp; &nbsp; &nbsp; weights[i] = afterWarmup;
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 比较活跃请求数</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (leastActive == -<span class="hljs-number">1</span> || active &lt; leastActive) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 当前的Invoker是第一个活跃请求数最小的Invoker，则记录如下信息</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; leastActive = active; <span class="hljs-comment">// 重新记录最小的活跃请求数</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; leastCount = <span class="hljs-number">1</span>; <span class="hljs-comment">// 重新记录活跃请求数最小的Invoker集合个数</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; leastIndexes[<span class="hljs-number">0</span>] = i; <span class="hljs-comment">// 重新记录Invoker</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; totalWeight = afterWarmup; <span class="hljs-comment">// 重新记录总权重值</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; firstWeight = afterWarmup; <span class="hljs-comment">// 该Invoker作为第一个Invoker，记录其权重值</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sameWeight = <span class="hljs-keyword">true</span>; <span class="hljs-comment">// 重新记录是否权重值相等</span>
+&nbsp; &nbsp; &nbsp; &nbsp; } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (active == leastActive) {&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 当前Invoker属于活跃请求数最小的Invoker集合</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; leastIndexes[leastCount++] = i; <span class="hljs-comment">// 记录该Invoker的下标</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; totalWeight += afterWarmup; <span class="hljs-comment">// 更新总权重</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (sameWeight &amp;&amp; afterWarmup != firstWeight) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sameWeight = <span class="hljs-keyword">false</span>; <span class="hljs-comment">// 更新权重值是否相等</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-comment">// 如果只有一个活跃请求数最小的Invoker对象，直接返回即可</span>
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (leastCount == <span class="hljs-number">1</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">return</span> invokers.get(leastIndexes[<span class="hljs-number">0</span>]);
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-comment">// 下面按照RandomLoadBalance的逻辑，从活跃请求数最小的Invoker集合中，随机选择一个Invoker对象返回</span>
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (!sameWeight &amp;&amp; totalWeight &gt; <span class="hljs-number">0</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">int</span> offsetWeight = ThreadLocalRandom.current().nextInt(totalWeight);
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; leastCount; i++) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">int</span> leastIndex = leastIndexes[i];
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; offsetWeight -= weights[leastIndex];
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (offsetWeight &lt; <span class="hljs-number">0</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">return</span> invokers.get(leastIndex);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">return</span> invokers.get(leastIndexes[ThreadLocalRandom.current().nextInt(leastCount)]);
+}
+</code></pre>
+<p data-nodeid="45639">ActiveLimitFilter 以及底层的 RpcStatus 记录活跃请求数的具体原理，在前面的<a href="https://kaiwu.lagou.com/course/courseInfo.htm?courseId=393#/detail/pc?id=5194" data-nodeid="45691">第 30 课时</a>中我们已经详细分析过了，这里不再重复，如果有不清楚的地方，你可以回顾之前课时相关的内容。</p>
+<h3 data-nodeid="45640">RoundRobinLoadBalance</h3>
+<p data-nodeid="45641">RoundRobinLoadBalance 实现的是<strong data-nodeid="45699">加权轮询负载均衡算法</strong>。</p>
+<p data-nodeid="45642">轮询指的是将请求轮流分配给每个 Provider。例如，有 A、B、C 三个 Provider 节点，按照普通轮询的方式，我们会将第一个请求分配给 Provider A，将第二个请求分配给 Provider B，第三个请求分配给 Provider C，第四个请求再次分配给 Provider A……如此循环往复。</p>
+<p data-nodeid="45643"><strong data-nodeid="45705">轮询是一种无状态负载均衡算法，实现简单，适用于集群中所有 Provider 节点性能相近的场景。</strong> 但现实情况中就很难保证这一点了，因为很容易出现集群中性能最好和最差的 Provider 节点处理同样流量的情况，这就可能导致性能差的 Provider 节点各方面资源非常紧张，甚至无法及时响应了，但是性能好的 Provider 节点的各方面资源使用还较为空闲。这时我们可以通过加权轮询的方式，降低分配到性能较差的 Provider 节点的流量。</p>
+<p data-nodeid="45644">加权之后，分配给每个 Provider 节点的流量比会接近或等于它们的权重比。例如，Provider 节点 A、B、C 权重比为 5:1:1，那么在 7 次请求中，节点 A 将收到 5 次请求，节点 B 会收到 1 次请求，节点 C 则会收到 1 次请求。</p>
+<p data-nodeid="45645"><strong data-nodeid="45711">在 Dubbo 2.6.4 版本及之前，RoundRobinLoadBalance 的实现存在一些问题，例如，选择 Invoker 的性能问题、负载均衡时不够平滑等。在 Dubbo 2.6.5 版本之后，这些问题都得到了修复</strong>，所以这里我们就来介绍最新的 RoundRobinLoadBalance 实现。</p>
+<p data-nodeid="45646">每个 Provider 节点有两个权重：一个权重是配置的 weight，该值在负载均衡的过程中不会变化；另一个权重是 currentWeight，该值会在负载均衡的过程中动态调整，初始值为 0。</p>
+<p data-nodeid="45647">当有新的请求进来时，RoundRobinLoadBalance 会遍历 Invoker 列表，并用对应的 currentWeight 加上其配置的权重。遍历完成后，再找到最大的 currentWeight，将其减去权重总和，然后返回相应的 Invoker 对象。</p>
+<p data-nodeid="45648">下面我们通过一个示例说明 RoundRobinLoadBalance 的执行流程，这里我们依旧假设 A、B、C 三个节点的权重比例为 5:1:1。</p>
+<p data-nodeid="46477"><img src="https://s0.lgstatic.com/i/image/M00/72/19/CgqCHl_ArGSAfxA6AAHyWL4Af1o908.png" alt="Lark20201127-153527.png" data-nodeid="46480"></p>
+<ol data-nodeid="45650">
+<li data-nodeid="45651">
+<p data-nodeid="45652">处理第一个请求，currentWeight 数组中的权重与配置的 weight 相加，即从 [0, 0, 0] 变为 [5, 1, 1]。接下来，从中选择权重最大的 Invoker 作为结果，即节点 A。最后，将节点 A 的 currentWeight 值减去 totalWeight 值，最终得到 currentWeight 数组为 [-2, 1, 1]。</p>
+</li>
+<li data-nodeid="45653">
+<p data-nodeid="45654">处理第二个请求，currentWeight 数组中的权重与配置的 weight 相加，即从 [-2, 1, 1] 变为 [3, 2, 2]。接下来，从中选择权重最大的 Invoker 作为结果，即节点 A。最后，将节点 A 的 currentWeight 值减去 totalWeight 值，最终得到 currentWeight 数组为 [-4, 2, 2]。</p>
+</li>
+<li data-nodeid="45655">
+<p data-nodeid="45656">处理第三个请求，currentWeight 数组中的权重与配置的 weight 相加，即从 [-4, 2, 2] 变为 [1, 3, 3]。接下来，从中选择权重最大的 Invoker 作为结果，即节点 B。最后，将节点 B 的 currentWeight 值减去 totalWeight 值，最终得到 currentWeight 数组为 [1, -4, 3]。</p>
+</li>
+<li data-nodeid="45657">
+<p data-nodeid="45658">处理第四个请求，currentWeight 数组中的权重与配置的 weight 相加，即从 [1, -4, 3] 变为 [6, -3, 4]。接下来，从中选择权重最大的 Invoker 作为结果，即节点 A。最后，将节点 A 的 currentWeight 值减去 totalWeight 值，最终得到 currentWeight 数组为 [-1, -3, 4]。</p>
+</li>
+<li data-nodeid="45659">
+<p data-nodeid="45660">处理第五个请求，currentWeight 数组中的权重与配置的 weight 相加，即从 [-1, -3, 4] 变为 [4, -2, 5]。接下来，从中选择权重最大的 Invoker 作为结果，即节点 C。最后，将节点 C 的 currentWeight 值减去 totalWeight 值，最终得到 currentWeight 数组为 [4, -2, -2]。</p>
+</li>
+<li data-nodeid="45661">
+<p data-nodeid="45662">处理第六个请求，currentWeight 数组中的权重与配置的 weight 相加，即从 [4, -2, -2] 变为 [9, -1, -1]。接下来，从中选择权重最大的 Invoker 作为结果，即节点 A。最后，将节点 A 的 currentWeight 值减去 totalWeight 值，最终得到 currentWeight 数组为 [2, -1, -1]。</p>
+</li>
+<li data-nodeid="45663">
+<p data-nodeid="45664">处理第七个请求，currentWeight 数组中的权重与配置的 weight 相加，即从 [2, -1, -1] 变为 [7, 0, 0]。接下来，从中选择权重最大的 Invoker 作为结果，即节点 A。最后，将节点 A 的 currentWeight 值减去 totalWeight 值，最终得到 currentWeight 数组为 [0, 0, 0]。</p>
+</li>
+</ol>
+<p data-nodeid="45665">到此为止，一个轮询的周期就结束了。</p>
+<p data-nodeid="45666">而在 Dubbo 2.6.4 版本中，上面示例的一次轮询结果是 [A, A, A, A, A, B, C]，也就是说前 5 个请求会全部都落到 A 这个节点上。这将会使节点 A 在短时间内接收大量的请求，压力陡增，而节点 B 和节点 C 此时没有收到任何请求，处于完全空闲的状态，这种“瞬间分配不平衡”的情况也就是前面提到的“不平滑问题”。</p>
+<p data-nodeid="45667">在 RoundRobinLoadBalance 中，我们<strong data-nodeid="45820">为每个 Invoker 对象创建了一个对应的 WeightedRoundRobin 对象</strong>，用来记录配置的权重（weight 字段）以及随每次负载均衡算法执行变化的 current 权重（current 字段）。</p>
+<p data-nodeid="45668">了解了 WeightedRoundRobin 这个内部类后，我们再来看 RoundRobinLoadBalance.doSelect() 方法的具体实现：</p>
+<pre class="lang-java" data-nodeid="45669"><code data-language="java"><span class="hljs-keyword">protected</span> &lt;T&gt; <span class="hljs-function">Invoker&lt;T&gt; <span class="hljs-title">doSelect</span><span class="hljs-params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>{
+&nbsp; &nbsp; String key = invokers.get(<span class="hljs-number">0</span>).getUrl().getServiceKey() + <span class="hljs-string">"."</span> + invocation.getMethodName();
+&nbsp; &nbsp; <span class="hljs-comment">// 获取整个Invoker列表对应的WeightedRoundRobin映射表，如果为空，则创建一个新的WeightedRoundRobin映射表</span>
+&nbsp; &nbsp; ConcurrentMap&lt;String, WeightedRoundRobin&gt; map = methodWeightMap.computeIfAbsent(key, k -&gt; <span class="hljs-keyword">new</span> ConcurrentHashMap&lt;&gt;());
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> totalWeight = <span class="hljs-number">0</span>;
+&nbsp; &nbsp; <span class="hljs-keyword">long</span> maxCurrent = Long.MIN_VALUE;
+&nbsp; &nbsp; <span class="hljs-keyword">long</span> now = System.currentTimeMillis(); <span class="hljs-comment">// 获取当前时间</span>
+&nbsp; &nbsp; Invoker&lt;T&gt; selectedInvoker = <span class="hljs-keyword">null</span>;
+&nbsp; &nbsp; WeightedRoundRobin selectedWRR = <span class="hljs-keyword">null</span>;
+&nbsp; &nbsp; <span class="hljs-keyword">for</span> (Invoker&lt;T&gt; invoker : invokers) {
+&nbsp; &nbsp; &nbsp; &nbsp; String identifyString = invoker.getUrl().toIdentityString();
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">int</span> weight = getWeight(invoker, invocation);
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 检测当前Invoker是否有相应的WeightedRoundRobin对象，没有则进行创建</span>
+&nbsp; &nbsp; &nbsp; &nbsp; WeightedRoundRobin weightedRoundRobin = map.computeIfAbsent(identifyString, k -&gt; {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; WeightedRoundRobin wrr = <span class="hljs-keyword">new</span> WeightedRoundRobin();
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; wrr.setWeight(weight);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">return</span> wrr;
+&nbsp; &nbsp; &nbsp; &nbsp; });
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 检测Invoker权重是否发生了变化，若发生变化，则更新WeightedRoundRobin的weight字段</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (weight != weightedRoundRobin.getWeight()) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; weightedRoundRobin.setWeight(weight);
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 让currentWeight加上配置的Weight</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">long</span> cur = weightedRoundRobin.increaseCurrent();
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">//&nbsp; 设置lastUpdate字段</span>
+&nbsp; &nbsp; &nbsp; &nbsp; weightedRoundRobin.setLastUpdate(now);
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 寻找具有最大currentWeight的Invoker，以及Invoker对应的WeightedRoundRobin</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (cur &gt; maxCurrent) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; maxCurrent = cur;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; selectedInvoker = invoker;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; selectedWRR = weightedRoundRobin;
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; totalWeight += weight; <span class="hljs-comment">// 计算权重总和</span>
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (invokers.size() != map.size()) {
+&nbsp; &nbsp; &nbsp; &nbsp; map.entrySet().removeIf(item -&gt; now - item.getValue().getLastUpdate() &gt; RECYCLE_PERIOD);
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (selectedInvoker != <span class="hljs-keyword">null</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 用currentWeight减去totalWeight</span>
+&nbsp; &nbsp; &nbsp; &nbsp; selectedWRR.sel(totalWeight);
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 返回选中的Invoker对象</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">return</span> selectedInvoker;
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">return</span> invokers.get(<span class="hljs-number">0</span>);
+}
+</code></pre>
+<h3 data-nodeid="45670">ShortestResponseLoadBalance</h3>
+<p data-nodeid="45671">ShortestResponseLoadBalance 是<strong data-nodeid="45832">Dubbo 2.7 版本之后新增加的一个 LoadBalance 实现类</strong>。它实现了<strong data-nodeid="45833">最短响应时间的负载均衡算法</strong>，也就是从多个 Provider 节点中选出调用成功的且响应时间最短的 Provider 节点，不过满足该条件的 Provider 节点可能有多个，所以还要再使用随机算法进行一次选择，得到最终要调用的 Provider 节点。</p>
+<p data-nodeid="45672">了解了 ShortestResponseLoadBalance 的核心原理之后，我们一起来看 ShortestResponseLoadBalance.doSelect() 方法的核心实现，如下所示：</p>
+<pre class="lang-java" data-nodeid="45673"><code data-language="java"><span class="hljs-keyword">protected</span> &lt;T&gt; <span class="hljs-function">Invoker&lt;T&gt; <span class="hljs-title">doSelect</span><span class="hljs-params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>{
+&nbsp; &nbsp; <span class="hljs-comment">// 记录Invoker集合的数量</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> length = invokers.size();
+&nbsp; &nbsp; <span class="hljs-comment">// 用于记录所有Invoker集合中最短响应时间</span>
+&nbsp; &nbsp; <span class="hljs-keyword">long</span> shortestResponse = Long.MAX_VALUE;
+&nbsp; &nbsp; <span class="hljs-comment">// 具有相同最短响应时间的Invoker个数</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> shortestCount = <span class="hljs-number">0</span>;
+&nbsp; &nbsp; <span class="hljs-comment">// 存放所有最短响应时间的Invoker的下标</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span>[] shortestIndexes = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[length];
+&nbsp; &nbsp; <span class="hljs-comment">// 存储每个Invoker的权重</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span>[] weights = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[length];
+&nbsp; &nbsp; <span class="hljs-comment">// 存储权重总和</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> totalWeight = <span class="hljs-number">0</span>;
+&nbsp; &nbsp; <span class="hljs-comment">// 记录第一个Invoker对象的权重</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> firstWeight = <span class="hljs-number">0</span>;
+&nbsp; &nbsp; <span class="hljs-comment">// 最短响应时间Invoker集合中的Invoker权重是否相同</span>
+&nbsp; &nbsp; <span class="hljs-keyword">boolean</span> sameWeight = <span class="hljs-keyword">true</span>;
+&nbsp; &nbsp; <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; length; i++) {
+&nbsp; &nbsp; &nbsp; &nbsp; Invoker&lt;T&gt; invoker = invokers.get(i);
+&nbsp; &nbsp; &nbsp; &nbsp; RpcStatus rpcStatus = RpcStatus.getStatus(invoker.getUrl(), invocation.getMethodName());
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 获取调用成功的平均时间，具体计算方式是：调用成功的请求数总数对应的总耗时 / 调用成功的请求数总数 = 成功调用的平均时间</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// RpcStatus 的内容在前面课时已经介绍过了，这里不再重复</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">long</span> succeededAverageElapsed = rpcStatus.getSucceededAverageElapsed();
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 获取的是该Provider当前的活跃请求数，也就是当前正在处理的请求数</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">int</span> active = rpcStatus.getActive();
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 计算一个处理新请求的预估值，也就是如果当前请求发给这个Provider，大概耗时多久处理完成</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">long</span> estimateResponse = succeededAverageElapsed * active;
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 计算该Invoker的权重（主要是处理预热）</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">int</span> afterWarmup = getWeight(invoker, invocation);
+&nbsp; &nbsp; &nbsp; &nbsp; weights[i] = afterWarmup;
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (estimateResponse &lt; shortestResponse) {&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 第一次找到Invoker集合中最短响应耗时的Invoker对象，记录其相关信息</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; shortestResponse = estimateResponse;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; shortestCount = <span class="hljs-number">1</span>;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; shortestIndexes[<span class="hljs-number">0</span>] = i;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; totalWeight = afterWarmup;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; firstWeight = afterWarmup;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sameWeight = <span class="hljs-keyword">true</span>;
+&nbsp; &nbsp; &nbsp; &nbsp; } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (estimateResponse == shortestResponse) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 出现多个耗时最短的Invoker对象</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; shortestIndexes[shortestCount++] = i;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; totalWeight += afterWarmup;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (sameWeight &amp;&amp; i &gt; <span class="hljs-number">0</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &amp;&amp; afterWarmup != firstWeight) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sameWeight = <span class="hljs-keyword">false</span>;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (shortestCount == <span class="hljs-number">1</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">return</span> invokers.get(shortestIndexes[<span class="hljs-number">0</span>]);
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-comment">// 如果耗时最短的所有Invoker对象的权重不相同，则通过加权随机负载均衡的方式选择一个Invoker返回</span>
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (!sameWeight &amp;&amp; totalWeight &gt; <span class="hljs-number">0</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">int</span> offsetWeight = ThreadLocalRandom.current().nextInt(totalWeight);
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; shortestCount; i++) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">int</span> shortestIndex = shortestIndexes[i];
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; offsetWeight -= weights[shortestIndex];
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (offsetWeight &lt; <span class="hljs-number">0</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">return</span> invokers.get(shortestIndex);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-comment">// 如果耗时最短的所有Invoker对象的权重相同，则随机返回一个</span>
+&nbsp; &nbsp; <span class="hljs-keyword">return</span> invokers.get(shortestIndexes[ThreadLocalRandom.current().nextInt(shortestCount)]);
+}
+</code></pre>
+<h3 data-nodeid="45674">总结</h3>
+<p data-nodeid="45675">今天我们紧接上一课时介绍了 LoadBalance 接口的剩余三个实现。</p>
+<p data-nodeid="45676">我们首先介绍了 LeastActiveLoadBalance 实现，它使用最小活跃数负载均衡算法，选择当前请求最少的 Provider 节点处理最新的请求；接下来介绍了 RoundRobinLoadBalance 实现，它使用加权轮询负载均衡算法，弥补了单纯的轮询负载均衡算法导致的问题，同时随着 Dubbo 版本的升级，也将其自身不够平滑的问题优化掉了；最后介绍了 ShortestResponseLoadBalance 实现，它会从响应时间最短的 Provider 节点中选择一个 Provider 节点来处理新请求。</p>
+<p data-nodeid="45677" class="">下一课时，我们将开始介绍 Cluster 接口以及容错机制的相关内容，记得按时来听课。</p>
+<hr />
+<h3>精选评论</h3>
+<h5>*镇：</h5>
+<blockquote>
+<p>大牛老师，最后面能分享带有注释的源码吗😀</p>
+</blockquote>
+<p>######     讲师回复：</p>
+<blockquote>
+<p>    非常开心你能坚持到这里，学习是件不容易的事，继续加油~另外，为便于你和其他小伙伴们更好地学习，我已经将整个 Dubbo 的源码（带注释的）放到 GitHub 上了，你可以按需查看：https://github.com/xxxlxy2008/dubbo。（为方便查看，该网址也放在开篇词中了。）</p>
+</blockquote>
+</div>
+</body>
+</html>
