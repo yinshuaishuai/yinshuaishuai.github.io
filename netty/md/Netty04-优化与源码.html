@@ -393,28 +393,7 @@ public final void connect(
 <ul>
 <li>属于 ServerSocketChannal 参数</li>
 </ul>
-<pre><code class="language-mermaid">sequenceDiagram
-
-participant c as client
-participant s as server
-participant sq as syns queue
-participant aq as accept queue
-
-s -&gt;&gt; s : bind()
-s -&gt;&gt; s : listen()
-c -&gt;&gt; c : connect()
-c -&gt;&gt; s : 1. SYN
-Note left of c : SYN_SEND
-s -&gt;&gt; sq : put
-Note right of s : SYN_RCVD
-s -&gt;&gt; c : 2. SYN + ACK
-Note left of c : ESTABLISHED
-c -&gt;&gt; s : 3. ACK
-sq -&gt;&gt; aq : put
-Note right of s : ESTABLISHED
-aq --&gt;&gt; s : 
-s -&gt;&gt; s : accept()
-</code></pre>
+<p><a href="https://mermaid-js.github.io/mermaid-live-editor/edit#eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG5cbnBhcnRpY2lwYW50IGMgYXMgY2xpZW50XG5wYXJ0aWNpcGFudCBzIGFzIHNlcnZlclxucGFydGljaXBhbnQgc3EgYXMgc3lucyBxdWV1ZVxucGFydGljaXBhbnQgYXEgYXMgYWNjZXB0IHF1ZXVlXG5cbnMgLT4-IHMgOiBiaW5kKClcbnMgLT4-IHMgOiBsaXN0ZW4oKVxuYyAtPj4gYyA6IGNvbm5lY3QoKVxuYyAtPj4gcyA6IDEuIFNZTlxuTm90ZSBsZWZ0IG9mIGMgOiBTWU5fU0VORFxucyAtPj4gc3EgOiBwdXRcbk5vdGUgcmlnaHQgb2YgcyA6IFNZTl9SQ1ZEXG5zIC0-PiBjIDogMi4gU1lOICsgQUNLXG5Ob3RlIGxlZnQgb2YgYyA6IEVTVEFCTElTSEVEXG5jIC0-PiBzIDogMy4gQUNLXG5zcSAtPj4gYXEgOiBwdXRcbk5vdGUgcmlnaHQgb2YgcyA6IEVTVEFCTElTSEVEXG5hcSAtLT4-IHMgOiBcbnMgLT4-IHMgOiBhY2NlcHQoKSIsIm1lcm1haWQiOiJ7XG4gIFwidGhlbWVcIjogXCJkZWZhdWx0XCJcbn0iLCJ1cGRhdGVFZGl0b3IiOmZhbHNlLCJhdXRvU3luYyI6dHJ1ZSwidXBkYXRlRGlhZ3JhbSI6ZmFsc2V9"><img src="https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtXG5cbnBhcnRpY2lwYW50IGMgYXMgY2xpZW50XG5wYXJ0aWNpcGFudCBzIGFzIHNlcnZlclxucGFydGljaXBhbnQgc3EgYXMgc3lucyBxdWV1ZVxucGFydGljaXBhbnQgYXEgYXMgYWNjZXB0IHF1ZXVlXG5cbnMgLT4-IHMgOiBiaW5kKClcbnMgLT4-IHMgOiBsaXN0ZW4oKVxuYyAtPj4gYyA6IGNvbm5lY3QoKVxuYyAtPj4gcyA6IDEuIFNZTlxuTm90ZSBsZWZ0IG9mIGMgOiBTWU5fU0VORFxucyAtPj4gc3EgOiBwdXRcbk5vdGUgcmlnaHQgb2YgcyA6IFNZTl9SQ1ZEXG5zIC0-PiBjIDogMi4gU1lOICsgQUNLXG5Ob3RlIGxlZnQgb2YgYyA6IEVTVEFCTElTSEVEXG5jIC0-PiBzIDogMy4gQUNLXG5zcSAtPj4gYXEgOiBwdXRcbk5vdGUgcmlnaHQgb2YgcyA6IEVTVEFCTElTSEVEXG5hcSAtLT4-IHMgOiBcbnMgLT4-IHMgOiBhY2NlcHQoKSIsIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In0sInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0" alt="" /></a></p>
 <ol>
 <li>第一次握手，client 发送 SYN 到 server，状态修改为 SYN_SEND，server 收到，状态改变为 SYN_REVD，并将该请求放入 sync queue 队列</li>
 <li>第二次握手，server 回复 SYN + ACK 给 client，client 收到，状态改变为 ESTABLISHED，并发送 ACK 给 server</li>

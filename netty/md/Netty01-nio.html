@@ -118,10 +118,7 @@
 <h2>1. 三大组件</h2>
 <h3>1.1 Channel &amp; Buffer</h3>
 <p>channel 有一点类似于 stream，它就是读写数据的<strong>双向通道</strong>，可以从 channel 将数据读入 buffer，也可以将 buffer 的数据写入 channel，而之前的 stream 要么是输入，要么是输出，channel 比 stream 更为底层</p>
-<pre><code class="language-mermaid">graph LR
-channel --&gt; buffer
-buffer --&gt; channel
-</code></pre>
+<p><a href="https://mermaid-js.github.io/mermaid-live-editor/edit#eyJjb2RlIjoiZ3JhcGggTFJcbmNoYW5uZWwgLS0-IGJ1ZmZlclxuYnVmZmVyIC0tPiBjaGFubmVsIiwibWVybWFpZCI6IntcbiAgXCJ0aGVtZVwiOiBcImRlZmF1bHRcIlxufSIsInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0"><img src="https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggTFJcbmNoYW5uZWwgLS0-IGJ1ZmZlclxuYnVmZmVyIC0tPiBjaGFubmVsIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOmZhbHNlfQ" alt="" /></a></p>
 <p>常见的 Channel 有</p>
 <ul>
 <li>FileChannel</li>
@@ -148,13 +145,7 @@ buffer --&gt; channel
 <h3>1.2 Selector</h3>
 <p>selector 单从字面意思不好理解，需要结合服务器的设计演化来理解它的用途</p>
 <h4>多线程版设计</h4>
-<pre><code class="language-mermaid">graph TD
-subgraph 多线程版
-t1(thread) --&gt; s1(socket1)
-t2(thread) --&gt; s2(socket2)
-t3(thread) --&gt; s3(socket3)
-end
-</code></pre>
+<p><a href="https://mermaid-js.github.io/mermaid-live-editor/edit#eyJjb2RlIjoiZ3JhcGggVERcbnN1YmdyYXBoIOWkmue6v-eoi-eJiFxudDEodGhyZWFkKSAtLT4gczEoc29ja2V0MSlcbnQyKHRocmVhZCkgLS0-IHMyKHNvY2tldDIpXG50Myh0aHJlYWQpIC0tPiBzMyhzb2NrZXQzKVxuZW5kIiwibWVybWFpZCI6IntcbiAgXCJ0aGVtZVwiOiBcImRlZmF1bHRcIlxufSIsInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0"><img src="https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbnN1YmdyYXBoIOWkmue6v-eoi-eJiFxudDEodGhyZWFkKSAtLT4gczEoc29ja2V0MSlcbnQyKHRocmVhZCkgLS0-IHMyKHNvY2tldDIpXG50Myh0aHJlYWQpIC0tPiBzMyhzb2NrZXQzKVxuZW5kIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOmZhbHNlfQ" alt="" /></a></p>
 <h4>⚠️ 多线程版缺点</h4>
 <ul>
 <li>内存占用高</li>
@@ -162,14 +153,7 @@ end
 <li>只适合连接数少的场景</li>
 </ul>
 <h4>线程池版设计</h4>
-<pre><code class="language-mermaid">graph TD
-subgraph 线程池版
-t4(thread) --&gt; s4(socket1)
-t5(thread) --&gt; s5(socket2)
-t4(thread) -.-&gt; s6(socket3)
-t5(thread) -.-&gt; s7(socket4)
-end
-</code></pre>
+<p><a href="https://mermaid-js.github.io/mermaid-live-editor/edit#eyJjb2RlIjoiZ3JhcGggVERcbnN1YmdyYXBoIOe6v-eoi-axoOeJiFxudDQodGhyZWFkKSAtLT4gczQoc29ja2V0MSlcbnQ1KHRocmVhZCkgLS0-IHM1KHNvY2tldDIpXG50NCh0aHJlYWQpIC0uLT4gczYoc29ja2V0MylcbnQ1KHRocmVhZCkgLS4tPiBzNyhzb2NrZXQ0KVxuZW5kIiwibWVybWFpZCI6IntcbiAgXCJ0aGVtZVwiOiBcImRlZmF1bHRcIlxufSIsInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0"><img src="https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbnN1YmdyYXBoIOe6v-eoi-axoOeJiFxudDQodGhyZWFkKSAtLT4gczQoc29ja2V0MSlcbnQ1KHRocmVhZCkgLS0-IHM1KHNvY2tldDIpXG50NCh0aHJlYWQpIC0uLT4gczYoc29ja2V0MylcbnQ1KHRocmVhZCkgLS4tPiBzNyhzb2NrZXQ0KVxuZW5kIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOmZhbHNlfQ" alt="" /></a></p>
 <h4>⚠️ 线程池版缺点</h4>
 <ul>
 <li>阻塞模式下，线程仅能处理一个 socket 连接</li>
@@ -177,14 +161,7 @@ end
 </ul>
 <h4>selector 版设计</h4>
 <p>selector 的作用就是配合一个线程来管理多个 channel，获取这些 channel 上发生的事件，这些 channel 工作在非阻塞模式下，不会让线程吊死在一个 channel 上。适合连接数特别多，但流量低的场景（low traffic）</p>
-<pre><code class="language-mermaid">graph TD
-subgraph selector 版
-thread --&gt; selector
-selector --&gt; c1(channel)
-selector --&gt; c2(channel)
-selector --&gt; c3(channel)
-end
-</code></pre>
+<p><a href="https://mermaid-js.github.io/mermaid-live-editor/edit#eyJjb2RlIjoiZ3JhcGggVERcbnN1YmdyYXBoIHNlbGVjdG9yIOeJiFxudGhyZWFkIC0tPiBzZWxlY3Rvclxuc2VsZWN0b3IgLS0-IGMxKGNoYW5uZWwpXG5zZWxlY3RvciAtLT4gYzIoY2hhbm5lbClcbnNlbGVjdG9yIC0tPiBjMyhjaGFubmVsKVxuZW5kIiwibWVybWFpZCI6IntcbiAgXCJ0aGVtZVwiOiBcImRlZmF1bHRcIlxufSIsInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0"><img src="https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbnN1YmdyYXBoIHNlbGVjdG9yIOeJiFxudGhyZWFkIC0tPiBzZWxlY3Rvclxuc2VsZWN0b3IgLS0-IGMxKGNoYW5uZWwpXG5zZWxlY3RvciAtLT4gYzIoY2hhbm5lbClcbnNlbGVjdG9yIC0tPiBjMyhjaGFubmVsKVxuZW5kIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOmZhbHNlfQ" alt="" /></a></p>
 <p>调用 selector 的 select() 会阻塞直到 channel 发生了读写就绪事件，这些事件发生，select 方法就会返回这些事件交给 thread 来处理</p>
 <h2>2. ByteBuffer</h2>
 <p>有一普通文本文件 data.txt，内容为</p>
@@ -987,14 +964,7 @@ while (true) {
 </li>
 </ul>
 <h3>4.2 Selector</h3>
-<pre><code class="language-mermaid">graph TD
-subgraph selector 版
-thread --&gt; selector
-selector --&gt; c1(channel)
-selector --&gt; c2(channel)
-selector --&gt; c3(channel)
-end
-</code></pre>
+<p><a href="https://mermaid-js.github.io/mermaid-live-editor/edit#eyJjb2RlIjoiZ3JhcGggVERcbnN1YmdyYXBoIHNlbGVjdG9yIOeJiFxudGhyZWFkIC0tPiBzZWxlY3Rvclxuc2VsZWN0b3IgLS0-IGMxKGNoYW5uZWwpXG5zZWxlY3RvciAtLT4gYzIoY2hhbm5lbClcbnNlbGVjdG9yIC0tPiBjMyhjaGFubmVsKVxuZW5kIiwibWVybWFpZCI6IntcbiAgXCJ0aGVtZVwiOiBcImRlZmF1bHRcIlxufSIsInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0"><img src="https://mermaid.ink/img/eyJjb2RlIjoiZ3JhcGggVERcbnN1YmdyYXBoIHNlbGVjdG9yIOeJiFxudGhyZWFkIC0tPiBzZWxlY3Rvclxuc2VsZWN0b3IgLS0-IGMxKGNoYW5uZWwpXG5zZWxlY3RvciAtLT4gYzIoY2hhbm5lbClcbnNlbGVjdG9yIC0tPiBjMyhjaGFubmVsKVxuZW5kIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOmZhbHNlfQ" alt="" /></a></p>
 <p>好处</p>
 <ul>
 <li>一个线程配合 selector 就可以监控多个 channel 的事件，事件发生线程才去处理。避免非阻塞模式下所做无用功</li>
@@ -1251,18 +1221,7 @@ ld�
 </ul>
 </li>
 </ul>
-<pre><code class="language-mermaid">sequenceDiagram 
-participant c1 as 客户端1
-participant s as 服务器
-participant b1 as ByteBuffer1
-participant b2 as ByteBuffer2
-c1 -&gt;&gt; s: 发送 01234567890abcdef3333\r
-s -&gt;&gt; b1: 第一次 read 存入 01234567890abcdef
-s -&gt;&gt; b2: 扩容
-b1 -&gt;&gt; b2: 拷贝 01234567890abcdef
-s -&gt;&gt; b2: 第二次 read 存入 3333\r
-b2 -&gt;&gt; b2: 01234567890abcdef3333\r
-</code></pre>
+<p><a href="https://mermaid-js.github.io/mermaid-live-editor/edit#eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtIFxucGFydGljaXBhbnQgYzEgYXMg5a6i5oi356uvMVxucGFydGljaXBhbnQgcyBhcyDmnI3liqHlmahcbnBhcnRpY2lwYW50IGIxIGFzIEJ5dGVCdWZmZXIxXG5wYXJ0aWNpcGFudCBiMiBhcyBCeXRlQnVmZmVyMlxuYzEgLT4-IHM6IOWPkemAgSAwMTIzNDU2Nzg5MGFiY2RlZjMzMzNcXHJcbnMgLT4-IGIxOiDnrKzkuIDmrKEgcmVhZCDlrZjlhaUgMDEyMzQ1Njc4OTBhYmNkZWZcbnMgLT4-IGIyOiDmianlrrlcbmIxIC0-PiBiMjog5ou36LSdIDAxMjM0NTY3ODkwYWJjZGVmXG5zIC0-PiBiMjog56ys5LqM5qyhIHJlYWQg5a2Y5YWlIDMzMzNcXHJcbmIyIC0-PiBiMjogMDEyMzQ1Njc4OTBhYmNkZWYzMzMzXFxyIiwibWVybWFpZCI6IntcbiAgXCJ0aGVtZVwiOiBcImRlZmF1bHRcIlxufSIsInVwZGF0ZUVkaXRvciI6ZmFsc2UsImF1dG9TeW5jIjp0cnVlLCJ1cGRhdGVEaWFncmFtIjpmYWxzZX0"><img src="https://mermaid.ink/img/eyJjb2RlIjoic2VxdWVuY2VEaWFncmFtIFxucGFydGljaXBhbnQgYzEgYXMg5a6i5oi356uvMVxucGFydGljaXBhbnQgcyBhcyDmnI3liqHlmahcbnBhcnRpY2lwYW50IGIxIGFzIEJ5dGVCdWZmZXIxXG5wYXJ0aWNpcGFudCBiMiBhcyBCeXRlQnVmZmVyMlxuYzEgLT4-IHM6IOWPkemAgSAwMTIzNDU2Nzg5MGFiY2RlZjMzMzNcXHJcbnMgLT4-IGIxOiDnrKzkuIDmrKEgcmVhZCDlrZjlhaUgMDEyMzQ1Njc4OTBhYmNkZWZcbnMgLT4-IGIyOiDmianlrrlcbmIxIC0-PiBiMjog5ou36LSdIDAxMjM0NTY3ODkwYWJjZGVmXG5zIC0-PiBiMjog56ys5LqM5qyhIHJlYWQg5a2Y5YWlIDMzMzNcXHJcbmIyIC0-PiBiMjogMDEyMzQ1Njc4OTBhYmNkZWYzMzMzXFxyIiwibWVybWFpZCI6eyJ0aGVtZSI6ImRlZmF1bHQifSwidXBkYXRlRWRpdG9yIjpmYWxzZSwiYXV0b1N5bmMiOnRydWUsInVwZGF0ZURpYWdyYW0iOmZhbHNlfQ" alt="" /></a></p>
 <p>服务器端</p>
 <pre><code class="language-java">private static void split(ByteBuffer source) {
     source.flip();
