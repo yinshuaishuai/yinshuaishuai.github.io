@@ -1,9 +1,5 @@
 {
-  "pageCount": 1,
-  "tags": [
-    {
-      "tagName": "java",
-      "tagUrl": "/java.html"
-    }
-  ]
+  "pageCount": 0,
+  "presentPage": 1,
+  "tags": []
 }
