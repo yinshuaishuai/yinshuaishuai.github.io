@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .main {
+        width: 60%;
+        margin: 0 auto;
+    }
+    pre {
+        font-family: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas", "Ubuntu Mono", "Courier New", "andale mono", "lucida console", monospace;
+        display: block;
+        padding: 8px 12px;
+        margin: 0 0 8px;
+        font-size: 13px;
+        word-break: break-all;
+        word-wrap: break-word;
+        color: #2e2e2e;
+        background-color: #fafafa;
+        border: 1px solid #dfdfdf;
+        border-radius: 2px;
+    }
+    pre {
+        display: block;
+        font-size: 90%;
+        color: #2e2e2e;
+    }
+    pre {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        overflow: auto;
+    }
+    pre, code, kbd, samp {
+        font-family: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas", "Ubuntu Mono", "Courier New", "andale mono", "lucida console", monospace;
+        font-size: 1em;
+    }
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    user agent stylesheet
+    pre {
+        display: block;
+        font-family: monospace;
+        white-space: pre;
+        margin: 1em 0px;
+    }
+    .md {
+        color: #2e2e2e;
+        word-wrap: break-word;
+    }
+    .tab-width-8 {
+        -moz-tab-size: 8;
+        tab-size: 8;
+    }
+    body, .form-control, .search form, .search form {
+        font-size: .875rem;
+    }
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #2e2e2e;
+        text-align: left;
+        background-color: #fff;
+    }
+    :root {
+        --blue: #007bff;
+        --indigo: #6610f2;
+        --purple: #6d49cb;
+        --pink: #e83e8c;
+        --red: #dc3545;
+        --orange: #fd7e14;
+        --yellow: #ffc107;
+        --green: #28a745;
+        --teal: #20c997;
+        --cyan: #17a2b8;
+        --white: #fff;
+        --gray: #919191;
+        --gray-dark: #4f4f4f;
+        --primary: #007bff;
+        --secondary: #f0f0f0;
+        --success: #108548;
+        --info: #1f75cb;
+        --warning: #fc9403;
+        --danger: #dd2b0e;
+        --light: #dbdbdb;
+        --dark: #4f4f4f;
+        --breakpoint-xs: 0;
+        --breakpoint-sm: 576px;
+        --breakpoint-md: 768px;
+        --breakpoint-lg: 992px;
+        --breakpoint-xl: 1200px;
+        --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        --font-family-monospace: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas", "Ubuntu Mono", "Courier New", "andale mono", "lucida console", monospace;
+    }
+    html {
+        font-family: sans-serif;
+        line-height: 1.15;
+        -webkit-text-size-adjust: 100%;
+        -webkit-tap-highlight-color: transparent;
+    }
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    img {
+        width: 100%;
+    }</style>
+<body>
+<div class="main"><p data-nodeid="177459">在前面的课时中，我们已经详细介绍了 dubbo-cluster 模块中的 Directory 和 Router 两个核心接口以及核心实现，同时也介绍了这两个接口相关的周边知识。本课时我们继续按照下图的顺序介绍 LoadBalance 的相关内容。</p>
+<p data-nodeid="177460" class=""><img src="https://s0.lgstatic.com/i/image/M00/71/0A/Ciqc1F-81uuAdW51AAH-O1mrOoA018.png" alt="Drawing 0.png" data-nodeid="177465"></p>
+<div data-nodeid="177461"><p style="text-align:center">LoadBalance 核心接口图</p></div>
+<p data-nodeid="176758"><strong data-nodeid="176857">LoadBalance（负载均衡）的职责是将网络请求或者其他形式的负载“均摊”到不同的服务节点上，从而避免服务集群中部分节点压力过大、资源紧张，而另一部分节点比较空闲的情况。</strong></p>
+<p data-nodeid="176759">通过合理的负载均衡算法，我们希望可以让每个服务节点获取到适合自己处理能力的负载，<strong data-nodeid="176871">实现处理能力和流量的合理分配</strong>。常用的负载均衡可分为<strong data-nodeid="176872">软件负载均衡</strong>（比如，日常工作中使用的 Nginx）和<strong data-nodeid="176873">硬件负载均衡</strong>（主要有 F5、Array、NetScaler 等，不过开发工程师在实践中很少直接接触到）。</p>
+<p data-nodeid="176760">常见的 RPC 框架中都有负载均衡的概念和相应的实现，Dubbo 也不例外。Dubbo 需要对 Consumer 的调用请求进行分配，避免少数 Provider 节点负载过大，而剩余的其他 Provider 节点处于空闲的状态。因为当 Provider 负载过大时，就会导致一部分请求超时、丢失等一系列问题发生，造成线上故障。</p>
+<p data-nodeid="176761">Dubbo 提供了 5 种负载均衡实现，分别是：</p>
+<ul data-nodeid="176762">
+<li data-nodeid="176763">
+<p data-nodeid="176764">基于 Hash 一致性的 ConsistentHashLoadBalance；</p>
+</li>
+<li data-nodeid="176765">
+<p data-nodeid="176766">基于权重随机算法的 RandomLoadBalance；</p>
+</li>
+<li data-nodeid="176767">
+<p data-nodeid="176768">基于最少活跃调用数算法的 LeastActiveLoadBalance；</p>
+</li>
+<li data-nodeid="176769">
+<p data-nodeid="176770">基于加权轮询算法的 RoundRobinLoadBalance；</p>
+</li>
+<li data-nodeid="176771">
+<p data-nodeid="176772">基于最短响应时间的 ShortestResponseLoadBalance 。</p>
+</li>
+</ul>
+<h3 data-nodeid="176773">LoadBalance 接口</h3>
+<p data-nodeid="178407">上述 Dubbo 提供的负载均衡实现，都是 LoadBalance 接口的实现类，如下图所示：</p>
+<p data-nodeid="178408" class=""><img src="https://s0.lgstatic.com/i/image/M00/71/15/CgqCHl-81vaAYmqRAAFYpTlQI0s741.png" alt="Lark20201124-174750.png" data-nodeid="178413"></p>
+<div data-nodeid="178409"><p style="text-align:center">LoadBalance 继承关系图</p></div>
+<p data-nodeid="176777"><strong data-nodeid="176890">LoadBalance 是一个扩展接口，默认使用的扩展实现是 RandomLoadBalance</strong>，其定义如下所示，其中的 @Adaptive 注解参数为 loadbalance，即动态生成的适配器会按照 URL 中的 loadbalance 参数值选择扩展实现类。</p>
+<pre class="lang-java" data-nodeid="176778"><code data-language="java"><span class="hljs-meta">@SPI(RandomLoadBalance.NAME)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">LoadBalance</span> </span>{
+&nbsp; &nbsp; <span class="hljs-meta">@Adaptive("loadbalance")</span>
+&nbsp; &nbsp; &lt;T&gt; <span class="hljs-function">Invoker&lt;T&gt; <span class="hljs-title">select</span><span class="hljs-params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> <span class="hljs-keyword">throws</span> RpcException</span>;
+}
+</code></pre>
+<p data-nodeid="176779">LoadBalance 接口中 select() 方法的核心功能是根据传入的 URL 和 Invocation，以及自身的负载均衡算法，从 Invoker 集合中选择一个 Invoker 返回。</p>
+<p data-nodeid="176780">AbstractLoadBalance 抽象类并没有真正实现 select() 方法，只是对 Invoker 集合为空或是只包含一个 Invoker 对象的特殊情况进行了处理，具体实现如下：</p>
+<pre class="lang-java" data-nodeid="176781"><code data-language="java"><span class="hljs-keyword">public</span> &lt;T&gt; <span class="hljs-function">Invoker&lt;T&gt; <span class="hljs-title">select</span><span class="hljs-params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>{
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (CollectionUtils.isEmpty(invokers)) { 
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>; <span class="hljs-comment">// Invoker集合为空，直接返回null</span>
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (invokers.size() == <span class="hljs-number">1</span>) { <span class="hljs-comment">// Invoker集合只包含一个Invoker，则直接返回该Invoker对象</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">return</span> invokers.get(<span class="hljs-number">0</span>);
+&nbsp; &nbsp; }
+    <span class="hljs-comment">// Invoker集合包含多个Invoker对象时，交给doSelect()方法处理，这是个抽象方法，留给子类具体实现</span>
+&nbsp; &nbsp; <span class="hljs-keyword">return</span> doSelect(invokers, url, invocation);
+}
+</code></pre>
+<p data-nodeid="176782">另外，AbstractLoadBalance 还提供了一个 getWeight() 方法，该方法用于计算 Provider 权重，具体实现如下：</p>
+<pre class="lang-java" data-nodeid="176783"><code data-language="java"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">getWeight</span><span class="hljs-params">(Invoker&lt;?&gt; invoker, Invocation invocation)</span> </span>{
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> weight;
+&nbsp; &nbsp; URL url = invoker.getUrl();
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (REGISTRY_SERVICE_REFERENCE_PATH.equals(url.getServiceInterface())) {
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 如果是RegistryService接口的话，直接获取权重即可</span>
+&nbsp; &nbsp; &nbsp; &nbsp; weight = url.getParameter(REGISTRY_KEY + <span class="hljs-string">"."</span> + WEIGHT_KEY, DEFAULT_WEIGHT);
+&nbsp; &nbsp; } <span class="hljs-keyword">else</span> {
+&nbsp; &nbsp; &nbsp; &nbsp; weight = url.getMethodParameter(invocation.getMethodName(), WEIGHT_KEY, DEFAULT_WEIGHT);
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (weight &gt; <span class="hljs-number">0</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 获取服务提供者的启动时间戳</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">long</span> timestamp = invoker.getUrl().getParameter(TIMESTAMP_KEY, <span class="hljs-number">0L</span>);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (timestamp &gt; <span class="hljs-number">0L</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 计算Provider运行时长</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">long</span> uptime = System.currentTimeMillis() - timestamp;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (uptime &lt; <span class="hljs-number">0</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 计算Provider预热时长</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">int</span> warmup = invoker.getUrl().getParameter(WARMUP_KEY, DEFAULT_WARMUP);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 如果Provider运行时间小于预热时间，则该Provider节点可能还在预热阶段，需要重新计算服务权重(降低其权重)</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (uptime &gt; <span class="hljs-number">0</span> &amp;&amp; uptime &lt; warmup) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; weight = calculateWarmupWeight((<span class="hljs-keyword">int</span>)uptime, warmup, weight);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">return</span> Math.max(weight, <span class="hljs-number">0</span>);
+}
+</code></pre>
+<p data-nodeid="176784">calculateWarmupWeight() 方法的目的是对还在预热状态的 Provider 节点进行降权，避免 Provider 一启动就有大量请求涌进来。服务预热是一个优化手段，这是由 JVM 本身的一些特性决定的，例如，JIT 等方面的优化，我们一般会在服务启动之后，让其在小流量状态下运行一段时间，然后再逐步放大流量。</p>
+<pre class="lang-java" data-nodeid="176785"><code data-language="java"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">calculateWarmupWeight</span><span class="hljs-params">(<span class="hljs-keyword">int</span> uptime, <span class="hljs-keyword">int</span> warmup, <span class="hljs-keyword">int</span> weight)</span> </span>{
+&nbsp; &nbsp; <span class="hljs-comment">// 计算权重，随着服务运行时间uptime增大，权重ww的值会慢慢接近配置值weight</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> ww = (<span class="hljs-keyword">int</span>) ( uptime / ((<span class="hljs-keyword">float</span>) warmup / weight));
+&nbsp; &nbsp; <span class="hljs-keyword">return</span> ww &lt; <span class="hljs-number">1</span> ? <span class="hljs-number">1</span> : (Math.min(ww, weight));
+}
+</code></pre>
+<p data-nodeid="176786">了解了 LoadBalance 接口的定义以及 AbstractLoadBalance 提供的公共能力之后，下面我们开始逐个介绍 LoadBalance 接口的具体实现。</p>
+<h3 data-nodeid="176787">ConsistentHashLoadBalance</h3>
+<p data-nodeid="176788">ConsistentHashLoadBalance 底层使用一致性 Hash 算法实现负载均衡。为了让你更好地理解这部分内容，我们先来简单介绍一下一致性 Hash 算法相关的知识点。</p>
+<h4 data-nodeid="176789">1. 一致性 Hash 简析</h4>
+<p data-nodeid="176790"><strong data-nodeid="176905">一致性 Hash 负载均衡可以让参数相同的请求每次都路由到相同的服务节点上</strong>，这种负载均衡策略可以在某些 Provider 节点下线的时候，让这些节点上的流量平摊到其他 Provider 上，不会引起流量的剧烈波动。</p>
+<p data-nodeid="176791">下面我们通过一个示例，简单介绍一致性 Hash 算法的原理。</p>
+<p data-nodeid="176792">假设现在有 1、2、3 三个 Provider 节点对外提供服务，有 100 个请求同时到达，如果想让请求尽可能均匀地分布到这三个 Provider 节点上，我们可能想到的最简单的方法就是 Hash 取模，即 hash(请求参数) % 3。如果参与 Hash 计算的是请求的全部参数，那么参数相同的请求将会落到同一个 Provider 节点上。不过此时如果突然有一个 Provider 节点出现宕机的情况，那我们就需要对 2 取模，即请求会重新分配到相应的 Provider 之上。在极端情况下，甚至会出现所有请求的处理节点都发生了变化，这就会造成比较大的波动。</p>
+<p data-nodeid="176793">为了避免因一个 Provider 节点宕机，而导致大量请求的处理节点发生变化的情况，我们可以考虑使用一致性 Hash 算法。<strong data-nodeid="176912">一致性 Hash 算法的原理也是取模算法，与 Hash 取模的不同之处在于：Hash 取模是对 Provider 节点数量取模，而一致性 Hash 算法是对 2^32 取模。</strong></p>
+<p data-nodeid="176794">一致性 Hash 算法需要同时对 Provider 地址以及请求参数进行取模：</p>
+<pre class="lang-java" data-nodeid="176795"><code data-language="java">hash(Provider地址) % <span class="hljs-number">2</span>^<span class="hljs-number">32</span>
+hash(请求参数) % <span class="hljs-number">2</span>^<span class="hljs-number">32</span>
+</code></pre>
+<p data-nodeid="179355">Provider 地址和请求经过对 2^32 取模得到的结果值，都会落到一个 Hash 环上，如下图所示：</p>
+<p data-nodeid="179356" class=""><img src="https://s0.lgstatic.com/i/image/M00/71/15/CgqCHl-81wSAO1YfAAFfH6Qgse0640.png" alt="Lark20201124-174752.png" data-nodeid="179361"></p>
+<div data-nodeid="179357"><p style="text-align:center">一致性 Hash 节点均匀分布图</p></div>
+<p data-nodeid="176799">我们按顺时针的方向，依次将请求分发到对应的 Provider。这样，当某台 Provider 节点宕机或增加新的 Provider 节点时，只会影响这个 Provider 节点对应的请求。</p>
+<p data-nodeid="180303">在理想情况下，一致性 Hash 算法会将这三个 Provider 节点均匀地分布到 Hash 环上，请求也可以均匀地分发给这三个 Provider 节点。但在实际情况中，这三个 Provider 节点地址取模之后的值，可能差距不大，这样会导致大量的请求落到一个 Provider 节点上，如下图所示：</p>
+<p data-nodeid="180304" class=""><img src="https://s0.lgstatic.com/i/image/M00/71/15/CgqCHl-81w2ATT5qAAFjvpkgTNM463.png" alt="Lark20201124-174755.png" data-nodeid="180309"></p>
+<div data-nodeid="180305"><p style="text-align:center">一致性 Hash 节点非均匀分布图</p></div>
+<p data-nodeid="176803">这就出现了数据倾斜的问题。<strong data-nodeid="176928">所谓数据倾斜是指由于节点不够分散，导致大量请求落到了同一个节点上，而其他节点只会接收到少量请求的情况</strong>。</p>
+<p data-nodeid="176804">为了解决一致性 Hash 算法中出现的数据倾斜问题，又演化出了 Hash 槽的概念。</p>
+<p data-nodeid="181251">Hash 槽解决数据倾斜的思路是：既然问题是由 Provider 节点在 Hash 环上分布不均匀造成的，那么可以虚拟出 n 组 P1、P2、P3 的 Provider 节点 ，让多组 Provider 节点相对均匀地分布在 Hash 环上。如下图所示，相同阴影的节点均为同一个 Provider 节点，比如 P1-1、P1-2……P1-99 表示的都是 P1 这个 Provider 节点。引入 Provider 虚拟节点之后，让 Provider 在圆环上分散开来，以避免数据倾斜问题。</p>
+<p data-nodeid="181252" class=""><img src="https://s0.lgstatic.com/i/image/M00/71/15/CgqCHl-81xaAEUSbAAG0t7C-hcQ544.png" alt="Lark20201124-174743.png" data-nodeid="181257"></p>
+<div data-nodeid="181253"><p style="text-align:center">数据倾斜解决示意图</p></div>
+<h4 data-nodeid="176808">2. ConsistentHashSelector 实现分析</h4>
+<p data-nodeid="176809">了解了一致性 Hash 算法的基本原理之后，我们再来看一下 ConsistentHashLoadBalance 一致性 Hash 负载均衡的具体实现。首先来看 doSelect() 方法的实现，其中会根据 ServiceKey 和 methodName 选择一个 ConsistentHashSelector 对象，<strong data-nodeid="176941">核心算法都委托给 ConsistentHashSelector 对象完成。</strong></p>
+<pre class="lang-java" data-nodeid="176810"><code data-language="java"><span class="hljs-keyword">protected</span> &lt;T&gt; <span class="hljs-function">Invoker&lt;T&gt; <span class="hljs-title">doSelect</span><span class="hljs-params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>{
+&nbsp; &nbsp; <span class="hljs-comment">// 获取调用的方法名称</span>
+&nbsp; &nbsp; String methodName = RpcUtils.getMethodName(invocation);
+&nbsp; &nbsp; <span class="hljs-comment">// 将ServiceKey和方法拼接起来，构成一个key</span>
+&nbsp; &nbsp; String key = invokers.get(<span class="hljs-number">0</span>).getUrl().getServiceKey() + <span class="hljs-string">"."</span> + methodName;
+&nbsp; &nbsp; <span class="hljs-comment">// 注意：这是为了在invokers列表发生变化时都会重新生成ConsistentHashSelector对象</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> invokersHashCode = invokers.hashCode();
+&nbsp; &nbsp; <span class="hljs-comment">// 根据key获取对应的ConsistentHashSelector对象，selectors是一个ConcurrentMap&lt;String, ConsistentHashSelector&gt;集合</span>
+&nbsp; &nbsp; ConsistentHashSelector&lt;T&gt; selector = (ConsistentHashSelector&lt;T&gt;) selectors.get(key);
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (selector == <span class="hljs-keyword">null</span> || selector.identityHashCode != invokersHashCode) { <span class="hljs-comment">// 未查找到ConsistentHashSelector对象，则进行创建</span>
+&nbsp; &nbsp; &nbsp; &nbsp; selectors.put(key, <span class="hljs-keyword">new</span> ConsistentHashSelector&lt;T&gt;(invokers, methodName, invokersHashCode));
+&nbsp; &nbsp; &nbsp; &nbsp; selector = (ConsistentHashSelector&lt;T&gt;) selectors.get(key);
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-comment">// 通过ConsistentHashSelector对象选择一个Invoker对象</span>
+&nbsp; &nbsp; <span class="hljs-keyword">return</span> selector.select(invocation);
+}
+</code></pre>
+<p data-nodeid="176811">下面我们来看 ConsistentHashSelector，其核心字段如下所示。</p>
+<ul data-nodeid="176812">
+<li data-nodeid="176813">
+<p data-nodeid="176814">virtualInvokers（TreeMap&lt;Long, Invoker<code data-backticks="1" data-nodeid="176946">&lt;T&gt;</code>&gt; 类型）：用于记录虚拟 Invoker 对象的 Hash 环。这里使用 TreeMap 实现 Hash 环，并将虚拟的 Invoker 对象分布在 Hash 环上。</p>
+</li>
+<li data-nodeid="176815">
+<p data-nodeid="176816">replicaNumber（int 类型）：虚拟 Invoker 个数。</p>
+</li>
+<li data-nodeid="176817">
+<p data-nodeid="176818">identityHashCode（int 类型）：Invoker 集合的 HashCode 值。</p>
+</li>
+<li data-nodeid="176819">
+<p data-nodeid="176820">argumentIndex（int[] 类型）：需要参与 Hash 计算的参数索引。例如，argumentIndex = [0, 1, 2] 时，表示调用的目标方法的前三个参数要参与 Hash 计算。</p>
+</li>
+</ul>
+<p data-nodeid="176821">接下来看 ConsistentHashSelector 的构造方法，其中的主要任务是：</p>
+<ul data-nodeid="176822">
+<li data-nodeid="176823">
+<p data-nodeid="176824">构建 Hash 槽；</p>
+</li>
+<li data-nodeid="176825">
+<p data-nodeid="176826">确认参与一致性 Hash 计算的参数，默认是第一个参数。</p>
+</li>
+</ul>
+<p data-nodeid="176827">这些操作的目的就是为了让 Invoker 尽可能均匀地分布在 Hash 环上，具体实现如下：</p>
+<pre class="lang-java" data-nodeid="176828"><code data-language="java">ConsistentHashSelector(List&lt;Invoker&lt;T&gt;&gt; invokers, String methodName, <span class="hljs-keyword">int</span> identityHashCode) {
+&nbsp; &nbsp; <span class="hljs-comment">// 初始化virtualInvokers字段，也就是虚拟Hash槽</span>
+&nbsp; &nbsp; <span class="hljs-keyword">this</span>.virtualInvokers = <span class="hljs-keyword">new</span> TreeMap&lt;Long, Invoker&lt;T&gt;&gt;();
+&nbsp; &nbsp; <span class="hljs-comment">// 记录Invoker集合的hashCode，用该hashCode值来判断Provider列表是否发生了变化</span>
+&nbsp; &nbsp; <span class="hljs-keyword">this</span>.identityHashCode = identityHashCode;
+&nbsp; &nbsp; URL url = invokers.get(<span class="hljs-number">0</span>).getUrl();
+&nbsp; &nbsp; <span class="hljs-comment">// 从hash.nodes参数中获取虚拟节点的个数</span>
+&nbsp; &nbsp; <span class="hljs-keyword">this</span>.replicaNumber = url.getMethodParameter(methodName, HASH_NODES, <span class="hljs-number">160</span>);
+&nbsp; &nbsp; <span class="hljs-comment">// 获取参与Hash计算的参数下标值，默认对第一个参数进行Hash运算</span>
+&nbsp; &nbsp; String[] index = COMMA_SPLIT_PATTERN.split(url.getMethodParameter(methodName, HASH_ARGUMENTS, <span class="hljs-string">"0"</span>));
+&nbsp; &nbsp; argumentIndex = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[index.length];
+&nbsp; &nbsp; <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; index.length; i++) {
+&nbsp; &nbsp; &nbsp; &nbsp; argumentIndex[i] = Integer.parseInt(index[i]);
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-comment">// 构建虚拟Hash槽，默认replicaNumber=160，相当于在Hash槽上放160个槽位</span>
+&nbsp; &nbsp; <span class="hljs-comment">// 外层轮询40次，内层轮询4次，共40*4=160次，也就是同一节点虚拟出160个槽位</span>
+&nbsp; &nbsp; <span class="hljs-keyword">for</span> (Invoker&lt;T&gt; invoker : invokers) {
+&nbsp; &nbsp; &nbsp; &nbsp; String address = invoker.getUrl().getAddress();
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; replicaNumber / <span class="hljs-number">4</span>; i++) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 对address + i进行md5运算，得到一个长度为16的字节数组</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">byte</span>[] digest = md5(address + i);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 对digest部分字节进行4次Hash运算，得到4个不同的long型正整数</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> h = <span class="hljs-number">0</span>; h &lt; <span class="hljs-number">4</span>; h++) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// h = 0 时，取 digest 中下标为 0~3 的 4 个字节进行位运算</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// h = 1 时，取 digest 中下标为 4~7 的 4 个字节进行位运算</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// h = 2 和 h = 3时，过程同上</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">long</span> m = hash(digest, h);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; virtualInvokers.put(m, invoker);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; }
+}
+</code></pre>
+<p data-nodeid="176829">最后，请求会通过 ConsistentHashSelector.select() 方法选择合适的 Invoker 对象，其中会先对请求参数进行 md5 以及 Hash 运算，得到一个 Hash 值，然后再通过这个 Hash 值到 TreeMap 中查找目标 Invoker。具体实现如下：</p>
+<pre class="lang-java" data-nodeid="176830"><code data-language="java"><span class="hljs-function"><span class="hljs-keyword">public</span> Invoker&lt;T&gt; <span class="hljs-title">select</span><span class="hljs-params">(Invocation invocation)</span> </span>{
+&nbsp; &nbsp; <span class="hljs-comment">// 将参与一致性Hash的参数拼接到一起</span>
+&nbsp; &nbsp; String key = toKey(invocation.getArguments());
+&nbsp; &nbsp; <span class="hljs-comment">// 计算key的Hash值</span>
+&nbsp; &nbsp; <span class="hljs-keyword">byte</span>[] digest = md5(key);
+&nbsp; &nbsp; <span class="hljs-comment">// 匹配Invoker对象</span>
+&nbsp; &nbsp; <span class="hljs-keyword">return</span> selectForKey(hash(digest, <span class="hljs-number">0</span>));
+}
+
+<span class="hljs-function"><span class="hljs-keyword">private</span> Invoker&lt;T&gt; <span class="hljs-title">selectForKey</span><span class="hljs-params">(<span class="hljs-keyword">long</span> hash)</span> </span>{
+&nbsp; &nbsp; <span class="hljs-comment">// 从virtualInvokers集合（TreeMap是按照Key排序的）中查找第一个节点值大于或等于传入Hash值的Invoker对象</span>
+&nbsp; &nbsp; Map.Entry&lt;Long, Invoker&lt;T&gt;&gt; entry = virtualInvokers.ceilingEntry(hash);
+&nbsp; &nbsp; <span class="hljs-comment">// 如果Hash值大于Hash环中的所有Invoker，则回到Hash环的开头，返回第一个Invoker对象</span>
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (entry == <span class="hljs-keyword">null</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; entry = virtualInvokers.firstEntry();
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">return</span> entry.getValue();
+}
+</code></pre>
+<h3 data-nodeid="176831">RandomLoadBalance</h3>
+<p data-nodeid="176832">RandomLoadBalance 使用的负载均衡算法是<strong data-nodeid="176970">加权随机算法</strong>。RandomLoadBalance 是一个简单、高效的负载均衡实现，它也是 Dubbo 默认使用的 LoadBalance 实现。</p>
+<p data-nodeid="182199">这里我们通过一个示例来说明加权随机算法的核心思想。假设我们有三个 Provider 节点 A、B、C，它们对应的权重分别为 5、2、3，权重总和为 10。现在把这些权重值放到一维坐标轴上，[0, 5) 区间属于节点 A，[5, 7) 区间属于节点 B，[7, 10) 区间属于节点 C，如下图所示：</p>
+<p data-nodeid="182200" class="te-preview-highlight"><img src="https://s0.lgstatic.com/i/image/M00/71/0A/Ciqc1F-81ySAdj_7AAAxc2j-s5k730.png" alt="Drawing 5.png" data-nodeid="182211"></p>
+<div data-nodeid="182201"><p style="text-align:center">权重坐标轴示意图</p></div>
+<p data-nodeid="176836">下面我们通过随机数生成器在 [0, 10) 这个范围内生成一个随机数，然后计算这个随机数会落到哪个区间中。例如，随机生成 4，就会落到 Provider A 对应的区间中，此时 RandomLoadBalance 就会返回 Provider A 这个节点。</p>
+<p data-nodeid="176837">接下来我们再来看 RandomLoadBalance 中 doSelect() 方法的实现，其核心逻辑分为三个关键点：</p>
+<ul data-nodeid="176838">
+<li data-nodeid="176839">
+<p data-nodeid="176840">计算每个 Invoker 对应的权重值以及总权重值；</p>
+</li>
+<li data-nodeid="176841">
+<p data-nodeid="176842">当各个 Invoker 权重值不相等时，计算随机数应该落在哪个 Invoker 区间中，返回对应的 Invoker 对象；</p>
+</li>
+<li data-nodeid="176843">
+<p data-nodeid="176844">当各个 Invoker 权重值相同时，随机返回一个 Invoker 即可。</p>
+</li>
+</ul>
+<p data-nodeid="176845">RandomLoadBalance 经过多次请求后，能够将调用请求按照权重值均匀地分配到各个 Provider 节点上。下面是 RandomLoadBalance 的核心实现：</p>
+<pre class="lang-java" data-nodeid="176846"><code data-language="java"><span class="hljs-keyword">protected</span> &lt;T&gt; <span class="hljs-function">Invoker&lt;T&gt; <span class="hljs-title">doSelect</span><span class="hljs-params">(List&lt;Invoker&lt;T&gt;&gt; invokers, URL url, Invocation invocation)</span> </span>{
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> length = invokers.size();
+&nbsp; &nbsp; <span class="hljs-keyword">boolean</span> sameWeight = <span class="hljs-keyword">true</span>;
+&nbsp; &nbsp; <span class="hljs-comment">// 计算每个Invoker对象对应的权重，并填充到weights[]数组中</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span>[] weights = <span class="hljs-keyword">new</span> <span class="hljs-keyword">int</span>[length];
+&nbsp; &nbsp; <span class="hljs-comment">// 计算第一个Invoker的权重</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> firstWeight = getWeight(invokers.get(<span class="hljs-number">0</span>), invocation);
+&nbsp; &nbsp; weights[<span class="hljs-number">0</span>] = firstWeight;
+&nbsp; &nbsp; <span class="hljs-comment">// totalWeight用于记录总权重值</span>
+&nbsp; &nbsp; <span class="hljs-keyword">int</span> totalWeight = firstWeight;
+&nbsp; &nbsp; <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>; i &lt; length; i++) {
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 计算每个Invoker的权重，以及总权重totalWeight</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">int</span> weight = getWeight(invokers.get(i), invocation);
+&nbsp; &nbsp; &nbsp; &nbsp; weights[i] = weight;
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// Sum</span>
+&nbsp; &nbsp; &nbsp; &nbsp; totalWeight += weight;
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 检测每个Provider的权重是否相同</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (sameWeight &amp;&amp; weight != firstWeight) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sameWeight = <span class="hljs-keyword">false</span>;
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-comment">// 各个Invoker权重值不相等时，计算随机数落在哪个区间上</span>
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (totalWeight &gt; <span class="hljs-number">0</span> &amp;&amp; !sameWeight) {
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 随机获取一个[0, totalWeight) 区间内的数字</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">int</span> offset = ThreadLocalRandom.current().nextInt(totalWeight);
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 循环让offset数减去Invoker的权重值，当offset小于0时，返回相应的Invoker</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; length; i++) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; offset -= weights[i];
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (offset &lt; <span class="hljs-number">0</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">return</span> invokers.get(i);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-comment">// 各个Invoker权重值相同时，随机返回一个Invoker即可</span>
+&nbsp; &nbsp; <span class="hljs-keyword">return</span> invokers.get(ThreadLocalRandom.current().nextInt(length));
+}
+</code></pre>
+<h3 data-nodeid="176847">总结</h3>
+<p data-nodeid="176848">本课时我们重点介绍了 Dubbo Cluster 层中负载均衡相关的内容。首先我们介绍了 LoadBalance 接口的定义以及 AbstractLoadBalance 抽象类提供的公共能力。然后我们还详细讲解了 ConsistentHashLoadBalance 的核心实现，其中还简单说明了一致性 Hash 算法的基础知识点。最后，我们又一块儿分析了 RandomLoadBalance 的基本原理和核心实现。</p>
+<p data-nodeid="176849" class="">下一课时，我们将继续介绍负载均衡的剩余实现类，记得按时来听课。</p>
+<hr />
+<h3>精选评论</h3>
+<h5>*镇：</h5>
+<blockquote>
+<p>继续深入分析，加油学习😀</p>
+</blockquote>
+<h5>*敏：</h5>
+<blockquote>
+<p>一致性hash终于懂了😁</p>
+</blockquote>
+<h5>LeonardoEzio：</h5>
+<blockquote>
+<p>看完这个 去看dubbo官方文档收获会更大</p>
+</blockquote>
+<h5>**鹏：</h5>
+<blockquote>
+<p>老师，不讲讲集群容错吗？</p>
+</blockquote>
+<p>######     编辑回复：</p>
+<blockquote>
+<p>    集群容错下周就更新哈~</p>
+</blockquote>
+</div>
+</body>
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .main {
+        width: 60%;
+        margin: 0 auto;
+    }
+    pre {
+        font-family: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas", "Ubuntu Mono", "Courier New", "andale mono", "lucida console", monospace;
+        display: block;
+        padding: 8px 12px;
+        margin: 0 0 8px;
+        font-size: 13px;
+        word-break: break-all;
+        word-wrap: break-word;
+        color: #2e2e2e;
+        background-color: #fafafa;
+        border: 1px solid #dfdfdf;
+        border-radius: 2px;
+    }
+    pre {
+        display: block;
+        font-size: 90%;
+        color: #2e2e2e;
+    }
+    pre {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        overflow: auto;
+    }
+    pre, code, kbd, samp {
+        font-family: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas", "Ubuntu Mono", "Courier New", "andale mono", "lucida console", monospace;
+        font-size: 1em;
+    }
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    user agent stylesheet
+    pre {
+        display: block;
+        font-family: monospace;
+        white-space: pre;
+        margin: 1em 0px;
+    }
+    .md {
+        color: #2e2e2e;
+        word-wrap: break-word;
+    }
+    .tab-width-8 {
+        -moz-tab-size: 8;
+        tab-size: 8;
+    }
+    body, .form-control, .search form, .search form {
+        font-size: .875rem;
+    }
+    body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #2e2e2e;
+        text-align: left;
+        background-color: #fff;
+    }
+    :root {
+        --blue: #007bff;
+        --indigo: #6610f2;
+        --purple: #6d49cb;
+        --pink: #e83e8c;
+        --red: #dc3545;
+        --orange: #fd7e14;
+        --yellow: #ffc107;
+        --green: #28a745;
+        --teal: #20c997;
+        --cyan: #17a2b8;
+        --white: #fff;
+        --gray: #919191;
+        --gray-dark: #4f4f4f;
+        --primary: #007bff;
+        --secondary: #f0f0f0;
+        --success: #108548;
+        --info: #1f75cb;
+        --warning: #fc9403;
+        --danger: #dd2b0e;
+        --light: #dbdbdb;
+        --dark: #4f4f4f;
+        --breakpoint-xs: 0;
+        --breakpoint-sm: 576px;
+        --breakpoint-md: 768px;
+        --breakpoint-lg: 992px;
+        --breakpoint-xl: 1200px;
+        --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu, Cantarell, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        --font-family-monospace: "Menlo", "DejaVu Sans Mono", "Liberation Mono", "Consolas", "Ubuntu Mono", "Courier New", "andale mono", "lucida console", monospace;
+    }
+    html {
+        font-family: sans-serif;
+        line-height: 1.15;
+        -webkit-text-size-adjust: 100%;
+        -webkit-tap-highlight-color: transparent;
+    }
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+    img {
+        width: 100%;
+    }</style>
+<body>
+<div class="main"><p data-nodeid="184375" class="">在前面的课时中，我们已经将整个 Dubbo 的核心实现进行了分析。接下来的两个课时，我们将串联 Dubbo 中的这些核心实现，分析 Dubbo<strong data-nodeid="184470">服务发布</strong>和<strong data-nodeid="184471">服务引用</strong>的全流程，帮助你将之前课时介绍的独立知识点联系起来，形成一个完整整体。</p>
+<p data-nodeid="184376">本课时我们就先来重点关注 Provider 节点发布服务的过程，在这个过程中会使用到之前介绍的很多 Dubbo 核心组件。我们从 DubboBootstrap 这个入口类开始介绍，分析 Provider URL 的组装以及服务发布流程，其中会详细介绍本地发布和远程发布的核心流程。</p>
+<h3 data-nodeid="184377">DubboBootstrap 入口</h3>
+<p data-nodeid="184378">在<a href="https://kaiwu.lagou.com/course/courseInfo.htm?courseId=393#/detail/pc?id=4257" data-nodeid="184477">第 01 课时</a>dubbo-demo-api-provider 示例的 Provider 实现中我们可以看到，整个 Provider 节点的启动入口是 DubboBootstrap.start() 方法，在该方法中会执行一些初始化操作，以及一些状态控制字段的更新，具体实现如下：</p>
+<pre class="lang-java" data-nodeid="184379"><code data-language="java"><span class="hljs-function"><span class="hljs-keyword">public</span> DubboBootstrap <span class="hljs-title">start</span><span class="hljs-params">()</span> </span>{
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (started.compareAndSet(<span class="hljs-keyword">false</span>, <span class="hljs-keyword">true</span>)) { <span class="hljs-comment">// CAS操作，保证启动一次</span>
+&nbsp; &nbsp; &nbsp; &nbsp; ready.set(<span class="hljs-keyword">false</span>); <span class="hljs-comment">// 用于判断当前节点是否已经启动完毕，在后面的Dubbo QoS中会使用到该字段</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 初始化一些基础组件，例如，配置中心相关组件、事件监听、元数据相关组件，这些组件在后面将会进行介绍</span>
+&nbsp; &nbsp; &nbsp; &nbsp; initialize();&nbsp;
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 重点：发布服务</span>
+&nbsp; &nbsp; &nbsp; &nbsp; exportServices();
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (!isOnlyRegisterProvider() || hasExportedServices()) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 用于暴露本地元数据服务，后面介绍元数据的时候会深入介绍该部分的内容</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; exportMetadataService();
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 用于将服务实例注册到专用于服务发现的注册中心</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; registerServiceInstance();
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 处理Consumer的ReferenceConfig</span>
+&nbsp; &nbsp; &nbsp; &nbsp; referServices();
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (asyncExportingFutures.size() &gt; <span class="hljs-number">0</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 异步发布服务，会启动一个线程监听发布是否完成，完成之后会将ready设置为true</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">new</span> Thread(() -&gt; {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">this</span>.awaitFinish();
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ready.set(<span class="hljs-keyword">true</span>);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }).start();
+&nbsp; &nbsp; &nbsp; &nbsp; } <span class="hljs-keyword">else</span> { <span class="hljs-comment">// 同步发布服务成功之后，会将ready设置为true</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ready.set(<span class="hljs-keyword">true</span>);
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+}
+</code></pre>
+<p data-nodeid="184380"><strong data-nodeid="184483">不仅是直接通过 API 启动 Provider 的方式会使用到 DubboBootstrap，在 Spring 与 Dubbo 集成的时候也是使用 DubboBootstrap 作为服务发布入口的</strong>，具体逻辑在 DubboBootstrapApplicationListener 这个 Spring Context 监听器中，如下所示：</p>
+<pre class="lang-java" data-nodeid="184381"><code data-language="java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DubboBootstrapApplicationListener</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">OneTimeExecutionApplicationContextEventListener</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">implements</span> <span class="hljs-title">Ordered</span> </span>{
+&nbsp; &nbsp; <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DubboBootstrap dubboBootstrap;
+&nbsp; &nbsp; <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">DubboBootstrapApplicationListener</span><span class="hljs-params">()</span> </span>{
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<span class="hljs-comment">// 初始化DubboBootstrap对象</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">this</span>.dubboBootstrap = DubboBootstrap.getInstance();
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-meta">@Override</span>
+&nbsp; &nbsp; <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onApplicationContextEvent</span><span class="hljs-params">(ApplicationContextEvent event)</span> </span>{
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<span class="hljs-comment">// 监听ContextRefreshedEvent事件和ContextClosedEvent事件</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (event <span class="hljs-keyword">instanceof</span> ContextRefreshedEvent) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; onContextRefreshedEvent((ContextRefreshedEvent) event);
+&nbsp; &nbsp; &nbsp; &nbsp; } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (event <span class="hljs-keyword">instanceof</span> ContextClosedEvent) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; onContextClosedEvent((ContextClosedEvent) event);
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onContextRefreshedEvent</span><span class="hljs-params">(ContextRefreshedEvent event)</span> </span>{
+&nbsp; &nbsp; &nbsp; &nbsp; dubboBootstrap.start(); <span class="hljs-comment">// 启动DubboBootstrap</span>
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onContextClosedEvent</span><span class="hljs-params">(ContextClosedEvent event)</span> </span>{
+&nbsp; &nbsp; &nbsp; &nbsp; dubboBootstrap.stop();
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-meta">@Override</span>
+&nbsp; &nbsp; <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">getOrder</span><span class="hljs-params">()</span> </span>{
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">return</span> LOWEST_PRECEDENCE;
+&nbsp; &nbsp; }
+}
+</code></pre>
+<p data-nodeid="184382">这里我们重点关注的是<strong data-nodeid="184489">exportServices() 方法，它是服务发布核心逻辑的入口</strong>，其中每一个服务接口都会转换为对应的 ServiceConfig 实例，然后通过代理的方式转换成 Invoker，最终转换成 Exporter 进行发布。服务发布流程中涉及的核心对象转换，如下图所示：</p>
+<p data-nodeid="184584" class="te-preview-highlight"><img src="https://s0.lgstatic.com/i/image/M00/89/79/Ciqc1F_YdkGABhTFAACpT-2oDtw867.png" alt="Lark20201215-163844.png" data-nodeid="184588"></p>
+<div data-nodeid="184585"><p style="text-align:center">服务发布核心流程图</p></div>
+<p data-nodeid="184385">exportServices() 方法的具体实现如下：</p>
+<pre class="lang-java" data-nodeid="184386"><code data-language="java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">exportServices</span><span class="hljs-params">()</span> </span>{
+        <span class="hljs-comment">// 从配置管理器中获取到所有的要暴露的服务配置，一个接口类对应一个ServiceConfigBase实例</span>
+&nbsp; &nbsp; configManager.getServices().forEach(sc -&gt; {
+&nbsp; &nbsp; &nbsp; &nbsp; ServiceConfig serviceConfig = (ServiceConfig) sc;
+&nbsp; &nbsp; &nbsp; &nbsp; serviceConfig.setBootstrap(<span class="hljs-keyword">this</span>);
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (exportAsync) { <span class="hljs-comment">// 异步模式，获取一个线程池来异步执行服务发布逻辑</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ExecutorService executor = executorRepository.getServiceExporterExecutor();
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Future&lt;?&gt; future = executor.submit(() -&gt; {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sc.export();
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; exportedServices.add(sc);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; });
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<span class="hljs-comment">// 记录异步发布的Future</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; asyncExportingFutures.add(future);
+&nbsp; &nbsp; &nbsp; &nbsp; } <span class="hljs-keyword">else</span> {<span class="hljs-comment">// 同步发布</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; sc.export(); 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; exportedServices.add(sc);
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; });
+}
+</code></pre>
+<h3 data-nodeid="184387">ServiceConfig</h3>
+<p data-nodeid="184388">在 ServiceConfig.export() 方法中，服务发布的第一步是检查参数，第二步会根据当前配置决定是延迟发布还是立即调用 doExport() 方法进行发布，第三步会通过 exported() 方法回调相关监听器，具体实现如下：</p>
+<pre class="lang-java" data-nodeid="184389"><code data-language="java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">synchronized</span> <span class="hljs-keyword">void</span> <span class="hljs-title">export</span><span class="hljs-params">()</span> </span>{
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (!shouldExport()) {
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">return</span>;
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (bootstrap == <span class="hljs-keyword">null</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; bootstrap = DubboBootstrap.getInstance();
+&nbsp; &nbsp; &nbsp; &nbsp; bootstrap.init();
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-comment">// 检查并更新各项配置</span>
+&nbsp; &nbsp; checkAndUpdateSubConfigs();
+&nbsp; &nbsp; ... <span class="hljs-comment">// 初始化元数据相关服务</span>
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (shouldDelay()) { <span class="hljs-comment">// 延迟发布</span>
+&nbsp; &nbsp; &nbsp; &nbsp; DELAY_EXPORT_EXECUTOR.schedule(<span class="hljs-keyword">this</span>::doExport, getDelay(), TimeUnit.MILLISECONDS);
+&nbsp; &nbsp; } <span class="hljs-keyword">else</span> { <span class="hljs-comment">// 立即发布</span>
+&nbsp; &nbsp; &nbsp; &nbsp; doExport();
+&nbsp; &nbsp; }
+&nbsp; &nbsp; exported(); <span class="hljs-comment">// 回调监听器</span>
+}
+</code></pre>
+<p data-nodeid="184390">在 checkAndUpdateSubConfigs() 方法中，会去检查各项配置是否合理，并补齐一些缺省的配置信息，这个方法非常冗长，这里就不再展示，你若感兴趣的话可以参考<a href="https://github.com/xxxlxy2008/dubbo" data-nodeid="184499">源码</a>进行学习。</p>
+<p data-nodeid="184391">完成配置的检查之后，再来看 doExport() 方法，其中首先调用 loadRegistries() 方法加载注册中心信息，即将 RegistryConfig 配置解析成 registryUrl。无论是使用 XML、Annotation，还是 API 配置方式，都可以配置多个注册中心地址，一个服务接口可以同时注册在多个不同的注册中心。</p>
+<p data-nodeid="184392">RegistryConfig 是 Dubbo 的多个配置对象之一，可以通过解析 XML、Annotation 中注册中心相关的配置得到，对应的配置如下（当然，也可以直接通过 API 创建得到）：</p>
+<pre class="lang-java" data-nodeid="184393"><code data-language="java">&lt;dubbo:registry address=<span class="hljs-string">"zookeeper://127.0.0.1:2181"</span> protocol=<span class="hljs-string">"zookeeper"</span> port=<span class="hljs-string">"2181"</span> /&gt;
+</code></pre>
+<p data-nodeid="184394">RegistryUrl 的格式大致如下（为了方便查看，这里将每个 URL 参数单独放在一行中展示）：</p>
+<pre class="lang-java" data-nodeid="184395"><code data-language="java"><span class="hljs-comment">// path是Zookeeper的地址</span>
+registry:<span class="hljs-comment">//127.0.0.1:2181/org.apache.dubbo.registry.RegistryService?</span>
+application=dubbo-demo-api-provider
+&amp;dubbo=<span class="hljs-number">2.0</span><span class="hljs-number">.2</span>
+&amp;pid=<span class="hljs-number">9405</span>
+&amp;registry=zookeeper <span class="hljs-comment">// 使用的注册中心是Zookeeper</span>
+&amp;timestamp=<span class="hljs-number">1600307343086</span>
+</code></pre>
+<p data-nodeid="184396">加载注册中心信息得到 RegistryUrl 之后，会遍历所有的 ProtocolConfig，依次调用&nbsp;doExportUrlsFor1Protocol(protocolConfig, registryURLs)&nbsp;在每个注册中心发布服务。一个服务接口可以以多种协议进行发布，每种协议都对应一个 ProtocolConfig，例如我们在 Demo 示例中，只使用了 dubbo 协议，对应的配置是：<code data-backticks="1" data-nodeid="184505">&lt;dubbo:protocol name="dubbo" /&gt;</code>。</p>
+<h3 data-nodeid="184397">组装服务 URL</h3>
+<p data-nodeid="184398">doExportUrlsFor1Protocol() 方法的代码非常长，这里我们分成两个部分进行介绍：一部分是组装服务的 URL，另一部分就是后面紧接着介绍的服务发布。</p>
+<p data-nodeid="184399"><strong data-nodeid="184513">组装服务的 URL</strong>核心步骤有如下 7 步。</p>
+<ol data-nodeid="184400">
+<li data-nodeid="184401">
+<p data-nodeid="184402">获取此次发布使用的协议，默认使用 dubbo 协议。</p>
+</li>
+<li data-nodeid="184403">
+<p data-nodeid="184404">设置服务 URL 中的参数，这里会从 MetricsConfig、ApplicationConfig、ModuleConfig、ProviderConfig、ProtocolConfig 中获取配置信息，并作为参数添加到 URL 中。这里调用的 appendParameters()&nbsp;方法会将 AbstractConfig 中的配置信息存储到 Map 集合中，后续在构造 URL 的时候，会将该集合中的 KV 作为 URL 的参数。</p>
+</li>
+<li data-nodeid="184405">
+<p data-nodeid="184406">解析指定方法的 MethodConfig 配置以及方法参数的 ArgumentConfig 配置，得到的配置信息也是记录到 Map 集合中，后续作为 URL 参数。</p>
+</li>
+<li data-nodeid="184407">
+<p data-nodeid="184408">根据此次调用是泛化调用还是普通调用，向 Map 集合中添加不同的键值对。</p>
+</li>
+<li data-nodeid="184409">
+<p data-nodeid="184410">获取 token 配置，并添加到 Map 集合中，默认随机生成 UUID。</p>
+</li>
+<li data-nodeid="184411">
+<p data-nodeid="184412">获取 host、port 值，并开始组装服务的 URL。</p>
+</li>
+<li data-nodeid="184413">
+<p data-nodeid="184414">根据 Configurator 覆盖或新增 URL 参数。</p>
+</li>
+</ol>
+<p data-nodeid="184415">下面是 doExportUrlsFor1Protocol() 方法组装 URL 的核心实现：</p>
+<pre class="lang-java" data-nodeid="184416"><code data-language="java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doExportUrlsFor1Protocol</span><span class="hljs-params">(ProtocolConfig protocolConfig, List&lt;URL&gt; registryURLs)</span> </span>{
+&nbsp; &nbsp; String name = protocolConfig.getName(); <span class="hljs-comment">// 获取协议名称</span>
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (StringUtils.isEmpty(name)) { <span class="hljs-comment">// 默认使用Dubbo协议</span>
+&nbsp; &nbsp; &nbsp; &nbsp; name = DUBBO;
+&nbsp; &nbsp; }
+&nbsp; &nbsp; Map&lt;String, String&gt; map = <span class="hljs-keyword">new</span> HashMap&lt;String, String&gt;(); <span class="hljs-comment">// 记录URL的参数</span>
+&nbsp; &nbsp; map.put(SIDE_KEY, PROVIDER_SIDE); <span class="hljs-comment">// side参数</span>
+&nbsp; &nbsp; <span class="hljs-comment">// 添加URL参数，例如Dubbo版本、时间戳、当前PID等</span>
+&nbsp; &nbsp; ServiceConfig.appendRuntimeParameters(map);
+&nbsp; &nbsp; <span class="hljs-comment">// 下面会从各个Config获取参数，例如，application、interface参数等</span>
+&nbsp; &nbsp; AbstractConfig.appendParameters(map, getMetrics());
+&nbsp; &nbsp; AbstractConfig.appendParameters(map, getApplication());
+&nbsp; &nbsp; AbstractConfig.appendParameters(map, getModule());
+&nbsp; &nbsp; AbstractConfig.appendParameters(map, provider);
+&nbsp; &nbsp; AbstractConfig.appendParameters(map, protocolConfig);
+&nbsp; &nbsp; AbstractConfig.appendParameters(map, <span class="hljs-keyword">this</span>);
+&nbsp; &nbsp; MetadataReportConfig metadataReportConfig = getMetadataReportConfig();
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (metadataReportConfig != <span class="hljs-keyword">null</span> &amp;&amp; metadataReportConfig.isValid()) {
+&nbsp; &nbsp; &nbsp; &nbsp; map.putIfAbsent(METADATA_KEY, REMOTE_METADATA_STORAGE_TYPE);
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (CollectionUtils.isNotEmpty(getMethods())) { <span class="hljs-comment">// 从MethodConfig中获取URL参数</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">for</span> (MethodConfig method : getMethods()) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; AbstractConfig.appendParameters(map, method, method.getName());
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; String retryKey = method.getName() + <span class="hljs-string">".retry"</span>;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (map.containsKey(retryKey)) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; String retryValue = map.remove(retryKey);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (<span class="hljs-string">"false"</span>.equals(retryValue)) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; map.put(method.getName() + <span class="hljs-string">".retries"</span>, <span class="hljs-string">"0"</span>);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; List&lt;ArgumentConfig&gt; arguments = method.getArguments();
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (CollectionUtils.isNotEmpty(arguments)) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">for</span> (ArgumentConfig argument : arguments) { <span class="hljs-comment">// 从ArgumentConfig中获取URL参数</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ... ...
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; } 
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (ProtocolUtils.isGeneric(generic)) { <span class="hljs-comment">// 根据generic是否为true，向map中添加不同的信息</span>
+&nbsp; &nbsp; &nbsp; &nbsp; map.put(GENERIC_KEY, generic);
+&nbsp; &nbsp; &nbsp; &nbsp; map.put(METHODS_KEY, ANY_VALUE);
+&nbsp; &nbsp; } <span class="hljs-keyword">else</span> {
+&nbsp; &nbsp; &nbsp; &nbsp; String revision = Version.getVersion(interfaceClass, version);
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (revision != <span class="hljs-keyword">null</span> &amp;&amp; revision.length() &gt; <span class="hljs-number">0</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; map.put(REVISION_KEY, revision);
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; String[] methods = Wrapper.getWrapper(interfaceClass).getMethodNames();
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (methods.length == <span class="hljs-number">0</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; map.put(METHODS_KEY, ANY_VALUE);
+&nbsp; &nbsp; &nbsp; &nbsp; } <span class="hljs-keyword">else</span> {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 添加method参数</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; map.put(METHODS_KEY, StringUtils.join(<span class="hljs-keyword">new</span> HashSet&lt;String&gt;(Arrays.asList(methods)), <span class="hljs-string">","</span>));
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-comment">// 添加token到map集合中，默认随机生成UUID</span>
+&nbsp; &nbsp; <span class="hljs-keyword">if</span>(ConfigUtils.isEmpty(token) &amp;&amp; provider != <span class="hljs-keyword">null</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; token = provider.getToken();
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (!ConfigUtils.isEmpty(token)) {
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (ConfigUtils.isDefault(token)) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; map.put(TOKEN_KEY, UUID.randomUUID().toString());
+&nbsp; &nbsp; &nbsp; &nbsp; } <span class="hljs-keyword">else</span> {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; map.put(TOKEN_KEY, token);
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-comment">// 将map数据放入serviceMetadata中，这与元数据相关，后面再详细介绍其作用</span>
+&nbsp; &nbsp; serviceMetadata.getAttachments().putAll(map);
+&nbsp; &nbsp; <span class="hljs-comment">// 获取host、port值</span>
+&nbsp; &nbsp; String host = findConfigedHosts(protocolConfig, registryURLs, map);
+&nbsp; &nbsp; Integer port = findConfigedPorts(protocolConfig, name, map);
+&nbsp; &nbsp; <span class="hljs-comment">// 根据上面获取的host、port以及前文获取的map集合组装URL</span>
+&nbsp; &nbsp; URL url = <span class="hljs-keyword">new</span> URL(name, host, port, getContextPath(protocolConfig).map(p -&gt; p + <span class="hljs-string">"/"</span> + path).orElse(path), map);
+&nbsp; &nbsp; <span class="hljs-comment">// 通过Configurator覆盖或添加新的参数</span>
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (ExtensionLoader.getExtensionLoader(ConfiguratorFactory.class)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .hasExtension(url.getProtocol())) {
+&nbsp; &nbsp; &nbsp; &nbsp; url = ExtensionLoader.getExtensionLoader(ConfiguratorFactory.class)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .getExtension(url.getProtocol()).getConfigurator(url).configure(url);
+&nbsp; &nbsp; }
+&nbsp; &nbsp; ... ...
+}
+</code></pre>
+<p data-nodeid="184417">经过上述准备操作之后，得到的服务 URL 如下所示（为了方便查看，这里将每个 URL 参数单独放在一行中展示）：</p>
+<pre class="lang-java" data-nodeid="184418"><code data-language="java">dubbo:<span class="hljs-comment">//172.17.108.185:20880/org.apache.dubbo.demo.DemoService?</span>
+anyhost=<span class="hljs-keyword">true</span>
+&amp;application=dubbo-demo-api-provider
+&amp;bind.ip=<span class="hljs-number">172.17</span><span class="hljs-number">.108</span><span class="hljs-number">.185</span>
+&amp;bind.port=<span class="hljs-number">20880</span>
+&amp;<span class="hljs-keyword">default</span>=<span class="hljs-keyword">true</span>
+&amp;deprecated=<span class="hljs-keyword">false</span>
+&amp;dubbo=<span class="hljs-number">2.0</span><span class="hljs-number">.2</span>
+&amp;dynamic=<span class="hljs-keyword">true</span>
+&amp;generic=<span class="hljs-keyword">false</span>
+&amp;<span class="hljs-class"><span class="hljs-keyword">interface</span></span>=org.apache.dubbo.demo.DemoService
+&amp;methods=sayHello,sayHelloAsync
+&amp;pid=<span class="hljs-number">3918</span>
+&amp;release=
+&amp;side=provider
+&amp;timestamp=<span class="hljs-number">1600437404483</span>
+</code></pre>
+<h3 data-nodeid="184419">服务发布入口</h3>
+<p data-nodeid="184420">完成了服务 URL 的组装之后，doExportUrlsFor1Protocol() 方法开始执行服务发布。服务发布可以分为<strong data-nodeid="184533">远程发布</strong>和<strong data-nodeid="184534">本地发布</strong>，具体发布方式与服务 URL 中的&nbsp;scope 参数有关。</p>
+<p data-nodeid="184421">scope 参数有三个可选值，分别是 none、remote 和 local，分别代表不发布、发布到本地和发布到远端注册中心，从下面介绍的 doExportUrlsFor1Protocol() 方法代码中可以看到：</p>
+<ul data-nodeid="184422">
+<li data-nodeid="184423">
+<p data-nodeid="184424">发布到本地的条件是 scope != remote；</p>
+</li>
+<li data-nodeid="184425">
+<p data-nodeid="184426">发布到注册中心的条件是 scope != local。</p>
+</li>
+</ul>
+<p data-nodeid="184427"><strong data-nodeid="184546">scope 参数的默认值为 null</strong>，也就是说，默认会同时在本地和注册中心发布该服务。下面来看 doExportUrlsFor1Protocol() 方法中发布服务的具体实现：</p>
+<pre class="lang-java" data-nodeid="184428"><code data-language="java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">doExportUrlsFor1Protocol</span><span class="hljs-params">(ProtocolConfig protocolConfig, List&lt;URL&gt; registryURLs)</span> </span>{
+&nbsp; &nbsp; ... ...<span class="hljs-comment">// 省略组装服务URL的过程</span>
+&nbsp; &nbsp; <span class="hljs-comment">// 从URL中获取scope参数，其中可选值有none、remote、local三个，</span>
+&nbsp; &nbsp; <span class="hljs-comment">// 分别代表不发布、发布到本地以及发布到远端，具体含义在下面一一介绍</span>
+&nbsp; &nbsp; String scope = url.getParameter(SCOPE_KEY);
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (!SCOPE_NONE.equalsIgnoreCase(scope)) { <span class="hljs-comment">//&nbsp; scope不为none，才进行发布</span>
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (!SCOPE_REMOTE.equalsIgnoreCase(scope)) {<span class="hljs-comment">// 发布到本地</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; exportLocal(url);
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (!SCOPE_LOCAL.equalsIgnoreCase(scope)) { <span class="hljs-comment">// 发布到远端的注册中心</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (CollectionUtils.isNotEmpty(registryURLs)) { <span class="hljs-comment">// 当前配置了至少一个注册中心</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">for</span> (URL registryURL : registryURLs) { <span class="hljs-comment">// 向每个注册中心发布服务</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// injvm协议只在exportLocal()中有用，不会将服务发布到注册中心</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 所以这里忽略injvm协议</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (LOCAL_PROTOCOL.equalsIgnoreCase(url.getProtocol())){
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">continue</span>;
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 设置服务URL的dynamic参数</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; url = url.addParameterIfAbsent(DYNAMIC_KEY, registryURL.getParameter(DYNAMIC_KEY));
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 创建monitorUrl，并作为monitor参数添加到服务URL中</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; URL monitorUrl = ConfigValidationUtils.loadMonitor(<span class="hljs-keyword">this</span>, registryURL);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (monitorUrl != <span class="hljs-keyword">null</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; url = url.addParameterAndEncoded(MONITOR_KEY, monitorUrl.toFullString());
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 设置服务URL的proxy参数，即生成动态代理方式(jdk或是javassist)，作为参数添加到RegistryURL中</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; String proxy = url.getParameter(PROXY_KEY);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (StringUtils.isNotEmpty(proxy)) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; registryURL = registryURL.addParameter(PROXY_KEY, proxy);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 为服务实现类的对象创建相应的Invoker，getInvoker()方法的第三个参数中，会将服务URL作为export参数添加到RegistryURL中</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 这里的PROXY_FACTORY是ProxyFactory接口的适配器</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Invoker&lt;?&gt; invoker = PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, registryURL.addParameterAndEncoded(EXPORT_KEY, url.toFullString()));
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// DelegateProviderMetaDataInvoker是个装饰类，将当前ServiceConfig和Invoker关联起来而已，invoke()方法透传给底层Invoker对象</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; DelegateProviderMetaDataInvoker wrapperInvoker = <span class="hljs-keyword">new</span> DelegateProviderMetaDataInvoker(invoker, <span class="hljs-keyword">this</span>);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 调用Protocol实现，进行发布</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 这里的PROTOCOL是Protocol接口的适配器</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Exporter&lt;?&gt; exporter = PROTOCOL.export(wrapperInvoker);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; exporters.add(exporter);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } <span class="hljs-keyword">else</span> {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 不存在注册中心，仅发布服务，不会将服务信息发布到注册中心。Consumer没法在注册中心找到该服务的信息，但是可以直连</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-comment">// 具体的发布过程与上面的过程类似，只不过不会发布到注册中心</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Invoker&lt;?&gt; invoker = PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, url);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; DelegateProviderMetaDataInvoker wrapperInvoker = <span class="hljs-keyword">new</span> DelegateProviderMetaDataInvoker(invoker, <span class="hljs-keyword">this</span>);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Exporter&lt;?&gt; exporter = PROTOCOL.export(wrapperInvoker);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; exporters.add(exporter);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<span class="hljs-comment">// 元数据相关操作</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; WritableMetadataService metadataService = WritableMetadataService.getExtension(url.getParameter(METADATA_KEY, DEFAULT_METADATA_STORAGE_TYPE));
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="hljs-keyword">if</span> (metadataService != <span class="hljs-keyword">null</span>) {
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; metadataService.publishServiceDefinition(url);
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; &nbsp; &nbsp; }
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-keyword">this</span>.urls.add(url);
+}
+</code></pre>
+<h3 data-nodeid="184429">本地发布</h3>
+<p data-nodeid="184430">了解了本地发布、远程发布的入口逻辑之后，下面我们开始深入本地发布的逻辑。</p>
+<p data-nodeid="184431">在 exportLocal() 方法中，会将 Protocol 替换成 injvm 协议，将 host 设置成 127.0.0.1，将 port 设置为 0，得到新的 LocalURL，大致如下：</p>
+<pre class="lang-java" data-nodeid="184432"><code data-language="java">injvm:<span class="hljs-comment">//127.0.0.1/org.apache.dubbo.demo.DemoService?anyhost=true</span>
+&amp;application=dubbo-demo-api-provider
+&amp;bind.ip=<span class="hljs-number">172.17</span><span class="hljs-number">.108</span><span class="hljs-number">.185</span>
+&amp;bind.port=<span class="hljs-number">20880</span>
+&amp;<span class="hljs-keyword">default</span>=<span class="hljs-keyword">true</span>
+&amp;deprecated=<span class="hljs-keyword">false</span>
+&amp;dubbo=<span class="hljs-number">2.0</span><span class="hljs-number">.2</span>
+&amp;dynamic=<span class="hljs-keyword">true</span>
+&amp;generic=<span class="hljs-keyword">false</span>
+&amp;<span class="hljs-class"><span class="hljs-keyword">interface</span></span>=org.apache.dubbo.demo.DemoService
+&amp;methods=sayHello,sayHelloAsync
+&amp;pid=<span class="hljs-number">4249</span>
+&amp;release=
+&amp;side=provider
+&amp;timestamp=<span class="hljs-number">1600440074214</span>
+</code></pre>
+<p data-nodeid="184433">之后，会通过 ProxyFactory 接口适配器找到对应的 ProxyFactory 实现（默认使用 JavassistProxyFactory），并调用 getInvoker() 方法创建 Invoker 对象；最后，通过 Protocol 接口的适配器查找到 InjvmProtocol 实现，并调用 export() 方法进行发布。 exportLocal() 方法的具体实现如下：</p>
+<pre class="lang-java" data-nodeid="184434"><code data-language="java"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">exportLocal</span><span class="hljs-params">(URL url)</span> </span>{
+&nbsp; &nbsp; URL local = URLBuilder.from(url) <span class="hljs-comment">// 创建新URL</span>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .setProtocol(LOCAL_PROTOCOL)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .setHost(LOCALHOST_VALUE)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .setPort(<span class="hljs-number">0</span>)
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .build();
+&nbsp; &nbsp;&nbsp;<span class="hljs-comment">// 本地发布</span>
+&nbsp; &nbsp; Exporter&lt;?&gt; exporter = PROTOCOL.export(
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; PROXY_FACTORY.getInvoker(ref, (Class) interfaceClass, local));
+&nbsp; &nbsp; exporters.add(exporter);
+}
+</code></pre>
+<p data-nodeid="184435">InjvmProtocol 的相关实现比较简单，这里就不再展示，你若感兴趣的话可以参考<a href="https://github.com/xxxlxy2008/dubbo" data-nodeid="184554">源码</a>进行学习。</p>
+<h3 data-nodeid="184436">远程发布</h3>
+<p data-nodeid="184437">介绍完本地发布之后，我们再来看远程发布的核心逻辑，远程服务发布的流程相较本地发布流程，要复杂得多。</p>
+<p data-nodeid="184438">在 doExportUrlsFor1Protocol() 方法中，远程发布服务时，会遍历全部 RegistryURL，并根据 RegistryURL 选择对应的 Protocol 扩展实现进行发布。我们知道 RegistryURL 是 "registry://" 协议，所以这里使用的是 RegistryProtocol 实现。</p>
+<p data-nodeid="184439">下面来看 RegistryProtocol.export() 方法的核心流程：</p>
+<pre class="lang-java" data-nodeid="184440"><code data-language="java"><span class="hljs-keyword">public</span> &lt;T&gt; <span class="hljs-function">Exporter&lt;T&gt; <span class="hljs-title">export</span><span class="hljs-params">(<span class="hljs-keyword">final</span> Invoker&lt;T&gt; originInvoker)</span> <span class="hljs-keyword">throws</span> RpcException </span>{
+&nbsp; &nbsp; <span class="hljs-comment">// 将"registry://"协议转换成"zookeeper://"协议</span>
+&nbsp; &nbsp; URL registryUrl = getRegistryUrl(originInvoker);
+&nbsp; &nbsp; <span class="hljs-comment">// 获取export参数，其中存储了一个"dubbo://"协议的ProviderURL</span>
+&nbsp; &nbsp; URL providerUrl = getProviderUrl(originInvoker);
+
+    <span class="hljs-comment">// 获取要监听的配置目录，这里会在ProviderURL的基础上添加category=configurators参数，并封装成对OverrideListener记录到overrideListeners集合中</span>
+&nbsp; &nbsp; <span class="hljs-keyword">final</span> URL overrideSubscribeUrl = getSubscribedOverrideUrl(providerUrl);
+&nbsp; &nbsp; <span class="hljs-keyword">final</span> OverrideListener overrideSubscribeListener = <span class="hljs-keyword">new</span> OverrideListener(overrideSubscribeUrl, originInvoker);
+&nbsp; &nbsp; overrideListeners.put(overrideSubscribeUrl, overrideSubscribeListener);
+    <span class="hljs-comment">// 初始化时会检测一次Override配置，重写ProviderURL</span>
+&nbsp; &nbsp; providerUrl = overrideUrlWithConfig(providerUrl, overrideSubscribeListener);
+&nbsp; &nbsp; <span class="hljs-comment">// 导出服务，底层会通过执行DubboProtocol.export()方法，启动对应的Server</span>
+&nbsp; &nbsp; <span class="hljs-keyword">final</span> ExporterChangeableWrapper&lt;T&gt; exporter = doLocalExport(originInvoker, providerUrl);
+&nbsp; &nbsp; <span class="hljs-comment">// 根据RegistryURL获取对应的注册中心Registry对象，其中会依赖之前课时介绍的RegistryFactory</span>
+&nbsp; &nbsp; <span class="hljs-keyword">final</span> Registry registry = getRegistry(originInvoker);
+&nbsp; &nbsp; <span class="hljs-comment">// 获取将要发布到注册中心上的Provider URL，其中会删除一些多余的参数信息</span>
+&nbsp; &nbsp; <span class="hljs-keyword">final</span> URL registeredProviderUrl = getUrlToRegistry(providerUrl, registryUrl);
+&nbsp; &nbsp; <span class="hljs-comment">// 根据register参数值决定是否注册服务</span>
+&nbsp; &nbsp; <span class="hljs-keyword">boolean</span> register = providerUrl.getParameter(REGISTER_KEY, <span class="hljs-keyword">true</span>);
+&nbsp; &nbsp; <span class="hljs-keyword">if</span> (register) { <span class="hljs-comment">// 调用Registry.register()方法将registeredProviderUrl发布到注册中心</span>
+&nbsp; &nbsp; &nbsp; &nbsp; register(registryUrl, registeredProviderUrl);
+&nbsp; &nbsp; }
+&nbsp; &nbsp; <span class="hljs-comment">// 将Provider相关信息记录到的ProviderModel中</span>
+&nbsp; &nbsp; registerStatedUrl(registryUrl, registeredProviderUrl, register);
+&nbsp; &nbsp; <span class="hljs-comment">// 向注册中心进行订阅override数据，主要是监听该服务的configurators节点</span>
+&nbsp; &nbsp; registry.subscribe(overrideSubscribeUrl, overrideSubscribeListener);
+&nbsp; &nbsp; exporter.setRegisterUrl(registeredProviderUrl);
+&nbsp; &nbsp; exporter.setSubscribeUrl(overrideSubscribeUrl);
+    <span class="hljs-comment">// 触发RegistryProtocolListener监听器</span>
+&nbsp; &nbsp; notifyExport(exporter);
+&nbsp; &nbsp; <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> DestroyableExporter&lt;&gt;(exporter);
+}
+</code></pre>
+<p data-nodeid="184441">我们可以看到，远程发布流程大致可分为下面 5 个步骤。</p>
+<ol data-nodeid="184442">
+<li data-nodeid="184443">
+<p data-nodeid="184444">准备 URL，比如 ProviderURL、RegistryURL 和 OverrideSubscribeUrl。</p>
+</li>
+<li data-nodeid="184445">
+<p data-nodeid="184446">发布 Dubbo 服务。在 doLocalExport() 方法中调用 DubboProtocol.export() 方法启动 Provider 端底层 Server。</p>
+</li>
+<li data-nodeid="184447">
+<p data-nodeid="184448">注册 Dubbo 服务。在 register() 方法中，调用 ZookeeperRegistry.register() 方法向 Zookeeper 注册服务。</p>
+</li>
+<li data-nodeid="184449">
+<p data-nodeid="184450">订阅 Provider 端的 Override 配置。调用 ZookeeperRegistry.subscribe() 方法订阅注册中心 configurators 节点下的配置变更。</p>
+</li>
+<li data-nodeid="184451">
+<p data-nodeid="184452">触发 RegistryProtocolListener 监听器。</p>
+</li>
+</ol>
+<p data-nodeid="184453">远程发布的详细流程如下图所示：</p>
+<p data-nodeid="184454"><img src="https://s0.lgstatic.com/i/image2/M01/01/2C/CgpVE1_YNDaATl3fAAFcJTJOw3M699.png" alt="Drawing 1.png" data-nodeid="184573"></p>
+<div data-nodeid="184455"><p style="text-align:center">服务发布详细流程图</p></div>
+<h3 data-nodeid="184456">总结</h3>
+<p data-nodeid="184457">本课时我们重点介绍了 Dubbo 服务发布的核心流程。</p>
+<p data-nodeid="184458">首先我们介绍了 DubboBootstrap 这个入口门面类中与服务发布相关的方法，重点是 start() 和 exportServices() 两个方法；然后详细介绍了 ServiceConfig 类的三个核心步骤：检查参数、立即（或延迟）执行 doExport() 方法进行发布、回调服务发布的相关监听器。</p>
+<p data-nodeid="184459">接下来，我们分析了<strong data-nodeid="184582">doExportUrlsFor1Protocol() 方法，它是发布一个服务的入口，也是规定服务发布流程的地方</strong>，其中涉及 Provider URL 的组装、本地服务发布流程以及远程服务发布流程，对于这些步骤，我们都进行了详细的分析。</p>
+<p data-nodeid="184460" class="">下一课时，我们将继续分析 Dubbo 服务引用的全流程，记得按时来听课。</p>
+<hr />
+<h3>精选评论</h3>
+<h5>*镇：</h5>
+<blockquote>
+<p>老师写的太好了😄</p>
+</blockquote>
+<h5>**坤：</h5>
+<blockquote>
+<p>老师好，我不太了解java，请问直接学习哪些课程对学习dubbo go有帮助？</p>
+</blockquote>
+</div>
+</body>
+</html>
