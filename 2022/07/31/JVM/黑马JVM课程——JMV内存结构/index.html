@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ys_ico.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/ys_ico.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ysymj.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="黑马JVM课程学习笔记，http:&#x2F;&#x2F;yun.itheima.com&#x2F;course&#x2F;584.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="黑马JVM课程——JMV内存结构（一）">
+<meta property="og:url" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="YS">
+<meta property="og:description" content="黑马JVM课程学习笔记，http:&#x2F;&#x2F;yun.itheima.com&#x2F;course&#x2F;584.html">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jvm-jre-jdk%E6%AF%94%E8%BE%83.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%B8%B8%E8%A7%81%E7%9A%84JVM%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E9%80%92%E5%BD%92%E6%A0%88%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E4%BB%A3%E7%A0%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jsconsole%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jconsole%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA1.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA2.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA3.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E6%96%B9%E6%B3%95%E5%8C%BA%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="article:published_time" content="2022-07-31T05:44:19.000Z">
+<meta property="article:modified_time" content="2022-08-13T02:07:04.103Z">
+<meta property="article:author" content="YS">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jvm-jre-jdk%E6%AF%94%E8%BE%83.png">
+
+<link rel="canonical" href="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>黑马JVM课程——JMV内存结构（一） | YS</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">YS</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.png">
+      <meta itemprop="name" content="YS">
+      <meta itemprop="description" content="学海无涯苦作舟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YS">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          黑马JVM课程——JMV内存结构（一）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-31 13:44:19" itemprop="dateCreated datePublished" datetime="2022-07-31T13:44:19+08:00">2022-07-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-13 10:07:04" itemprop="dateModified" datetime="2022-08-13T10:07:04+08:00">2022-08-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" class="post-meta-item leancloud_visitors" data-flag-title="黑马JVM课程——JMV内存结构（一）" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><h2 id="什么是-JVM"><a href="#什么是-JVM" class="headerlink" title="什么是 JVM"></a>什么是 JVM</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
+<p>Java Virtual Machine —— Java 程序的运行环境（Java二进制字节码的运行环境）</p>
+</blockquote>
+<h3 id="好处"><a href="#好处" class="headerlink" title="好处"></a>好处</h3><ul>
+<li>一次编写，到处运行；</li>
+<li>自动内存管理，垃圾回收功能；</li>
+<li>数组下标越界检查；</li>
+<li>多态。</li>
+</ul>
+<h3 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h3><p><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jvm-jre-jdk%E6%AF%94%E8%BE%83.png" alt="jvm-jre-jdk比较.png"></p>
+<h2 id="常见的JVM"><a href="#常见的JVM" class="headerlink" title="常见的JVM"></a>常见的JVM</h2><p><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%B8%B8%E8%A7%81%E7%9A%84JVM%E5%9B%BE%E7%A4%BA.png" alt="常见的JVM图示"></p>
+<h1 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h1><h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ul>
+<li>记住下一条jvm指令的执行地址<blockquote>
+<p>java代码在编译之后，会编译成一条条指令，然后将指令交给解释器，解释器将指令解释成机器码然后交给CPU执行<br>当程序执行一条指令的时候，程序计数器就会记录下一条指令的位置<br>程序计数器是通过寄存器实现的，寄存器是CPU中运行最快的单元，因为从程序计数器获取执行位置的操作是非常频繁的</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h3><ul>
+<li><p>线程私有</p>
+<blockquote>
+<p>Java实现多线程的原理是通过由CPU轮询各个线程来实现多线程的<br>当线程切换了之后，就需要程序计数器来记录当前线程下一次需要执行那一条指令，以便于cpu轮询回来的时候能够立即执行</p>
+</blockquote>
+</li>
+<li><p>在Java虚拟机规范中唯一不会存在内存溢出</p>
+</li>
+</ul>
+<h2 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h2><ul>
+<li>每个线程运行时所需要的内存，称为虚拟机栈</li>
+<li>每个栈由多个栈帧组成，对应着每次方法调用时所占用的内存</li>
+<li>每个线程只能有一个活动栈帧，对应着当前正在执行的那个 </li>
+</ul>
+<blockquote>
+<p>线程运行时需要的内存空间<br>每个栈由多个栈帧组成<br>栈帧-每个方法运行时需要的内存</p>
+<blockquote>
+<p>参数，局部变量，返回地址</p>
+</blockquote>
+<p>当线程执行一个方法的时候，就会先把代表方法的栈帧压入栈内，当方法执行完毕，弹出栈</p>
+</blockquote>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><h4 id="垃圾回收是否涉及栈内存？"><a href="#垃圾回收是否涉及栈内存？" class="headerlink" title="垃圾回收是否涉及栈内存？"></a>垃圾回收是否涉及栈内存？</h4><blockquote>
+<p>不涉及<br>栈内存中就是一次次的方法调用，没当一个方法调用完毕，就立刻出栈释放了内存，不需要垃圾回收来处理</p>
+</blockquote>
+<h4 id="栈内存分配越大越好吗？"><a href="#栈内存分配越大越好吗？" class="headerlink" title="栈内存分配越大越好吗？"></a>栈内存分配越大越好吗？</h4><blockquote>
+<p>可以通过jvm参数来指定  <code>-Xss size</code><br>默认栈内存为1024kb，Windows会通过虚拟机内存进行计算<br>因为机器物理内存是一定的，如果栈内存划分比较大，会导致能创建的线程数量变少</p>
+</blockquote>
+<h4 id="方法内的局部变量是否是线程安全？"><a href="#方法内的局部变量是否是线程安全？" class="headerlink" title="方法内的局部变量是否是线程安全？"></a>方法内的局部变量是否是线程安全？</h4><blockquote>
+<p>如果方法内部变量没有逃离方法的作用范围，它是线程安全的<br>如果是局部变量引用了对象，并逃离了方法的最哦用范围，需要考虑线程安全问题（基本类型不会有线程安全问题）</p>
+</blockquote>
+<h3 id="栈内存溢出"><a href="#栈内存溢出" class="headerlink" title="栈内存溢出"></a>栈内存溢出</h3><h4 id="栈帧过多导致栈内存溢出（递归）"><a href="#栈帧过多导致栈内存溢出（递归）" class="headerlink" title="栈帧过多导致栈内存溢出（递归）"></a>栈帧过多导致栈内存溢出（递归）</h4><blockquote>
+<p>如下图所示，使用递归调用，没有设置临界值，最终会导致栈内存溢出<br><code>java.lang.StackOverflowError</code><br>注意，并不一定就是 39689 次调用会溢出，根据机器配置不同，会略有差异</p>
+</blockquote>
+<p><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E9%80%92%E5%BD%92%E6%A0%88%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E4%BB%A3%E7%A0%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="递归栈内存溢出代码示意图"></p>
+<ul>
+<li>栈帧过大导致栈内存溢出</li>
+</ul>
+<h3 id="线程与运行诊断"><a href="#线程与运行诊断" class="headerlink" title="线程与运行诊断"></a>线程与运行诊断</h3><h4 id="CPU占用过多"><a href="#CPU占用过多" class="headerlink" title="CPU占用过多"></a>CPU占用过多</h4><ul>
+<li>首先通过<code>top</code>命令查看到占用CPU过高的进程</li>
+<li><code>ps H -eo pid,tid,%cpu</code><ul>
+<li>可以通过<code>ps</code>查看具体某个进程下得线程</li>
+<li><code>-eo</code>可以指定感兴趣的内容，<code>pid</code>进程号，<code>tid</code>线程号，<code>%cpu</code>cpu占用情况</li>
+</ul>
+</li>
+<li><code>ps H -eo pid,tid,%cpu | grep pid</code><ul>
+<li>可以通过过滤<code>top</code>命令查到的进程号来查看</li>
+</ul>
+</li>
+<li><code>jstack tid</code><ul>
+<li>通过java提供的一个命令，可以查看到当前进程下运行的所有线程</li>
+<li>然后将有问题的线程进行16进制编码，就是线程中的<code>nid</code></li>
+<li>然后可以根据具体的堆栈信息找到有问题的代码行数，进行排查</li>
+</ul>
+</li>
+</ul>
+<h4 id="程序运行很长时间没有结果"><a href="#程序运行很长时间没有结果" class="headerlink" title="程序运行很长时间没有结果"></a>程序运行很长时间没有结果</h4><ul>
+<li><code>jstack tid</code><ul>
+<li>可以通过该命令查看所有线程的运行情况</li>
+<li>如果有死锁问题会在堆栈信息的最后打印</li>
+<li>不过如果是逻辑上的死锁，是不会直接打印的，需要自己梳理</li>
+</ul>
+</li>
+</ul>
+<h2 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h2><ul>
+<li>使用 <code>native</code> 标记的方法为本地方法</li>
+<li>本地方法为C/C++编写</li>
+<li>由于有些功能java代码并不能很好的实现，于是就在jvm中引入了大量的C/C++代码</li>
+</ul>
+<h2 id="堆"><a href="#堆" class="headerlink" title="堆"></a>堆</h2><h3 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h3><ul>
+<li>使用new关键字创建的对象，都会使用堆内存</li>
+</ul>
+<h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>它是线程共享的，堆中对象都需要考虑线程安全问题</li>
+<li>有垃圾回收机制</li>
+</ul>
+<h3 id="堆内存溢出"><a href="#堆内存溢出" class="headerlink" title="堆内存溢出"></a>堆内存溢出</h3><blockquote>
+<p>如下图所示，不停的想list中添加字符串，最终会导致堆内存溢出<br><code>java.lang.OutOfMemoryError: Java heap space</code><br>添加字符串的个数，也就是<code>i</code>的值，跟对内存的大小有关<br><code>-Xms8m</code> 可以通过jvm参数调整堆内存的大小</p>
+</blockquote>
+<p><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E7%A4%BA%E6%84%8F%E5%9B%BE.png"></p>
+<h3 id="堆内存诊断"><a href="#堆内存诊断" class="headerlink" title="堆内存诊断"></a>堆内存诊断</h3><h4 id="jps-工具（命令行）"><a href="#jps-工具（命令行）" class="headerlink" title="jps 工具（命令行）"></a>jps 工具（命令行）</h4><ul>
+<li>查看当前系统中有哪些java进程</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2912 </span><br><span class="line">19988 Jps</span><br><span class="line">21172</span><br><span class="line">10044 Launcher</span><br><span class="line">24332 Test1</span><br></pre></td></tr></table></figure>
+
+<h4 id="jmap-工具（命令行）"><a href="#jmap-工具（命令行）" class="headerlink" title="jmap 工具（命令行）"></a>jmap 工具（命令行）</h4><ul>
+<li>查看堆内存占用情况（只能看到某一个时刻）</li>
+</ul>
+<blockquote>
+<p><code>jmap -heap 24332</code><br>使用如下伪代码，来查看jvm堆内存的变化<br>分别在创建对象前，创建对象后，执行垃圾回收后，观察日志的变化</p>
+<p>主要可以观察<code>Eden Space</code>区域的内容变化，其中:</p>
+<blockquote>
+<p><code>capacity</code>表示总容量<br><code>used</code>表示已经占用了的<br><code>free</code>表示未占用的</p>
+</blockquote>
+<p>可以看到，示例1中，<code>used</code>的值，也就是被占用的空间，大概只有10M左右<br>当我们创建了一个10M的数组之后，被占用的空间已经到了20M<br>当执行了垃圾回收之后，如第三个示例，只剩下1M多点的占用</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;  </span><br><span class="line">    System.out.println(<span class="string">&quot;1.....&quot;</span>);  </span><br><span class="line">    Thread.sleep(<span class="number">30000</span>);  </span><br><span class="line">    <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>*<span class="number">1024</span>*<span class="number">10</span>];<span class="comment">//10mb  </span></span><br><span class="line">    System.out.println(<span class="string">&quot;2.....&quot;</span>);  </span><br><span class="line">    Thread.sleep(<span class="number">30000</span>);  </span><br><span class="line">    bytes = <span class="keyword">null</span>;  </span><br><span class="line">    System.gc();  </span><br><span class="line">    System.out.println(<span class="string">&quot;3....&quot;</span>);  </span><br><span class="line">    Thread.sleep(<span class="number">30000</span>);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>未创建对象时<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">Attaching to process ID 24332, please wait...</span><br><span class="line">Debugger attached successfully.</span><br><span class="line">Server compiler detected.</span><br><span class="line">JVM version is 25.152-b16</span><br><span class="line"></span><br><span class="line">using thread-local object allocation.</span><br><span class="line">Parallel GC with 10 thread(s)</span><br><span class="line"></span><br><span class="line">Heap Configuration:</span><br><span class="line">   MinHeapFreeRatio         = 0</span><br><span class="line">   MaxHeapFreeRatio         = 100</span><br><span class="line">   MaxHeapSize              = 4229955584 (4034.0MB)</span><br><span class="line">   NewSize                  = 88604672 (84.5MB)</span><br><span class="line">   MaxNewSize               = 1409810432 (1344.5MB)</span><br><span class="line">   OldSize                  = 177733632 (169.5MB)</span><br><span class="line">   NewRatio                 = 2</span><br><span class="line">   SurvivorRatio            = 8</span><br><span class="line">   MetaspaceSize            = 21807104 (20.796875MB)</span><br><span class="line">   CompressedClassSpaceSize = 1073741824 (1024.0MB)</span><br><span class="line">   MaxMetaspaceSize         = 17592186044415 MB</span><br><span class="line">   G1HeapRegionSize         = 0 (0.0MB)</span><br><span class="line"></span><br><span class="line">Heap Usage:</span><br><span class="line">PS Young Generation</span><br><span class="line">Eden Space:</span><br><span class="line">   capacity = 66584576 (63.5MB)</span><br><span class="line">   used     = 10711168 (10.2149658203125MB)</span><br><span class="line">   free     = 55873408 (53.2850341796875MB)</span><br><span class="line">   16.08656034694882% used</span><br><span class="line">From Space:</span><br><span class="line">   capacity = 11010048 (10.5MB)</span><br><span class="line">   used     = 0 (0.0MB)</span><br><span class="line">   free     = 11010048 (10.5MB)</span><br><span class="line">   0.0% used</span><br><span class="line">To Space:</span><br><span class="line">   capacity = 11010048 (10.5MB)</span><br><span class="line">   used     = 0 (0.0MB)</span><br><span class="line">   free     = 11010048 (10.5MB)</span><br><span class="line">   0.0% used</span><br><span class="line">PS Old Generation</span><br><span class="line">   capacity = 177733632 (169.5MB)</span><br><span class="line">   used     = 0 (0.0MB)</span><br><span class="line">   free     = 177733632 (169.5MB)</span><br><span class="line">   0.0% used</span><br><span class="line"></span><br><span class="line">3178 interned Strings occupying 260512 bytes.</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>2.创建对象后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">Attaching to process ID 24332, please wait...</span><br><span class="line">Debugger attached successfully.</span><br><span class="line">Server compiler detected.</span><br><span class="line">JVM version is 25.152-b16</span><br><span class="line"></span><br><span class="line">using thread-local object allocation.</span><br><span class="line">Parallel GC with 10 thread(s)</span><br><span class="line"></span><br><span class="line">Heap Configuration:</span><br><span class="line">   MinHeapFreeRatio         = 0</span><br><span class="line">   MaxHeapFreeRatio         = 100</span><br><span class="line">   MaxHeapSize              = 4229955584 (4034.0MB)</span><br><span class="line">   NewSize                  = 88604672 (84.5MB)</span><br><span class="line">   MaxNewSize               = 1409810432 (1344.5MB)</span><br><span class="line">   OldSize                  = 177733632 (169.5MB)</span><br><span class="line">   NewRatio                 = 2</span><br><span class="line">   SurvivorRatio            = 8</span><br><span class="line">   MetaspaceSize            = 21807104 (20.796875MB)</span><br><span class="line">   CompressedClassSpaceSize = 1073741824 (1024.0MB)</span><br><span class="line">   MaxMetaspaceSize         = 17592186044415 MB</span><br><span class="line">   G1HeapRegionSize         = 0 (0.0MB)</span><br><span class="line"></span><br><span class="line">Heap Usage:</span><br><span class="line">PS Young Generation</span><br><span class="line">Eden Space:</span><br><span class="line">   capacity = 66584576 (63.5MB)</span><br><span class="line">   used     = 21196944 (20.214981079101562MB)</span><br><span class="line">   free     = 45387632 (43.28501892089844MB)</span><br><span class="line">   31.834615872600885% used</span><br><span class="line">From Space:</span><br><span class="line">   capacity = 11010048 (10.5MB)</span><br><span class="line">   used     = 0 (0.0MB)</span><br><span class="line">   free     = 11010048 (10.5MB)</span><br><span class="line">   0.0% used</span><br><span class="line">To Space:</span><br><span class="line">   capacity = 11010048 (10.5MB)</span><br><span class="line">   used     = 0 (0.0MB)</span><br><span class="line">   free     = 11010048 (10.5MB)</span><br><span class="line">   0.0% used</span><br><span class="line">PS Old Generation</span><br><span class="line">   capacity = 177733632 (169.5MB)</span><br><span class="line">   used     = 0 (0.0MB)</span><br><span class="line">   free     = 177733632 (169.5MB)</span><br><span class="line">   0.0% used</span><br><span class="line"></span><br><span class="line">3179 interned Strings occupying 260568 bytes.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>3.执行垃圾回收后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">Attaching to process ID 24332, please wait...</span><br><span class="line">Debugger attached successfully.</span><br><span class="line">Server compiler detected.</span><br><span class="line">JVM version is 25.152-b16</span><br><span class="line"></span><br><span class="line">using thread-local object allocation.</span><br><span class="line">Parallel GC with 10 thread(s)</span><br><span class="line"></span><br><span class="line">Heap Configuration:</span><br><span class="line">   MinHeapFreeRatio         = 0</span><br><span class="line">   MaxHeapFreeRatio         = 100</span><br><span class="line">   MaxHeapSize              = 4229955584 (4034.0MB)</span><br><span class="line">   NewSize                  = 88604672 (84.5MB)</span><br><span class="line">   MaxNewSize               = 1409810432 (1344.5MB)</span><br><span class="line">   OldSize                  = 177733632 (169.5MB)</span><br><span class="line">   NewRatio                 = 2</span><br><span class="line">   SurvivorRatio            = 8</span><br><span class="line">   MetaspaceSize            = 21807104 (20.796875MB)</span><br><span class="line">   CompressedClassSpaceSize = 1073741824 (1024.0MB)</span><br><span class="line">   MaxMetaspaceSize         = 17592186044415 MB</span><br><span class="line">   G1HeapRegionSize         = 0 (0.0MB)</span><br><span class="line"></span><br><span class="line">Heap Usage:</span><br><span class="line">PS Young Generation</span><br><span class="line">Eden Space:</span><br><span class="line">   capacity = 66584576 (63.5MB)</span><br><span class="line">   used     = 1331712 (1.27001953125MB)</span><br><span class="line">   free     = 65252864 (62.22998046875MB)</span><br><span class="line">   2.0000307578740157% used</span><br><span class="line">From Space:</span><br><span class="line">   capacity = 11010048 (10.5MB)</span><br><span class="line">   used     = 0 (0.0MB)</span><br><span class="line">   free     = 11010048 (10.5MB)</span><br><span class="line">   0.0% used</span><br><span class="line">To Space:</span><br><span class="line">   capacity = 11010048 (10.5MB)</span><br><span class="line">   used     = 0 (0.0MB)</span><br><span class="line">   free     = 11010048 (10.5MB)</span><br><span class="line">   0.0% used</span><br><span class="line">PS Old Generation</span><br><span class="line">   capacity = 177733632 (169.5MB)</span><br><span class="line">   used     = 1919568 (1.8306427001953125MB)</span><br><span class="line">   free     = 175814064 (167.6693572998047MB)</span><br><span class="line">   1.0800251918556416% used</span><br><span class="line"></span><br><span class="line">3165 interned Strings occupying 259584 bytes.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="jconsole-工具（图形）"><a href="#jconsole-工具（图形）" class="headerlink" title="jconsole 工具（图形）"></a>jconsole 工具（图形）</h4><ul>
+<li>图形界面的，多功能监测工具，可以连续监测</li>
+</ul>
+<blockquote>
+<p>直接在命令行输入<code>jconsole</code>命令即可打开工具图形界面<br>在图形界面打开的时候会列出当前服务器上所有的java程序，可以选择链接其中的一个程序查看jvm运行情况</p>
+<p>同样入上的代码，可以从界面中看出，对内存开始占用将近30M的内存<br>创建对象之后，升至40多兆<br>执行垃圾回收之后又极速下降<br>同时该图形界面还可以查看线程、类、CPU的具体情况</p>
+</blockquote>
+<p><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jsconsole%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="jsconsole图形界面示意图"></p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h4 id="垃圾回收之后，内存占用依旧很高"><a href="#垃圾回收之后，内存占用依旧很高" class="headerlink" title="垃圾回收之后，内存占用依旧很高"></a>垃圾回收之后，内存占用依旧很高</h4><p>1.可以先使用<code>jmap</code>指令查看具体占用堆内存的大小，或者直接使用<code>jconsole</code>指令查看<br>2.可以尝试直接使用<code>jconsole</code>面板手动执行GC<br>3.从图中可以看出，执行GC之后，虽然内存占用有所下降，但是下降的并不明显，依旧有二百多兆的占用，此时可以常使用使用<code>jvisualvm</code>工具<br>4.<code>jvisualvm</code>工具和<code>jconsole</code>类似，不过拥有更多的功能<br><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jconsole%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="jconsole问题排查示意图"></p>
+<p>5.如下图，<code>jvisualvm</code>工具可以对当前堆内存进行dump<br><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA1.png" alt="垃圾回收案例分析图示1"><br>6.对堆内存进行dump之后，可以对结果进行分析，从图中可以看出，其中最大的对象是ArrayList<br><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA2.png" alt="垃圾回收案例分析图示2"><br>7.点击查看详情后可以发现，List中包含了许多的Status对象，一直没有被垃圾回收，导致内存占用过高，然后可以根据具体代码分析，可能是有一个Status类的集合一直没有被释放掉<br><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA3.png" alt="垃圾回收案例分析图示3"></p>
+<p>8.伪代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test2</span> </span>&#123;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;  </span><br><span class="line">        List&lt;Status&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();  </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">200</span>; i++) &#123;  </span><br><span class="line">            list.add(<span class="keyword">new</span> Status());  </span><br><span class="line">        &#125;  </span><br><span class="line">        Thread.sleep(<span class="number">100000000</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Status</span></span>&#123;  </span><br><span class="line">    <span class="keyword">byte</span>[] big = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>*<span class="number">1024</span>];  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h2><h3 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h3><ul>
+<li>线程共享</li>
+<li>主要存储类信息，成员变量，方法数据，成员方法和构造方法，特殊方法</li>
+<li>逻辑上方法区是堆得一个组成部分，不过并不是强制规定，各个JVM厂商可以有自己的实现</li>
+<li>HotSpot虚拟机在jdk8之前，方法区（永久代）在堆里面</li>
+<li>从jdk8开始，更改为元空间，方法区不在属于堆得一部分，使用服务器直接内存</li>
+<li>不过方法区中的字符串表（stringTable）依旧存储在堆内</li>
+</ul>
+<h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E6%96%B9%E6%B3%95%E5%8C%BA%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="方法区内存分布示意图"></p>
+<blockquote>
+<p>在jdk8之前，方法区依托永久代来实现，主要是为了能公用java堆得垃圾回收机制，不用再单独为方法区开发垃圾回收功能，不过并不是所有的虚拟机都是依托于永久代来实现的<br>在逻辑上属于堆的一部分，不过并不是堆，又名非堆</p>
+</blockquote>
+<h3 id="方法区内存溢出"><a href="#方法区内存溢出" class="headerlink" title="方法区内存溢出"></a>方法区内存溢出</h3><p>jdk1.7<br>设置jvm参数：<code>-XX:MaxPermSize=8m</code><br>因为此时方法区还是在永久代，需要设置永久代的大小，以到达OOM的目的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;  </span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">0</span>;  </span><br><span class="line">        <span class="keyword">try</span> &#123;  </span><br><span class="line">            Test test = <span class="keyword">new</span> Test();  </span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100000</span>; i++, j++) &#123;  </span><br><span class="line">                <span class="comment">//ClassWriter 作用是生成类的二进制字节码  </span></span><br><span class="line">                ClassWriter cw = <span class="keyword">new</span> ClassWriter(<span class="number">0</span>);  </span><br><span class="line">                <span class="comment">//参数：版本号，访问修饰符（public），类名，包名，父类，父接口  </span></span><br><span class="line">                cw.visit(Opcodes.V1_6, Opcodes.ACC_PUBLIC, <span class="string">&quot;Class&quot;</span> + i, <span class="keyword">null</span>, <span class="string">&quot;java/lang/Object&quot;</span>, <span class="keyword">null</span>);  </span><br><span class="line">                <span class="comment">//生成字节数组  </span></span><br><span class="line">                <span class="keyword">byte</span>[] bytes = cw.toByteArray();  </span><br><span class="line">                <span class="comment">//执行了类的加载  </span></span><br><span class="line">                test.defineClass(<span class="string">&quot;Class&quot;</span> + i, bytes, <span class="number">0</span>, bytes.length);  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;  </span><br><span class="line">            System.out.println(j);  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终报错信息如下：<br><code>java.lang.OutOfMemoryError: PermGen space</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">25406</span><br><span class="line">Exception in thread &quot;Reference Handler&quot; Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: PermGen space</span><br><span class="line">	at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:140)</span><br><span class="line">java.lang.OutOfMemoryError: PermGen space</span><br><span class="line">	at java.lang.ClassLoader.defineClass(ClassLoader.java:800)</span><br><span class="line">	at java.lang.ClassLoader.defineClass(ClassLoader.java:643)</span><br><span class="line">	at com.ys.Test.main(Test.java:19)</span><br></pre></td></tr></table></figure>
+
+
+<p>jdk1.8<br>在jdk1.8开始，将方法区从堆中剥离，以元空间来实现，基于服务器直接内存<br>为了达到OOM的目的，需要限制元空间的大小，如果不设置参数的话，元空间不受限制，理论上来说服务器有多少内存可以用多少，不过还是会受服务器位数的限制，比如32位服务器4G的限制<br><code>-XX:MaxMetaspaceSize=8m</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> <span class="keyword">extends</span> <span class="title">ClassLoader</span> </span>&#123;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;  </span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">0</span>;  </span><br><span class="line">        <span class="keyword">try</span> &#123;  </span><br><span class="line">            Test test = <span class="keyword">new</span> Test();  </span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100000</span>; i++, j++) &#123;  </span><br><span class="line">                <span class="comment">//ClassWriter 作用是生成类的二进制字节码  </span></span><br><span class="line">                ClassWriter cw = <span class="keyword">new</span> ClassWriter(<span class="number">0</span>);  </span><br><span class="line">                <span class="comment">//参数：版本号，访问修饰符（public），类名，包名，父类，父接口  </span></span><br><span class="line">                cw.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC, <span class="string">&quot;Class&quot;</span> + i, <span class="keyword">null</span>, <span class="string">&quot;java/lang/Object&quot;</span>, <span class="keyword">null</span>);  </span><br><span class="line">                <span class="comment">//生成字节数组  </span></span><br><span class="line">                <span class="keyword">byte</span>[] bytes = cw.toByteArray();  </span><br><span class="line">                <span class="comment">//执行了类的加载  </span></span><br><span class="line">                test.defineClass(<span class="string">&quot;Class&quot;</span> + i, bytes, <span class="number">0</span>, bytes.length);  </span><br><span class="line">            &#125;  </span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;  </span><br><span class="line">            System.out.println(j);  </span><br><span class="line">        &#125;  </span><br><span class="line">        System.in.read();  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码和上面的一模一样，但是最后抛出的异常却是完全不同：<br><code>java.lang.OutOfMemoryError: Metaspace</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">5411</span><br><span class="line">Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: Metaspace</span><br><span class="line">	at java.lang.ClassLoader.defineClass1(Native Method)</span><br><span class="line">	at java.lang.ClassLoader.defineClass(ClassLoader.java:763)</span><br><span class="line">	at java.lang.ClassLoader.defineClass(ClassLoader.java:642)</span><br><span class="line">	at com.example.demo.test5.Test.main(Test.java:25)</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h3><ul>
+<li>常量池，就是一张表，虚拟机指令根据这张常量表找到要执行的类名、方法名、参数类型、字面量等信息</li>
+<li>运行时常量池，常量池是 <code>*.class</code> 文件中的，当该类被加载，它的长量池信息就会放入运行时常量池，并把里面的符号地址变成真实地址</li>
+</ul>
+<p>例如，如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;  </span><br><span class="line">        System.out.println(<span class="string">&quot;hello world&quot;</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用 <code>javac Test.java</code> 命令进行编译，编译后生产 <code>Test.class</code> 字节码文件<br>使用 <code>javap -v Test.class</code> 命令进行反编译，就可以查看字节码文件内容<br>内容如下：</p>
+<blockquote>
+<p>具体内容解读如下：（从上到下）<br>文件信息<br>最后修改时间<br>文件md5值<br>访问修饰符，类型（类还是接口），包名，类名<br>版本（52指jdk1.8）<br>访问修饰符<br>常量池<br>构造函数（不写默认会生成无参构造）<br>main方法，以及main方法中代码编译出的指令</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">Classfile /E:/project/java/demo2/src/main/java/com/example/demo/test15/Test.class</span><br><span class="line">  Last modified 2022-8-11; size 437 bytes</span><br><span class="line">  MD5 checksum 23e36db3fde35b83da8bb567f036f0d8</span><br><span class="line">  Compiled from &quot;Test.java&quot;</span><br><span class="line">public class com.example.demo.test15.Test</span><br><span class="line">  minor version: 0</span><br><span class="line">  major version: 52</span><br><span class="line">  flags: ACC_PUBLIC, ACC_SUPER</span><br><span class="line">Constant pool:</span><br><span class="line">   #1 = Methodref          #6.#15         // java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">   #2 = Fieldref           #16.#17        // java/lang/System.out:Ljava/io/PrintStream;</span><br><span class="line">   #3 = String             #18            // hello world</span><br><span class="line">   #4 = Methodref          #19.#20        // java/io/PrintStream.println:(Ljava/lang/String;)V</span><br><span class="line">   #5 = Class              #21            // com/example/demo/test15/Test</span><br><span class="line">   #6 = Class              #22            // java/lang/Object</span><br><span class="line">   #7 = Utf8               &lt;init&gt;</span><br><span class="line">   #8 = Utf8               ()V</span><br><span class="line">   #9 = Utf8               Code</span><br><span class="line">  #10 = Utf8               LineNumberTable</span><br><span class="line">  #11 = Utf8               main</span><br><span class="line">  #12 = Utf8               ([Ljava/lang/String;)V</span><br><span class="line">  #13 = Utf8               SourceFile</span><br><span class="line">  #14 = Utf8               Test.java</span><br><span class="line">  #15 = NameAndType        #7:#8          // &quot;&lt;init&gt;&quot;:()V</span><br><span class="line">  #16 = Class              #23            // java/lang/System</span><br><span class="line">  #17 = NameAndType        #24:#25        // out:Ljava/io/PrintStream;</span><br><span class="line">  #18 = Utf8               hello world</span><br><span class="line">  #19 = Class              #26            // java/io/PrintStream</span><br><span class="line">  #20 = NameAndType        #27:#28        // println:(Ljava/lang/String;)V</span><br><span class="line">  #21 = Utf8               com/example/demo/test15/Test</span><br><span class="line">  #22 = Utf8               java/lang/Object</span><br><span class="line">  #23 = Utf8               java/lang/System</span><br><span class="line">  #24 = Utf8               out</span><br><span class="line">  #25 = Utf8               Ljava/io/PrintStream;</span><br><span class="line">  #26 = Utf8               java/io/PrintStream</span><br><span class="line">  #27 = Utf8               println</span><br><span class="line">  #28 = Utf8               (Ljava/lang/String;)V</span><br><span class="line">&#123;</span><br><span class="line">  public com.example.demo.test15.Test();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=1, locals=1, args_size=1</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line">         4: return</span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 7: 0</span><br><span class="line"></span><br><span class="line">  public static void main(java.lang.String[]);</span><br><span class="line">    descriptor: ([Ljava/lang/String;)V</span><br><span class="line">    flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=2, locals=1, args_size=1</span><br><span class="line">         0: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;</span><br><span class="line">         3: ldc           #3                  // String hello world</span><br><span class="line">         5: invokevirtual #4                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V</span><br><span class="line">         8: return</span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 9: 0</span><br><span class="line">        line 10: 8</span><br><span class="line">&#125;</span><br><span class="line">SourceFile: &quot;Test.java&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>对上面的代码进行一些简单的解读：<br>首先程序执行到main方法之后，还会执行 <code>getstatic</code> 指令，获取一个静态变量，具体从哪里获取，从后面的 <code>#2</code> 位置，该位置对应常量池表中的位置</p>
+<blockquote>
+<p><code>#2 = Fieldref</code> 表示引用的一个成员变量，具体引用的哪个成员变量，继续看后面的 <code>#16.#17</code><br><code>#16 = Class</code> 是一个类，表示要找哪个类下面的成员变量，对应的是 <code>#23</code><br><code>#23 = Utf8</code> 暂且理解是一个字符串，后面跟着的就是具体的类名 <code>java/lang/System</code><br><code>#17</code> 又引用了 <code>#24:#25</code><br><code>#24 = Utf8</code> 表示类里面具体哪个成员变量， <code>out</code> 成员变量名称<br><code>#25 = Utf8</code> 这个成员变量的类型， <code>Ljava/io/PrintStream;</code><br><code>ldc</code> 将常量池中的常量值入栈，后面跟着是具体的常量位置 <code>#3</code><br><code>#3 = String</code> 表示是一个String 类型，<code>#18</code><br><code>#18 = Utf8</code> 常量，具体常量的内容 <code>hello world</code><br><code>invokevirtual</code> 指令调用用实例方法，<code>#4</code><br><code>#4 = Methodref</code> 调用方法，<code>#19.#20</code><br><code>#19 = Class</code> 调用的方法属于那个类，<code>#26</code> 指向具体类路径的名称<br><code>#20 = NameAndType</code> ，<code>#27:#28</code>  指向具体的方法名称，以及方法的参数类型</p>
+</blockquote>
+</blockquote>
+<h3 id="StringTable"><a href="#StringTable" class="headerlink" title="StringTable"></a>StringTable</h3><blockquote>
+<p>我们定义一个变量：<code>String a = &quot;hello&quot;;</code>，编译之后，会被定义到class文件的常量池中；<br>当项目开始运行，类被加载到内存中，常量池中的内容也会被加载到<code>运行时常量池</code>中;<br>但此时“hello”字符串在运行时常量池中，只是一个符号；<br>java实行了懒加载机制，当代码运行到这一行的时候，会进行加载；<br>“hello”会从一个字符串符号，变成一个字符串对象，然后会去<code>StringTable</code>中查找是否有相同的字符串；<br>如果有，直接返回对应的地址，如果没有就会把“hello”放到StringTable中，然后再把地址赋值给变量<br><code>String a = new String(&quot;hello&quot;);</code>这种创建对象的方式，使用的对象并不是在StringTable中，而是会在堆中</p>
+</blockquote>
+<h4 id="StringTable特性"><a href="#StringTable特性" class="headerlink" title="StringTable特性"></a>StringTable特性</h4><ul>
+<li>常量池中的字符串仅是符号，第一次用到时才变成对象</li>
+<li>利用串池的机制，来避免重复创建字符串对象</li>
+<li>字符串变量拼接的原理是StringBulider（1.8）</li>
+<li>字符串常量拼接的原理是编译期优化（会直接将对应的常量拼接成新的常量）</li>
+<li>可以使用<code>intern</code>方法，主动将串池中没有的字符串对象放入串池<ul>
+<li>如果串池中已经包含相同的对象，会返回串池中的对象，如果串池中没有，会先放入串池，然后返回串池中的对象</li>
+<li>在1.6的jdk中，因为StringTable是在方法区中的，所以往串池中放对象的时候是复制，所以返回的对象和原对象不同，从1.7开始，StringTable已经迁移到了堆中，所以再主动往串池中存放对象的时候，只是将对象做一下标记，并不会再复制对象，所以地址会和原对象相同</li>
+</ul>
+</li>
+</ul>
+<h4 id="StringTable位置"><a href="#StringTable位置" class="headerlink" title="StringTable位置"></a>StringTable位置</h4><blockquote>
+<p>在jdk1.6中，StringTable是在方法区中，但是方法区垃圾回收很少，StringTable使用又非常频繁<br>所以在jdk1.7中把StringTable迁移到了堆中<br>在1.8中将整个方法区的实现更改成了元空间 </p>
+</blockquote>
+<h4 id="StringTable垃圾回收"><a href="#StringTable垃圾回收" class="headerlink" title="StringTable垃圾回收"></a>StringTable垃圾回收</h4><blockquote>
+<p><code>-Xmx10m</code> 设置虚拟机堆内存最大值<br><code>-XX:+PrintStringTableStatistics</code> 打印字符串表的统计信息<br><code>-XX:+PrintGCDetails -verbose:gc</code></p>
+</blockquote>
+<blockquote>
+<p>添加虚拟机参数后最终打印信息如下，<br>前三行表示垃圾回收的信息，垃圾回收的区域，回收前占用，回收后占用，回收耗费时间<br><code>Heap</code>下面的内容则是堆得一些信息<br><code>SymbolTable statistics:</code>运行时常量池所占用的空间的大小<br><code>StringTable statistics:</code> 字符串池占用空间大小，底层用hashTable实现，默认桶位<code>60013</code></p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">[GC (Allocation Failure) [PSYoungGen: 2048K-&gt;490K(2560K)] 2048K-&gt;1060K(9728K), 0.0007148 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </span><br><span class="line">[GC (Allocation Failure) [PSYoungGen: 2457K-&gt;503K(2560K)] 3027K-&gt;1588K(9728K), 0.0004959 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </span><br><span class="line">[GC (Allocation Failure) [PSYoungGen: 2551K-&gt;504K(2560K)] 3636K-&gt;1785K(9728K), 0.0006075 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </span><br><span class="line">Heap</span><br><span class="line"> PSYoungGen      total 2560K, used 637K [0x00000000ffd00000, 0x0000000100000000, 0x0000000100000000)</span><br><span class="line">  eden space 2048K, 6% used [0x00000000ffd00000,0x00000000ffd21710,0x00000000fff00000)</span><br><span class="line">  from space 512K, 98% used [0x00000000fff00000,0x00000000fff7e010,0x00000000fff80000)</span><br><span class="line">  to   space 512K, 0% used [0x00000000fff80000,0x00000000fff80000,0x0000000100000000)</span><br><span class="line"> ParOldGen       total 7168K, used 1281K [0x00000000ff600000, 0x00000000ffd00000, 0x00000000ffd00000)</span><br><span class="line">  object space 7168K, 17% used [0x00000000ff600000,0x00000000ff7406d0,0x00000000ffd00000)</span><br><span class="line"> Metaspace       used 3234K, capacity 4496K, committed 4864K, reserved 1056768K</span><br><span class="line">  class space    used 351K, capacity 388K, committed 512K, reserved 1048576K</span><br><span class="line">SymbolTable statistics:</span><br><span class="line">Number of buckets       :     20011 =    160088 bytes, avg   8.000</span><br><span class="line">Number of entries       :     13223 =    317352 bytes, avg  24.000</span><br><span class="line">Number of literals      :     13223 =    567200 bytes, avg  42.895</span><br><span class="line">Total footprint         :           =   1044640 bytes</span><br><span class="line">Average bucket size     :     0.661</span><br><span class="line">Variance of bucket size :     0.664</span><br><span class="line">Std. dev. of bucket size:     0.815</span><br><span class="line">Maximum bucket size     :         6</span><br><span class="line">StringTable statistics:</span><br><span class="line">Number of buckets       :     60013 =    480104 bytes, avg   8.000</span><br><span class="line">Number of entries       :      1740 =     41760 bytes, avg  24.000</span><br><span class="line">Number of literals      :      1740 =    156352 bytes, avg  89.857</span><br><span class="line">Total footprint         :           =    678216 bytes</span><br><span class="line">Average bucket size     :     0.029</span><br><span class="line">Variance of bucket size :     0.029</span><br><span class="line">Std. dev. of bucket size:     0.171</span><br><span class="line">Maximum bucket size     :         2</span><br></pre></td></tr></table></figure>
+
+<h4 id="StringTable性能调优"><a href="#StringTable性能调优" class="headerlink" title="StringTable性能调优"></a>StringTable性能调优</h4><ul>
+<li>调整 <code>-XX:StringTableSize=20000</code>：调整StringTable桶位的个数，如果项目中用到的常量比较多，可以适当调大</li>
+<li>考虑将字符串对象是否如池<ul>
+<li>如果需要在内存中加载大量的字符串，而这些字符串又有重复的可能性，可以考虑将字符串入池，字符串会自动做去重处理</li>
+</ul>
+</li>
+</ul>
+<h2 id="直接内存"><a href="#直接内存" class="headerlink" title="直接内存"></a>直接内存</h2><h3 id="定义-3"><a href="#定义-3" class="headerlink" title="定义"></a>定义</h3><ul>
+<li>常见于NIO操作时，用于数据缓冲区</li>
+<li>分配回收成本较高，但读写性能高</li>
+<li>不受JVM内存回收管理</li>
+</ul>
+<blockquote>
+<p>假设我们用java实现一个大文件的复制操作，java本身是不具备操作io的能力的，需要调用操作系统的相关功能<br>所以每次去读取文件，CPU就需要先由用户态切换到内核态，然后把磁盘中的文件加载到系统缓冲区中<br>然后再把CPU切换成用户态，并把数据复制到JVM内存中<br>将文件写入到本地的时候同样，从JVM内存复制到系统缓冲区，然后写入磁盘<br>如果jvm操作直接内存，则可以省略从系统缓存向jvm内存复制的过程，提高文件处理的性能</p>
+</blockquote>
+<h3 id="DirectByteBuffer"><a href="#DirectByteBuffer" class="headerlink" title="DirectByteBuffer"></a>DirectByteBuffer</h3><blockquote>
+<p>DirectByteBuffer 是 NIO中的一个缓冲类，它所创建的内存区域就是直接内存<br>Java中想要操作直接内存需要通过<code>Unsafe</code>类来进行操控，<code>Unsafe</code>不会对普通程序员放开，需要通过反射获取<br><code>unsafe.setMemory()</code> 方法分配直接内存，long类型返回值是分配的内存地址<br><code>unsafe.freeMemory(address)</code> 回收直接内存，通过分配内存时分配的地址，进行回收内存</p>
+</blockquote>
+<blockquote>
+<p>下面代码是 <code>DirectByteBuffer</code> 构造方法的源代码<br><code>base = unsafe.allocateMemory(size);</code> 可以看到是通过<code>Unsafe</code>来进行分配内存的<br>至于回收内存，则是在 <code>cleaner = Cleaner.create(this, new Deallocator(base, size, cap));</code> 这一行<br><code>Deallocator</code> 是一个任务对象，实现了<code>Runnable</code>接口，会在run方法中对直接内存进行回收<br>分配完直接内存后，会依托<code>Cleaner</code>创建一个任务，而任务的执行时间，则是需要看<code>Cleaner</code>对象<br><code>Cleaner</code>是一个虚引用对象，当和他关联的对象被回收了之后，就会调用他的<code>clean</code>方法，在<code>clean</code>方法中，会执行与之 绑定的任务</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">DirectByteBuffer(<span class="keyword">int</span> cap) &#123;                   <span class="comment">// package-private  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">super</span>(-<span class="number">1</span>, <span class="number">0</span>, cap, cap);  </span><br><span class="line">    <span class="keyword">boolean</span> pa = VM.isDirectMemoryPageAligned();  </span><br><span class="line">    <span class="keyword">int</span> ps = Bits.pageSize();  </span><br><span class="line">    <span class="keyword">long</span> size = Math.max(<span class="number">1L</span>, (<span class="keyword">long</span>)cap + (pa ? ps : <span class="number">0</span>));  </span><br><span class="line">    Bits.reserveMemory(size, cap);  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">long</span> base = <span class="number">0</span>;  </span><br><span class="line">    <span class="keyword">try</span> &#123;  </span><br><span class="line">        base = unsafe.allocateMemory(size);  </span><br><span class="line">    &#125; <span class="keyword">catch</span> (OutOfMemoryError x) &#123;  </span><br><span class="line">        Bits.unreserveMemory(size, cap);  </span><br><span class="line">        <span class="keyword">throw</span> x;  </span><br><span class="line">    &#125;  </span><br><span class="line">    unsafe.setMemory(base, size, (<span class="keyword">byte</span>) <span class="number">0</span>);  </span><br><span class="line">    <span class="keyword">if</span> (pa &amp;&amp; (base % ps != <span class="number">0</span>)) &#123;  </span><br><span class="line">        <span class="comment">// Round up to page boundary  </span></span><br><span class="line">        address = base + ps - (base &amp; (ps - <span class="number">1</span>));  </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">        address = base;  </span><br><span class="line">    &#125;  </span><br><span class="line">    cleaner = Cleaner.create(<span class="keyword">this</span>, <span class="keyword">new</span> Deallocator(base, size, cap));  </span><br><span class="line">    att = <span class="keyword">null</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/02/03/netty/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E6%95%99%E7%A8%8BNetty%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%85%A8%E5%A5%97%E6%95%99%E7%A8%8B%E2%80%94%E2%80%94Netty%E8%BF%9B%E9%98%B6/" rel="prev" title="Java网络编程教程|Netty深入浅出全套教程——Netty进阶（三）">
+      <i class="fa fa-chevron-left"></i> Java网络编程教程|Netty深入浅出全套教程——Netty进阶（三）
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-JVM"><span class="nav-number">1.1.</span> <span class="nav-text">什么是 JVM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A5%BD%E5%A4%84"><span class="nav-number">1.1.2.</span> <span class="nav-text">好处</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%BE%83"><span class="nav-number">1.1.3.</span> <span class="nav-text">比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84JVM"><span class="nav-number">1.2.</span> <span class="nav-text">常见的JVM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">JVM内存结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%AE%A1%E6%95%B0%E5%99%A8"><span class="nav-number">2.1.</span> <span class="nav-text">程序计数器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">2.1.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E7%82%B9"><span class="nav-number">2.1.2.</span> <span class="nav-text">特点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88"><span class="nav-number">2.2.</span> <span class="nav-text">虚拟机栈</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.1.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%98%AF%E5%90%A6%E6%B6%89%E5%8F%8A%E6%A0%88%E5%86%85%E5%AD%98%EF%BC%9F"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">垃圾回收是否涉及栈内存？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%88%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E8%B6%8A%E5%A4%A7%E8%B6%8A%E5%A5%BD%E5%90%97%EF%BC%9F"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">栈内存分配越大越好吗？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%86%85%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E6%98%AF%E5%90%A6%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%EF%BC%9F"><span class="nav-number">2.2.1.3.</span> <span class="nav-text">方法内的局部变量是否是线程安全？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%88%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="nav-number">2.2.2.</span> <span class="nav-text">栈内存溢出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%88%E5%B8%A7%E8%BF%87%E5%A4%9A%E5%AF%BC%E8%87%B4%E6%A0%88%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%EF%BC%88%E9%80%92%E5%BD%92%EF%BC%89"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">栈帧过多导致栈内存溢出（递归）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E4%B8%8E%E8%BF%90%E8%A1%8C%E8%AF%8A%E6%96%AD"><span class="nav-number">2.2.3.</span> <span class="nav-text">线程与运行诊断</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CPU%E5%8D%A0%E7%94%A8%E8%BF%87%E5%A4%9A"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">CPU占用过多</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%BF%90%E8%A1%8C%E5%BE%88%E9%95%BF%E6%97%B6%E9%97%B4%E6%B2%A1%E6%9C%89%E7%BB%93%E6%9E%9C"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">程序运行很长时间没有结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="nav-number">2.3.</span> <span class="nav-text">本地方法栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86"><span class="nav-number">2.4.</span> <span class="nav-text">堆</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-1"><span class="nav-number">2.4.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E7%82%B9-1"><span class="nav-number">2.4.2.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="nav-number">2.4.3.</span> <span class="nav-text">堆内存溢出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E5%86%85%E5%AD%98%E8%AF%8A%E6%96%AD"><span class="nav-number">2.4.4.</span> <span class="nav-text">堆内存诊断</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#jps-%E5%B7%A5%E5%85%B7%EF%BC%88%E5%91%BD%E4%BB%A4%E8%A1%8C%EF%BC%89"><span class="nav-number">2.4.4.1.</span> <span class="nav-text">jps 工具（命令行）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jmap-%E5%B7%A5%E5%85%B7%EF%BC%88%E5%91%BD%E4%BB%A4%E8%A1%8C%EF%BC%89"><span class="nav-number">2.4.4.2.</span> <span class="nav-text">jmap 工具（命令行）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jconsole-%E5%B7%A5%E5%85%B7%EF%BC%88%E5%9B%BE%E5%BD%A2%EF%BC%89"><span class="nav-number">2.4.4.3.</span> <span class="nav-text">jconsole 工具（图形）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B"><span class="nav-number">2.5.</span> <span class="nav-text">案例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E4%B9%8B%E5%90%8E%EF%BC%8C%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E4%BE%9D%E6%97%A7%E5%BE%88%E9%AB%98"><span class="nav-number">2.5.0.1.</span> <span class="nav-text">垃圾回收之后，内存占用依旧很高</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA"><span class="nav-number">2.6.</span> <span class="nav-text">方法区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-2"><span class="nav-number">2.6.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E6%88%90"><span class="nav-number">2.6.2.</span> <span class="nav-text">组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="nav-number">2.6.3.</span> <span class="nav-text">方法区内存溢出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="nav-number">2.6.4.</span> <span class="nav-text">运行时常量池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#StringTable"><span class="nav-number">2.6.5.</span> <span class="nav-text">StringTable</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#StringTable%E7%89%B9%E6%80%A7"><span class="nav-number">2.6.5.1.</span> <span class="nav-text">StringTable特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#StringTable%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.6.5.2.</span> <span class="nav-text">StringTable位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#StringTable%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="nav-number">2.6.5.3.</span> <span class="nav-text">StringTable垃圾回收</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#StringTable%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98"><span class="nav-number">2.6.5.4.</span> <span class="nav-text">StringTable性能调优</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98"><span class="nav-number">2.7.</span> <span class="nav-text">直接内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-3"><span class="nav-number">2.7.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DirectByteBuffer"><span class="nav-number">2.7.2.</span> <span class="nav-text">DirectByteBuffer</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YS"
+      src="/images/author.png">
+  <p class="site-author-name" itemprop="name">YS</p>
+  <div class="site-description" itemprop="description">学海无涯苦作舟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YS</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
+      appKey     : 'BCtPpmnU41TOE7Wr5O0CJFgS',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
