@@ -191,6 +191,108 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ysymj.gitee.io/2021/12/09/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E8%8E%B7%E5%8F%96%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.png">
+      <meta itemprop="name" content="YS">
+      <meta itemprop="description" content="学海无涯苦作舟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YS">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/09/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E8%8E%B7%E5%8F%96%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C/" class="post-title-link" itemprop="url">Java并发成神之路-精通JUC并发工具十八般武艺——获取子线程的执行结果(九)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-09 20:11:26" itemprop="dateCreated datePublished" datetime="2021-12-09T20:11:26+08:00">2021-12-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-08-19 21:10:47" itemprop="dateModified" datetime="2022-08-19T21:10:47+08:00">2022-08-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">多线程</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/12/09/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E8%8E%B7%E5%8F%96%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C/" class="post-meta-item leancloud_visitors" data-flag-title="Java并发成神之路-精通JUC并发工具十八般武艺——获取子线程的执行结果(九)" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/12/09/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E8%8E%B7%E5%8F%96%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/12/09/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E8%8E%B7%E5%8F%96%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          慕课网《Java并发成神之路-精通JUC并发工具十八般武艺》课程学习笔记；本课程主要将Java并发相关的工具类，以及一些相关算法。本文主要讲获取子线程的执行结果相关的一些内容。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/12/09/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E8%8E%B7%E5%8F%96%E5%AD%90%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://ysymj.gitee.io/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1105,108 +1207,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://ysymj.gitee.io/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author.png">
-      <meta itemprop="name" content="YS">
-      <meta itemprop="description" content="学海无涯苦作舟">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="YS">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="post-title-link" itemprop="url">Java并发核心知识体系精讲——Java内存模型(二)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-11-25 21:48:21" itemprop="dateCreated datePublished" datetime="2021-11-25T21:48:21+08:00">2021-11-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-19 21:12:07" itemprop="dateModified" datetime="2022-08-19T21:12:07+08:00">2022-08-19</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">多线程</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="post-meta-item leancloud_visitors" data-flag-title="Java并发核心知识体系精讲——Java内存模型(二)" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          慕课网《Java并发核心知识体系精讲》课程学习笔记；本段主要将Java内存模型，并不是JVM内存结构
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/11/25/%E5%A4%9A%E7%BA%BF%E7%A8%8B/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2/Java%E5%B9%B6%E5%8F%91%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E4%BD%93%E7%B3%BB%E7%B2%BE%E8%AE%B2%E2%80%94%E2%80%94Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1278,7 +1278,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-count">52</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
