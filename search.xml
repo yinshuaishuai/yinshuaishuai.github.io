@@ -1,95 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Java运算符</title>
-    <url>/2022/01/18/java%E5%9F%BA%E7%A1%80/Java%E8%BF%90%E7%AE%97%E7%AC%A6/</url>
-    <content><![CDATA[<h1 id="（a-a-b）位或"><a href="#（a-a-b）位或" class="headerlink" title="|= （a = a | b）位或"></a>|= （a = a | b）位或</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>两个二进制对应位为0时，该位为0，否则为1。拿5的二进制<code>0000 0101</code>和3的二进制<code>0000 0011</code>进行<code>|</code>运算，后三位的对应位都不是同时等于0，所以最终结果为<code>0000 0111</code>也就是7的二进制。</p>
-</blockquote>
-<p>代码示例如下：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test() &#123;</span><br><span class="line">    int a = 5;//0000 0101</span><br><span class="line">    int b = 3;//0000 0011</span><br><span class="line">    a |= b;//0000 0111</span><br><span class="line">    System.out.println(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="amp-（a-a-amp-b）位与"><a href="#amp-（a-a-amp-b）位与" class="headerlink" title="&amp;= （a = a &amp; b）位与"></a>&amp;= （a = a &amp; b）位与</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>两个二进制对应位都为1时，结果为1，否则结果都是0。拿5的二进制<code>0000 0101</code>和3的二进制<code>0000 0011</code>进行<code>&amp;</code>运算，只有最后一位都是1，则最终结果为<code>0000 0001</code>也就是1的二进制。</p>
-</blockquote>
-<p>代码示例：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test1() &#123;</span><br><span class="line">    int a = 5;//0000 0101</span><br><span class="line">    int b = 3;//0000 0011</span><br><span class="line">    a &amp;= b;//0000 0001</span><br><span class="line">    System.out.println(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="（a-a-b）异或运算符"><a href="#（a-a-b）异或运算符" class="headerlink" title="^= （a = a ^ b）异或运算符"></a>^= （a = a ^ b）异或运算符</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>两个二进制对应位相同时，结果为0，否则结果为1。拿5的二进制<code>0000 0101</code>和3的二进制<code>0000 0011</code>进行<code>^</code>运算，<code>1-5</code>位对应位都是0，所以<code>1-5</code>位都是0，第8位都为1所以第8位也为0，其他的对应位都不相等所以为1，则最终结果为<code>0000 0110</code>也就是6的二进制。</p>
-</blockquote>
-<p>代码示例：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test2() &#123;</span><br><span class="line">    int a = 5;//0000 0101</span><br><span class="line">    int b = 3;//0000 0011</span><br><span class="line">    a ^= b;//0000 0110</span><br><span class="line">    System.out.println(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><ul>
-<li>|=：两个二进制对应位都为0时，结果为0，否则结果为1；</li>
-<li>&amp;=：两个二进制的对应位都为1时，结果为1，否则结果等于0；</li>
-<li>^=：两个二进制的对应位相同时，结果为0，否则结果为1。</li>
-</ul>
-<h1 id="（取反运算符）"><a href="#（取反运算符）" class="headerlink" title="~ （取反运算符）"></a>~ （取反运算符）</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>把数字转为二进制，然后取反，就是1变0,0变1</p>
-</blockquote>
-<p>代码示例：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// ~</span><br><span class="line">private static void test6() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   1111 1111 1111 1111 1111 1111 1111 1011</span><br><span class="line">    System.out.println(Integer.parseInt(&quot;-1111111111111111111111111111011&quot;,2));</span><br><span class="line">    System.out.println(~4);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="gt-gt-（带符号右移）"><a href="#gt-gt-（带符号右移）" class="headerlink" title="&gt;&gt; （带符号右移）"></a>&gt;&gt; （带符号右移）</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>符号前面的数字的二进制数，向右移动符号右边的数字位数，正数高位用0补，负数高位用1补。 </p>
-</blockquote>
-<p>代码示例：   </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test3() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   00000 0000 0000 0000 0000 0000 0000 010</span><br><span class="line">    System.out.println(4&gt;&gt;1);</span><br><span class="line">    //-4  1111 1111 1111 1111 1111 1111 1111 1100</span><br><span class="line">    //    11111 1111 1111 1111 1111 1111 1111 110</span><br><span class="line">    System.out.println(-4&gt;&gt;1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="lt-lt-（带符号左移）"><a href="#lt-lt-（带符号左移）" class="headerlink" title="&lt;&lt; （带符号左移）"></a>&lt;&lt; （带符号左移）</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>符号前面的数字的二进制数，向左移动符号右边的数字位数，正数高位用0补，负数高位用1补。</p>
-</blockquote>
-<p>代码示例：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test4() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   000 0000 0000 0000 0000 0000 0000 01000</span><br><span class="line">    System.out.println(4&lt;&lt;1);</span><br><span class="line">    //-4  1111 1111 1111 1111 1111 1111 1111 1100</span><br><span class="line">    //    111 1111 1111 1111 1111 1111 1111 11011</span><br><span class="line">    System.out.println(-4&lt;&lt;1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="gt-gt-gt-（无符号右移）"><a href="#gt-gt-gt-（无符号右移）" class="headerlink" title="&gt;&gt;&gt; （无符号右移）"></a>&gt;&gt;&gt; （无符号右移）</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>符号前面的数字的二进制数，向右移动符号右边的数字位数，正数高位用0补，负数忽略符号高位也用0补。</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// &gt;&gt;&gt;</span><br><span class="line">private static void test5() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   00000 0000 0000 0000 0000 0000 0000 010</span><br><span class="line">    System.out.println(4&gt;&gt;&gt;1);</span><br><span class="line">    //-4  1111 1111 1111 1111 1111 1111 1111 1100</span><br><span class="line">    //    01111 1111 1111 1111 1111 1111 1111 110</span><br><span class="line">    System.out.println(-4&gt;&gt;&gt;1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="负数取值"><a href="#负数取值" class="headerlink" title="负数取值"></a>负数取值</h1><p>Java中负数是以原码的补码形式表达的。  </p>
-<p><strong>原码：</strong>   </p>
-<ul>
-<li>一个正数，按照绝对值大小转换成的二进制；</li>
-<li>一个负数，按照绝对值大小转换成二进制，然后最高位补1，称为原码。</li>
-</ul>
-<p>比如Java中Integer是32位，所以5的二进制为：0000 0000 0000 0000 0000 0000 0000 0101<br>5的原码是：0000 0000 0000 0000 0000 0000 0000 0101<br>所以，对应的-5的原码是：1000 0000 0000 0000 0000 0000 0000 0101  </p>
-<p><strong>反码：</strong>  </p>
-<ul>
-<li>正数的反码与原码相同，负数的反码为该数的原码除符号位外其他位取反；</li>
-<li>取反操作指：原为1，得0，原为0，得1,；（1变0,0变1）</li>
-</ul>
-<p>比如正数5的反码还是：0000 0000 0000 0000 0000 0000 0000 0101<br>负数-5，1000 0000 0000 0000 0000 0000 0000 0101的反码是：1111 1111 1111 1111 1111 1111 1111 1010<br>称1000 0000 0000 0000 0000 0000 0000 0101和1111 1111 1111 1111 1111 1111 1111 1010互为反码  </p>
-<p><strong>补码：</strong>  </p>
-<ul>
-<li>正数的补码与原码相同</li>
-<li>负数的补码为该数的反码然后在最后一位加1</li>
-</ul>
-<p>比如，1000 0000 0000 0000 0000 0000 0000 0101的反码是1111 1111 1111 1111 1111 1111 1111 1010<br>那么补码为：<br>1111 1111 1111 1111 1111 1111 1111 1010 + 1 = 1111 1111 1111 1111 1111 1111 1111 1011  </p>
-<p>所以-5在Java中表达为：1111 1111 1111 1111 1111 1111 1111 1011  </p>
-<p><strong>如-1在java中的表示:</strong>    </p>
-<ul>
-<li>先取-1的原码：1000 0000 0000 0000 0000 0000 0000 0001  </li>
-<li>取反码：1111 1111 1111 1111 1111 1111 1111 1110  </li>
-<li>补码：1111 1111 1111 1111 1111 1111 1111 1111   </li>
-</ul>
-]]></content>
-      <categories>
-        <category>java基础</category>
-      </categories>
-      <tags>
-        <tag>java基础</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux命令</title>
     <url>/2021/10/20/linux/Linux%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<h2 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h2><p>就是list的缩写，通过ls命令不仅可以查看linux文件夹包含的文件，而且可以查看文件的权限，查看目录等信息  </p>
@@ -242,6 +153,95 @@
       </tags>
   </entry>
   <entry>
+    <title>Java运算符</title>
+    <url>/2022/01/18/java%E5%9F%BA%E7%A1%80/Java%E8%BF%90%E7%AE%97%E7%AC%A6/</url>
+    <content><![CDATA[<h1 id="（a-a-b）位或"><a href="#（a-a-b）位或" class="headerlink" title="|= （a = a | b）位或"></a>|= （a = a | b）位或</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>两个二进制对应位为0时，该位为0，否则为1。拿5的二进制<code>0000 0101</code>和3的二进制<code>0000 0011</code>进行<code>|</code>运算，后三位的对应位都不是同时等于0，所以最终结果为<code>0000 0111</code>也就是7的二进制。</p>
+</blockquote>
+<p>代码示例如下：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test() &#123;</span><br><span class="line">    int a = 5;//0000 0101</span><br><span class="line">    int b = 3;//0000 0011</span><br><span class="line">    a |= b;//0000 0111</span><br><span class="line">    System.out.println(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="amp-（a-a-amp-b）位与"><a href="#amp-（a-a-amp-b）位与" class="headerlink" title="&amp;= （a = a &amp; b）位与"></a>&amp;= （a = a &amp; b）位与</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>两个二进制对应位都为1时，结果为1，否则结果都是0。拿5的二进制<code>0000 0101</code>和3的二进制<code>0000 0011</code>进行<code>&amp;</code>运算，只有最后一位都是1，则最终结果为<code>0000 0001</code>也就是1的二进制。</p>
+</blockquote>
+<p>代码示例：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test1() &#123;</span><br><span class="line">    int a = 5;//0000 0101</span><br><span class="line">    int b = 3;//0000 0011</span><br><span class="line">    a &amp;= b;//0000 0001</span><br><span class="line">    System.out.println(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="（a-a-b）异或运算符"><a href="#（a-a-b）异或运算符" class="headerlink" title="^= （a = a ^ b）异或运算符"></a>^= （a = a ^ b）异或运算符</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>两个二进制对应位相同时，结果为0，否则结果为1。拿5的二进制<code>0000 0101</code>和3的二进制<code>0000 0011</code>进行<code>^</code>运算，<code>1-5</code>位对应位都是0，所以<code>1-5</code>位都是0，第8位都为1所以第8位也为0，其他的对应位都不相等所以为1，则最终结果为<code>0000 0110</code>也就是6的二进制。</p>
+</blockquote>
+<p>代码示例：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test2() &#123;</span><br><span class="line">    int a = 5;//0000 0101</span><br><span class="line">    int b = 3;//0000 0011</span><br><span class="line">    a ^= b;//0000 0110</span><br><span class="line">    System.out.println(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><ul>
+<li>|=：两个二进制对应位都为0时，结果为0，否则结果为1；</li>
+<li>&amp;=：两个二进制的对应位都为1时，结果为1，否则结果等于0；</li>
+<li>^=：两个二进制的对应位相同时，结果为0，否则结果为1。</li>
+</ul>
+<h1 id="（取反运算符）"><a href="#（取反运算符）" class="headerlink" title="~ （取反运算符）"></a>~ （取反运算符）</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>把数字转为二进制，然后取反，就是1变0,0变1</p>
+</blockquote>
+<p>代码示例：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// ~</span><br><span class="line">private static void test6() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   1111 1111 1111 1111 1111 1111 1111 1011</span><br><span class="line">    System.out.println(Integer.parseInt(&quot;-1111111111111111111111111111011&quot;,2));</span><br><span class="line">    System.out.println(~4);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="gt-gt-（带符号右移）"><a href="#gt-gt-（带符号右移）" class="headerlink" title="&gt;&gt; （带符号右移）"></a>&gt;&gt; （带符号右移）</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>符号前面的数字的二进制数，向右移动符号右边的数字位数，正数高位用0补，负数高位用1补。 </p>
+</blockquote>
+<p>代码示例：   </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test3() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   00000 0000 0000 0000 0000 0000 0000 010</span><br><span class="line">    System.out.println(4&gt;&gt;1);</span><br><span class="line">    //-4  1111 1111 1111 1111 1111 1111 1111 1100</span><br><span class="line">    //    11111 1111 1111 1111 1111 1111 1111 110</span><br><span class="line">    System.out.println(-4&gt;&gt;1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="lt-lt-（带符号左移）"><a href="#lt-lt-（带符号左移）" class="headerlink" title="&lt;&lt; （带符号左移）"></a>&lt;&lt; （带符号左移）</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>符号前面的数字的二进制数，向左移动符号右边的数字位数，正数高位用0补，负数高位用1补。</p>
+</blockquote>
+<p>代码示例：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test4() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   000 0000 0000 0000 0000 0000 0000 01000</span><br><span class="line">    System.out.println(4&lt;&lt;1);</span><br><span class="line">    //-4  1111 1111 1111 1111 1111 1111 1111 1100</span><br><span class="line">    //    111 1111 1111 1111 1111 1111 1111 11011</span><br><span class="line">    System.out.println(-4&lt;&lt;1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="gt-gt-gt-（无符号右移）"><a href="#gt-gt-gt-（无符号右移）" class="headerlink" title="&gt;&gt;&gt; （无符号右移）"></a>&gt;&gt;&gt; （无符号右移）</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>符号前面的数字的二进制数，向右移动符号右边的数字位数，正数高位用0补，负数忽略符号高位也用0补。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// &gt;&gt;&gt;</span><br><span class="line">private static void test5() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   00000 0000 0000 0000 0000 0000 0000 010</span><br><span class="line">    System.out.println(4&gt;&gt;&gt;1);</span><br><span class="line">    //-4  1111 1111 1111 1111 1111 1111 1111 1100</span><br><span class="line">    //    01111 1111 1111 1111 1111 1111 1111 110</span><br><span class="line">    System.out.println(-4&gt;&gt;&gt;1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="负数取值"><a href="#负数取值" class="headerlink" title="负数取值"></a>负数取值</h1><p>Java中负数是以原码的补码形式表达的。  </p>
+<p><strong>原码：</strong>   </p>
+<ul>
+<li>一个正数，按照绝对值大小转换成的二进制；</li>
+<li>一个负数，按照绝对值大小转换成二进制，然后最高位补1，称为原码。</li>
+</ul>
+<p>比如Java中Integer是32位，所以5的二进制为：0000 0000 0000 0000 0000 0000 0000 0101<br>5的原码是：0000 0000 0000 0000 0000 0000 0000 0101<br>所以，对应的-5的原码是：1000 0000 0000 0000 0000 0000 0000 0101  </p>
+<p><strong>反码：</strong>  </p>
+<ul>
+<li>正数的反码与原码相同，负数的反码为该数的原码除符号位外其他位取反；</li>
+<li>取反操作指：原为1，得0，原为0，得1,；（1变0,0变1）</li>
+</ul>
+<p>比如正数5的反码还是：0000 0000 0000 0000 0000 0000 0000 0101<br>负数-5，1000 0000 0000 0000 0000 0000 0000 0101的反码是：1111 1111 1111 1111 1111 1111 1111 1010<br>称1000 0000 0000 0000 0000 0000 0000 0101和1111 1111 1111 1111 1111 1111 1111 1010互为反码  </p>
+<p><strong>补码：</strong>  </p>
+<ul>
+<li>正数的补码与原码相同</li>
+<li>负数的补码为该数的反码然后在最后一位加1</li>
+</ul>
+<p>比如，1000 0000 0000 0000 0000 0000 0000 0101的反码是1111 1111 1111 1111 1111 1111 1111 1010<br>那么补码为：<br>1111 1111 1111 1111 1111 1111 1111 1010 + 1 = 1111 1111 1111 1111 1111 1111 1111 1011  </p>
+<p>所以-5在Java中表达为：1111 1111 1111 1111 1111 1111 1111 1011  </p>
+<p><strong>如-1在java中的表示:</strong>    </p>
+<ul>
+<li>先取-1的原码：1000 0000 0000 0000 0000 0000 0000 0001  </li>
+<li>取反码：1111 1111 1111 1111 1111 1111 1111 1110  </li>
+<li>补码：1111 1111 1111 1111 1111 1111 1111 1111   </li>
+</ul>
+]]></content>
+      <categories>
+        <category>java基础</category>
+      </categories>
+      <tags>
+        <tag>java基础</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>通过gitee和hexo搭建个人博客</title>
     <url>/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
@@ -296,6 +296,125 @@
       </categories>
       <tags>
         <tag>html</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>synchronized关键字</title>
+    <url>/2021/11/14/%E5%A4%9A%E7%BA%BF%E7%A8%8B/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/</url>
+    <content><![CDATA[<h1 id="synchronized的作用"><a href="#synchronized的作用" class="headerlink" title="synchronized的作用"></a>synchronized的作用</h1><ul>
+<li><p>官网解释翻译</p>
+<blockquote>
+<p>同步方法支持一种简单的策略来防止线程干扰和内存一致性错误：如果一个对象对多个线程可见，则对该对象变量的所有读取或写入都是通过同步方法完成的。</p>
+</blockquote>
+</li>
+<li><p>通俗解释</p>
+<blockquote>
+<p>能够保证在同一时刻最多只有一个线程执行该段代码，以达到保证并发安全的效果。</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="synchronized的地位"><a href="#synchronized的地位" class="headerlink" title="synchronized的地位"></a>synchronized的地位</h1><ul>
+<li>synchronized的java的关键字，被java语言原生支持  </li>
+<li>是最基本的互斥同步手段  </li>
+<li>是并发编程种的元老级角色，是并发编程的必学内容 </li>
+</ul>
+<h1 id="synchronized的两种用法"><a href="#synchronized的两种用法" class="headerlink" title="synchronized的两种用法"></a>synchronized的两种用法</h1><h2 id="对象锁"><a href="#对象锁" class="headerlink" title="对象锁"></a>对象锁</h2><ul>
+<li>包括方法锁（默认锁对象为this当前实例对象）和同步代码块锁（自己指定锁对象）</li>
+</ul>
+<h3 id="代码块形式"><a href="#代码块形式" class="headerlink" title="代码块形式"></a>代码块形式</h3><ul>
+<li>手动指定锁对象<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SynchronizedObjectCodeBlock2 s = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(Thread.currentThread().getName());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="方法锁形式"><a href="#方法锁形式" class="headerlink" title="方法锁形式"></a>方法锁形式</h3><ul>
+<li>synchronized修饰普通方法，锁对象默认为this<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SynchronizedObjectCodeBlock2 s = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="类锁"><a href="#类锁" class="headerlink" title="类锁"></a>类锁</h2><ul>
+<li>指synchronized修饰静态的方法或指定锁为class对象  </li>
+</ul>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ul>
+<li>Java类可能有很多实例对象，但只有1个class对象</li>
+<li>所谓的类锁，不过是class对象的锁而已  </li>
+<li>类锁只能在同一时间被一个对象拥有  </li>
+</ul>
+<ul>
+<li>synchronized加在static方法上<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SynchronizedObjectCodeBlock2 s1 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        SynchronizedObjectCodeBlock2 s2 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s1);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s2);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>synchronized（*.class）代码块<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SynchronizedObjectCodeBlock2 s1 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        SynchronizedObjectCodeBlock2 s2 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s1);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s2);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (SynchronizedObjectCodeBlock2.class) &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(Thread.currentThread().getName());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="多线程访问同步方法的7种情况"><a href="#多线程访问同步方法的7种情况" class="headerlink" title="多线程访问同步方法的7种情况"></a>多线程访问同步方法的7种情况</h1><h2 id="两个线程同时访问一个对象的同步方法"><a href="#两个线程同时访问一个对象的同步方法" class="headerlink" title="两个线程同时访问一个对象的同步方法"></a>两个线程同时访问一个对象的同步方法</h2><ul>
+<li>会串行执行</li>
+<li>同步方法默认锁的是this，也就是当前对象，每次只能有一个线程获取到锁</li>
+</ul>
+<h2 id="两个线程访问的是两个对象的同步方法"><a href="#两个线程访问的是两个对象的同步方法" class="headerlink" title="两个线程访问的是两个对象的同步方法"></a>两个线程访问的是两个对象的同步方法</h2><ul>
+<li>会并行执行</li>
+<li>默认锁的是this，也就是当前对象，由于是来个对象，也就是不同的锁，所以两个线程会同时执行</li>
+</ul>
+<h2 id="两个线程访问的是synchronized的静态方法"><a href="#两个线程访问的是synchronized的静态方法" class="headerlink" title="两个线程访问的是synchronized的静态方法"></a>两个线程访问的是synchronized的静态方法</h2><ul>
+<li>会串行执行</li>
+<li>静态方法锁的是class对象，class对象只有一个，所以两个线程是同一把锁  </li>
+</ul>
+<h2 id="两个线程同时访问同步方法与非同步方法"><a href="#两个线程同时访问同步方法与非同步方法" class="headerlink" title="两个线程同时访问同步方法与非同步方法"></a>两个线程同时访问同步方法与非同步方法</h2><ul>
+<li>会并行执行</li>
+<li>同步方法会受到保护，非同步方法不会上锁，所以会并行执行</li>
+</ul>
+<h2 id="访问同一个对象的不同的普通同步方法"><a href="#访问同一个对象的不同的普通同步方法" class="headerlink" title="访问同一个对象的不同的普通同步方法"></a>访问同一个对象的不同的普通同步方法</h2><ul>
+<li>会串行执行</li>
+<li>同步方法锁的是this当前对象，即便是不同的方法，锁的也是同一个对象，所以会串行执行</li>
+</ul>
+<h2 id="同时访问静态synchronized和非静态synchronized方法"><a href="#同时访问静态synchronized和非静态synchronized方法" class="headerlink" title="同时访问静态synchronized和非静态synchronized方法"></a>同时访问静态synchronized和非静态synchronized方法</h2><ul>
+<li>并行执行</li>
+<li>静态方法锁的class类，非静态方锁的是当前对象，两个方法并不是同一个锁，所以会并行执行</li>
+</ul>
+<h2 id="方法抛异常后，会释放锁"><a href="#方法抛异常后，会释放锁" class="headerlink" title="方法抛异常后，会释放锁"></a>方法抛异常后，会释放锁</h2><ul>
+<li>异常之后会释放锁，不会影响后续的执行</li>
+<li>先抛出异常，后面才能进入同步方法</li>
+</ul>
+<h1 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h1><h2 id="可重入"><a href="#可重入" class="headerlink" title="可重入"></a>可重入</h2><ul>
+<li>什么是可重入：指的是同一个线程的外层函数获得锁之后，内层函数可以直接再次获取该锁  </li>
+<li>好处：避免死锁，提升封装性  <blockquote>
+<p>比如方法1被synchronized修饰，在方法里面递归调用该方法，也是可以重入的<br>方法1和方法2都被synchronized修饰，那么在方法1中也是可以调用方法2的  </p>
+</blockquote>
+</li>
+</ul>
+<h2 id="不可中断"><a href="#不可中断" class="headerlink" title="不可中断"></a>不可中断</h2><ul>
+<li>一旦这个锁已经被别人获得了，如果我还想获得，我只能选择等待或者阻塞，直到别人的线程释放这个锁，如果别人永远不释放锁，那么我只能永远地等待下去。</li>
+</ul>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="加锁和释放锁的原理"><a href="#加锁和释放锁的原理" class="headerlink" title="加锁和释放锁的原理"></a>加锁和释放锁的原理</h2><ul>
+<li>获取呵呵释放锁的时机：进入和退出同步代码块（运行完毕或者抛出异常）</li>
+<li>等价代码（使用lock锁必须要显示的上锁解锁，并且需要考虑异常情况，synchronized则不需要考虑这些）</li>
+<li>看字节码：monitor相关指令<br>使用<code>javac xxx.java</code>将java文件编译成class文件<br>再使用<code>java -v xxx.class</code>反编译class文件<br>具体代码如下：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Decompilation</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Object object = <span class="keyword">new</span> Object();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(Thread thread)</span></span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (object)&#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+反编译后，insert方法如下：<br><img src="/2021/11/14/%E5%A4%9A%E7%BA%BF%E7%A8%8B/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/Decompilation%E5%8F%8D%E7%BC%96%E8%AF%91%E5%86%85%E5%AE%B9.png" alt="Decompilation反编译内容"><br>从图中可以看出，第6行monitorenter指令，上锁<br>第8行monitorexit指令，释放锁<br>第14行monitorexit指令，则是在抛出异常的情况下释放锁</li>
+</ul>
+<h2 id="可重入原理：加锁次数计数器"><a href="#可重入原理：加锁次数计数器" class="headerlink" title="可重入原理：加锁次数计数器"></a>可重入原理：加锁次数计数器</h2><ul>
+<li>JVN会记录被加锁大的次数</li>
+<li>第一次加锁时，次数从0变为1，之后如果再次加锁，就从1变成2，以次类推</li>
+<li>退出一层同步代码块时，计数减一，当计数为0的时候表示锁释放  </li>
+</ul>
+<h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><ul>
+<li>一个线程执行的结果，另一个线程不一定可见</li>
+<li>线程1操作x=5，之后线程2可能读取到之前的数据x=3</li>
+<li>synchronized可以保证可见性  </li>
+</ul>
+<h1 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h1><ul>
+<li>效率低：锁的释放情况少，试图获得锁时不能设定超时、不能中断一个正在试图获得锁的线程。  </li>
+<li>不够灵活（读写锁更灵活）：加锁和释放的时机单一，每个锁仅有单一的条件（某个对象），可能是不够的。 </li>
+<li>无法知道是否成功获取到锁</li>
+</ul>
+<h1 id="常见面试题"><a href="#常见面试题" class="headerlink" title="常见面试题"></a>常见面试题</h1><ul>
+<li>使用注意点：锁的范围不宜过大、避免锁的嵌套</li>
+<li>如何选择Look和synchronized关键字？<blockquote>
+<p>如果synchronized能够满足需求的话，优先使用synchronized，无法满足再使用Lock锁</p>
+</blockquote>
+</li>
+<li>多线程访问同步方法的各种具体情况<blockquote>
+<p>上面所述的七种情况  </p>
+</blockquote>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>java基础</category>
+      </categories>
+      <tags>
+        <tag>多线程</tag>
       </tags>
   </entry>
   <entry>
@@ -677,66 +796,6 @@
       </tags>
   </entry>
   <entry>
-    <title>命令模式</title>
-    <url>/2021/10/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
-<p>将”请求“封装成对象，以便于使用不同的请求。<br>命令模式解决了应用程序中对象的职责以及它们之间的通信方式<br>行为型</p>
-</blockquote>
-<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
-<li>请求调用者和请求接收者需要解耦，使得调用者和接收者不直接交互</li>
-<li>需要抽象出等待执行的行为</li>
-</ul>
-<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>降低耦合</li>
-<li>容易扩展新命令或者一组命令</li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>命令的无限扩展会增加类的数量，提高系统实现复杂度</li>
-</ul>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
-<li><strong>抽象命令类角色</strong>：声明执行命令的接口，拥有执行命令的抽象方法<code>execute()</code>。</li>
-<li><strong>具体命令类角色</strong>：是抽象命令类的具体实现类，它拥有接收者对象，开通过调用接收者的功能来完成命令要执行的操作。</li>
-<li><strong>实现者/接收者角色</strong>：执行命令功能的相关操作，是具体命令对象业务的真正实现者。</li>
-<li><strong>调用者/请求者角色</strong>：是请求的发送者，它通常拥有很多的命令对象，并通过访问命令对象来执行相关请求，它不直接访问接收者。</li>
-</ul>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设我们有一台电脑，电脑接收命令，就是接收者，操作人员发送命令，就是调用者<br>创建 抽象命令类角色  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>创建电脑，也就是具体命令的实现，具体命令类角色  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Computer</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(name+<span class="string">&quot;被打开了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(name+<span class="string">&quot;被关闭了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>创建具体命令角色，开机  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OpenCommand</span> <span class="keyword">implements</span> <span class="title">Command</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Computer computer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">OpenCommand</span><span class="params">(Computer computer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.computer = computer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.open();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>具体命令角色，关机   </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CloseCommand</span> <span class="keyword">implements</span> <span class="title">Command</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Computer computer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CloseCommand</span><span class="params">(Computer computer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.computer = computer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>调用者，收集命令并执行  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Operator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Command&gt; commands = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCommand</span><span class="params">(Command command)</span></span>&#123;</span><br><span class="line">        commands.add(command);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">executeCommand</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Command command : commands) &#123;</span><br><span class="line">            command.execute();</span><br><span class="line">        &#125;</span><br><span class="line">        commands.clear();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试：  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Computer computer = <span class="keyword">new</span> Computer(<span class="string">&quot;编号为A的电脑 &quot;</span>);</span><br><span class="line">        OpenCommand openCommand = <span class="keyword">new</span> OpenCommand(computer);</span><br><span class="line">        CloseCommand closeCommand = <span class="keyword">new</span> CloseCommand(computer);</span><br><span class="line">        Operator operator = <span class="keyword">new</span> Operator();</span><br><span class="line">        operator.addCommand(openCommand);</span><br><span class="line">        operator.addCommand(closeCommand);</span><br><span class="line">        operator.executeCommand();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结果：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">编号为A的电脑 被打开了</span><br><span class="line">编号为A的电脑 被关闭了</span><br></pre></td></tr></table></figure>
-
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/dP5BYiCm38RtEeMMII4dw0DAjeLPp0bSHos6-87jTgO4txrnY1ttiMbtGh_qwvFKQcakdYnkcgPPuOyXrMefcUgWVPJQNZjA6WWrAYV62USK3d3LeaFw9pvsLVKQ0W3lcNEOdGOmLboP9_prLgWpAYPf3UPox0NFPLKXrZY4f4_-UYIiwgSaZsnZ5iCoj5W5XJGzILBU9To59CFnESWyXKFrKlK2bXUFGe0qEj_LCgzjlaXnp2_fIelFyPOZJLp5Pmx2-Stikuj-CN2uHKL_kBUMtQQANVnmEO1rNK4pBJOtr-zHKdMKmnq0">
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>设计模式</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>备忘录模式</title>
     <url>/2021/10/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
@@ -779,6 +838,66 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>设计模式</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>命令模式</title>
+    <url>/2021/10/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>将”请求“封装成对象，以便于使用不同的请求。<br>命令模式解决了应用程序中对象的职责以及它们之间的通信方式<br>行为型</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>请求调用者和请求接收者需要解耦，使得调用者和接收者不直接交互</li>
+<li>需要抽象出等待执行的行为</li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>降低耦合</li>
+<li>容易扩展新命令或者一组命令</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>命令的无限扩展会增加类的数量，提高系统实现复杂度</li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li><strong>抽象命令类角色</strong>：声明执行命令的接口，拥有执行命令的抽象方法<code>execute()</code>。</li>
+<li><strong>具体命令类角色</strong>：是抽象命令类的具体实现类，它拥有接收者对象，开通过调用接收者的功能来完成命令要执行的操作。</li>
+<li><strong>实现者/接收者角色</strong>：执行命令功能的相关操作，是具体命令对象业务的真正实现者。</li>
+<li><strong>调用者/请求者角色</strong>：是请求的发送者，它通常拥有很多的命令对象，并通过访问命令对象来执行相关请求，它不直接访问接收者。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设我们有一台电脑，电脑接收命令，就是接收者，操作人员发送命令，就是调用者<br>创建 抽象命令类角色  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Command</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建电脑，也就是具体命令的实现，具体命令类角色  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Computer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Computer</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">open</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(name+<span class="string">&quot;被打开了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(name+<span class="string">&quot;被关闭了&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建具体命令角色，开机  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OpenCommand</span> <span class="keyword">implements</span> <span class="title">Command</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Computer computer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">OpenCommand</span><span class="params">(Computer computer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.computer = computer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.open();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体命令角色，关机   </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CloseCommand</span> <span class="keyword">implements</span> <span class="title">Command</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Computer computer;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CloseCommand</span><span class="params">(Computer computer)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.computer = computer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        computer.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用者，收集命令并执行  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Operator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Command&gt; commands = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCommand</span><span class="params">(Command command)</span></span>&#123;</span><br><span class="line">        commands.add(command);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">executeCommand</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Command command : commands) &#123;</span><br><span class="line">            command.execute();</span><br><span class="line">        &#125;</span><br><span class="line">        commands.clear();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试：  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Computer computer = <span class="keyword">new</span> Computer(<span class="string">&quot;编号为A的电脑 &quot;</span>);</span><br><span class="line">        OpenCommand openCommand = <span class="keyword">new</span> OpenCommand(computer);</span><br><span class="line">        CloseCommand closeCommand = <span class="keyword">new</span> CloseCommand(computer);</span><br><span class="line">        Operator operator = <span class="keyword">new</span> Operator();</span><br><span class="line">        operator.addCommand(openCommand);</span><br><span class="line">        operator.addCommand(closeCommand);</span><br><span class="line">        operator.executeCommand();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">编号为A的电脑 被打开了</span><br><span class="line">编号为A的电脑 被关闭了</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/dP5BYiCm38RtEeMMII4dw0DAjeLPp0bSHos6-87jTgO4txrnY1ttiMbtGh_qwvFKQcakdYnkcgPPuOyXrMefcUgWVPJQNZjA6WWrAYV62USK3d3LeaFw9pvsLVKQ0W3lcNEOdGOmLboP9_prLgWpAYPf3UPox0NFPLKXrZY4f4_-UYIiwgSaZsnZ5iCoj5W5XJGzILBU9To59CFnESWyXKFrKlK2bXUFGe0qEj_LCgzjlaXnp2_fIelFyPOZJLp5Pmx2-Stikuj-CN2uHKL_kBUMtQQANVnmEO1rNK4pBJOtr-zHKdMKmnq0">
 
 
 
@@ -1669,6 +1788,54 @@
       </tags>
   </entry>
   <entry>
+    <title>解释器模式</title>
+    <url>/2021/10/23/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A7%A3%E9%87%8A%E5%99%A8%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>给定一个语言，定义它的文法大的一种表示，并定义一个解释器，这个解释器使用该表示类解释语言中的句子。<br>为了解释一种语言，而为语言创建的解释器。<br>类型：行为型</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>某个特定类型问题发生频率足够高</li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>扩展性好。由于在解释器模式中适用类来表示语言的文法规则，因此可以通过继承等机制类改变或者扩展文法。</li>
+<li>容易实现。在语法树中的每个表达式节点都是类似的，所以实现其文法较为容易。</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>执行效率较低。解释器模式中通常适用大量的循环和递归调用，担当要解释大的句子较复杂时，其运行速度很慢，且代码的调试过程也比较麻烦。</li>
+<li>会引起类膨胀。解释器模式中的每条规则至少定义一个类，担当包含的文法规则很多时，类的个数将急剧增加，导致系统难以管理和维护。</li>
+<li>可应用大的场景比较少。在软件开发中，需要定义语言文法大的应用实力非常少，所以这种模式很少被适用到。 </li>
+</ul>
+<h2 id="模式结构"><a href="#模式结构" class="headerlink" title="模式结构"></a>模式结构</h2><ul>
+<li><strong>抽象表达式角色</strong>：定义解释器的接口，约定解释器的解释操作，主要包含解释方法<code>interpret()</code>。</li>
+<li><strong>终结符表达式角色</strong>：是抽象表达式的子类，用来实现文法中与终结符相关的操作，文法中的每条规则都对应于一个非终结符表达式。</li>
+<li><strong>非终结符表示式角色</strong>：也是抽象表达式的子类，用来表现文法中与非终结符相关的操作，文法中的每条规则都对应于一个非终结符 表达式。</li>
+<li><strong>环境角色</strong>：通常包含各个解释器需要的数据或是公共的功能，一般用来传递被所有解释器共享的数据，后面的解释器可以从这里获取这些值。</li>
+<li><strong>客户端</strong>：主要任务是将需要分析的句子表达式转换成使用解释器对象描述的抽象语法树，然后调用解释器的解释方法，当然也可以通过环境角色间接访问解释器的解释方法。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>比如我们创建一个对<code>6 100 11 + *</code>这个式子的解释器，解释规则是如果是数字就入栈，如果是符号就将入栈的后两个数字（先进后出）进行计算<br>抽象表达式类  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Interpreter</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">interpret</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>非终结符号表达式类<br>加法解释器类  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AddInterpreter</span> <span class="keyword">implements</span> <span class="title">Interpreter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Interpreter firstExpression, secondExpression;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AddInterpreter</span><span class="params">(Interpreter firstExpression, Interpreter secondExpression)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.firstExpression = firstExpression;</span><br><span class="line">        <span class="keyword">this</span>.secondExpression = secondExpression;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">interpret</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.firstExpression.interpret() + <span class="keyword">this</span>.secondExpression.interpret();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;+&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>非终结符号表达式类<br>乘法解释器类</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MultiInterpreter</span> <span class="keyword">implements</span> <span class="title">Interpreter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Interpreter firstExpression, secondExpression;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MultiInterpreter</span><span class="params">(Interpreter firstExpression, Interpreter secondExpression)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.firstExpression = firstExpression;</span><br><span class="line">        <span class="keyword">this</span>.secondExpression = secondExpression;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">interpret</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.firstExpression.interpret() * <span class="keyword">this</span>.secondExpression.interpret();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;*&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>终结符号表达式类  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NumberInterpreter</span> <span class="keyword">implements</span> <span class="title">Interpreter</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> number;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NumberInterpreter</span><span class="params">(<span class="keyword">int</span> number)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.number = number;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NumberInterpreter</span><span class="params">(String number)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.number = Integer.parseInt(number);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">interpret</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.number;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>环境类  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExpressionParser</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Interpreter&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">parse</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">        String[] strItemArray = str.split(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (String symbol : strItemArray) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!isOperator(symbol)) &#123;</span><br><span class="line">                Interpreter numberInterpreter = <span class="keyword">new</span> NumberInterpreter(symbol);</span><br><span class="line">                stack.push(numberInterpreter);</span><br><span class="line">                System.out.printf(<span class="string">&quot;入栈：%d%n&quot;</span>, numberInterpreter.interpret());</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                Interpreter firstExpression = stack.pop();</span><br><span class="line">                Interpreter secondExpression = stack.pop();</span><br><span class="line">                System.out.printf(<span class="string">&quot;出栈：%d 和 %d%n&quot;</span>, firstExpression.interpret(), secondExpression.interpret());</span><br><span class="line">                Interpreter expressionObject = getExpressionObject(firstExpression, secondExpression, symbol);</span><br><span class="line">                System.out.printf(<span class="string">&quot;应用运算符：%s%n&quot;</span>, expressionObject.toString());</span><br><span class="line">                <span class="keyword">int</span> result = expressionObject.interpret();</span><br><span class="line">                NumberInterpreter resultExpression = <span class="keyword">new</span> NumberInterpreter(result);</span><br><span class="line">                stack.push(resultExpression);</span><br><span class="line">                System.out.println(String.format(<span class="string">&quot;阶段结果入栈： %d&quot;</span>,resultExpression.interpret()));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> result = stack.pop().interpret();</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isOperator</span><span class="params">(String symbol)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (symbol.equals(<span class="string">&quot;+&quot;</span>) || symbol.equals(<span class="string">&quot;*&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Interpreter <span class="title">getExpressionObject</span><span class="params">(Interpreter firstExpression, Interpreter secondExpression, String symbol)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (symbol.equals(<span class="string">&quot;+&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> AddInterpreter(firstExpression, secondExpression);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (symbol.equals(<span class="string">&quot;*&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MultiInterpreter(firstExpression, secondExpression);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>客户端  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String inputStr = <span class="string">&quot;6 100 11 + *&quot;</span>;</span><br><span class="line">        ExpressionParser expressionParser = <span class="keyword">new</span> ExpressionParser();</span><br><span class="line">        <span class="keyword">int</span> result = expressionParser.parse(inputStr);</span><br><span class="line">        System.out.println(<span class="string">&quot;解释器计算结果：&quot;</span> + result);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">入栈：6</span><br><span class="line">入栈：100</span><br><span class="line">入栈：11</span><br><span class="line">出栈：11 和 100</span><br><span class="line">应用运算符：+</span><br><span class="line">阶段结果入栈： 111</span><br><span class="line">出栈：111 和 6</span><br><span class="line">应用运算符：*</span><br><span class="line">阶段结果入栈： 666</span><br><span class="line">解释器计算结果：666</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/lLEnJiCm4Dtz5JUcYEO76YenC30K8PKDCRY9Mvr87CjtAKXL_vqOcjgnep0WiJZEtRlt_CvdrApiNfOA7jtEMDMlS1Ae6N28P8kLE0jHrf88xgigX69ZQjKepHGn68j7oMFUFLhYXy_-ZmXRVGkaobPNFh8IfjlLM4OgsIn9c8m95t0w3voH9vUvkjfqDUC_-8fr_kGCvgnvRqzTirFsTtFUcwFJtrNNWoSacGU5JKvnMxQe3nFGkVlmFf-bfL7ZjopBzo9GM0Ev4Do1LX-NzDhDRA1Z7Cjm568xLdjHn4xX1z-pSVyvjbX18r5VobxVGDe33PLXFulbyYQvsXGn7kg88i_pnBL8nhAOGaLFSXAJ3i4aJ2IDTp3Ndoy0">]]></content>
+      <categories>
+        <category>设计模式</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>设计模式</title>
     <url>/2021/07/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<p><strong>设计模式：</strong> 是一套被反复使用、多人知晓的、经过分类编目的、代码设计经验的总结。使用设计模式是为了可重用代码、让代码更容易被他人理解、保证代码可靠性。毫无疑问，设计模式于己于他人于系统都是多赢的，设计模式使代码编制真正工程化，设计模式是软件工程的基石，如同大厦一块块砖石一样。项目中合理的运用设计模式可以完美的解决很多问题，每种模式在现在中都有相应的原理来与之对应，每一个模式描述了一个在我们周围不断重复发生的问题，以及该问题的核心解决方案，这也是他能被广泛应用的原因。  </p>
@@ -1816,54 +1983,6 @@
 <li>用于从客户端向服务器一次性传递带有多个属性的数据。  </li>
 </ul>
 ]]></content>
-      <categories>
-        <category>设计模式</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解释器模式</title>
-    <url>/2021/10/23/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A7%A3%E9%87%8A%E5%99%A8%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
-<p>给定一个语言，定义它的文法大的一种表示，并定义一个解释器，这个解释器使用该表示类解释语言中的句子。<br>为了解释一种语言，而为语言创建的解释器。<br>类型：行为型</p>
-</blockquote>
-<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
-<li>某个特定类型问题发生频率足够高</li>
-</ul>
-<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>扩展性好。由于在解释器模式中适用类来表示语言的文法规则，因此可以通过继承等机制类改变或者扩展文法。</li>
-<li>容易实现。在语法树中的每个表达式节点都是类似的，所以实现其文法较为容易。</li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>执行效率较低。解释器模式中通常适用大量的循环和递归调用，担当要解释大的句子较复杂时，其运行速度很慢，且代码的调试过程也比较麻烦。</li>
-<li>会引起类膨胀。解释器模式中的每条规则至少定义一个类，担当包含的文法规则很多时，类的个数将急剧增加，导致系统难以管理和维护。</li>
-<li>可应用大的场景比较少。在软件开发中，需要定义语言文法大的应用实力非常少，所以这种模式很少被适用到。 </li>
-</ul>
-<h2 id="模式结构"><a href="#模式结构" class="headerlink" title="模式结构"></a>模式结构</h2><ul>
-<li><strong>抽象表达式角色</strong>：定义解释器的接口，约定解释器的解释操作，主要包含解释方法<code>interpret()</code>。</li>
-<li><strong>终结符表达式角色</strong>：是抽象表达式的子类，用来实现文法中与终结符相关的操作，文法中的每条规则都对应于一个非终结符表达式。</li>
-<li><strong>非终结符表示式角色</strong>：也是抽象表达式的子类，用来表现文法中与非终结符相关的操作，文法中的每条规则都对应于一个非终结符 表达式。</li>
-<li><strong>环境角色</strong>：通常包含各个解释器需要的数据或是公共的功能，一般用来传递被所有解释器共享的数据，后面的解释器可以从这里获取这些值。</li>
-<li><strong>客户端</strong>：主要任务是将需要分析的句子表达式转换成使用解释器对象描述的抽象语法树，然后调用解释器的解释方法，当然也可以通过环境角色间接访问解释器的解释方法。</li>
-</ul>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>比如我们创建一个对<code>6 100 11 + *</code>这个式子的解释器，解释规则是如果是数字就入栈，如果是符号就将入栈的后两个数字（先进后出）进行计算<br>抽象表达式类  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Interpreter</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">interpret</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>非终结符号表达式类<br>加法解释器类  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AddInterpreter</span> <span class="keyword">implements</span> <span class="title">Interpreter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Interpreter firstExpression, secondExpression;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AddInterpreter</span><span class="params">(Interpreter firstExpression, Interpreter secondExpression)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.firstExpression = firstExpression;</span><br><span class="line">        <span class="keyword">this</span>.secondExpression = secondExpression;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">interpret</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.firstExpression.interpret() + <span class="keyword">this</span>.secondExpression.interpret();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;+&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>非终结符号表达式类<br>乘法解释器类</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MultiInterpreter</span> <span class="keyword">implements</span> <span class="title">Interpreter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Interpreter firstExpression, secondExpression;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MultiInterpreter</span><span class="params">(Interpreter firstExpression, Interpreter secondExpression)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.firstExpression = firstExpression;</span><br><span class="line">        <span class="keyword">this</span>.secondExpression = secondExpression;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">interpret</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.firstExpression.interpret() * <span class="keyword">this</span>.secondExpression.interpret();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;*&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>终结符号表达式类  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NumberInterpreter</span> <span class="keyword">implements</span> <span class="title">Interpreter</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> number;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NumberInterpreter</span><span class="params">(<span class="keyword">int</span> number)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.number = number;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NumberInterpreter</span><span class="params">(String number)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.number = Integer.parseInt(number);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">interpret</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.number;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>环境类  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExpressionParser</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Stack&lt;Interpreter&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">parse</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">        String[] strItemArray = str.split(<span class="string">&quot; &quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (String symbol : strItemArray) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!isOperator(symbol)) &#123;</span><br><span class="line">                Interpreter numberInterpreter = <span class="keyword">new</span> NumberInterpreter(symbol);</span><br><span class="line">                stack.push(numberInterpreter);</span><br><span class="line">                System.out.printf(<span class="string">&quot;入栈：%d%n&quot;</span>, numberInterpreter.interpret());</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                Interpreter firstExpression = stack.pop();</span><br><span class="line">                Interpreter secondExpression = stack.pop();</span><br><span class="line">                System.out.printf(<span class="string">&quot;出栈：%d 和 %d%n&quot;</span>, firstExpression.interpret(), secondExpression.interpret());</span><br><span class="line">                Interpreter expressionObject = getExpressionObject(firstExpression, secondExpression, symbol);</span><br><span class="line">                System.out.printf(<span class="string">&quot;应用运算符：%s%n&quot;</span>, expressionObject.toString());</span><br><span class="line">                <span class="keyword">int</span> result = expressionObject.interpret();</span><br><span class="line">                NumberInterpreter resultExpression = <span class="keyword">new</span> NumberInterpreter(result);</span><br><span class="line">                stack.push(resultExpression);</span><br><span class="line">                System.out.println(String.format(<span class="string">&quot;阶段结果入栈： %d&quot;</span>,resultExpression.interpret()));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> result = stack.pop().interpret();</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isOperator</span><span class="params">(String symbol)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (symbol.equals(<span class="string">&quot;+&quot;</span>) || symbol.equals(<span class="string">&quot;*&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Interpreter <span class="title">getExpressionObject</span><span class="params">(Interpreter firstExpression, Interpreter secondExpression, String symbol)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (symbol.equals(<span class="string">&quot;+&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> AddInterpreter(firstExpression, secondExpression);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (symbol.equals(<span class="string">&quot;*&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MultiInterpreter(firstExpression, secondExpression);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>客户端  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String inputStr = <span class="string">&quot;6 100 11 + *&quot;</span>;</span><br><span class="line">        ExpressionParser expressionParser = <span class="keyword">new</span> ExpressionParser();</span><br><span class="line">        <span class="keyword">int</span> result = expressionParser.parse(inputStr);</span><br><span class="line">        System.out.println(<span class="string">&quot;解释器计算结果：&quot;</span> + result);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结果：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">入栈：6</span><br><span class="line">入栈：100</span><br><span class="line">入栈：11</span><br><span class="line">出栈：11 和 100</span><br><span class="line">应用运算符：+</span><br><span class="line">阶段结果入栈： 111</span><br><span class="line">出栈：111 和 6</span><br><span class="line">应用运算符：*</span><br><span class="line">阶段结果入栈： 666</span><br><span class="line">解释器计算结果：666</span><br></pre></td></tr></table></figure>
-
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/lLEnJiCm4Dtz5JUcYEO76YenC30K8PKDCRY9Mvr87CjtAKXL_vqOcjgnep0WiJZEtRlt_CvdrApiNfOA7jtEMDMlS1Ae6N28P8kLE0jHrf88xgigX69ZQjKepHGn68j7oMFUFLhYXy_-ZmXRVGkaobPNFh8IfjlLM4OgsIn9c8m95t0w3voH9vUvkjfqDUC_-8fr_kGCvgnvRqzTirFsTtFUcwFJtrNNWoSacGU5JKvnMxQe3nFGkVlmFf-bfL7ZjopBzo9GM0Ev4Do1LX-NzDhDRA1Z7Cjm568xLdjHn4xX1z-pSVyvjbX18r5VobxVGDe33PLXFulbyYQvsXGn7kg88i_pnBL8nhAOGaLFSXAJ3i4aJ2IDTp3Ndoy0">]]></content>
       <categories>
         <category>设计模式</category>
       </categories>
@@ -2138,125 +2257,6 @@
       </tags>
   </entry>
   <entry>
-    <title>synchronized关键字</title>
-    <url>/2021/11/14/%E5%A4%9A%E7%BA%BF%E7%A8%8B/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/</url>
-    <content><![CDATA[<h1 id="synchronized的作用"><a href="#synchronized的作用" class="headerlink" title="synchronized的作用"></a>synchronized的作用</h1><ul>
-<li><p>官网解释翻译</p>
-<blockquote>
-<p>同步方法支持一种简单的策略来防止线程干扰和内存一致性错误：如果一个对象对多个线程可见，则对该对象变量的所有读取或写入都是通过同步方法完成的。</p>
-</blockquote>
-</li>
-<li><p>通俗解释</p>
-<blockquote>
-<p>能够保证在同一时刻最多只有一个线程执行该段代码，以达到保证并发安全的效果。</p>
-</blockquote>
-</li>
-</ul>
-<h1 id="synchronized的地位"><a href="#synchronized的地位" class="headerlink" title="synchronized的地位"></a>synchronized的地位</h1><ul>
-<li>synchronized的java的关键字，被java语言原生支持  </li>
-<li>是最基本的互斥同步手段  </li>
-<li>是并发编程种的元老级角色，是并发编程的必学内容 </li>
-</ul>
-<h1 id="synchronized的两种用法"><a href="#synchronized的两种用法" class="headerlink" title="synchronized的两种用法"></a>synchronized的两种用法</h1><h2 id="对象锁"><a href="#对象锁" class="headerlink" title="对象锁"></a>对象锁</h2><ul>
-<li>包括方法锁（默认锁对象为this当前实例对象）和同步代码块锁（自己指定锁对象）</li>
-</ul>
-<h3 id="代码块形式"><a href="#代码块形式" class="headerlink" title="代码块形式"></a>代码块形式</h3><ul>
-<li>手动指定锁对象<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SynchronizedObjectCodeBlock2 s = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(Thread.currentThread().getName());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="方法锁形式"><a href="#方法锁形式" class="headerlink" title="方法锁形式"></a>方法锁形式</h3><ul>
-<li>synchronized修饰普通方法，锁对象默认为this<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SynchronizedObjectCodeBlock2 s = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="类锁"><a href="#类锁" class="headerlink" title="类锁"></a>类锁</h2><ul>
-<li>指synchronized修饰静态的方法或指定锁为class对象  </li>
-</ul>
-<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ul>
-<li>Java类可能有很多实例对象，但只有1个class对象</li>
-<li>所谓的类锁，不过是class对象的锁而已  </li>
-<li>类锁只能在同一时间被一个对象拥有  </li>
-</ul>
-<ul>
-<li>synchronized加在static方法上<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SynchronizedObjectCodeBlock2 s1 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        SynchronizedObjectCodeBlock2 s2 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s1);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s2);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>synchronized（*.class）代码块<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SynchronizedObjectCodeBlock2 s1 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        SynchronizedObjectCodeBlock2 s2 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s1);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s2);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (SynchronizedObjectCodeBlock2.class) &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(Thread.currentThread().getName());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="多线程访问同步方法的7种情况"><a href="#多线程访问同步方法的7种情况" class="headerlink" title="多线程访问同步方法的7种情况"></a>多线程访问同步方法的7种情况</h1><h2 id="两个线程同时访问一个对象的同步方法"><a href="#两个线程同时访问一个对象的同步方法" class="headerlink" title="两个线程同时访问一个对象的同步方法"></a>两个线程同时访问一个对象的同步方法</h2><ul>
-<li>会串行执行</li>
-<li>同步方法默认锁的是this，也就是当前对象，每次只能有一个线程获取到锁</li>
-</ul>
-<h2 id="两个线程访问的是两个对象的同步方法"><a href="#两个线程访问的是两个对象的同步方法" class="headerlink" title="两个线程访问的是两个对象的同步方法"></a>两个线程访问的是两个对象的同步方法</h2><ul>
-<li>会并行执行</li>
-<li>默认锁的是this，也就是当前对象，由于是来个对象，也就是不同的锁，所以两个线程会同时执行</li>
-</ul>
-<h2 id="两个线程访问的是synchronized的静态方法"><a href="#两个线程访问的是synchronized的静态方法" class="headerlink" title="两个线程访问的是synchronized的静态方法"></a>两个线程访问的是synchronized的静态方法</h2><ul>
-<li>会串行执行</li>
-<li>静态方法锁的是class对象，class对象只有一个，所以两个线程是同一把锁  </li>
-</ul>
-<h2 id="两个线程同时访问同步方法与非同步方法"><a href="#两个线程同时访问同步方法与非同步方法" class="headerlink" title="两个线程同时访问同步方法与非同步方法"></a>两个线程同时访问同步方法与非同步方法</h2><ul>
-<li>会并行执行</li>
-<li>同步方法会受到保护，非同步方法不会上锁，所以会并行执行</li>
-</ul>
-<h2 id="访问同一个对象的不同的普通同步方法"><a href="#访问同一个对象的不同的普通同步方法" class="headerlink" title="访问同一个对象的不同的普通同步方法"></a>访问同一个对象的不同的普通同步方法</h2><ul>
-<li>会串行执行</li>
-<li>同步方法锁的是this当前对象，即便是不同的方法，锁的也是同一个对象，所以会串行执行</li>
-</ul>
-<h2 id="同时访问静态synchronized和非静态synchronized方法"><a href="#同时访问静态synchronized和非静态synchronized方法" class="headerlink" title="同时访问静态synchronized和非静态synchronized方法"></a>同时访问静态synchronized和非静态synchronized方法</h2><ul>
-<li>并行执行</li>
-<li>静态方法锁的class类，非静态方锁的是当前对象，两个方法并不是同一个锁，所以会并行执行</li>
-</ul>
-<h2 id="方法抛异常后，会释放锁"><a href="#方法抛异常后，会释放锁" class="headerlink" title="方法抛异常后，会释放锁"></a>方法抛异常后，会释放锁</h2><ul>
-<li>异常之后会释放锁，不会影响后续的执行</li>
-<li>先抛出异常，后面才能进入同步方法</li>
-</ul>
-<h1 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h1><h2 id="可重入"><a href="#可重入" class="headerlink" title="可重入"></a>可重入</h2><ul>
-<li>什么是可重入：指的是同一个线程的外层函数获得锁之后，内层函数可以直接再次获取该锁  </li>
-<li>好处：避免死锁，提升封装性  <blockquote>
-<p>比如方法1被synchronized修饰，在方法里面递归调用该方法，也是可以重入的<br>方法1和方法2都被synchronized修饰，那么在方法1中也是可以调用方法2的  </p>
-</blockquote>
-</li>
-</ul>
-<h2 id="不可中断"><a href="#不可中断" class="headerlink" title="不可中断"></a>不可中断</h2><ul>
-<li>一旦这个锁已经被别人获得了，如果我还想获得，我只能选择等待或者阻塞，直到别人的线程释放这个锁，如果别人永远不释放锁，那么我只能永远地等待下去。</li>
-</ul>
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="加锁和释放锁的原理"><a href="#加锁和释放锁的原理" class="headerlink" title="加锁和释放锁的原理"></a>加锁和释放锁的原理</h2><ul>
-<li>获取呵呵释放锁的时机：进入和退出同步代码块（运行完毕或者抛出异常）</li>
-<li>等价代码（使用lock锁必须要显示的上锁解锁，并且需要考虑异常情况，synchronized则不需要考虑这些）</li>
-<li>看字节码：monitor相关指令<br>使用<code>javac xxx.java</code>将java文件编译成class文件<br>再使用<code>java -v xxx.class</code>反编译class文件<br>具体代码如下：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Decompilation</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Object object = <span class="keyword">new</span> Object();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(Thread thread)</span></span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (object)&#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-反编译后，insert方法如下：<br><img src="/2021/11/14/%E5%A4%9A%E7%BA%BF%E7%A8%8B/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/Decompilation%E5%8F%8D%E7%BC%96%E8%AF%91%E5%86%85%E5%AE%B9.png" alt="Decompilation反编译内容"><br>从图中可以看出，第6行monitorenter指令，上锁<br>第8行monitorexit指令，释放锁<br>第14行monitorexit指令，则是在抛出异常的情况下释放锁</li>
-</ul>
-<h2 id="可重入原理：加锁次数计数器"><a href="#可重入原理：加锁次数计数器" class="headerlink" title="可重入原理：加锁次数计数器"></a>可重入原理：加锁次数计数器</h2><ul>
-<li>JVN会记录被加锁大的次数</li>
-<li>第一次加锁时，次数从0变为1，之后如果再次加锁，就从1变成2，以次类推</li>
-<li>退出一层同步代码块时，计数减一，当计数为0的时候表示锁释放  </li>
-</ul>
-<h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><ul>
-<li>一个线程执行的结果，另一个线程不一定可见</li>
-<li>线程1操作x=5，之后线程2可能读取到之前的数据x=3</li>
-<li>synchronized可以保证可见性  </li>
-</ul>
-<h1 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h1><ul>
-<li>效率低：锁的释放情况少，试图获得锁时不能设定超时、不能中断一个正在试图获得锁的线程。  </li>
-<li>不够灵活（读写锁更灵活）：加锁和释放的时机单一，每个锁仅有单一的条件（某个对象），可能是不够的。 </li>
-<li>无法知道是否成功获取到锁</li>
-</ul>
-<h1 id="常见面试题"><a href="#常见面试题" class="headerlink" title="常见面试题"></a>常见面试题</h1><ul>
-<li>使用注意点：锁的范围不宜过大、避免锁的嵌套</li>
-<li>如何选择Look和synchronized关键字？<blockquote>
-<p>如果synchronized能够满足需求的话，优先使用synchronized，无法满足再使用Lock锁</p>
-</blockquote>
-</li>
-<li>多线程访问同步方法的各种具体情况<blockquote>
-<p>上面所述的七种情况  </p>
-</blockquote>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>java基础</category>
-      </categories>
-      <tags>
-        <tag>多线程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>图灵课堂MongoDB(一)</title>
     <url>/2022/11/04/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E5%9B%BE%E7%81%B5%E8%AF%BE%E5%A0%82mongodb/%E5%9B%BE%E7%81%B5%E8%AF%BE%E5%A0%82MongoDB/</url>
     <content><![CDATA[<h1 id="MongoDB介绍"><a href="#MongoDB介绍" class="headerlink" title="MongoDB介绍"></a>MongoDB介绍</h1><h2 id="什么是MongoDb"><a href="#什么是MongoDb" class="headerlink" title="什么是MongoDb"></a>什么是MongoDb</h2><p>MongoDB是一个文档数据库（以json为数据模型），由C++语言编写，旨在为WEB应用提供可扩展的高性能数据存储解决方案。</p>
@@ -2425,90 +2425,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Java并发成神之路-精通JUC并发工具十八般武艺——AQS(八)</title>
-    <url>/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/</url>
-    <content><![CDATA[<h1 id="为什么需要AQS"><a href="#为什么需要AQS" class="headerlink" title="为什么需要AQS"></a>为什么需要AQS</h1><ul>
-<li><code>ReentrantLock</code>、<code>Semaphore</code>、<code>CountDownLatch</code>、<code>ReentrantReadWriteLock</code></li>
-<li>上面那些协作类，它们有很多工作都是类似的，所以如果能提取出一个工具类，那么就可以直接用，对于<code>ReentrantLock</code>和<code>Semaphore</code>而言就可以屏蔽很多细节，只关注它们自己“业务逻辑”就可以了</li>
-</ul>
-<h1 id="Semaphore和AQS的关系"><a href="#Semaphore和AQS的关系" class="headerlink" title="Semaphore和AQS的关系"></a><code>Semaphore</code>和AQS的关系</h1><ul>
-<li><code>Semaphore</code>内部有一个<code>Sync</code>类，<code>Sync</code>类继承了AQS</li>
-<li><code>CountDownLatch</code>和<code>ReentrantLock</code>也是一样的，内部有一个<code>Sync</code>类，<code>Sync</code>类继承了AQS</li>
-</ul>
-<h1 id="AQS的作用"><a href="#AQS的作用" class="headerlink" title="AQS的作用"></a>AQS的作用</h1><ul>
-<li>AQS是一个用于构建锁、同步器、协作工具类的工具类（框架）。有了AQS以后，更多的协作工具类都可以很方便得被写出来</li>
-<li>一句话总结：有了AQS，构建线程协作类就容易多了</li>
-</ul>
-<h1 id="AQS内部原理解析"><a href="#AQS内部原理解析" class="headerlink" title="AQS内部原理解析"></a>AQS内部原理解析</h1><ul>
-<li>AQS最核心的就是三大部分</li>
-</ul>
-<h2 id="state状态"><a href="#state状态" class="headerlink" title="state状态"></a>state状态</h2><ul>
-<li>这里的<code>state</code>的具体含义，会根据具体实现类的不同而不同，比如啊<code>Semaphore</code>里，它表示“剩余的许可证的数量”，而在<code>CountDownLatch</code>里，它表示“还需要倒数的数量”</li>
-<li><code>state</code>是<code>volatile</code>修饰的，会被并发地修改，所以多有修改<code>state</code>的方法都需要保证线程安全，比如<code>getState</code>、<code>setState</code>以及<code>compareAndSetState</code>操作来读取和更新这个状态，这些方法都依赖于<code>j.u.c.atomic</code>包的支持</li>
-<li>在<code>ReentrantLock</code>中，<code>state</code>用来表示“锁”的占有情况，包括可重入计数，当<code>state</code>的值为0的时候，表示该<code>Lock</code>不被任何线程占有</li>
-</ul>
-<h2 id="控制线程抢锁和配合的FIFO队列"><a href="#控制线程抢锁和配合的FIFO队列" class="headerlink" title="控制线程抢锁和配合的FIFO队列"></a>控制线程抢锁和配合的FIFO队列</h2><ul>
-<li>这个队列用来存放“等待的线程”，AQS就是“排队管理器”，当多个线程争用同一把锁时，必须有排队机制将那些没能拿到锁的线程串在一起。当锁释放时，锁管理器就会挑选一个合适的线程来占有这个刚刚释放的锁</li>
-<li>AQS会维护一个等待的线程队列，把线程都放到这个队列里</li>
-</ul>
-<h2 id="期望协作工具类去实现的获取-释放等重要方法"><a href="#期望协作工具类去实现的获取-释放等重要方法" class="headerlink" title="期望协作工具类去实现的获取/释放等重要方法"></a>期望协作工具类去实现的获取/释放等重要方法</h2><ul>
-<li>这里的获取和释放方法，是利用AQS的协作工具类里最重要的方法，是由协作类自己去实现的，并且含义各不相同</li>
-<li>获取方法<ul>
-<li>获取操作会依赖<code>state</code>变量，经常会阻塞（比如获取不到锁）</li>
-<li>在<code>Semaphore</code>中，获取就是<code>acquire</code>方法，作用是获取一个许可证</li>
-<li>而在<code>CountDownLatch</code>里面，获取就是<code>await</code>方法，作用是“等待，直到倒数结束”</li>
-</ul>
-</li>
-<li>释放方法<ul>
-<li>释放操作不会阻塞</li>
-<li>在<code>Semaphore</code>中，释放方法就是<code>release</code>方法，作用是释放一个许可证</li>
-<li><code>CountDownLatch</code>里面，释放就是<code>countDown</code>方法，作用是“倒数一个数”</li>
-</ul>
-</li>
-</ul>
-<h1 id="AQS源码分析"><a href="#AQS源码分析" class="headerlink" title="AQS源码分析"></a>AQS源码分析</h1><h2 id="AQS在CountDownLatch中的应用"><a href="#AQS在CountDownLatch中的应用" class="headerlink" title="AQS在CountDownLatch中的应用"></a>AQS在<code>CountDownLatch</code>中的应用</h2><ul>
-<li>构造函数<br><code>CountDownLatch</code>的构造函数如下图所示，首先需要传进去一个数字，这个数字表示倒数几次，而构造函数中直接调用了<code>Sync</code>类的构造函数，从第二个图中可以看出，<code>Sync</code>的构造函数是调用了AQS的<code>setState</code>方法，直接给<code>state</code>赋值<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch构造函数源码图示"></li>
-</ul>
-<p><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch-Sync%E7%B1%BB%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch-Sync类源码图示"></p>
-<ul>
-<li><code>getCount</code><br>如下图所示，<code>CountDownLatch.getCount()</code>方法直接调用<code>Sync</code>的<code>getCount()</code>方法，而从上面的Sync类源码图可以看出，<code>Sync.getCount()</code>方法直接调用了AQS的<code>getState</code>方法，获取<code>state</code>的值<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E7%9A%84getCount%E6%96%B9%E6%B3%95%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch的getCount方法图示"></li>
-<li><code>countDown</code><br>如下图所示，<code>CountDownLatch</code>的<code>countDown</code>方法直接调用了继承自AQS的<code>releaseShared</code>方法，而<code>releaseShared</code>方法中会判断<code>tryReleaseShared</code>返回值进行判断，如果为true进入判断调用<code>doReleaseShared</code>方法，唤醒被阻塞的线程，<code>tryReleaseShared</code>的具体代码可以看上面的Sync类源码图，可以看出是使用for循环做的一个CAS自旋锁，将<code>state</code>减一，然后去更新，之后判断是否已经等于0了，如果减一后等于0了那么说明这是最后一次计数，就会返回true，然后调用<code>doReleaseShared</code>唤醒线程<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E7%9A%84countDown%E6%96%B9%E6%B3%95%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch的countDown方法图示"></li>
-</ul>
-<p><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84releaseShared%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="AQS的releaseShared方法源码图示"></p>
-<ul>
-<li><code>await</code><br>如下图所示，<code>CountDownLatch</code>的<code>await</code>方法直接调用了继承自AQS的<code>acquireSharedInterruptibly</code>方法，而<code>acquireSharedInterruptibly</code>方法中会判断<code>tryAcquireShared</code>方法的返回值是否小于0，如果小于0则进入判断，将当前线程挂起，如果不小于0，则直接跳过，可以从上面的<code>Sync</code>类源码图中看出，其实现的<code>tryAcquireShared</code>方法是直接判断state值是否等于0，如果等于0，就返回1，否则返回-1，也就是说state等于0，直接跳过<code>acquireSharedInterruptibly</code>中的判断，不等于0，就将线程挂起<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E7%9A%84await%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch的await方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84acquireSharedInterruptibly%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="AQS的acquireSharedInterruptibly方法源码图示"></li>
-</ul>
-<h3 id="AQS在CountDownLatch的总结"><a href="#AQS在CountDownLatch的总结" class="headerlink" title="AQS在CountDownLatch的总结"></a>AQS在<code>CountDownLatch</code>的总结</h3><ul>
-<li>调用<code>CountDownLatch</code>的<code>await</code>方法时，便会尝试获取“共享锁”，不过一开始是获取不到该锁的，于是线程被阻塞</li>
-<li>而“共享锁”可获取到的条件，就是“锁计数器”的值为0</li>
-<li>而“锁计数器”的初值为<code>count</code>，每当一个线程调用该<code>CountDownLatch</code>对象的<code>countDown()</code>方法时，才将“锁计数器”-1</li>
-<li><code>count</code>个线程调用<code>countDown()</code>之后，“锁计数器”才为0，而前面提到的等待获取共享锁的线程才能继续运行</li>
-</ul>
-<h2 id="AQS在Semaphore中的应用"><a href="#AQS在Semaphore中的应用" class="headerlink" title="AQS在Semaphore中的应用"></a>AQS在<code>Semaphore</code>中的应用</h2><ul>
-<li>在<code>Semaphore</code>中，<code>state</code>表示许可证的剩余数量</li>
-<li>看<code>tryAcquire</code>方法，判断<code>nonfairTryAcquireShared</code>大于等于0的话，代表成功</li>
-<li>这里会先检查剩余许可证数量够不够这次需要的，用减法来计算，如果直接不够，那就返回负数，表示失败，如果够了，就用自旋加<code>compareAndSetState</code>来改变<code>state</code>的状态，直到改变成功就返回整数，或者是期间如果被其他人修改导致剩余数量不够了，那也返回负数代表获取失败</li>
-</ul>
-<h2 id="AQS在ReentrantLock中的应用"><a href="#AQS在ReentrantLock中的应用" class="headerlink" title="AQS在ReentrantLock中的应用"></a>AQS在<code>ReentrantLock</code>中的应用</h2><ul>
-<li><code>unlock()</code><br>方法具体情况如下图所示，<code>unlock</code>方法直接调用了<code>Sync</code>类继承于AQS的<code>release</code>方法，方法中首先会判断<code>tryRelease</code>方法的返回值，如果是true，就会执行下面的<code>unparkSuccessor</code>方法，唤醒等待的线程，<code>tryRelease</code>方法被<code>ReentrantLock.Sync</code>类重写，首先会将<code>state</code>减1，因为<code>ReentrantLock</code>是可重入锁，解锁一次就是将<code>state</code>减1，然后判断当前线程是不是正在执行的线程，如果是当前线程，判断计算后的<code>state</code>是否等于0，也就是判断这次解锁是不是最后一层锁，如果不是，直接修改<code>state</code>的值，然后返回false，如果是就会调用<code>setExclusiveOwnerThread</code>方法，将当前运行的线程设置为null，并返回true，唤醒其他的线程<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock%E7%9A%84unlock%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock的unlock方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84release%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="AQS的release方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-Sync%E7%B1%BB%E7%9A%84tryRelease%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-Sync类的tryRelease方法源码图示"></li>
-<li><code>lock()</code>（以非公平锁为例）<br>如下图可以看出，<code>ReentrantLock</code>的<code>lock</code>方法中直接调用了内部类<code>Sync</code>的<code>lock</code>方法，而第二个图中也可以看出，<code>Sync.lock()</code>方法是一个<code>abstract</code>方法，由它的两个子类实现(<code>NonfairSync</code>和<code>FairSync</code>,这里仅以<code>NonfairSync</code>为例讲述)<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock%E7%9A%84lock%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock的lock方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-Sync%E7%B1%BB%E7%9A%84lock%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-Sync类的lock方法源码图示"><br>如下图可以看出，<code>NonfairSync</code>中的<code>lock</code>方法首先会调用CAS方法更新<code>state</code>的值，如果更新成功了，就直接将当前线程设置为执行线程，如果失败了，会去执行<code>acquire</code>方法，<code>acquire</code>方法是AQS的一个方法<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-NonfairSync%E7%B1%BB%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-NonfairSync类源码图示"><br>首先方法还会去调用<code>tryAcquire</code>方法，<code>tryAcquire</code>在<code>ReentrantLock</code>中会有公平和非公平两种实现方式，如果<code>tryAcquire</code>方法返回的是true，因为前面的非，则会变成false，直接跳过判断，如果<code>tryAcquire</code>返回的false，加上前面的非，则是true，就会去执行后的语句，<code>addWaiter</code>方法是将当前线程进行封装，<code>acquireQueued</code>方法则是将封装后的Node节点对象，放到等待队列中，等待别的线程释放锁之后将他唤醒<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84acquire%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="AQS的acquire方法源码示意图"><br>非公平类中<code>tryAcquire</code>方法会去调用<code>nonfairTryAcquire</code>方法，这个方法是由<code>Sync</code>类实现的，方法中首先会判断<code>state</code>是否等于0，如果等于0表示当前锁没有被任何线程持有，就会直接通过CAS修改<code>state</code>的值，然后将持锁线程设置为当前线程，如果当前锁已经被持有，就会判断是否为当前线程持有，如果是，就会将<code>state</code>加入参，也就是1，然后重新设置值，如果不是表示当前锁已经被其他线程持有，直接返回false<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-Sync%E7%B1%BB%E7%9A%84nonfairTryAcquire%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-Sync类的nonfairTryAcquire方法源码图示"></li>
-</ul>
-<h3 id="分析释放锁的方法tryRelease"><a href="#分析释放锁的方法tryRelease" class="headerlink" title="分析释放锁的方法tryRelease"></a>分析释放锁的方法<code>tryRelease</code></h3><ul>
-<li>由于当前是可重入锁，所以<code>state</code>代表重入次数，每次释放锁，先判断是不是当前持有锁的线程释放的，如果不是就抛异常，如果是的话，重入次数减一，如果减到了0，就说明完全释放了，于是free就是true了，并且把<code>state</code>设置为0</li>
-</ul>
-<h3 id="加锁的方法"><a href="#加锁的方法" class="headerlink" title="加锁的方法"></a>加锁的方法</h3><ul>
-<li>判断当前<code>state</code>是不是等于0，判断当前线程是不是持有锁的线程，如果都不是就代表当前线程拿不到锁，就会放进线程等待</li>
-</ul>
-<h1 id="利用AQS实现一个自己的Latch门闩"><a href="#利用AQS实现一个自己的Latch门闩" class="headerlink" title="利用AQS实现一个自己的Latch门闩"></a>利用AQS实现一个自己的Latch门闩</h1><p>如下代码就是用AQS自己实现的门闩功能代码，我们要实现的功能很简单，就是当线程调用<code>await</code>方法的时候，将线程挂起，然后等待执行了<code>signal</code>方法，将所有线程唤醒，因为是可重入的，直接调用AQS的<code>releaseShared</code>方法和<code>acquireShared</code>方法来实现，查看AQS的源码可以看到，<code>acquireShared</code>方法会判断<code>tryAcquireShared(arg) &lt; 0</code>的结果，如果为true就会将线程挂起，所以我们重写AQS的<code>tryAcquireShared</code>方法，判断<code>state</code>的值，如果为1，就返回1，1大于0，直接跳过判断，否则就返回-1，-1小于0，会进入判断，将线程挂起，而<code>state</code>默认值为0，肯定不等于1。<br>而唤醒线程的<code>signal</code>方法直接调用了AQS的<code>releaseShared</code>方法，这个方法会判断<code>tryReleaseShared(arg)</code>方法的返回值，如果是true，就调用判断中的方法唤醒被挂起的线程，否则就不处理，所以我们实现<code>tryReleaseShared</code>方法，如果只是实现唤醒的话，直接返回true就可以，但是我们要实现门闩只能使用一次的功能，门闩被打开后，再执行<code>await</code>方法不会将线程挂起，所以将<code>state</code>的值设置为1，这样<code>state</code>的时候就是等于1，然后就直接返回1，1大于0，就不会进入判断，也就不会将线程挂起</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OneShotLatch</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Sync sync = <span class="keyword">new</span> Sync();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">signal</span><span class="params">()</span></span>&#123;</span><br><span class="line">        sync.releaseShared(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">await</span><span class="params">()</span></span>&#123;</span><br><span class="line">        sync.acquireShared(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Sync</span> <span class="keyword">extends</span> <span class="title">AbstractQueuedSynchronizer</span></span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">tryReleaseShared</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">            setState(<span class="number">1</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">tryAcquireShared</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (getState() == <span class="number">1</span>) ? <span class="number">1</span> : -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        OneShotLatch oneShotLatch = <span class="keyword">new</span> OneShotLatch();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    System.out.println(Thread.currentThread().getName()+<span class="string">&quot;尝试获取latch&quot;</span>);</span><br><span class="line">                    oneShotLatch.await();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName()+<span class="string">&quot;开闸放行，继续前进&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">        Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">        oneShotLatch.signal();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName()+<span class="string">&quot;尝试获取latch&quot;</span>);</span><br><span class="line">                oneShotLatch.await();</span><br><span class="line">                System.out.println(Thread.currentThread().getName()+<span class="string">&quot;开闸放行，继续前进&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>多线程</category>
-      </categories>
-      <tags>
-        <tag>精通JUC并发工具十八般武艺</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Java并发成神之路-精通JUC并发工具十八般武艺——CAS和不变性(五)</title>
     <url>/2021/12/04/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94CAS%E5%92%8C%E4%B8%8D%E5%8F%98%E6%80%A7/</url>
     <content><![CDATA[<h1 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h1><h2 id="什么是CAS"><a href="#什么是CAS" class="headerlink" title="什么是CAS"></a>什么是CAS</h2><ul>
@@ -2607,6 +2523,90 @@
 <li>方法内部的变量是不会有并发问题的（栈封闭）</li>
 </ul>
 ]]></content>
+      <categories>
+        <category>多线程</category>
+      </categories>
+      <tags>
+        <tag>精通JUC并发工具十八般武艺</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java并发成神之路-精通JUC并发工具十八般武艺——AQS(八)</title>
+    <url>/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/</url>
+    <content><![CDATA[<h1 id="为什么需要AQS"><a href="#为什么需要AQS" class="headerlink" title="为什么需要AQS"></a>为什么需要AQS</h1><ul>
+<li><code>ReentrantLock</code>、<code>Semaphore</code>、<code>CountDownLatch</code>、<code>ReentrantReadWriteLock</code></li>
+<li>上面那些协作类，它们有很多工作都是类似的，所以如果能提取出一个工具类，那么就可以直接用，对于<code>ReentrantLock</code>和<code>Semaphore</code>而言就可以屏蔽很多细节，只关注它们自己“业务逻辑”就可以了</li>
+</ul>
+<h1 id="Semaphore和AQS的关系"><a href="#Semaphore和AQS的关系" class="headerlink" title="Semaphore和AQS的关系"></a><code>Semaphore</code>和AQS的关系</h1><ul>
+<li><code>Semaphore</code>内部有一个<code>Sync</code>类，<code>Sync</code>类继承了AQS</li>
+<li><code>CountDownLatch</code>和<code>ReentrantLock</code>也是一样的，内部有一个<code>Sync</code>类，<code>Sync</code>类继承了AQS</li>
+</ul>
+<h1 id="AQS的作用"><a href="#AQS的作用" class="headerlink" title="AQS的作用"></a>AQS的作用</h1><ul>
+<li>AQS是一个用于构建锁、同步器、协作工具类的工具类（框架）。有了AQS以后，更多的协作工具类都可以很方便得被写出来</li>
+<li>一句话总结：有了AQS，构建线程协作类就容易多了</li>
+</ul>
+<h1 id="AQS内部原理解析"><a href="#AQS内部原理解析" class="headerlink" title="AQS内部原理解析"></a>AQS内部原理解析</h1><ul>
+<li>AQS最核心的就是三大部分</li>
+</ul>
+<h2 id="state状态"><a href="#state状态" class="headerlink" title="state状态"></a>state状态</h2><ul>
+<li>这里的<code>state</code>的具体含义，会根据具体实现类的不同而不同，比如啊<code>Semaphore</code>里，它表示“剩余的许可证的数量”，而在<code>CountDownLatch</code>里，它表示“还需要倒数的数量”</li>
+<li><code>state</code>是<code>volatile</code>修饰的，会被并发地修改，所以多有修改<code>state</code>的方法都需要保证线程安全，比如<code>getState</code>、<code>setState</code>以及<code>compareAndSetState</code>操作来读取和更新这个状态，这些方法都依赖于<code>j.u.c.atomic</code>包的支持</li>
+<li>在<code>ReentrantLock</code>中，<code>state</code>用来表示“锁”的占有情况，包括可重入计数，当<code>state</code>的值为0的时候，表示该<code>Lock</code>不被任何线程占有</li>
+</ul>
+<h2 id="控制线程抢锁和配合的FIFO队列"><a href="#控制线程抢锁和配合的FIFO队列" class="headerlink" title="控制线程抢锁和配合的FIFO队列"></a>控制线程抢锁和配合的FIFO队列</h2><ul>
+<li>这个队列用来存放“等待的线程”，AQS就是“排队管理器”，当多个线程争用同一把锁时，必须有排队机制将那些没能拿到锁的线程串在一起。当锁释放时，锁管理器就会挑选一个合适的线程来占有这个刚刚释放的锁</li>
+<li>AQS会维护一个等待的线程队列，把线程都放到这个队列里</li>
+</ul>
+<h2 id="期望协作工具类去实现的获取-释放等重要方法"><a href="#期望协作工具类去实现的获取-释放等重要方法" class="headerlink" title="期望协作工具类去实现的获取/释放等重要方法"></a>期望协作工具类去实现的获取/释放等重要方法</h2><ul>
+<li>这里的获取和释放方法，是利用AQS的协作工具类里最重要的方法，是由协作类自己去实现的，并且含义各不相同</li>
+<li>获取方法<ul>
+<li>获取操作会依赖<code>state</code>变量，经常会阻塞（比如获取不到锁）</li>
+<li>在<code>Semaphore</code>中，获取就是<code>acquire</code>方法，作用是获取一个许可证</li>
+<li>而在<code>CountDownLatch</code>里面，获取就是<code>await</code>方法，作用是“等待，直到倒数结束”</li>
+</ul>
+</li>
+<li>释放方法<ul>
+<li>释放操作不会阻塞</li>
+<li>在<code>Semaphore</code>中，释放方法就是<code>release</code>方法，作用是释放一个许可证</li>
+<li><code>CountDownLatch</code>里面，释放就是<code>countDown</code>方法，作用是“倒数一个数”</li>
+</ul>
+</li>
+</ul>
+<h1 id="AQS源码分析"><a href="#AQS源码分析" class="headerlink" title="AQS源码分析"></a>AQS源码分析</h1><h2 id="AQS在CountDownLatch中的应用"><a href="#AQS在CountDownLatch中的应用" class="headerlink" title="AQS在CountDownLatch中的应用"></a>AQS在<code>CountDownLatch</code>中的应用</h2><ul>
+<li>构造函数<br><code>CountDownLatch</code>的构造函数如下图所示，首先需要传进去一个数字，这个数字表示倒数几次，而构造函数中直接调用了<code>Sync</code>类的构造函数，从第二个图中可以看出，<code>Sync</code>的构造函数是调用了AQS的<code>setState</code>方法，直接给<code>state</code>赋值<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch构造函数源码图示"></li>
+</ul>
+<p><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch-Sync%E7%B1%BB%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch-Sync类源码图示"></p>
+<ul>
+<li><code>getCount</code><br>如下图所示，<code>CountDownLatch.getCount()</code>方法直接调用<code>Sync</code>的<code>getCount()</code>方法，而从上面的Sync类源码图可以看出，<code>Sync.getCount()</code>方法直接调用了AQS的<code>getState</code>方法，获取<code>state</code>的值<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E7%9A%84getCount%E6%96%B9%E6%B3%95%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch的getCount方法图示"></li>
+<li><code>countDown</code><br>如下图所示，<code>CountDownLatch</code>的<code>countDown</code>方法直接调用了继承自AQS的<code>releaseShared</code>方法，而<code>releaseShared</code>方法中会判断<code>tryReleaseShared</code>返回值进行判断，如果为true进入判断调用<code>doReleaseShared</code>方法，唤醒被阻塞的线程，<code>tryReleaseShared</code>的具体代码可以看上面的Sync类源码图，可以看出是使用for循环做的一个CAS自旋锁，将<code>state</code>减一，然后去更新，之后判断是否已经等于0了，如果减一后等于0了那么说明这是最后一次计数，就会返回true，然后调用<code>doReleaseShared</code>唤醒线程<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E7%9A%84countDown%E6%96%B9%E6%B3%95%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch的countDown方法图示"></li>
+</ul>
+<p><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84releaseShared%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="AQS的releaseShared方法源码图示"></p>
+<ul>
+<li><code>await</code><br>如下图所示，<code>CountDownLatch</code>的<code>await</code>方法直接调用了继承自AQS的<code>acquireSharedInterruptibly</code>方法，而<code>acquireSharedInterruptibly</code>方法中会判断<code>tryAcquireShared</code>方法的返回值是否小于0，如果小于0则进入判断，将当前线程挂起，如果不小于0，则直接跳过，可以从上面的<code>Sync</code>类源码图中看出，其实现的<code>tryAcquireShared</code>方法是直接判断state值是否等于0，如果等于0，就返回1，否则返回-1，也就是说state等于0，直接跳过<code>acquireSharedInterruptibly</code>中的判断，不等于0，就将线程挂起<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E7%9A%84await%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch的await方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84acquireSharedInterruptibly%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="AQS的acquireSharedInterruptibly方法源码图示"></li>
+</ul>
+<h3 id="AQS在CountDownLatch的总结"><a href="#AQS在CountDownLatch的总结" class="headerlink" title="AQS在CountDownLatch的总结"></a>AQS在<code>CountDownLatch</code>的总结</h3><ul>
+<li>调用<code>CountDownLatch</code>的<code>await</code>方法时，便会尝试获取“共享锁”，不过一开始是获取不到该锁的，于是线程被阻塞</li>
+<li>而“共享锁”可获取到的条件，就是“锁计数器”的值为0</li>
+<li>而“锁计数器”的初值为<code>count</code>，每当一个线程调用该<code>CountDownLatch</code>对象的<code>countDown()</code>方法时，才将“锁计数器”-1</li>
+<li><code>count</code>个线程调用<code>countDown()</code>之后，“锁计数器”才为0，而前面提到的等待获取共享锁的线程才能继续运行</li>
+</ul>
+<h2 id="AQS在Semaphore中的应用"><a href="#AQS在Semaphore中的应用" class="headerlink" title="AQS在Semaphore中的应用"></a>AQS在<code>Semaphore</code>中的应用</h2><ul>
+<li>在<code>Semaphore</code>中，<code>state</code>表示许可证的剩余数量</li>
+<li>看<code>tryAcquire</code>方法，判断<code>nonfairTryAcquireShared</code>大于等于0的话，代表成功</li>
+<li>这里会先检查剩余许可证数量够不够这次需要的，用减法来计算，如果直接不够，那就返回负数，表示失败，如果够了，就用自旋加<code>compareAndSetState</code>来改变<code>state</code>的状态，直到改变成功就返回整数，或者是期间如果被其他人修改导致剩余数量不够了，那也返回负数代表获取失败</li>
+</ul>
+<h2 id="AQS在ReentrantLock中的应用"><a href="#AQS在ReentrantLock中的应用" class="headerlink" title="AQS在ReentrantLock中的应用"></a>AQS在<code>ReentrantLock</code>中的应用</h2><ul>
+<li><code>unlock()</code><br>方法具体情况如下图所示，<code>unlock</code>方法直接调用了<code>Sync</code>类继承于AQS的<code>release</code>方法，方法中首先会判断<code>tryRelease</code>方法的返回值，如果是true，就会执行下面的<code>unparkSuccessor</code>方法，唤醒等待的线程，<code>tryRelease</code>方法被<code>ReentrantLock.Sync</code>类重写，首先会将<code>state</code>减1，因为<code>ReentrantLock</code>是可重入锁，解锁一次就是将<code>state</code>减1，然后判断当前线程是不是正在执行的线程，如果是当前线程，判断计算后的<code>state</code>是否等于0，也就是判断这次解锁是不是最后一层锁，如果不是，直接修改<code>state</code>的值，然后返回false，如果是就会调用<code>setExclusiveOwnerThread</code>方法，将当前运行的线程设置为null，并返回true，唤醒其他的线程<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock%E7%9A%84unlock%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock的unlock方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84release%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="AQS的release方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-Sync%E7%B1%BB%E7%9A%84tryRelease%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-Sync类的tryRelease方法源码图示"></li>
+<li><code>lock()</code>（以非公平锁为例）<br>如下图可以看出，<code>ReentrantLock</code>的<code>lock</code>方法中直接调用了内部类<code>Sync</code>的<code>lock</code>方法，而第二个图中也可以看出，<code>Sync.lock()</code>方法是一个<code>abstract</code>方法，由它的两个子类实现(<code>NonfairSync</code>和<code>FairSync</code>,这里仅以<code>NonfairSync</code>为例讲述)<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock%E7%9A%84lock%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock的lock方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-Sync%E7%B1%BB%E7%9A%84lock%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-Sync类的lock方法源码图示"><br>如下图可以看出，<code>NonfairSync</code>中的<code>lock</code>方法首先会调用CAS方法更新<code>state</code>的值，如果更新成功了，就直接将当前线程设置为执行线程，如果失败了，会去执行<code>acquire</code>方法，<code>acquire</code>方法是AQS的一个方法<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-NonfairSync%E7%B1%BB%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-NonfairSync类源码图示"><br>首先方法还会去调用<code>tryAcquire</code>方法，<code>tryAcquire</code>在<code>ReentrantLock</code>中会有公平和非公平两种实现方式，如果<code>tryAcquire</code>方法返回的是true，因为前面的非，则会变成false，直接跳过判断，如果<code>tryAcquire</code>返回的false，加上前面的非，则是true，就会去执行后的语句，<code>addWaiter</code>方法是将当前线程进行封装，<code>acquireQueued</code>方法则是将封装后的Node节点对象，放到等待队列中，等待别的线程释放锁之后将他唤醒<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84acquire%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="AQS的acquire方法源码示意图"><br>非公平类中<code>tryAcquire</code>方法会去调用<code>nonfairTryAcquire</code>方法，这个方法是由<code>Sync</code>类实现的，方法中首先会判断<code>state</code>是否等于0，如果等于0表示当前锁没有被任何线程持有，就会直接通过CAS修改<code>state</code>的值，然后将持锁线程设置为当前线程，如果当前锁已经被持有，就会判断是否为当前线程持有，如果是，就会将<code>state</code>加入参，也就是1，然后重新设置值，如果不是表示当前锁已经被其他线程持有，直接返回false<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-Sync%E7%B1%BB%E7%9A%84nonfairTryAcquire%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-Sync类的nonfairTryAcquire方法源码图示"></li>
+</ul>
+<h3 id="分析释放锁的方法tryRelease"><a href="#分析释放锁的方法tryRelease" class="headerlink" title="分析释放锁的方法tryRelease"></a>分析释放锁的方法<code>tryRelease</code></h3><ul>
+<li>由于当前是可重入锁，所以<code>state</code>代表重入次数，每次释放锁，先判断是不是当前持有锁的线程释放的，如果不是就抛异常，如果是的话，重入次数减一，如果减到了0，就说明完全释放了，于是free就是true了，并且把<code>state</code>设置为0</li>
+</ul>
+<h3 id="加锁的方法"><a href="#加锁的方法" class="headerlink" title="加锁的方法"></a>加锁的方法</h3><ul>
+<li>判断当前<code>state</code>是不是等于0，判断当前线程是不是持有锁的线程，如果都不是就代表当前线程拿不到锁，就会放进线程等待</li>
+</ul>
+<h1 id="利用AQS实现一个自己的Latch门闩"><a href="#利用AQS实现一个自己的Latch门闩" class="headerlink" title="利用AQS实现一个自己的Latch门闩"></a>利用AQS实现一个自己的Latch门闩</h1><p>如下代码就是用AQS自己实现的门闩功能代码，我们要实现的功能很简单，就是当线程调用<code>await</code>方法的时候，将线程挂起，然后等待执行了<code>signal</code>方法，将所有线程唤醒，因为是可重入的，直接调用AQS的<code>releaseShared</code>方法和<code>acquireShared</code>方法来实现，查看AQS的源码可以看到，<code>acquireShared</code>方法会判断<code>tryAcquireShared(arg) &lt; 0</code>的结果，如果为true就会将线程挂起，所以我们重写AQS的<code>tryAcquireShared</code>方法，判断<code>state</code>的值，如果为1，就返回1，1大于0，直接跳过判断，否则就返回-1，-1小于0，会进入判断，将线程挂起，而<code>state</code>默认值为0，肯定不等于1。<br>而唤醒线程的<code>signal</code>方法直接调用了AQS的<code>releaseShared</code>方法，这个方法会判断<code>tryReleaseShared(arg)</code>方法的返回值，如果是true，就调用判断中的方法唤醒被挂起的线程，否则就不处理，所以我们实现<code>tryReleaseShared</code>方法，如果只是实现唤醒的话，直接返回true就可以，但是我们要实现门闩只能使用一次的功能，门闩被打开后，再执行<code>await</code>方法不会将线程挂起，所以将<code>state</code>的值设置为1，这样<code>state</code>的时候就是等于1，然后就直接返回1，1大于0，就不会进入判断，也就不会将线程挂起</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OneShotLatch</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Sync sync = <span class="keyword">new</span> Sync();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">signal</span><span class="params">()</span></span>&#123;</span><br><span class="line">        sync.releaseShared(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">await</span><span class="params">()</span></span>&#123;</span><br><span class="line">        sync.acquireShared(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Sync</span> <span class="keyword">extends</span> <span class="title">AbstractQueuedSynchronizer</span></span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">tryReleaseShared</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">            setState(<span class="number">1</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">tryAcquireShared</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (getState() == <span class="number">1</span>) ? <span class="number">1</span> : -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        OneShotLatch oneShotLatch = <span class="keyword">new</span> OneShotLatch();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    System.out.println(Thread.currentThread().getName()+<span class="string">&quot;尝试获取latch&quot;</span>);</span><br><span class="line">                    oneShotLatch.await();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName()+<span class="string">&quot;开闸放行，继续前进&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">        Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">        oneShotLatch.signal();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName()+<span class="string">&quot;尝试获取latch&quot;</span>);</span><br><span class="line">                oneShotLatch.await();</span><br><span class="line">                System.out.println(Thread.currentThread().getName()+<span class="string">&quot;开闸放行，继续前进&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>多线程</category>
       </categories>
@@ -5284,7 +5284,7 @@
 </tr>
 </tbody></table>
 <blockquote>
-<p>如下内容，是使用参数打印的垃圾回收信息，以及程序结束时堆的信息<br><code>-Xms20m -Xmx20m -Xmn10m -XX:+UseSerialGC -XX:+PrintGCDetails -verbose:gc</code><br>使用了上面这些jvm参数（堆内存初始20m，最大20m，新生代10m，使用Serial垃圾回收器，打印垃圾回收信息）<br>以<code>[GC</code>开头的两行，表示年轻代垃圾回收信息（老年代垃圾回收以<code>Full GC</code>开头），DefNew表示新生代，后面是回收前内存，回收后内存，总内存，使用时间；然后是整个堆回收前占用内存，回收后占用内存，总内存，回收占用时间，时间主要看最后<code>real</code>的时间，平均时间<br><code>Heap</code> 程序停止的时候的堆信息<br><code>def new generation</code> 新生代堆信息，总内存，已经占用的内存<br><code>eden</code> 伊甸园的内存大小，占用比例<br><code>from</code> 性存区from的内存大小，使用占比</p>
+<p>如下内容，是使用参数打印的垃圾回收信息，以及程序结束时堆的信息<br><code>-Xms20m -Xmx20m -Xmn10m -XX:+UseSerialGC -XX:+PrintGCDetails -verbose:gc</code><br>使用了上面这些jvm参数（堆内存初始20m，最大20m，新生代10m，使用Serial垃圾回收器，打印垃圾回收信息）<br>以<code>[GC</code>开头的两行，表示年轻代垃圾回收信息（老年代垃圾回收以<code>Full GC</code>开头），DefNew表示新生代，后面是回收前内存，回收后内存，总内存，使用时间；然后是整个堆回收前占用内存，回收后占用内存，总内存，回收占用时间，时间主要看最后<code>real</code>的时间，平均时间<br><code>Heap</code> 程序停止的时候的堆信息<br><code>def new generation</code> 新生代堆信息，总内存，已经占用的内存<br><code>eden</code> 的内存大小，占用比例<br><code>from</code> 性存区from的内存大小，使用占比<br><code>to</code> 性存区to的内存大小，使用占比<br><code>tenured generation</code> 老年代的内存带下，总空间，使用空间<br>老年代的空间大小，使用占比<br><code>Metaspace</code> 的相关信息</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[GC (Allocation Failure) [DefNew: 6436K-&gt;1024K(9216K), 0.0027524 secs] 6436K-&gt;1543K(19456K), 0.0028086 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </span><br><span class="line">[GC (Allocation Failure) [DefNew: 8859K-&gt;512K(9216K), 0.0041159 secs] 9378K-&gt;9223K(19456K), 0.0041326 secs] [Times: user=0.00 sys=0.02, real=0.00 secs] </span><br><span class="line">Heap</span><br><span class="line"> def new generation   total 9216K, used 1106K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)</span><br><span class="line">  eden space 8192K,   7% used [0x00000000fec00000, 0x00000000fec94930, 0x00000000ff400000)</span><br><span class="line">  from space 1024K,  50% used [0x00000000ff400000, 0x00000000ff480048, 0x00000000ff500000)</span><br><span class="line">  to   space 1024K,   0% used [0x00000000ff500000, 0x00000000ff500000, 0x00000000ff600000)</span><br><span class="line"> tenured generation   total 10240K, used 8711K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)</span><br><span class="line">   the space 10240K,  85% used [0x00000000ff600000, 0x00000000ffe81c18, 0x00000000ffe81e00, 0x0000000100000000)</span><br><span class="line"> Metaspace       used 3328K, capacity 4496K, committed 4864K, reserved 1056768K</span><br><span class="line">  class space    used 359K, capacity 388K, committed 512K, reserved 1048576K</span><br></pre></td></tr></table></figure>
 
