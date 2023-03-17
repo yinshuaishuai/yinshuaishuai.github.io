@@ -1,6 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Java运算符</title>
+    <url>/2022/01/18/java%E5%9F%BA%E7%A1%80/Java%E8%BF%90%E7%AE%97%E7%AC%A6/</url>
+    <content><![CDATA[<h1 id="（a-a-b）位或"><a href="#（a-a-b）位或" class="headerlink" title="|= （a = a | b）位或"></a>|= （a = a | b）位或</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>两个二进制对应位为0时，该位为0，否则为1。拿5的二进制<code>0000 0101</code>和3的二进制<code>0000 0011</code>进行<code>|</code>运算，后三位的对应位都不是同时等于0，所以最终结果为<code>0000 0111</code>也就是7的二进制。</p>
+</blockquote>
+<p>代码示例如下：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test() &#123;</span><br><span class="line">    int a = 5;//0000 0101</span><br><span class="line">    int b = 3;//0000 0011</span><br><span class="line">    a |= b;//0000 0111</span><br><span class="line">    System.out.println(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="amp-（a-a-amp-b）位与"><a href="#amp-（a-a-amp-b）位与" class="headerlink" title="&amp;= （a = a &amp; b）位与"></a>&amp;= （a = a &amp; b）位与</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>两个二进制对应位都为1时，结果为1，否则结果都是0。拿5的二进制<code>0000 0101</code>和3的二进制<code>0000 0011</code>进行<code>&amp;</code>运算，只有最后一位都是1，则最终结果为<code>0000 0001</code>也就是1的二进制。</p>
+</blockquote>
+<p>代码示例：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test1() &#123;</span><br><span class="line">    int a = 5;//0000 0101</span><br><span class="line">    int b = 3;//0000 0011</span><br><span class="line">    a &amp;= b;//0000 0001</span><br><span class="line">    System.out.println(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="（a-a-b）异或运算符"><a href="#（a-a-b）异或运算符" class="headerlink" title="^= （a = a ^ b）异或运算符"></a>^= （a = a ^ b）异或运算符</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>两个二进制对应位相同时，结果为0，否则结果为1。拿5的二进制<code>0000 0101</code>和3的二进制<code>0000 0011</code>进行<code>^</code>运算，<code>1-5</code>位对应位都是0，所以<code>1-5</code>位都是0，第8位都为1所以第8位也为0，其他的对应位都不相等所以为1，则最终结果为<code>0000 0110</code>也就是6的二进制。</p>
+</blockquote>
+<p>代码示例：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test2() &#123;</span><br><span class="line">    int a = 5;//0000 0101</span><br><span class="line">    int b = 3;//0000 0011</span><br><span class="line">    a ^= b;//0000 0110</span><br><span class="line">    System.out.println(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><ul>
+<li>|=：两个二进制对应位都为0时，结果为0，否则结果为1；</li>
+<li>&amp;=：两个二进制的对应位都为1时，结果为1，否则结果等于0；</li>
+<li>^=：两个二进制的对应位相同时，结果为0，否则结果为1。</li>
+</ul>
+<h1 id="（取反运算符）"><a href="#（取反运算符）" class="headerlink" title="~ （取反运算符）"></a>~ （取反运算符）</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>把数字转为二进制，然后取反，就是1变0,0变1</p>
+</blockquote>
+<p>代码示例：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// ~</span><br><span class="line">private static void test6() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   1111 1111 1111 1111 1111 1111 1111 1011</span><br><span class="line">    System.out.println(Integer.parseInt(&quot;-1111111111111111111111111111011&quot;,2));</span><br><span class="line">    System.out.println(~4);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="gt-gt-（带符号右移）"><a href="#gt-gt-（带符号右移）" class="headerlink" title="&gt;&gt; （带符号右移）"></a>&gt;&gt; （带符号右移）</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>符号前面的数字的二进制数，向右移动符号右边的数字位数，正数高位用0补，负数高位用1补。 </p>
+</blockquote>
+<p>代码示例：   </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test3() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   00000 0000 0000 0000 0000 0000 0000 010</span><br><span class="line">    System.out.println(4&gt;&gt;1);</span><br><span class="line">    //-4  1111 1111 1111 1111 1111 1111 1111 1100</span><br><span class="line">    //    11111 1111 1111 1111 1111 1111 1111 110</span><br><span class="line">    System.out.println(-4&gt;&gt;1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="lt-lt-（带符号左移）"><a href="#lt-lt-（带符号左移）" class="headerlink" title="&lt;&lt; （带符号左移）"></a>&lt;&lt; （带符号左移）</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>符号前面的数字的二进制数，向左移动符号右边的数字位数，正数高位用0补，负数高位用1补。</p>
+</blockquote>
+<p>代码示例：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test4() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   000 0000 0000 0000 0000 0000 0000 01000</span><br><span class="line">    System.out.println(4&lt;&lt;1);</span><br><span class="line">    //-4  1111 1111 1111 1111 1111 1111 1111 1100</span><br><span class="line">    //    111 1111 1111 1111 1111 1111 1111 11011</span><br><span class="line">    System.out.println(-4&lt;&lt;1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="gt-gt-gt-（无符号右移）"><a href="#gt-gt-gt-（无符号右移）" class="headerlink" title="&gt;&gt;&gt; （无符号右移）"></a>&gt;&gt;&gt; （无符号右移）</h1><p><strong>描述：</strong>  </p>
+<blockquote>
+<p>符号前面的数字的二进制数，向右移动符号右边的数字位数，正数高位用0补，负数忽略符号高位也用0补。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// &gt;&gt;&gt;</span><br><span class="line">private static void test5() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   00000 0000 0000 0000 0000 0000 0000 010</span><br><span class="line">    System.out.println(4&gt;&gt;&gt;1);</span><br><span class="line">    //-4  1111 1111 1111 1111 1111 1111 1111 1100</span><br><span class="line">    //    01111 1111 1111 1111 1111 1111 1111 110</span><br><span class="line">    System.out.println(-4&gt;&gt;&gt;1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="负数取值"><a href="#负数取值" class="headerlink" title="负数取值"></a>负数取值</h1><p>Java中负数是以原码的补码形式表达的。  </p>
+<p><strong>原码：</strong>   </p>
+<ul>
+<li>一个正数，按照绝对值大小转换成的二进制；</li>
+<li>一个负数，按照绝对值大小转换成二进制，然后最高位补1，称为原码。</li>
+</ul>
+<p>比如Java中Integer是32位，所以5的二进制为：0000 0000 0000 0000 0000 0000 0000 0101<br>5的原码是：0000 0000 0000 0000 0000 0000 0000 0101<br>所以，对应的-5的原码是：1000 0000 0000 0000 0000 0000 0000 0101  </p>
+<p><strong>反码：</strong>  </p>
+<ul>
+<li>正数的反码与原码相同，负数的反码为该数的原码除符号位外其他位取反；</li>
+<li>取反操作指：原为1，得0，原为0，得1,；（1变0,0变1）</li>
+</ul>
+<p>比如正数5的反码还是：0000 0000 0000 0000 0000 0000 0000 0101<br>负数-5，1000 0000 0000 0000 0000 0000 0000 0101的反码是：1111 1111 1111 1111 1111 1111 1111 1010<br>称1000 0000 0000 0000 0000 0000 0000 0101和1111 1111 1111 1111 1111 1111 1111 1010互为反码  </p>
+<p><strong>补码：</strong>  </p>
+<ul>
+<li>正数的补码与原码相同</li>
+<li>负数的补码为该数的反码然后在最后一位加1</li>
+</ul>
+<p>比如，1000 0000 0000 0000 0000 0000 0000 0101的反码是1111 1111 1111 1111 1111 1111 1111 1010<br>那么补码为：<br>1111 1111 1111 1111 1111 1111 1111 1010 + 1 = 1111 1111 1111 1111 1111 1111 1111 1011  </p>
+<p>所以-5在Java中表达为：1111 1111 1111 1111 1111 1111 1111 1011  </p>
+<p><strong>如-1在java中的表示:</strong>    </p>
+<ul>
+<li>先取-1的原码：1000 0000 0000 0000 0000 0000 0000 0001  </li>
+<li>取反码：1111 1111 1111 1111 1111 1111 1111 1110  </li>
+<li>补码：1111 1111 1111 1111 1111 1111 1111 1111   </li>
+</ul>
+]]></content>
+      <categories>
+        <category>java基础</category>
+      </categories>
+      <tags>
+        <tag>java基础</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux命令</title>
     <url>/2021/10/20/linux/Linux%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<h2 id="ls命令"><a href="#ls命令" class="headerlink" title="ls命令"></a>ls命令</h2><p>就是list的缩写，通过ls命令不仅可以查看linux文件夹包含的文件，而且可以查看文件的权限，查看目录等信息  </p>
@@ -153,152 +242,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Java运算符</title>
-    <url>/2022/01/18/java%E5%9F%BA%E7%A1%80/Java%E8%BF%90%E7%AE%97%E7%AC%A6/</url>
-    <content><![CDATA[<h1 id="（a-a-b）位或"><a href="#（a-a-b）位或" class="headerlink" title="|= （a = a | b）位或"></a>|= （a = a | b）位或</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>两个二进制对应位为0时，该位为0，否则为1。拿5的二进制<code>0000 0101</code>和3的二进制<code>0000 0011</code>进行<code>|</code>运算，后三位的对应位都不是同时等于0，所以最终结果为<code>0000 0111</code>也就是7的二进制。</p>
-</blockquote>
-<p>代码示例如下：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test() &#123;</span><br><span class="line">    int a = 5;//0000 0101</span><br><span class="line">    int b = 3;//0000 0011</span><br><span class="line">    a |= b;//0000 0111</span><br><span class="line">    System.out.println(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="amp-（a-a-amp-b）位与"><a href="#amp-（a-a-amp-b）位与" class="headerlink" title="&amp;= （a = a &amp; b）位与"></a>&amp;= （a = a &amp; b）位与</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>两个二进制对应位都为1时，结果为1，否则结果都是0。拿5的二进制<code>0000 0101</code>和3的二进制<code>0000 0011</code>进行<code>&amp;</code>运算，只有最后一位都是1，则最终结果为<code>0000 0001</code>也就是1的二进制。</p>
-</blockquote>
-<p>代码示例：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test1() &#123;</span><br><span class="line">    int a = 5;//0000 0101</span><br><span class="line">    int b = 3;//0000 0011</span><br><span class="line">    a &amp;= b;//0000 0001</span><br><span class="line">    System.out.println(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="（a-a-b）异或运算符"><a href="#（a-a-b）异或运算符" class="headerlink" title="^= （a = a ^ b）异或运算符"></a>^= （a = a ^ b）异或运算符</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>两个二进制对应位相同时，结果为0，否则结果为1。拿5的二进制<code>0000 0101</code>和3的二进制<code>0000 0011</code>进行<code>^</code>运算，<code>1-5</code>位对应位都是0，所以<code>1-5</code>位都是0，第8位都为1所以第8位也为0，其他的对应位都不相等所以为1，则最终结果为<code>0000 0110</code>也就是6的二进制。</p>
-</blockquote>
-<p>代码示例：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test2() &#123;</span><br><span class="line">    int a = 5;//0000 0101</span><br><span class="line">    int b = 3;//0000 0011</span><br><span class="line">    a ^= b;//0000 0110</span><br><span class="line">    System.out.println(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><ul>
-<li>|=：两个二进制对应位都为0时，结果为0，否则结果为1；</li>
-<li>&amp;=：两个二进制的对应位都为1时，结果为1，否则结果等于0；</li>
-<li>^=：两个二进制的对应位相同时，结果为0，否则结果为1。</li>
-</ul>
-<h1 id="（取反运算符）"><a href="#（取反运算符）" class="headerlink" title="~ （取反运算符）"></a>~ （取反运算符）</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>把数字转为二进制，然后取反，就是1变0,0变1</p>
-</blockquote>
-<p>代码示例：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// ~</span><br><span class="line">private static void test6() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   1111 1111 1111 1111 1111 1111 1111 1011</span><br><span class="line">    System.out.println(Integer.parseInt(&quot;-1111111111111111111111111111011&quot;,2));</span><br><span class="line">    System.out.println(~4);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="gt-gt-（带符号右移）"><a href="#gt-gt-（带符号右移）" class="headerlink" title="&gt;&gt; （带符号右移）"></a>&gt;&gt; （带符号右移）</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>符号前面的数字的二进制数，向右移动符号右边的数字位数，正数高位用0补，负数高位用1补。 </p>
-</blockquote>
-<p>代码示例：   </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test3() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   00000 0000 0000 0000 0000 0000 0000 010</span><br><span class="line">    System.out.println(4&gt;&gt;1);</span><br><span class="line">    //-4  1111 1111 1111 1111 1111 1111 1111 1100</span><br><span class="line">    //    11111 1111 1111 1111 1111 1111 1111 110</span><br><span class="line">    System.out.println(-4&gt;&gt;1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="lt-lt-（带符号左移）"><a href="#lt-lt-（带符号左移）" class="headerlink" title="&lt;&lt; （带符号左移）"></a>&lt;&lt; （带符号左移）</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>符号前面的数字的二进制数，向左移动符号右边的数字位数，正数高位用0补，负数高位用1补。</p>
-</blockquote>
-<p>代码示例：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">private static void test4() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   000 0000 0000 0000 0000 0000 0000 01000</span><br><span class="line">    System.out.println(4&lt;&lt;1);</span><br><span class="line">    //-4  1111 1111 1111 1111 1111 1111 1111 1100</span><br><span class="line">    //    111 1111 1111 1111 1111 1111 1111 11011</span><br><span class="line">    System.out.println(-4&lt;&lt;1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="gt-gt-gt-（无符号右移）"><a href="#gt-gt-gt-（无符号右移）" class="headerlink" title="&gt;&gt;&gt; （无符号右移）"></a>&gt;&gt;&gt; （无符号右移）</h1><p><strong>描述：</strong>  </p>
-<blockquote>
-<p>符号前面的数字的二进制数，向右移动符号右边的数字位数，正数高位用0补，负数忽略符号高位也用0补。</p>
-</blockquote>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// &gt;&gt;&gt;</span><br><span class="line">private static void test5() &#123;</span><br><span class="line">    //4  0000 0000 0000 0000 0000 0000 0000 0100</span><br><span class="line">    //   00000 0000 0000 0000 0000 0000 0000 010</span><br><span class="line">    System.out.println(4&gt;&gt;&gt;1);</span><br><span class="line">    //-4  1111 1111 1111 1111 1111 1111 1111 1100</span><br><span class="line">    //    01111 1111 1111 1111 1111 1111 1111 110</span><br><span class="line">    System.out.println(-4&gt;&gt;&gt;1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="负数取值"><a href="#负数取值" class="headerlink" title="负数取值"></a>负数取值</h1><p>Java中负数是以原码的补码形式表达的。  </p>
-<p><strong>原码：</strong>   </p>
-<ul>
-<li>一个正数，按照绝对值大小转换成的二进制；</li>
-<li>一个负数，按照绝对值大小转换成二进制，然后最高位补1，称为原码。</li>
-</ul>
-<p>比如Java中Integer是32位，所以5的二进制为：0000 0000 0000 0000 0000 0000 0000 0101<br>5的原码是：0000 0000 0000 0000 0000 0000 0000 0101<br>所以，对应的-5的原码是：1000 0000 0000 0000 0000 0000 0000 0101  </p>
-<p><strong>反码：</strong>  </p>
-<ul>
-<li>正数的反码与原码相同，负数的反码为该数的原码除符号位外其他位取反；</li>
-<li>取反操作指：原为1，得0，原为0，得1,；（1变0,0变1）</li>
-</ul>
-<p>比如正数5的反码还是：0000 0000 0000 0000 0000 0000 0000 0101<br>负数-5，1000 0000 0000 0000 0000 0000 0000 0101的反码是：1111 1111 1111 1111 1111 1111 1111 1010<br>称1000 0000 0000 0000 0000 0000 0000 0101和1111 1111 1111 1111 1111 1111 1111 1010互为反码  </p>
-<p><strong>补码：</strong>  </p>
-<ul>
-<li>正数的补码与原码相同</li>
-<li>负数的补码为该数的反码然后在最后一位加1</li>
-</ul>
-<p>比如，1000 0000 0000 0000 0000 0000 0000 0101的反码是1111 1111 1111 1111 1111 1111 1111 1010<br>那么补码为：<br>1111 1111 1111 1111 1111 1111 1111 1010 + 1 = 1111 1111 1111 1111 1111 1111 1111 1011  </p>
-<p>所以-5在Java中表达为：1111 1111 1111 1111 1111 1111 1111 1011  </p>
-<p><strong>如-1在java中的表示:</strong>    </p>
-<ul>
-<li>先取-1的原码：1000 0000 0000 0000 0000 0000 0000 0001  </li>
-<li>取反码：1111 1111 1111 1111 1111 1111 1111 1110  </li>
-<li>补码：1111 1111 1111 1111 1111 1111 1111 1111   </li>
-</ul>
-]]></content>
-      <categories>
-        <category>java基础</category>
-      </categories>
-      <tags>
-        <tag>java基础</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>通过gitee和hexo搭建个人博客</title>
-    <url>/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
-<li>git（提供git命令）<a href="https://git-scm.com/">git官网</a></li>
-<li>node（hexo依赖）<a href="https://nodejs.org/en/">nodejs官网</a></li>
-<li>gitee（事先注册码云账号）<a href="https://gitee.com/">码云主页</a></li>
-<li>编辑器（根据个人喜好使用即可）</li>
-</ul>
-<h2 id="码云配置"><a href="#码云配置" class="headerlink" title="码云配置"></a>码云配置</h2><p>在gitee上创建一个仓库<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/gitee%E6%96%B0%E5%BB%BA%E4%BB%93%E5%BA%93.png" alt="gitee新建仓库"><br>点击Gitee Pages配置博客地址<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/gitee%E9%85%8D%E7%BD%AE%E5%8D%9A%E5%AE%A2.png" alt="gitee配置博客"><br>具体命名格式可查看下面连接<br><a href="https://gitee.com/help/articles/4136#article-header0">gitee帮助中心</a>  </p>
-<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h2><blockquote>
-<p>其他软件安装步骤省略，此处只说说hexo的安装和配置  </p>
-</blockquote>
-<ul>
-<li>通过npm安装hexo<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install -g hexo 		# -g 指定全局安装，可以使用hexo命令</span><br></pre></td></tr></table></figure></li>
-<li>打开工作文件夹，执行以下命令<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo init test		# 初始化创建，会在工作文件夹下创建test文件夹</span><br><span class="line">cd test				# 进入test目录</span><br><span class="line">npm install			# 进一步安装hexo所需文件</span><br></pre></td></tr></table></figure></li>
-<li>安装之后可以启动进行预览<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo clean			# 清除所有记录</span><br><span class="line">hexo generate		# 生成静态网页</span><br><span class="line">hexo server     	# 启动服务,默认是在4000端口启动，可使用-p参数指定启动端口</span><br></pre></td></tr></table></figure></li>
-<li>访问<a href="http://localhost:4000/">http://localhost:4000</a>预览<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/hexo%E9%BB%98%E8%AE%A4%E4%B8%BB%E9%A1%B5.png" alt="hexo默认主页">  </li>
-</ul>
-<blockquote>
-<p>想要更换主题可以访问 <a href="https://hexo.io/themes/">hexo官网主题</a> 预览下载<br>将下载的主题放到themes文件夹下，然后更改_config.yml配置即可</p>
-</blockquote>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">sky</span>   <span class="comment">#值为你放在themes文件夹里的主题文件夹名称</span></span><br></pre></td></tr></table></figure>
-<p>其他配置可以参考<a href="https://hexo.io/zh-cn/docs/">hexo官方文档</a></p>
-<p>新建文章</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo new test		# 会在test/source/_posts下会生成test.md文件</span><br></pre></td></tr></table></figure>
-
-<h2 id="上传gitee"><a href="#上传gitee" class="headerlink" title="上传gitee"></a>上传gitee</h2><ul>
-<li>需要先安装一个插件  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save  #安装git插件</span><br></pre></td></tr></table></figure></li>
-<li>复制刚刚gitee创建的项目的url，打开_config.yml文件进行配置<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://gitee.com/ysymj/ysymj</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo deploy	# 上传到gitee</span><br><span class="line"><span class="meta">#</span><span class="bash">上传时会提示输入gitee的账户密码</span></span><br></pre></td></tr></table></figure></li>
-<li>点击仓库主页-&gt;服务-&gt;Gitee Pages<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/gitee%E9%85%8D%E7%BD%AE%E5%8D%9A%E5%AE%A2.png" alt="gitee配置博客">  </li>
-<li>点击更新，之后就可以通过配置的网址进行访问了<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/%E6%9B%B4%E6%96%B0%E5%8D%9A%E5%AE%A2.png" alt="更新博客"></li>
-</ul>
-<h2 id="hexo博客访问图片问题"><a href="#hexo博客访问图片问题" class="headerlink" title="hexo博客访问图片问题"></a>hexo博客访问图片问题</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install hexo-asset-image --save	# 安装hexo插件</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>修改_config.yml配置<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></li>
-<li>打开<code>/node_modules/hexo-asset-image/index.js</code>文件，将文件内容替换为一下内容<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> cheerio = <span class="built_in">require</span>(<span class="string">&#x27;cheerio&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// http://stackoverflow.com/questions/14480345/how-to-get-the-nth-occurrence-in-a-string</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getPosition</span>(<span class="params">str, m, i</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> str.split(m, i).join(m).length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> version = <span class="built_in">String</span>(hexo.version).split(<span class="string">&#x27;.&#x27;</span>);</span><br><span class="line">hexo.extend.filter.register(<span class="string">&#x27;after_post_render&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> config = hexo.config;</span><br><span class="line">  <span class="keyword">if</span>(config.post_asset_folder)&#123;</span><br><span class="line">        <span class="keyword">var</span> link = data.permalink;</span><br><span class="line">    <span class="keyword">if</span>(version.length &gt; <span class="number">0</span> &amp;&amp; <span class="built_in">Number</span>(version[<span class="number">0</span>]) == <span class="number">3</span>)</span><br><span class="line">       <span class="keyword">var</span> beginPos = getPosition(link, <span class="string">&#x27;/&#x27;</span>, <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">       <span class="keyword">var</span> beginPos = getPosition(link, <span class="string">&#x27;/&#x27;</span>, <span class="number">3</span>) + <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// In hexo 3.1.1, the permalink of &quot;about&quot; page is like &quot;.../about/index.html&quot;.</span></span><br><span class="line">    <span class="keyword">var</span> endPos = link.lastIndexOf(<span class="string">&#x27;/&#x27;</span>) + <span class="number">1</span>;</span><br><span class="line">    link = link.substring(beginPos, endPos);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> toprocess = [<span class="string">&#x27;excerpt&#x27;</span>, <span class="string">&#x27;more&#x27;</span>, <span class="string">&#x27;content&#x27;</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; toprocess.length; i++)&#123;</span><br><span class="line">      <span class="keyword">var</span> key = toprocess[i];</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">var</span> $ = cheerio.load(data[key], &#123;</span><br><span class="line">        <span class="attr">ignoreWhitespace</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">xmlMode</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">lowerCaseTags</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">decodeEntities</span>: <span class="literal">false</span></span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      $(<span class="string">&#x27;img&#x27;</span>).each(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ($(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>))&#123;</span><br><span class="line">            <span class="comment">// For windows style path, we replace &#x27;\&#x27; to &#x27;/&#x27;.</span></span><br><span class="line">            <span class="keyword">var</span> src = $(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>).replace(<span class="string">&#x27;\\&#x27;</span>, <span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">            <span class="keyword">if</span>(!<span class="regexp">/http[s]*.*|\/\/.*/</span>.test(src) &amp;&amp;</span><br><span class="line">               !<span class="regexp">/^\s*\//</span>.test(src)) &#123;</span><br><span class="line">              <span class="comment">// For &quot;about&quot; page, the first part of &quot;src&quot; can&#x27;t be removed.</span></span><br><span class="line">              <span class="comment">// In addition, to support multi-level local directory.</span></span><br><span class="line">              <span class="keyword">var</span> linkArray = link.split(<span class="string">&#x27;/&#x27;</span>).filter(<span class="function"><span class="keyword">function</span>(<span class="params">elem</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> elem != <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">var</span> srcArray = src.split(<span class="string">&#x27;/&#x27;</span>).filter(<span class="function"><span class="keyword">function</span>(<span class="params">elem</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> elem != <span class="string">&#x27;&#x27;</span> &amp;&amp; elem != <span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">if</span>(srcArray.length &gt; <span class="number">1</span>)</span><br><span class="line">                srcArray.shift();</span><br><span class="line">              src = srcArray.join(<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">              $(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>, config.root + link + src);</span><br><span class="line">              <span class="built_in">console</span>.info&amp;&amp;<span class="built_in">console</span>.info(<span class="string">&quot;update link as:--&gt;&quot;</span>+config.root + link + src);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.info&amp;&amp;<span class="built_in">console</span>.info(<span class="string">&quot;no src attr, skipped...&quot;</span>);</span><br><span class="line">            <span class="built_in">console</span>.info&amp;&amp;<span class="built_in">console</span>.info($(<span class="built_in">this</span>));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">      data[key] = $.html();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo new test		# 生成新的文章</span><br></pre></td></tr></table></figure>
-<p>执行命令生成新的文章，在生成新的文章的时候，会在同级目录下生成一个同名的文件夹，将图片放在文件夹中，md文件中图片配置为同级目录即可</p>
-<h2 id="博客评论功能"><a href="#博客评论功能" class="headerlink" title="博客评论功能"></a>博客评论功能</h2><p>本博客评论功能是基于<code>valine</code>实现。<br>1.注册账号<br>需要登录leancloud（<a href="https://console.leancloud.cn/">https://console.leancloud.cn/</a> ）网站注册账号<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/leancloud%E7%99%BB%E5%BD%95.png" alt="leancloud登录"></p>
-<p>2.创建应用<br>登录后点击创建应用，应用名称随便填，一般免费版使用开发板即可，使用商用版也可以，不过需要费出一定的费用。<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/leancloud%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8.png" alt="leancloud创建应用"></p>
-<p>3.查看应用key<br>一次点击<code>新建的应用-设置-应用凭证</code>，可以看到入下图，复制AppID和AppKey一会需要用到。<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/leancloud-key%E6%9F%A5%E7%9C%8B.png" alt="leancloud-key查看"></p>
-<p>4.改代码<br>在项目的<code>_config.yml</code>中增加以下配置，其中的appId和appKey就是上面复制的AppID和AppKey。    </p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">comment:</span></span><br><span class="line">  <span class="attr">appId:</span> <span class="string">leancloud中的AppID</span></span><br><span class="line">  <span class="attr">appKey:</span> <span class="string">leancloud中的AppKey</span></span><br></pre></td></tr></table></figure>
-<p>修改模板文件，在对应的模板中增加以下代码，作者的是<code>post.ejs</code>，具体应该会根据模板的不同而有所不同。  </p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;comment-container&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&#x27;//unpkg.com/valine/dist/Valine.min.js&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    <span class="keyword">new</span> Valine(&#123;</span></span><br><span class="line"><span class="javascript">        <span class="attr">el</span>: <span class="string">&#x27;#comment-container&#x27;</span>,</span></span><br><span class="line"><span class="javascript">        <span class="attr">appId</span>: <span class="string">&#x27;&lt;%- config.comment.appId %&gt;&#x27;</span>,</span></span><br><span class="line"><span class="javascript">        <span class="attr">appKey</span>: <span class="string">&#x27;&lt;%- config.comment.appKey %&gt;&#x27;</span></span></span><br><span class="line"><span class="javascript">    &#125;)</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>web</category>
-      </categories>
-      <tags>
-        <tag>html</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>synchronized关键字</title>
     <url>/2021/11/14/%E5%A4%9A%E7%BA%BF%E7%A8%8B/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/</url>
     <content><![CDATA[<h1 id="synchronized的作用"><a href="#synchronized的作用" class="headerlink" title="synchronized的作用"></a>synchronized的作用</h1><ul>
@@ -415,6 +358,63 @@
       </categories>
       <tags>
         <tag>多线程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>通过gitee和hexo搭建个人博客</title>
+    <url>/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <content><![CDATA[<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
+<li>git（提供git命令）<a href="https://git-scm.com/">git官网</a></li>
+<li>node（hexo依赖）<a href="https://nodejs.org/en/">nodejs官网</a></li>
+<li>gitee（事先注册码云账号）<a href="https://gitee.com/">码云主页</a></li>
+<li>编辑器（根据个人喜好使用即可）</li>
+</ul>
+<h2 id="码云配置"><a href="#码云配置" class="headerlink" title="码云配置"></a>码云配置</h2><p>在gitee上创建一个仓库<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/gitee%E6%96%B0%E5%BB%BA%E4%BB%93%E5%BA%93.png" alt="gitee新建仓库"><br>点击Gitee Pages配置博客地址<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/gitee%E9%85%8D%E7%BD%AE%E5%8D%9A%E5%AE%A2.png" alt="gitee配置博客"><br>具体命名格式可查看下面连接<br><a href="https://gitee.com/help/articles/4136#article-header0">gitee帮助中心</a>  </p>
+<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h2><blockquote>
+<p>其他软件安装步骤省略，此处只说说hexo的安装和配置  </p>
+</blockquote>
+<ul>
+<li>通过npm安装hexo<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install -g hexo 		# -g 指定全局安装，可以使用hexo命令</span><br></pre></td></tr></table></figure></li>
+<li>打开工作文件夹，执行以下命令<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo init test		# 初始化创建，会在工作文件夹下创建test文件夹</span><br><span class="line">cd test				# 进入test目录</span><br><span class="line">npm install			# 进一步安装hexo所需文件</span><br></pre></td></tr></table></figure></li>
+<li>安装之后可以启动进行预览<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo clean			# 清除所有记录</span><br><span class="line">hexo generate		# 生成静态网页</span><br><span class="line">hexo server     	# 启动服务,默认是在4000端口启动，可使用-p参数指定启动端口</span><br></pre></td></tr></table></figure></li>
+<li>访问<a href="http://localhost:4000/">http://localhost:4000</a>预览<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/hexo%E9%BB%98%E8%AE%A4%E4%B8%BB%E9%A1%B5.png" alt="hexo默认主页">  </li>
+</ul>
+<blockquote>
+<p>想要更换主题可以访问 <a href="https://hexo.io/themes/">hexo官网主题</a> 预览下载<br>将下载的主题放到themes文件夹下，然后更改_config.yml配置即可</p>
+</blockquote>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme:</span> <span class="string">sky</span>   <span class="comment">#值为你放在themes文件夹里的主题文件夹名称</span></span><br></pre></td></tr></table></figure>
+<p>其他配置可以参考<a href="https://hexo.io/zh-cn/docs/">hexo官方文档</a></p>
+<p>新建文章</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo new test		# 会在test/source/_posts下会生成test.md文件</span><br></pre></td></tr></table></figure>
+
+<h2 id="上传gitee"><a href="#上传gitee" class="headerlink" title="上传gitee"></a>上传gitee</h2><ul>
+<li>需要先安装一个插件  <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save  #安装git插件</span><br></pre></td></tr></table></figure></li>
+<li>复制刚刚gitee创建的项目的url，打开_config.yml文件进行配置<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://gitee.com/ysymj/ysymj</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo deploy	# 上传到gitee</span><br><span class="line"><span class="meta">#</span><span class="bash">上传时会提示输入gitee的账户密码</span></span><br></pre></td></tr></table></figure></li>
+<li>点击仓库主页-&gt;服务-&gt;Gitee Pages<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/gitee%E9%85%8D%E7%BD%AE%E5%8D%9A%E5%AE%A2.png" alt="gitee配置博客">  </li>
+<li>点击更新，之后就可以通过配置的网址进行访问了<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/%E6%9B%B4%E6%96%B0%E5%8D%9A%E5%AE%A2.png" alt="更新博客"></li>
+</ul>
+<h2 id="hexo博客访问图片问题"><a href="#hexo博客访问图片问题" class="headerlink" title="hexo博客访问图片问题"></a>hexo博客访问图片问题</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install hexo-asset-image --save	# 安装hexo插件</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改_config.yml配置<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure></li>
+<li>打开<code>/node_modules/hexo-asset-image/index.js</code>文件，将文件内容替换为一下内容<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> cheerio = <span class="built_in">require</span>(<span class="string">&#x27;cheerio&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// http://stackoverflow.com/questions/14480345/how-to-get-the-nth-occurrence-in-a-string</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getPosition</span>(<span class="params">str, m, i</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> str.split(m, i).join(m).length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> version = <span class="built_in">String</span>(hexo.version).split(<span class="string">&#x27;.&#x27;</span>);</span><br><span class="line">hexo.extend.filter.register(<span class="string">&#x27;after_post_render&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> config = hexo.config;</span><br><span class="line">  <span class="keyword">if</span>(config.post_asset_folder)&#123;</span><br><span class="line">        <span class="keyword">var</span> link = data.permalink;</span><br><span class="line">    <span class="keyword">if</span>(version.length &gt; <span class="number">0</span> &amp;&amp; <span class="built_in">Number</span>(version[<span class="number">0</span>]) == <span class="number">3</span>)</span><br><span class="line">       <span class="keyword">var</span> beginPos = getPosition(link, <span class="string">&#x27;/&#x27;</span>, <span class="number">1</span>) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">       <span class="keyword">var</span> beginPos = getPosition(link, <span class="string">&#x27;/&#x27;</span>, <span class="number">3</span>) + <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// In hexo 3.1.1, the permalink of &quot;about&quot; page is like &quot;.../about/index.html&quot;.</span></span><br><span class="line">    <span class="keyword">var</span> endPos = link.lastIndexOf(<span class="string">&#x27;/&#x27;</span>) + <span class="number">1</span>;</span><br><span class="line">    link = link.substring(beginPos, endPos);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> toprocess = [<span class="string">&#x27;excerpt&#x27;</span>, <span class="string">&#x27;more&#x27;</span>, <span class="string">&#x27;content&#x27;</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; toprocess.length; i++)&#123;</span><br><span class="line">      <span class="keyword">var</span> key = toprocess[i];</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">var</span> $ = cheerio.load(data[key], &#123;</span><br><span class="line">        <span class="attr">ignoreWhitespace</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">xmlMode</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">lowerCaseTags</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">decodeEntities</span>: <span class="literal">false</span></span><br><span class="line">      &#125;);</span><br><span class="line"></span><br><span class="line">      $(<span class="string">&#x27;img&#x27;</span>).each(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ($(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>))&#123;</span><br><span class="line">            <span class="comment">// For windows style path, we replace &#x27;\&#x27; to &#x27;/&#x27;.</span></span><br><span class="line">            <span class="keyword">var</span> src = $(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>).replace(<span class="string">&#x27;\\&#x27;</span>, <span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">            <span class="keyword">if</span>(!<span class="regexp">/http[s]*.*|\/\/.*/</span>.test(src) &amp;&amp;</span><br><span class="line">               !<span class="regexp">/^\s*\//</span>.test(src)) &#123;</span><br><span class="line">              <span class="comment">// For &quot;about&quot; page, the first part of &quot;src&quot; can&#x27;t be removed.</span></span><br><span class="line">              <span class="comment">// In addition, to support multi-level local directory.</span></span><br><span class="line">              <span class="keyword">var</span> linkArray = link.split(<span class="string">&#x27;/&#x27;</span>).filter(<span class="function"><span class="keyword">function</span>(<span class="params">elem</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> elem != <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">var</span> srcArray = src.split(<span class="string">&#x27;/&#x27;</span>).filter(<span class="function"><span class="keyword">function</span>(<span class="params">elem</span>)</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> elem != <span class="string">&#x27;&#x27;</span> &amp;&amp; elem != <span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">              &#125;);</span><br><span class="line">              <span class="keyword">if</span>(srcArray.length &gt; <span class="number">1</span>)</span><br><span class="line">                srcArray.shift();</span><br><span class="line">              src = srcArray.join(<span class="string">&#x27;/&#x27;</span>);</span><br><span class="line">              $(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>, config.root + link + src);</span><br><span class="line">              <span class="built_in">console</span>.info&amp;&amp;<span class="built_in">console</span>.info(<span class="string">&quot;update link as:--&gt;&quot;</span>+config.root + link + src);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.info&amp;&amp;<span class="built_in">console</span>.info(<span class="string">&quot;no src attr, skipped...&quot;</span>);</span><br><span class="line">            <span class="built_in">console</span>.info&amp;&amp;<span class="built_in">console</span>.info($(<span class="built_in">this</span>));</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">      data[key] = $.html();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hexo new test		# 生成新的文章</span><br></pre></td></tr></table></figure>
+<p>执行命令生成新的文章，在生成新的文章的时候，会在同级目录下生成一个同名的文件夹，将图片放在文件夹中，md文件中图片配置为同级目录即可</p>
+<h2 id="博客评论功能"><a href="#博客评论功能" class="headerlink" title="博客评论功能"></a>博客评论功能</h2><p>本博客评论功能是基于<code>valine</code>实现。<br>1.注册账号<br>需要登录leancloud（<a href="https://console.leancloud.cn/">https://console.leancloud.cn/</a> ）网站注册账号<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/leancloud%E7%99%BB%E5%BD%95.png" alt="leancloud登录"></p>
+<p>2.创建应用<br>登录后点击创建应用，应用名称随便填，一般免费版使用开发板即可，使用商用版也可以，不过需要费出一定的费用。<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/leancloud%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8.png" alt="leancloud创建应用"></p>
+<p>3.查看应用key<br>一次点击<code>新建的应用-设置-应用凭证</code>，可以看到入下图，复制AppID和AppKey一会需要用到。<br><img src="/2021/06/12/%E5%89%8D%E7%AB%AF/%E9%80%9A%E8%BF%87gitee%E5%92%8Chexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/leancloud-key%E6%9F%A5%E7%9C%8B.png" alt="leancloud-key查看"></p>
+<p>4.改代码<br>在项目的<code>_config.yml</code>中增加以下配置，其中的appId和appKey就是上面复制的AppID和AppKey。    </p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">comment:</span></span><br><span class="line">  <span class="attr">appId:</span> <span class="string">leancloud中的AppID</span></span><br><span class="line">  <span class="attr">appKey:</span> <span class="string">leancloud中的AppKey</span></span><br></pre></td></tr></table></figure>
+<p>修改模板文件，在对应的模板中增加以下代码，作者的是<code>post.ejs</code>，具体应该会根据模板的不同而有所不同。  </p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;comment-container&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&#x27;//unpkg.com/valine/dist/Valine.min.js&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">    <span class="keyword">new</span> Valine(&#123;</span></span><br><span class="line"><span class="javascript">        <span class="attr">el</span>: <span class="string">&#x27;#comment-container&#x27;</span>,</span></span><br><span class="line"><span class="javascript">        <span class="attr">appId</span>: <span class="string">&#x27;&lt;%- config.comment.appId %&gt;&#x27;</span>,</span></span><br><span class="line"><span class="javascript">        <span class="attr">appKey</span>: <span class="string">&#x27;&lt;%- config.comment.appKey %&gt;&#x27;</span></span></span><br><span class="line"><span class="javascript">    &#125;)</span></span><br><span class="line"><span class="javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>web</category>
+      </categories>
+      <tags>
+        <tag>html</tag>
       </tags>
   </entry>
   <entry>
@@ -796,70 +796,6 @@
       </tags>
   </entry>
   <entry>
-    <title>备忘录模式</title>
-    <url>/2021/10/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
-<p>保存一个对象的某个状态，以便于在适当的时候恢复对象。<br>“后悔药”<br>行为型</p>
-</blockquote>
-<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
-<li>保存及恢复数据相关业务场景</li>
-<li>后悔的时候，即像恢复到之前的状态</li>
-</ul>
-<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>为用户提供一种可恢复机制</li>
-<li>存档信息的封装</li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>资源占用。如果类的成员过多，势必会占用比较大大的资源，而且每一次保存都会消耗一定的内存。</li>
-</ul>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
-<li><strong>发起人角色</strong>：记录当前时刻的内部状态信息，提供创建备忘录和恢复备忘录数据的功能，实现其他业务功能，它可以访问备忘录里面的所有信息。</li>
-<li><strong>备忘录角色</strong>：负责存储发起人的内部状态，在需要的时候提供这些内部状态给发起人。</li>
-<li><strong>管理者角色</strong>：对备忘录进行管理，提供保存与获取备忘录的功能，但其不能对备忘录的内同进行访问与修改。</li>
-</ul>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设一个场景，我们有一个文档，需要保存不同的版本内容，方便进行回滚操作<br>创建发起人角色： </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Word</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Word</span><span class="params">(String title, String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getContent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTitle</span><span class="params">(String title)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContent</span><span class="params">(String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//构建需要保存的备忘录对象，或者直接存数据库</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> WordMemento <span class="title">saveToMemento</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> WordMemento(<span class="keyword">this</span>.title,<span class="keyword">this</span>.content);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//回退</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undoFormMemento</span><span class="params">(WordMemento wordMemento)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = wordMemento.getTitle();</span><br><span class="line">        <span class="keyword">this</span>.content = wordMemento.getContent();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Word&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;title=&#x27;&quot;</span> + title + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, content=&#x27;&quot;</span> + content + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>创建备忘录角色：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordMemento</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WordMemento</span><span class="params">(String title, String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getContent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;WordMemento&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;title=&#x27;&quot;</span> + title + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, content=&#x27;&quot;</span> + content + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>创建管理者角色：  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordMementoManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Stack&lt;WordMemento&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回备忘录保存的上一个版本</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> WordMemento <span class="title">getMemento</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> stack.pop();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addMemento</span><span class="params">(WordMemento wordMemento)</span></span>&#123;</span><br><span class="line">        stack.push(wordMemento);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试：  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        WordMementoManager wordMementoManager = <span class="keyword">new</span> WordMementoManager();</span><br><span class="line">        Word word = <span class="keyword">new</span> Word(<span class="string">&quot;java设计模式A&quot;</span>,<span class="string">&quot;设计模式内同A&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;创建文档，文档内容：&quot;</span>+word);</span><br><span class="line">        WordMemento wordMemento = word.saveToMemento();</span><br><span class="line">        wordMementoManager.addMemento(wordMemento);</span><br><span class="line">        System.out.println(<span class="string">&quot;保存第一版文档，文档内容：&quot;</span>+wordMemento);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;修改文档&quot;</span>);</span><br><span class="line"></span><br><span class="line">        word.setTitle(<span class="string">&quot;java设计模式B&quot;</span>);</span><br><span class="line">        word.setContent(<span class="string">&quot;设计模式内同B&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;第二版文档，文档内容：&quot;</span>+word);</span><br><span class="line">        WordMemento wordMemento1 = word.saveToMemento();</span><br><span class="line">        wordMementoManager.addMemento(wordMemento1);</span><br><span class="line">        System.out.println(<span class="string">&quot;保存第二版文档，文档内容：&quot;</span>+wordMemento1);</span><br><span class="line"></span><br><span class="line">        word.setTitle(<span class="string">&quot;java设计模式C&quot;</span>);</span><br><span class="line">        word.setContent(<span class="string">&quot;设计模式内同C&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;第三版文档，文档内容：&quot;</span>+word);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;----------------------------------&quot;</span>);</span><br><span class="line"></span><br><span class="line">        WordMemento memento = wordMementoManager.getMemento();</span><br><span class="line">        word.undoFormMemento(memento);</span><br><span class="line">        System.out.println(<span class="string">&quot;文档回退，回退后内容：&quot;</span>+word);</span><br><span class="line"></span><br><span class="line">        WordMemento memento1 = wordMementoManager.getMemento();</span><br><span class="line">        word.undoFormMemento(memento1);</span><br><span class="line">        System.out.println(<span class="string">&quot;文档再次回退，回退后内容：&quot;</span>+word);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结果：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">创建文档，文档内容：Word&#123;title=&#x27;java设计模式A&#x27;, content=&#x27;设计模式内同A&#x27;&#125;</span><br><span class="line">保存第一版文档，文档内容：WordMemento&#123;title=&#x27;java设计模式A&#x27;, content=&#x27;设计模式内同A&#x27;&#125;</span><br><span class="line">修改文档</span><br><span class="line">第二版文档，文档内容：Word&#123;title=&#x27;java设计模式B&#x27;, content=&#x27;设计模式内同B&#x27;&#125;</span><br><span class="line">保存第二版文档，文档内容：WordMemento&#123;title=&#x27;java设计模式B&#x27;, content=&#x27;设计模式内同B&#x27;&#125;</span><br><span class="line">第三版文档，文档内容：Word&#123;title=&#x27;java设计模式C&#x27;, content=&#x27;设计模式内同C&#x27;&#125;</span><br><span class="line">----------------------------------</span><br><span class="line">文档回退，回退后内容：Word&#123;title=&#x27;java设计模式B&#x27;, content=&#x27;设计模式内同B&#x27;&#125;</span><br><span class="line">文档再次回退，回退后内容：Word&#123;title=&#x27;java设计模式A&#x27;, content=&#x27;设计模式内同A&#x27;&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/Iyv9B2vM2CylIb6evYeeoYnBB4bL22ufoinBLoZ9BCb9jKONJSxFAqdDAm6AboRbP2Q3zMeWwz11KwcfK5sBhDWtDHSecgzGd5YM6f8FvMbe8XILvMUcA9JcfUIxvHVbmkIHTPOZs21jjLnSoN1lmDHGu1kObGGzXSrYtyIynFJK8YJxqpBp4dE0sXEJissG5Def58E456mLybBBeT9s6fhMNFhwB_PFUJfxtjCbxK_tptYwT-gJ_NEVhftnV5RBanrTJtOqFDcnwdbdnxCvQx05Qdfg2I945L23D34bXOZGHFWg9BMu1EGFY150rvR0JCfDpCo31azqh49YKNenE3n0Mi59IK_F3jbLNCZMsUZgQc49CAXE6pqziBrS809e36R80W00">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>设计模式</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>命令模式</title>
     <url>/2021/10/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
@@ -920,50 +856,59 @@
       </tags>
   </entry>
   <entry>
-    <title>外观模式</title>
-    <url>/2021/09/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/</url>
+    <title>备忘录模式</title>
+    <url>/2021/10/24/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%87%E5%BF%98%E5%BD%95%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
-<p>外观模式又叫门面模式，是一种通过为多个复杂子系统提供一个一致的接口，而使这些子系统更加容易被访问的模式。该模式对外有一个统一接口，外部应用程序不用关心内部子系统的具体细节，这样会大大降低应用程序的复杂度，提高程序的可维护性。</p>
+<p>保存一个对象的某个状态，以便于在适当的时候恢复对象。<br>“后悔药”<br>行为型</p>
 </blockquote>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>外观模式包含以下主要角色：  </p>
-<ul>
-<li>外观角色： 为多个子系统提供一个共同的接口。  </li>
-<li>子系统角色： 实现系统的部分功能，客户可以通过外观角色访问它。  </li>
-<li>客户角色： 通过一个外观角色访问各个子系统的功能。   </li>
-</ul>
 <h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
-<li>子系统越来越复杂，增加外观模式提供简单调用接口。  </li>
-<li>构建多层系统结构，利用外观对象作为每层的入口，简化层间调用。  </li>
+<li>保存及恢复数据相关业务场景</li>
+<li>后悔的时候，即像恢复到之前的状态</li>
 </ul>
 <h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>简化了调用过程，无需深入了解子系统，防止带来风险。  </li>
-<li>减少系统依赖、松散耦合。  </li>
-<li>更好的划分访问层次。  </li>
-<li>符合迪米特法则，即最少知道原则。  </li>
+<li>为用户提供一种可恢复机制</li>
+<li>存档信息的封装</li>
 </ul>
 <h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>增加子系统、扩展子系统行为容易引入风险。  </li>
-<li>不符合开闭原则。  </li>
+<li>资源占用。如果类的成员过多，势必会占用比较大大的资源，而且每一次保存都会消耗一定的内存。</li>
 </ul>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设我们现在有三个系统，<code>SubSystem01</code>、<code>SubSystem02</code>、<code>SubSystem03</code>，每个系统里面都有各自的逻辑处理方法；<br>我们现在有一个需求，需要调用三个系统联合去处理一个业务，那么就需要分别创建出<code>SubSystem01</code>、<code>SubSystem02</code>、<code>SubSystem03</code>系统的实例，然后调用对应的方法执行业务逻辑，<br>如果对象的创建，或者需要调用的方法很繁琐，那么每次处理逻辑，都要进行这块调用的处理，就很麻烦；<br>所以我们可以将这几个系统作为子系统，然后以一个高层系统(外观角色)进行封装，对外暴露一个相对简单的接口。</p>
-<p>子系统1：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubSystem01</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;子系统01的method1方法被调用&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li><strong>发起人角色</strong>：记录当前时刻的内部状态信息，提供创建备忘录和恢复备忘录数据的功能，实现其他业务功能，它可以访问备忘录里面的所有信息。</li>
+<li><strong>备忘录角色</strong>：负责存储发起人的内部状态，在需要的时候提供这些内部状态给发起人。</li>
+<li><strong>管理者角色</strong>：对备忘录进行管理，提供保存与获取备忘录的功能，但其不能对备忘录的内同进行访问与修改。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设一个场景，我们有一个文档，需要保存不同的版本内容，方便进行回滚操作<br>创建发起人角色： </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Word</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Word</span><span class="params">(String title, String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getContent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTitle</span><span class="params">(String title)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContent</span><span class="params">(String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//构建需要保存的备忘录对象，或者直接存数据库</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> WordMemento <span class="title">saveToMemento</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> WordMemento(<span class="keyword">this</span>.title,<span class="keyword">this</span>.content);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//回退</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">undoFormMemento</span><span class="params">(WordMemento wordMemento)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = wordMemento.getTitle();</span><br><span class="line">        <span class="keyword">this</span>.content = wordMemento.getContent();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Word&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;title=&#x27;&quot;</span> + title + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, content=&#x27;&quot;</span> + content + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>子系统2：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubSystem02</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;子系统02的method2方法被调用&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建备忘录角色：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordMemento</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String title;</span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WordMemento</span><span class="params">(String title, String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.title = title;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> title;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getContent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> content;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;WordMemento&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;title=&#x27;&quot;</span> + title + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, content=&#x27;&quot;</span> + content + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>创建管理者角色：  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordMementoManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Stack&lt;WordMemento&gt; stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回备忘录保存的上一个版本</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> WordMemento <span class="title">getMemento</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> stack.pop();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addMemento</span><span class="params">(WordMemento wordMemento)</span></span>&#123;</span><br><span class="line">        stack.push(wordMemento);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试：  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        WordMementoManager wordMementoManager = <span class="keyword">new</span> WordMementoManager();</span><br><span class="line">        Word word = <span class="keyword">new</span> Word(<span class="string">&quot;java设计模式A&quot;</span>,<span class="string">&quot;设计模式内同A&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;创建文档，文档内容：&quot;</span>+word);</span><br><span class="line">        WordMemento wordMemento = word.saveToMemento();</span><br><span class="line">        wordMementoManager.addMemento(wordMemento);</span><br><span class="line">        System.out.println(<span class="string">&quot;保存第一版文档，文档内容：&quot;</span>+wordMemento);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;修改文档&quot;</span>);</span><br><span class="line"></span><br><span class="line">        word.setTitle(<span class="string">&quot;java设计模式B&quot;</span>);</span><br><span class="line">        word.setContent(<span class="string">&quot;设计模式内同B&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;第二版文档，文档内容：&quot;</span>+word);</span><br><span class="line">        WordMemento wordMemento1 = word.saveToMemento();</span><br><span class="line">        wordMementoManager.addMemento(wordMemento1);</span><br><span class="line">        System.out.println(<span class="string">&quot;保存第二版文档，文档内容：&quot;</span>+wordMemento1);</span><br><span class="line"></span><br><span class="line">        word.setTitle(<span class="string">&quot;java设计模式C&quot;</span>);</span><br><span class="line">        word.setContent(<span class="string">&quot;设计模式内同C&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;第三版文档，文档内容：&quot;</span>+word);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;----------------------------------&quot;</span>);</span><br><span class="line"></span><br><span class="line">        WordMemento memento = wordMementoManager.getMemento();</span><br><span class="line">        word.undoFormMemento(memento);</span><br><span class="line">        System.out.println(<span class="string">&quot;文档回退，回退后内容：&quot;</span>+word);</span><br><span class="line"></span><br><span class="line">        WordMemento memento1 = wordMementoManager.getMemento();</span><br><span class="line">        word.undoFormMemento(memento1);</span><br><span class="line">        System.out.println(<span class="string">&quot;文档再次回退，回退后内容：&quot;</span>+word);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">创建文档，文档内容：Word&#123;title=&#x27;java设计模式A&#x27;, content=&#x27;设计模式内同A&#x27;&#125;</span><br><span class="line">保存第一版文档，文档内容：WordMemento&#123;title=&#x27;java设计模式A&#x27;, content=&#x27;设计模式内同A&#x27;&#125;</span><br><span class="line">修改文档</span><br><span class="line">第二版文档，文档内容：Word&#123;title=&#x27;java设计模式B&#x27;, content=&#x27;设计模式内同B&#x27;&#125;</span><br><span class="line">保存第二版文档，文档内容：WordMemento&#123;title=&#x27;java设计模式B&#x27;, content=&#x27;设计模式内同B&#x27;&#125;</span><br><span class="line">第三版文档，文档内容：Word&#123;title=&#x27;java设计模式C&#x27;, content=&#x27;设计模式内同C&#x27;&#125;</span><br><span class="line">----------------------------------</span><br><span class="line">文档回退，回退后内容：Word&#123;title=&#x27;java设计模式B&#x27;, content=&#x27;设计模式内同B&#x27;&#125;</span><br><span class="line">文档再次回退，回退后内容：Word&#123;title=&#x27;java设计模式A&#x27;, content=&#x27;设计模式内同A&#x27;&#125;</span><br></pre></td></tr></table></figure>
 
-<p>子系统3：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubSystem03</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method3</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;子系统03的method3方法被调用&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>外观角色：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Facade</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    SubSystem01 obj1 = <span class="keyword">new</span> SubSystem01();</span><br><span class="line">    SubSystem02 obj2 = <span class="keyword">new</span> SubSystem02();</span><br><span class="line">    SubSystem03 obj3 = <span class="keyword">new</span> SubSystem03();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span>&#123;</span><br><span class="line">        obj1.method1();</span><br><span class="line">        obj2.method2();</span><br><span class="line">        obj3.method3();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/Iyv9B2vM2CylIb6evYeeoYnBB4bL22ufoinBLoZ9BCb9jKONJSxFAqdDAm6AboRbP2Q3zMeWwz11KwcfK5sBhDWtDHSecgzGd5YM6f8FvMbe8XILvMUcA9JcfUIxvHVbmkIHTPOZs21jjLnSoN1lmDHGu1kObGGzXSrYtyIynFJK8YJxqpBp4dE0sXEJissG5Def58E456mLybBBeT9s6fhMNFhwB_PFUJfxtjCbxK_tptYwT-gJ_NEVhftnV5RBanrTJtOqFDcnwdbdnxCvQx05Qdfg2I945L23D34bXOZGHFWg9BMu1EGFY150rvR0JCfDpCo31azqh49YKNenE3n0Mi59IK_F3jbLNCZMsUZgQc49CAXE6pqziBrS809e36R80W00">
 
-<p>调用：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Facade facade = <span class="keyword">new</span> Facade();</span><br><span class="line">        facade.method();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>结果：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">子系统01的method1方法被调用</span><br><span class="line">子系统02的method2方法被调用</span><br><span class="line">子系统03的method3方法被调用</span><br></pre></td></tr></table></figure>
 
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/TT6n3e8m40RW_PxYHXWmqeugeo-0ct4eq60DK4ABnY3lhXL2ggKtzl-QtlKWhvXIU6GvApWE0FYfjC_IfzAytiOeirkC1spumpuEmjsV94OIHn9NKYEf8wcHNzhsMILol4jHOCtrLHP1E8mm0apDskqDuEhOnyag9pvELpdzvIUkzCAKPdhHJ3H1gZlHbESBigvK8KuNvy_Ulw8eiOVn1SGNK03pF6wIUO5l">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ]]></content>
@@ -1071,6 +1016,61 @@
 
 
 
+
+
+]]></content>
+      <categories>
+        <category>设计模式</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>外观模式</title>
+    <url>/2021/09/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%A4%96%E8%A7%82%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>外观模式又叫门面模式，是一种通过为多个复杂子系统提供一个一致的接口，而使这些子系统更加容易被访问的模式。该模式对外有一个统一接口，外部应用程序不用关心内部子系统的具体细节，这样会大大降低应用程序的复杂度，提高程序的可维护性。</p>
+</blockquote>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>外观模式包含以下主要角色：  </p>
+<ul>
+<li>外观角色： 为多个子系统提供一个共同的接口。  </li>
+<li>子系统角色： 实现系统的部分功能，客户可以通过外观角色访问它。  </li>
+<li>客户角色： 通过一个外观角色访问各个子系统的功能。   </li>
+</ul>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>子系统越来越复杂，增加外观模式提供简单调用接口。  </li>
+<li>构建多层系统结构，利用外观对象作为每层的入口，简化层间调用。  </li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>简化了调用过程，无需深入了解子系统，防止带来风险。  </li>
+<li>减少系统依赖、松散耦合。  </li>
+<li>更好的划分访问层次。  </li>
+<li>符合迪米特法则，即最少知道原则。  </li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>增加子系统、扩展子系统行为容易引入风险。  </li>
+<li>不符合开闭原则。  </li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设我们现在有三个系统，<code>SubSystem01</code>、<code>SubSystem02</code>、<code>SubSystem03</code>，每个系统里面都有各自的逻辑处理方法；<br>我们现在有一个需求，需要调用三个系统联合去处理一个业务，那么就需要分别创建出<code>SubSystem01</code>、<code>SubSystem02</code>、<code>SubSystem03</code>系统的实例，然后调用对应的方法执行业务逻辑，<br>如果对象的创建，或者需要调用的方法很繁琐，那么每次处理逻辑，都要进行这块调用的处理，就很麻烦；<br>所以我们可以将这几个系统作为子系统，然后以一个高层系统(外观角色)进行封装，对外暴露一个相对简单的接口。</p>
+<p>子系统1：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubSystem01</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method1</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;子系统01的method1方法被调用&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>子系统2：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubSystem02</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method2</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;子系统02的method2方法被调用&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>子系统3：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubSystem03</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method3</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;子系统03的method3方法被调用&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>外观角色：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Facade</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    SubSystem01 obj1 = <span class="keyword">new</span> SubSystem01();</span><br><span class="line">    SubSystem02 obj2 = <span class="keyword">new</span> SubSystem02();</span><br><span class="line">    SubSystem03 obj3 = <span class="keyword">new</span> SubSystem03();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">()</span></span>&#123;</span><br><span class="line">        obj1.method1();</span><br><span class="line">        obj2.method2();</span><br><span class="line">        obj3.method3();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Facade facade = <span class="keyword">new</span> Facade();</span><br><span class="line">        facade.method();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">子系统01的method1方法被调用</span><br><span class="line">子系统02的method2方法被调用</span><br><span class="line">子系统03的method3方法被调用</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/TT6n3e8m40RW_PxYHXWmqeugeo-0ct4eq60DK4ABnY3lhXL2ggKtzl-QtlKWhvXIU6GvApWE0FYfjC_IfzAytiOeirkC1spumpuEmjsV94OIHn9NKYEf8wcHNzhsMILol4jHOCtrLHP1E8mm0apDskqDuEhOnyag9pvELpdzvIUkzCAKPdhHJ3H1gZlHbESBigvK8KuNvy_Ulw8eiOVn1SGNK03pF6wIUO5l">
 
 
 ]]></content>
@@ -2425,6 +2425,90 @@
       </tags>
   </entry>
   <entry>
+    <title>Java并发成神之路-精通JUC并发工具十八般武艺——AQS(八)</title>
+    <url>/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/</url>
+    <content><![CDATA[<h1 id="为什么需要AQS"><a href="#为什么需要AQS" class="headerlink" title="为什么需要AQS"></a>为什么需要AQS</h1><ul>
+<li><code>ReentrantLock</code>、<code>Semaphore</code>、<code>CountDownLatch</code>、<code>ReentrantReadWriteLock</code></li>
+<li>上面那些协作类，它们有很多工作都是类似的，所以如果能提取出一个工具类，那么就可以直接用，对于<code>ReentrantLock</code>和<code>Semaphore</code>而言就可以屏蔽很多细节，只关注它们自己“业务逻辑”就可以了</li>
+</ul>
+<h1 id="Semaphore和AQS的关系"><a href="#Semaphore和AQS的关系" class="headerlink" title="Semaphore和AQS的关系"></a><code>Semaphore</code>和AQS的关系</h1><ul>
+<li><code>Semaphore</code>内部有一个<code>Sync</code>类，<code>Sync</code>类继承了AQS</li>
+<li><code>CountDownLatch</code>和<code>ReentrantLock</code>也是一样的，内部有一个<code>Sync</code>类，<code>Sync</code>类继承了AQS</li>
+</ul>
+<h1 id="AQS的作用"><a href="#AQS的作用" class="headerlink" title="AQS的作用"></a>AQS的作用</h1><ul>
+<li>AQS是一个用于构建锁、同步器、协作工具类的工具类（框架）。有了AQS以后，更多的协作工具类都可以很方便得被写出来</li>
+<li>一句话总结：有了AQS，构建线程协作类就容易多了</li>
+</ul>
+<h1 id="AQS内部原理解析"><a href="#AQS内部原理解析" class="headerlink" title="AQS内部原理解析"></a>AQS内部原理解析</h1><ul>
+<li>AQS最核心的就是三大部分</li>
+</ul>
+<h2 id="state状态"><a href="#state状态" class="headerlink" title="state状态"></a>state状态</h2><ul>
+<li>这里的<code>state</code>的具体含义，会根据具体实现类的不同而不同，比如啊<code>Semaphore</code>里，它表示“剩余的许可证的数量”，而在<code>CountDownLatch</code>里，它表示“还需要倒数的数量”</li>
+<li><code>state</code>是<code>volatile</code>修饰的，会被并发地修改，所以多有修改<code>state</code>的方法都需要保证线程安全，比如<code>getState</code>、<code>setState</code>以及<code>compareAndSetState</code>操作来读取和更新这个状态，这些方法都依赖于<code>j.u.c.atomic</code>包的支持</li>
+<li>在<code>ReentrantLock</code>中，<code>state</code>用来表示“锁”的占有情况，包括可重入计数，当<code>state</code>的值为0的时候，表示该<code>Lock</code>不被任何线程占有</li>
+</ul>
+<h2 id="控制线程抢锁和配合的FIFO队列"><a href="#控制线程抢锁和配合的FIFO队列" class="headerlink" title="控制线程抢锁和配合的FIFO队列"></a>控制线程抢锁和配合的FIFO队列</h2><ul>
+<li>这个队列用来存放“等待的线程”，AQS就是“排队管理器”，当多个线程争用同一把锁时，必须有排队机制将那些没能拿到锁的线程串在一起。当锁释放时，锁管理器就会挑选一个合适的线程来占有这个刚刚释放的锁</li>
+<li>AQS会维护一个等待的线程队列，把线程都放到这个队列里</li>
+</ul>
+<h2 id="期望协作工具类去实现的获取-释放等重要方法"><a href="#期望协作工具类去实现的获取-释放等重要方法" class="headerlink" title="期望协作工具类去实现的获取/释放等重要方法"></a>期望协作工具类去实现的获取/释放等重要方法</h2><ul>
+<li>这里的获取和释放方法，是利用AQS的协作工具类里最重要的方法，是由协作类自己去实现的，并且含义各不相同</li>
+<li>获取方法<ul>
+<li>获取操作会依赖<code>state</code>变量，经常会阻塞（比如获取不到锁）</li>
+<li>在<code>Semaphore</code>中，获取就是<code>acquire</code>方法，作用是获取一个许可证</li>
+<li>而在<code>CountDownLatch</code>里面，获取就是<code>await</code>方法，作用是“等待，直到倒数结束”</li>
+</ul>
+</li>
+<li>释放方法<ul>
+<li>释放操作不会阻塞</li>
+<li>在<code>Semaphore</code>中，释放方法就是<code>release</code>方法，作用是释放一个许可证</li>
+<li><code>CountDownLatch</code>里面，释放就是<code>countDown</code>方法，作用是“倒数一个数”</li>
+</ul>
+</li>
+</ul>
+<h1 id="AQS源码分析"><a href="#AQS源码分析" class="headerlink" title="AQS源码分析"></a>AQS源码分析</h1><h2 id="AQS在CountDownLatch中的应用"><a href="#AQS在CountDownLatch中的应用" class="headerlink" title="AQS在CountDownLatch中的应用"></a>AQS在<code>CountDownLatch</code>中的应用</h2><ul>
+<li>构造函数<br><code>CountDownLatch</code>的构造函数如下图所示，首先需要传进去一个数字，这个数字表示倒数几次，而构造函数中直接调用了<code>Sync</code>类的构造函数，从第二个图中可以看出，<code>Sync</code>的构造函数是调用了AQS的<code>setState</code>方法，直接给<code>state</code>赋值<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch构造函数源码图示"></li>
+</ul>
+<p><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch-Sync%E7%B1%BB%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch-Sync类源码图示"></p>
+<ul>
+<li><code>getCount</code><br>如下图所示，<code>CountDownLatch.getCount()</code>方法直接调用<code>Sync</code>的<code>getCount()</code>方法，而从上面的Sync类源码图可以看出，<code>Sync.getCount()</code>方法直接调用了AQS的<code>getState</code>方法，获取<code>state</code>的值<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E7%9A%84getCount%E6%96%B9%E6%B3%95%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch的getCount方法图示"></li>
+<li><code>countDown</code><br>如下图所示，<code>CountDownLatch</code>的<code>countDown</code>方法直接调用了继承自AQS的<code>releaseShared</code>方法，而<code>releaseShared</code>方法中会判断<code>tryReleaseShared</code>返回值进行判断，如果为true进入判断调用<code>doReleaseShared</code>方法，唤醒被阻塞的线程，<code>tryReleaseShared</code>的具体代码可以看上面的Sync类源码图，可以看出是使用for循环做的一个CAS自旋锁，将<code>state</code>减一，然后去更新，之后判断是否已经等于0了，如果减一后等于0了那么说明这是最后一次计数，就会返回true，然后调用<code>doReleaseShared</code>唤醒线程<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E7%9A%84countDown%E6%96%B9%E6%B3%95%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch的countDown方法图示"></li>
+</ul>
+<p><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84releaseShared%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="AQS的releaseShared方法源码图示"></p>
+<ul>
+<li><code>await</code><br>如下图所示，<code>CountDownLatch</code>的<code>await</code>方法直接调用了继承自AQS的<code>acquireSharedInterruptibly</code>方法，而<code>acquireSharedInterruptibly</code>方法中会判断<code>tryAcquireShared</code>方法的返回值是否小于0，如果小于0则进入判断，将当前线程挂起，如果不小于0，则直接跳过，可以从上面的<code>Sync</code>类源码图中看出，其实现的<code>tryAcquireShared</code>方法是直接判断state值是否等于0，如果等于0，就返回1，否则返回-1，也就是说state等于0，直接跳过<code>acquireSharedInterruptibly</code>中的判断，不等于0，就将线程挂起<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E7%9A%84await%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch的await方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84acquireSharedInterruptibly%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="AQS的acquireSharedInterruptibly方法源码图示"></li>
+</ul>
+<h3 id="AQS在CountDownLatch的总结"><a href="#AQS在CountDownLatch的总结" class="headerlink" title="AQS在CountDownLatch的总结"></a>AQS在<code>CountDownLatch</code>的总结</h3><ul>
+<li>调用<code>CountDownLatch</code>的<code>await</code>方法时，便会尝试获取“共享锁”，不过一开始是获取不到该锁的，于是线程被阻塞</li>
+<li>而“共享锁”可获取到的条件，就是“锁计数器”的值为0</li>
+<li>而“锁计数器”的初值为<code>count</code>，每当一个线程调用该<code>CountDownLatch</code>对象的<code>countDown()</code>方法时，才将“锁计数器”-1</li>
+<li><code>count</code>个线程调用<code>countDown()</code>之后，“锁计数器”才为0，而前面提到的等待获取共享锁的线程才能继续运行</li>
+</ul>
+<h2 id="AQS在Semaphore中的应用"><a href="#AQS在Semaphore中的应用" class="headerlink" title="AQS在Semaphore中的应用"></a>AQS在<code>Semaphore</code>中的应用</h2><ul>
+<li>在<code>Semaphore</code>中，<code>state</code>表示许可证的剩余数量</li>
+<li>看<code>tryAcquire</code>方法，判断<code>nonfairTryAcquireShared</code>大于等于0的话，代表成功</li>
+<li>这里会先检查剩余许可证数量够不够这次需要的，用减法来计算，如果直接不够，那就返回负数，表示失败，如果够了，就用自旋加<code>compareAndSetState</code>来改变<code>state</code>的状态，直到改变成功就返回整数，或者是期间如果被其他人修改导致剩余数量不够了，那也返回负数代表获取失败</li>
+</ul>
+<h2 id="AQS在ReentrantLock中的应用"><a href="#AQS在ReentrantLock中的应用" class="headerlink" title="AQS在ReentrantLock中的应用"></a>AQS在<code>ReentrantLock</code>中的应用</h2><ul>
+<li><code>unlock()</code><br>方法具体情况如下图所示，<code>unlock</code>方法直接调用了<code>Sync</code>类继承于AQS的<code>release</code>方法，方法中首先会判断<code>tryRelease</code>方法的返回值，如果是true，就会执行下面的<code>unparkSuccessor</code>方法，唤醒等待的线程，<code>tryRelease</code>方法被<code>ReentrantLock.Sync</code>类重写，首先会将<code>state</code>减1，因为<code>ReentrantLock</code>是可重入锁，解锁一次就是将<code>state</code>减1，然后判断当前线程是不是正在执行的线程，如果是当前线程，判断计算后的<code>state</code>是否等于0，也就是判断这次解锁是不是最后一层锁，如果不是，直接修改<code>state</code>的值，然后返回false，如果是就会调用<code>setExclusiveOwnerThread</code>方法，将当前运行的线程设置为null，并返回true，唤醒其他的线程<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock%E7%9A%84unlock%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock的unlock方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84release%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="AQS的release方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-Sync%E7%B1%BB%E7%9A%84tryRelease%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-Sync类的tryRelease方法源码图示"></li>
+<li><code>lock()</code>（以非公平锁为例）<br>如下图可以看出，<code>ReentrantLock</code>的<code>lock</code>方法中直接调用了内部类<code>Sync</code>的<code>lock</code>方法，而第二个图中也可以看出，<code>Sync.lock()</code>方法是一个<code>abstract</code>方法，由它的两个子类实现(<code>NonfairSync</code>和<code>FairSync</code>,这里仅以<code>NonfairSync</code>为例讲述)<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock%E7%9A%84lock%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock的lock方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-Sync%E7%B1%BB%E7%9A%84lock%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-Sync类的lock方法源码图示"><br>如下图可以看出，<code>NonfairSync</code>中的<code>lock</code>方法首先会调用CAS方法更新<code>state</code>的值，如果更新成功了，就直接将当前线程设置为执行线程，如果失败了，会去执行<code>acquire</code>方法，<code>acquire</code>方法是AQS的一个方法<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-NonfairSync%E7%B1%BB%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-NonfairSync类源码图示"><br>首先方法还会去调用<code>tryAcquire</code>方法，<code>tryAcquire</code>在<code>ReentrantLock</code>中会有公平和非公平两种实现方式，如果<code>tryAcquire</code>方法返回的是true，因为前面的非，则会变成false，直接跳过判断，如果<code>tryAcquire</code>返回的false，加上前面的非，则是true，就会去执行后的语句，<code>addWaiter</code>方法是将当前线程进行封装，<code>acquireQueued</code>方法则是将封装后的Node节点对象，放到等待队列中，等待别的线程释放锁之后将他唤醒<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84acquire%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="AQS的acquire方法源码示意图"><br>非公平类中<code>tryAcquire</code>方法会去调用<code>nonfairTryAcquire</code>方法，这个方法是由<code>Sync</code>类实现的，方法中首先会判断<code>state</code>是否等于0，如果等于0表示当前锁没有被任何线程持有，就会直接通过CAS修改<code>state</code>的值，然后将持锁线程设置为当前线程，如果当前锁已经被持有，就会判断是否为当前线程持有，如果是，就会将<code>state</code>加入参，也就是1，然后重新设置值，如果不是表示当前锁已经被其他线程持有，直接返回false<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-Sync%E7%B1%BB%E7%9A%84nonfairTryAcquire%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-Sync类的nonfairTryAcquire方法源码图示"></li>
+</ul>
+<h3 id="分析释放锁的方法tryRelease"><a href="#分析释放锁的方法tryRelease" class="headerlink" title="分析释放锁的方法tryRelease"></a>分析释放锁的方法<code>tryRelease</code></h3><ul>
+<li>由于当前是可重入锁，所以<code>state</code>代表重入次数，每次释放锁，先判断是不是当前持有锁的线程释放的，如果不是就抛异常，如果是的话，重入次数减一，如果减到了0，就说明完全释放了，于是free就是true了，并且把<code>state</code>设置为0</li>
+</ul>
+<h3 id="加锁的方法"><a href="#加锁的方法" class="headerlink" title="加锁的方法"></a>加锁的方法</h3><ul>
+<li>判断当前<code>state</code>是不是等于0，判断当前线程是不是持有锁的线程，如果都不是就代表当前线程拿不到锁，就会放进线程等待</li>
+</ul>
+<h1 id="利用AQS实现一个自己的Latch门闩"><a href="#利用AQS实现一个自己的Latch门闩" class="headerlink" title="利用AQS实现一个自己的Latch门闩"></a>利用AQS实现一个自己的Latch门闩</h1><p>如下代码就是用AQS自己实现的门闩功能代码，我们要实现的功能很简单，就是当线程调用<code>await</code>方法的时候，将线程挂起，然后等待执行了<code>signal</code>方法，将所有线程唤醒，因为是可重入的，直接调用AQS的<code>releaseShared</code>方法和<code>acquireShared</code>方法来实现，查看AQS的源码可以看到，<code>acquireShared</code>方法会判断<code>tryAcquireShared(arg) &lt; 0</code>的结果，如果为true就会将线程挂起，所以我们重写AQS的<code>tryAcquireShared</code>方法，判断<code>state</code>的值，如果为1，就返回1，1大于0，直接跳过判断，否则就返回-1，-1小于0，会进入判断，将线程挂起，而<code>state</code>默认值为0，肯定不等于1。<br>而唤醒线程的<code>signal</code>方法直接调用了AQS的<code>releaseShared</code>方法，这个方法会判断<code>tryReleaseShared(arg)</code>方法的返回值，如果是true，就调用判断中的方法唤醒被挂起的线程，否则就不处理，所以我们实现<code>tryReleaseShared</code>方法，如果只是实现唤醒的话，直接返回true就可以，但是我们要实现门闩只能使用一次的功能，门闩被打开后，再执行<code>await</code>方法不会将线程挂起，所以将<code>state</code>的值设置为1，这样<code>state</code>的时候就是等于1，然后就直接返回1，1大于0，就不会进入判断，也就不会将线程挂起</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OneShotLatch</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Sync sync = <span class="keyword">new</span> Sync();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">signal</span><span class="params">()</span></span>&#123;</span><br><span class="line">        sync.releaseShared(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">await</span><span class="params">()</span></span>&#123;</span><br><span class="line">        sync.acquireShared(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Sync</span> <span class="keyword">extends</span> <span class="title">AbstractQueuedSynchronizer</span></span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">tryReleaseShared</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">            setState(<span class="number">1</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">tryAcquireShared</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (getState() == <span class="number">1</span>) ? <span class="number">1</span> : -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        OneShotLatch oneShotLatch = <span class="keyword">new</span> OneShotLatch();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    System.out.println(Thread.currentThread().getName()+<span class="string">&quot;尝试获取latch&quot;</span>);</span><br><span class="line">                    oneShotLatch.await();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName()+<span class="string">&quot;开闸放行，继续前进&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">        Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">        oneShotLatch.signal();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName()+<span class="string">&quot;尝试获取latch&quot;</span>);</span><br><span class="line">                oneShotLatch.await();</span><br><span class="line">                System.out.println(Thread.currentThread().getName()+<span class="string">&quot;开闸放行，继续前进&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>多线程</category>
+      </categories>
+      <tags>
+        <tag>精通JUC并发工具十八般武艺</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java并发成神之路-精通JUC并发工具十八般武艺——CAS和不变性(五)</title>
     <url>/2021/12/04/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94CAS%E5%92%8C%E4%B8%8D%E5%8F%98%E6%80%A7/</url>
     <content><![CDATA[<h1 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h1><h2 id="什么是CAS"><a href="#什么是CAS" class="headerlink" title="什么是CAS"></a>什么是CAS</h2><ul>
@@ -2521,195 +2605,6 @@
 <h2 id="把变量写在线程内部——栈封闭"><a href="#把变量写在线程内部——栈封闭" class="headerlink" title="把变量写在线程内部——栈封闭"></a>把变量写在线程内部——栈封闭</h2><ul>
 <li>在方法里面新建的局部变量，实际上是存储在每个线程私有的栈空间，而每个栈的占用空间是不能被其他线程所访问到的，所以不会有线程安全问题，这就是著名的“栈封闭”技术，是“线程封闭”技术的一种情况</li>
 <li>方法内部的变量是不会有并发问题的（栈封闭）</li>
-</ul>
-]]></content>
-      <categories>
-        <category>多线程</category>
-      </categories>
-      <tags>
-        <tag>精通JUC并发工具十八般武艺</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java并发成神之路-精通JUC并发工具十八般武艺——AQS(八)</title>
-    <url>/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/</url>
-    <content><![CDATA[<h1 id="为什么需要AQS"><a href="#为什么需要AQS" class="headerlink" title="为什么需要AQS"></a>为什么需要AQS</h1><ul>
-<li><code>ReentrantLock</code>、<code>Semaphore</code>、<code>CountDownLatch</code>、<code>ReentrantReadWriteLock</code></li>
-<li>上面那些协作类，它们有很多工作都是类似的，所以如果能提取出一个工具类，那么就可以直接用，对于<code>ReentrantLock</code>和<code>Semaphore</code>而言就可以屏蔽很多细节，只关注它们自己“业务逻辑”就可以了</li>
-</ul>
-<h1 id="Semaphore和AQS的关系"><a href="#Semaphore和AQS的关系" class="headerlink" title="Semaphore和AQS的关系"></a><code>Semaphore</code>和AQS的关系</h1><ul>
-<li><code>Semaphore</code>内部有一个<code>Sync</code>类，<code>Sync</code>类继承了AQS</li>
-<li><code>CountDownLatch</code>和<code>ReentrantLock</code>也是一样的，内部有一个<code>Sync</code>类，<code>Sync</code>类继承了AQS</li>
-</ul>
-<h1 id="AQS的作用"><a href="#AQS的作用" class="headerlink" title="AQS的作用"></a>AQS的作用</h1><ul>
-<li>AQS是一个用于构建锁、同步器、协作工具类的工具类（框架）。有了AQS以后，更多的协作工具类都可以很方便得被写出来</li>
-<li>一句话总结：有了AQS，构建线程协作类就容易多了</li>
-</ul>
-<h1 id="AQS内部原理解析"><a href="#AQS内部原理解析" class="headerlink" title="AQS内部原理解析"></a>AQS内部原理解析</h1><ul>
-<li>AQS最核心的就是三大部分</li>
-</ul>
-<h2 id="state状态"><a href="#state状态" class="headerlink" title="state状态"></a>state状态</h2><ul>
-<li>这里的<code>state</code>的具体含义，会根据具体实现类的不同而不同，比如啊<code>Semaphore</code>里，它表示“剩余的许可证的数量”，而在<code>CountDownLatch</code>里，它表示“还需要倒数的数量”</li>
-<li><code>state</code>是<code>volatile</code>修饰的，会被并发地修改，所以多有修改<code>state</code>的方法都需要保证线程安全，比如<code>getState</code>、<code>setState</code>以及<code>compareAndSetState</code>操作来读取和更新这个状态，这些方法都依赖于<code>j.u.c.atomic</code>包的支持</li>
-<li>在<code>ReentrantLock</code>中，<code>state</code>用来表示“锁”的占有情况，包括可重入计数，当<code>state</code>的值为0的时候，表示该<code>Lock</code>不被任何线程占有</li>
-</ul>
-<h2 id="控制线程抢锁和配合的FIFO队列"><a href="#控制线程抢锁和配合的FIFO队列" class="headerlink" title="控制线程抢锁和配合的FIFO队列"></a>控制线程抢锁和配合的FIFO队列</h2><ul>
-<li>这个队列用来存放“等待的线程”，AQS就是“排队管理器”，当多个线程争用同一把锁时，必须有排队机制将那些没能拿到锁的线程串在一起。当锁释放时，锁管理器就会挑选一个合适的线程来占有这个刚刚释放的锁</li>
-<li>AQS会维护一个等待的线程队列，把线程都放到这个队列里</li>
-</ul>
-<h2 id="期望协作工具类去实现的获取-释放等重要方法"><a href="#期望协作工具类去实现的获取-释放等重要方法" class="headerlink" title="期望协作工具类去实现的获取/释放等重要方法"></a>期望协作工具类去实现的获取/释放等重要方法</h2><ul>
-<li>这里的获取和释放方法，是利用AQS的协作工具类里最重要的方法，是由协作类自己去实现的，并且含义各不相同</li>
-<li>获取方法<ul>
-<li>获取操作会依赖<code>state</code>变量，经常会阻塞（比如获取不到锁）</li>
-<li>在<code>Semaphore</code>中，获取就是<code>acquire</code>方法，作用是获取一个许可证</li>
-<li>而在<code>CountDownLatch</code>里面，获取就是<code>await</code>方法，作用是“等待，直到倒数结束”</li>
-</ul>
-</li>
-<li>释放方法<ul>
-<li>释放操作不会阻塞</li>
-<li>在<code>Semaphore</code>中，释放方法就是<code>release</code>方法，作用是释放一个许可证</li>
-<li><code>CountDownLatch</code>里面，释放就是<code>countDown</code>方法，作用是“倒数一个数”</li>
-</ul>
-</li>
-</ul>
-<h1 id="AQS源码分析"><a href="#AQS源码分析" class="headerlink" title="AQS源码分析"></a>AQS源码分析</h1><h2 id="AQS在CountDownLatch中的应用"><a href="#AQS在CountDownLatch中的应用" class="headerlink" title="AQS在CountDownLatch中的应用"></a>AQS在<code>CountDownLatch</code>中的应用</h2><ul>
-<li>构造函数<br><code>CountDownLatch</code>的构造函数如下图所示，首先需要传进去一个数字，这个数字表示倒数几次，而构造函数中直接调用了<code>Sync</code>类的构造函数，从第二个图中可以看出，<code>Sync</code>的构造函数是调用了AQS的<code>setState</code>方法，直接给<code>state</code>赋值<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch构造函数源码图示"></li>
-</ul>
-<p><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch-Sync%E7%B1%BB%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch-Sync类源码图示"></p>
-<ul>
-<li><code>getCount</code><br>如下图所示，<code>CountDownLatch.getCount()</code>方法直接调用<code>Sync</code>的<code>getCount()</code>方法，而从上面的Sync类源码图可以看出，<code>Sync.getCount()</code>方法直接调用了AQS的<code>getState</code>方法，获取<code>state</code>的值<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E7%9A%84getCount%E6%96%B9%E6%B3%95%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch的getCount方法图示"></li>
-<li><code>countDown</code><br>如下图所示，<code>CountDownLatch</code>的<code>countDown</code>方法直接调用了继承自AQS的<code>releaseShared</code>方法，而<code>releaseShared</code>方法中会判断<code>tryReleaseShared</code>返回值进行判断，如果为true进入判断调用<code>doReleaseShared</code>方法，唤醒被阻塞的线程，<code>tryReleaseShared</code>的具体代码可以看上面的Sync类源码图，可以看出是使用for循环做的一个CAS自旋锁，将<code>state</code>减一，然后去更新，之后判断是否已经等于0了，如果减一后等于0了那么说明这是最后一次计数，就会返回true，然后调用<code>doReleaseShared</code>唤醒线程<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E7%9A%84countDown%E6%96%B9%E6%B3%95%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch的countDown方法图示"></li>
-</ul>
-<p><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84releaseShared%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="AQS的releaseShared方法源码图示"></p>
-<ul>
-<li><code>await</code><br>如下图所示，<code>CountDownLatch</code>的<code>await</code>方法直接调用了继承自AQS的<code>acquireSharedInterruptibly</code>方法，而<code>acquireSharedInterruptibly</code>方法中会判断<code>tryAcquireShared</code>方法的返回值是否小于0，如果小于0则进入判断，将当前线程挂起，如果不小于0，则直接跳过，可以从上面的<code>Sync</code>类源码图中看出，其实现的<code>tryAcquireShared</code>方法是直接判断state值是否等于0，如果等于0，就返回1，否则返回-1，也就是说state等于0，直接跳过<code>acquireSharedInterruptibly</code>中的判断，不等于0，就将线程挂起<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/CountDownLatch%E7%9A%84await%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="CountDownLatch的await方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84acquireSharedInterruptibly%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="AQS的acquireSharedInterruptibly方法源码图示"></li>
-</ul>
-<h3 id="AQS在CountDownLatch的总结"><a href="#AQS在CountDownLatch的总结" class="headerlink" title="AQS在CountDownLatch的总结"></a>AQS在<code>CountDownLatch</code>的总结</h3><ul>
-<li>调用<code>CountDownLatch</code>的<code>await</code>方法时，便会尝试获取“共享锁”，不过一开始是获取不到该锁的，于是线程被阻塞</li>
-<li>而“共享锁”可获取到的条件，就是“锁计数器”的值为0</li>
-<li>而“锁计数器”的初值为<code>count</code>，每当一个线程调用该<code>CountDownLatch</code>对象的<code>countDown()</code>方法时，才将“锁计数器”-1</li>
-<li><code>count</code>个线程调用<code>countDown()</code>之后，“锁计数器”才为0，而前面提到的等待获取共享锁的线程才能继续运行</li>
-</ul>
-<h2 id="AQS在Semaphore中的应用"><a href="#AQS在Semaphore中的应用" class="headerlink" title="AQS在Semaphore中的应用"></a>AQS在<code>Semaphore</code>中的应用</h2><ul>
-<li>在<code>Semaphore</code>中，<code>state</code>表示许可证的剩余数量</li>
-<li>看<code>tryAcquire</code>方法，判断<code>nonfairTryAcquireShared</code>大于等于0的话，代表成功</li>
-<li>这里会先检查剩余许可证数量够不够这次需要的，用减法来计算，如果直接不够，那就返回负数，表示失败，如果够了，就用自旋加<code>compareAndSetState</code>来改变<code>state</code>的状态，直到改变成功就返回整数，或者是期间如果被其他人修改导致剩余数量不够了，那也返回负数代表获取失败</li>
-</ul>
-<h2 id="AQS在ReentrantLock中的应用"><a href="#AQS在ReentrantLock中的应用" class="headerlink" title="AQS在ReentrantLock中的应用"></a>AQS在<code>ReentrantLock</code>中的应用</h2><ul>
-<li><code>unlock()</code><br>方法具体情况如下图所示，<code>unlock</code>方法直接调用了<code>Sync</code>类继承于AQS的<code>release</code>方法，方法中首先会判断<code>tryRelease</code>方法的返回值，如果是true，就会执行下面的<code>unparkSuccessor</code>方法，唤醒等待的线程，<code>tryRelease</code>方法被<code>ReentrantLock.Sync</code>类重写，首先会将<code>state</code>减1，因为<code>ReentrantLock</code>是可重入锁，解锁一次就是将<code>state</code>减1，然后判断当前线程是不是正在执行的线程，如果是当前线程，判断计算后的<code>state</code>是否等于0，也就是判断这次解锁是不是最后一层锁，如果不是，直接修改<code>state</code>的值，然后返回false，如果是就会调用<code>setExclusiveOwnerThread</code>方法，将当前运行的线程设置为null，并返回true，唤醒其他的线程<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock%E7%9A%84unlock%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock的unlock方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84release%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="AQS的release方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-Sync%E7%B1%BB%E7%9A%84tryRelease%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-Sync类的tryRelease方法源码图示"></li>
-<li><code>lock()</code>（以非公平锁为例）<br>如下图可以看出，<code>ReentrantLock</code>的<code>lock</code>方法中直接调用了内部类<code>Sync</code>的<code>lock</code>方法，而第二个图中也可以看出，<code>Sync.lock()</code>方法是一个<code>abstract</code>方法，由它的两个子类实现(<code>NonfairSync</code>和<code>FairSync</code>,这里仅以<code>NonfairSync</code>为例讲述)<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock%E7%9A%84lock%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock的lock方法源码图示"><br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-Sync%E7%B1%BB%E7%9A%84lock%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-Sync类的lock方法源码图示"><br>如下图可以看出，<code>NonfairSync</code>中的<code>lock</code>方法首先会调用CAS方法更新<code>state</code>的值，如果更新成功了，就直接将当前线程设置为执行线程，如果失败了，会去执行<code>acquire</code>方法，<code>acquire</code>方法是AQS的一个方法<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-NonfairSync%E7%B1%BB%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-NonfairSync类源码图示"><br>首先方法还会去调用<code>tryAcquire</code>方法，<code>tryAcquire</code>在<code>ReentrantLock</code>中会有公平和非公平两种实现方式，如果<code>tryAcquire</code>方法返回的是true，因为前面的非，则会变成false，直接跳过判断，如果<code>tryAcquire</code>返回的false，加上前面的非，则是true，就会去执行后的语句，<code>addWaiter</code>方法是将当前线程进行封装，<code>acquireQueued</code>方法则是将封装后的Node节点对象，放到等待队列中，等待别的线程释放锁之后将他唤醒<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/AQS%E7%9A%84acquire%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="AQS的acquire方法源码示意图"><br>非公平类中<code>tryAcquire</code>方法会去调用<code>nonfairTryAcquire</code>方法，这个方法是由<code>Sync</code>类实现的，方法中首先会判断<code>state</code>是否等于0，如果等于0表示当前锁没有被任何线程持有，就会直接通过CAS修改<code>state</code>的值，然后将持锁线程设置为当前线程，如果当前锁已经被持有，就会判断是否为当前线程持有，如果是，就会将<code>state</code>加入参，也就是1，然后重新设置值，如果不是表示当前锁已经被其他线程持有，直接返回false<br><img src="/2021/12/06/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94AQS/ReentrantLock-Sync%E7%B1%BB%E7%9A%84nonfairTryAcquire%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E5%9B%BE%E7%A4%BA.png" alt="ReentrantLock-Sync类的nonfairTryAcquire方法源码图示"></li>
-</ul>
-<h3 id="分析释放锁的方法tryRelease"><a href="#分析释放锁的方法tryRelease" class="headerlink" title="分析释放锁的方法tryRelease"></a>分析释放锁的方法<code>tryRelease</code></h3><ul>
-<li>由于当前是可重入锁，所以<code>state</code>代表重入次数，每次释放锁，先判断是不是当前持有锁的线程释放的，如果不是就抛异常，如果是的话，重入次数减一，如果减到了0，就说明完全释放了，于是free就是true了，并且把<code>state</code>设置为0</li>
-</ul>
-<h3 id="加锁的方法"><a href="#加锁的方法" class="headerlink" title="加锁的方法"></a>加锁的方法</h3><ul>
-<li>判断当前<code>state</code>是不是等于0，判断当前线程是不是持有锁的线程，如果都不是就代表当前线程拿不到锁，就会放进线程等待</li>
-</ul>
-<h1 id="利用AQS实现一个自己的Latch门闩"><a href="#利用AQS实现一个自己的Latch门闩" class="headerlink" title="利用AQS实现一个自己的Latch门闩"></a>利用AQS实现一个自己的Latch门闩</h1><p>如下代码就是用AQS自己实现的门闩功能代码，我们要实现的功能很简单，就是当线程调用<code>await</code>方法的时候，将线程挂起，然后等待执行了<code>signal</code>方法，将所有线程唤醒，因为是可重入的，直接调用AQS的<code>releaseShared</code>方法和<code>acquireShared</code>方法来实现，查看AQS的源码可以看到，<code>acquireShared</code>方法会判断<code>tryAcquireShared(arg) &lt; 0</code>的结果，如果为true就会将线程挂起，所以我们重写AQS的<code>tryAcquireShared</code>方法，判断<code>state</code>的值，如果为1，就返回1，1大于0，直接跳过判断，否则就返回-1，-1小于0，会进入判断，将线程挂起，而<code>state</code>默认值为0，肯定不等于1。<br>而唤醒线程的<code>signal</code>方法直接调用了AQS的<code>releaseShared</code>方法，这个方法会判断<code>tryReleaseShared(arg)</code>方法的返回值，如果是true，就调用判断中的方法唤醒被挂起的线程，否则就不处理，所以我们实现<code>tryReleaseShared</code>方法，如果只是实现唤醒的话，直接返回true就可以，但是我们要实现门闩只能使用一次的功能，门闩被打开后，再执行<code>await</code>方法不会将线程挂起，所以将<code>state</code>的值设置为1，这样<code>state</code>的时候就是等于1，然后就直接返回1，1大于0，就不会进入判断，也就不会将线程挂起</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OneShotLatch</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Sync sync = <span class="keyword">new</span> Sync();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">signal</span><span class="params">()</span></span>&#123;</span><br><span class="line">        sync.releaseShared(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">await</span><span class="params">()</span></span>&#123;</span><br><span class="line">        sync.acquireShared(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Sync</span> <span class="keyword">extends</span> <span class="title">AbstractQueuedSynchronizer</span></span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">tryReleaseShared</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">            setState(<span class="number">1</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">tryAcquireShared</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (getState() == <span class="number">1</span>) ? <span class="number">1</span> : -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        OneShotLatch oneShotLatch = <span class="keyword">new</span> OneShotLatch();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    System.out.println(Thread.currentThread().getName()+<span class="string">&quot;尝试获取latch&quot;</span>);</span><br><span class="line">                    oneShotLatch.await();</span><br><span class="line">                    System.out.println(Thread.currentThread().getName()+<span class="string">&quot;开闸放行，继续前进&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;).start();</span><br><span class="line">        &#125;</span><br><span class="line">        Thread.sleep(<span class="number">5000</span>);</span><br><span class="line">        oneShotLatch.signal();</span><br><span class="line">        <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                System.out.println(Thread.currentThread().getName()+<span class="string">&quot;尝试获取latch&quot;</span>);</span><br><span class="line">                oneShotLatch.await();</span><br><span class="line">                System.out.println(Thread.currentThread().getName()+<span class="string">&quot;开闸放行，继续前进&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>多线程</category>
-      </categories>
-      <tags>
-        <tag>精通JUC并发工具十八般武艺</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java并发成神之路-精通JUC并发工具十八般武艺——ThreadLocal(二)</title>
-    <url>/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94ThreadLocal/</url>
-    <content><![CDATA[<h1 id="两大使用场景——ThreadLocal的用途"><a href="#两大使用场景——ThreadLocal的用途" class="headerlink" title="两大使用场景——ThreadLocal的用途"></a>两大使用场景——ThreadLocal的用途</h1><ul>
-<li>场景1：每个线程需要一个独享的对象（通常是工具类，典型需要使用的类有SimpleDateFormat和Random）<blockquote>
-<p>SimpleDateFormat为线程不安全的，如果在方法中每次都创建一个SimpleDateFormat对象<br>如果访问量较高，会导致格式化出来的时间有部分是重复的<br>可以通过使用ThreadLocal，针对每一个线程创建一个SimpleDateFormat对象，这样同一个线程的不同任务是排队进行的，不同线程使用的是不同的对象，就可以解决并发问题  </p>
-</blockquote>
-</li>
-<li>场景2：每个线程内需要保存全局变量（例如在拦截器中获取用户信息，可以让不同方法直接使用，避免参数传递的麻烦）<blockquote>
-<p>假设当前用户信息需要被线程内所有方法共享，一个比较繁琐的解决发难就是把user作为阐述层层传递，从方法1到方法2到方法3，以次类推，但是这样做代码冗余，且不利于维护<br>使用ThreadLocal，当前线程中公共变量，可以在当前线程中的任何一个方法中调用获取相应的变量值</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="ThreadLocal的两个作用"><a href="#ThreadLocal的两个作用" class="headerlink" title="ThreadLocal的两个作用"></a>ThreadLocal的两个作用</h2><ul>
-<li>让某个需要用到的对象在线程间隔离（每个线程都有自己的独立的对象）</li>
-<li>在任何方法中都可以轻松的获取到对象</li>
-</ul>
-<h2 id="根据共享对象的生产时机不同，选择initialValue或set来保存对象"><a href="#根据共享对象的生产时机不同，选择initialValue或set来保存对象" class="headerlink" title="根据共享对象的生产时机不同，选择initialValue或set来保存对象"></a>根据共享对象的生产时机不同，选择<code>initialValue</code>或<code>set</code>来保存对象</h2><ul>
-<li>场景一：<code>initialValue</code><blockquote>
-<p>在ThreadLocal第一个get的时候，把对象给初始化出来，对象的初始化时机可以由我们控制</p>
-</blockquote>
-</li>
-<li>场景二：<code>set</code><blockquote>
-<p>如果需要保存到ThreadLocal里面的对象的生产时机不由我们随意控制，例如拦截器生成的用户信息，用ThreadLocal.set()直接放到我们的ThreadLocal中去，以便后续使用</p>
-</blockquote>
-</li>
-</ul>
-<h1 id="使用ThreadLocal带来的好处"><a href="#使用ThreadLocal带来的好处" class="headerlink" title="使用ThreadLocal带来的好处"></a>使用ThreadLocal带来的好处</h1><ul>
-<li>达到线程安全的目的</li>
-<li>不需要加锁，提高执行效率</li>
-<li>更高效的利用内存、节省开销：相比于每一个任务都新建一个SimpleDateFormat，显然用ThreadLocal可以节省内存和开销</li>
-<li>免去传参的繁琐：无论是场景一的工具类，还是场景二的用户名，都可以在任何地方直接通过ThreadLocal拿到，再也不需要每次都传同样的参数，ThreadLocal使得代码耦合度更低，更优雅</li>
-</ul>
-<h1 id="主要方法介绍"><a href="#主要方法介绍" class="headerlink" title="主要方法介绍"></a>主要方法介绍</h1><ul>
-<li><p><code>T initialValue()</code></p>
-<blockquote>
-<p>该方法会返回当前线程对应的”初始值“，这是一个延迟加载的方法，只有再调用<code>get()</code>的时候，才会触发<br>当线程第一个吃用<code>get()</code>方法访问变量时，将调用此方法，除非线程先调用了<code>set()</code>方法，在这种情况下，不会为线程调用本<code>initialValue()</code>方法<br>通常每个线程最调用一次此方法，但如果已经调用了<code>remove()</code>，再调用<code>get()</code>，则可以再次调用此方法<br>如果不重写本方法，这个放回就会返回null，一般使用匿名内部类的方法来重写<code>initialValue()</code>方法，以便再后续使用中，可以初始化副本对象<br>该方法没有默认实现，如果我们需要到该方法，需要自己实现，通常使用匿名内部类的方式</p>
-</blockquote>
-</li>
-<li><p><code>void set(T t)</code></p>
-<blockquote>
-<p>为这个线程设置一个新值</p>
-</blockquote>
-</li>
-<li><p><code>T get()</code></p>
-<blockquote>
-<p>得到这个线程对应的value，如果是首次调用<code>get()</code>（没有调用<code>set()</code>方法直接调用<code>get()</code>），则会调用<code>initialValue()</code>方法获取这个值<br><code>get()</code>方法是先取出当前线程的<code>ThreadLocalMap</code>，然后调用<code>map.getEntry</code>方法，把本<code>ThreadLocal</code>的引用作为参数传进去，取出map中属于本<code>ThreadLocal</code>的value<br>注意，这个map以及map中的key和value都是保存再线程中的，而不是保存再ThreadLocal中的</p>
-</blockquote>
-</li>
-<li><p><code>void remove()</code></p>
-<blockquote>
-<p>删除对应这个线程的值</p>
-</blockquote>
-</li>
-</ul>
-<h1 id="ThreadLocalMap类"><a href="#ThreadLocalMap类" class="headerlink" title="ThreadLocalMap类"></a>ThreadLocalMap类</h1><ul>
-<li>ThreadLocalMap类是每个线程Thread类里面的变量，里面最重要的是一个键值对数组<code>Entry[] table</code>，可以认为是一个map，键值对：<ul>
-<li>键：这个ThreadLocal</li>
-<li>值：实际需要的成员变量，比如user或者SimpleDateFormat对象</li>
-</ul>
-</li>
-<li>当发现hash冲突的时候，ThreadLocalMap采用的是线性探测法，也就是如果发生冲突，就继续找下一个空位置，而不是采用链表拉链</li>
-</ul>
-<h1 id="ThreadLocal注意点"><a href="#ThreadLocal注意点" class="headerlink" title="ThreadLocal注意点"></a>ThreadLocal注意点</h1><h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><ul>
-<li>什么是内存泄漏：某个对象不再有用，但是占用的内存却不能被回收</li>
-<li>key的泄漏：ThreadLocalMap中的Entry继承自WeakReference，是弱引用<ul>
-<li>弱引用的特点是，如果这个对象只被弱引用关联（没有任何强引用关联），那么这个对象就可以被回收，所以弱引用不会阻止GC</li>
-</ul>
-</li>
-<li>value的泄漏<ul>
-<li>ThreadLocalMap的每个Entry都是一个对key的弱引用，同时，每个Entry都包含了一个对value的强引用</li>
-<li>正常情况下，当线程终止，保存再ThreadLocal里面的value会被垃圾回收，因为没有任何强引用了</li>
-<li>但是如果线程不终止（比如线程需要保持很久，使用线程池的场景，线程一直被重复使用），那么key对应的value就不能被回收，因为又以下的调用链：<ul>
-<li>Thread -&gt; ThreadLocalMap -&gt; Entry(key为null) -&gt; value</li>
-</ul>
-</li>
-<li>因为value和Thread之间还存在这个强引用链路，所以导致value无法回收，就可能出现OOM</li>
-<li>JDK已经考虑到了这个问题，多以在set，remove，rehash方法中会扫描key为null的Entry，并把相应的value设置成null，这样value对象就可以被回收</li>
-<li>但是如果一个ThreadLocal不被使用，那么实际上set,remove,rehash方法也不会被调用到，如果同时线程又不停止，那么调用链就一直存在，那么就导致了value的内存泄漏</li>
-</ul>
-</li>
-</ul>
-<h2 id="如何避免内存泄漏（阿里规约）"><a href="#如何避免内存泄漏（阿里规约）" class="headerlink" title="如何避免内存泄漏（阿里规约）"></a>如何避免内存泄漏（阿里规约）</h2><ul>
-<li>调用remove方法，就会删除相应的Entry对象，可以避免内存泄漏，所以使用完ThreadLocal之后，应该调用remove方法</li>
-</ul>
-<h2 id="空指针问题"><a href="#空指针问题" class="headerlink" title="空指针问题"></a>空指针问题</h2><ul>
-<li>当ThreadLocal.get()方法出来的值，直接被基本类型接受的时候，如果值是空，那么在转为基本类型的时候会抛出控制在异常</li>
-</ul>
-<h2 id="共享对象"><a href="#共享对象" class="headerlink" title="共享对象"></a>共享对象</h2><ul>
-<li>如果每个线程中ThreadLocal.set()进去的东西本来就是多个线程共享的同一个对象，比如static对象，那么多个线程的ThreadLocal.get()取的还是这个共享对象本身，还是会有并发访问的问题</li>
-</ul>
-<h2 id="如果使用ThreadLocal就可以解决问题，那么不要强制使用"><a href="#如果使用ThreadLocal就可以解决问题，那么不要强制使用" class="headerlink" title="如果使用ThreadLocal就可以解决问题，那么不要强制使用"></a>如果使用ThreadLocal就可以解决问题，那么不要强制使用</h2><ul>
-<li>例如在任务数很少的时候，在局部变量中可以新建对象就可以解决问题，那么就不需要使用到ThreadLocal</li>
-</ul>
-<h2 id="优先使用框架的支持，而不是自己创造"><a href="#优先使用框架的支持，而不是自己创造" class="headerlink" title="优先使用框架的支持，而不是自己创造"></a>优先使用框架的支持，而不是自己创造</h2><ul>
-<li>例如spring中，如果可以使用RequestContextHolder，那么就不需要自己维护ThreadLocal，因为自己可能会忘记调用remove()方法，造成内存泄漏</li>
 </ul>
 ]]></content>
       <categories>
@@ -2834,6 +2729,111 @@
 <h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2></li>
 <li>适用于需要大量计算，并且可以并行计算的场景</li>
 <li>不保证计算的顺序（如上代码，使用了线程池，不能保证那个线程先执行，也许是1+3+4+2…）</li>
+</ul>
+]]></content>
+      <categories>
+        <category>多线程</category>
+      </categories>
+      <tags>
+        <tag>精通JUC并发工具十八般武艺</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java并发成神之路-精通JUC并发工具十八般武艺——ThreadLocal(二)</title>
+    <url>/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94ThreadLocal/</url>
+    <content><![CDATA[<h1 id="两大使用场景——ThreadLocal的用途"><a href="#两大使用场景——ThreadLocal的用途" class="headerlink" title="两大使用场景——ThreadLocal的用途"></a>两大使用场景——ThreadLocal的用途</h1><ul>
+<li>场景1：每个线程需要一个独享的对象（通常是工具类，典型需要使用的类有SimpleDateFormat和Random）<blockquote>
+<p>SimpleDateFormat为线程不安全的，如果在方法中每次都创建一个SimpleDateFormat对象<br>如果访问量较高，会导致格式化出来的时间有部分是重复的<br>可以通过使用ThreadLocal，针对每一个线程创建一个SimpleDateFormat对象，这样同一个线程的不同任务是排队进行的，不同线程使用的是不同的对象，就可以解决并发问题  </p>
+</blockquote>
+</li>
+<li>场景2：每个线程内需要保存全局变量（例如在拦截器中获取用户信息，可以让不同方法直接使用，避免参数传递的麻烦）<blockquote>
+<p>假设当前用户信息需要被线程内所有方法共享，一个比较繁琐的解决发难就是把user作为阐述层层传递，从方法1到方法2到方法3，以次类推，但是这样做代码冗余，且不利于维护<br>使用ThreadLocal，当前线程中公共变量，可以在当前线程中的任何一个方法中调用获取相应的变量值</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="ThreadLocal的两个作用"><a href="#ThreadLocal的两个作用" class="headerlink" title="ThreadLocal的两个作用"></a>ThreadLocal的两个作用</h2><ul>
+<li>让某个需要用到的对象在线程间隔离（每个线程都有自己的独立的对象）</li>
+<li>在任何方法中都可以轻松的获取到对象</li>
+</ul>
+<h2 id="根据共享对象的生产时机不同，选择initialValue或set来保存对象"><a href="#根据共享对象的生产时机不同，选择initialValue或set来保存对象" class="headerlink" title="根据共享对象的生产时机不同，选择initialValue或set来保存对象"></a>根据共享对象的生产时机不同，选择<code>initialValue</code>或<code>set</code>来保存对象</h2><ul>
+<li>场景一：<code>initialValue</code><blockquote>
+<p>在ThreadLocal第一个get的时候，把对象给初始化出来，对象的初始化时机可以由我们控制</p>
+</blockquote>
+</li>
+<li>场景二：<code>set</code><blockquote>
+<p>如果需要保存到ThreadLocal里面的对象的生产时机不由我们随意控制，例如拦截器生成的用户信息，用ThreadLocal.set()直接放到我们的ThreadLocal中去，以便后续使用</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="使用ThreadLocal带来的好处"><a href="#使用ThreadLocal带来的好处" class="headerlink" title="使用ThreadLocal带来的好处"></a>使用ThreadLocal带来的好处</h1><ul>
+<li>达到线程安全的目的</li>
+<li>不需要加锁，提高执行效率</li>
+<li>更高效的利用内存、节省开销：相比于每一个任务都新建一个SimpleDateFormat，显然用ThreadLocal可以节省内存和开销</li>
+<li>免去传参的繁琐：无论是场景一的工具类，还是场景二的用户名，都可以在任何地方直接通过ThreadLocal拿到，再也不需要每次都传同样的参数，ThreadLocal使得代码耦合度更低，更优雅</li>
+</ul>
+<h1 id="主要方法介绍"><a href="#主要方法介绍" class="headerlink" title="主要方法介绍"></a>主要方法介绍</h1><ul>
+<li><p><code>T initialValue()</code></p>
+<blockquote>
+<p>该方法会返回当前线程对应的”初始值“，这是一个延迟加载的方法，只有再调用<code>get()</code>的时候，才会触发<br>当线程第一个吃用<code>get()</code>方法访问变量时，将调用此方法，除非线程先调用了<code>set()</code>方法，在这种情况下，不会为线程调用本<code>initialValue()</code>方法<br>通常每个线程最调用一次此方法，但如果已经调用了<code>remove()</code>，再调用<code>get()</code>，则可以再次调用此方法<br>如果不重写本方法，这个放回就会返回null，一般使用匿名内部类的方法来重写<code>initialValue()</code>方法，以便再后续使用中，可以初始化副本对象<br>该方法没有默认实现，如果我们需要到该方法，需要自己实现，通常使用匿名内部类的方式</p>
+</blockquote>
+</li>
+<li><p><code>void set(T t)</code></p>
+<blockquote>
+<p>为这个线程设置一个新值</p>
+</blockquote>
+</li>
+<li><p><code>T get()</code></p>
+<blockquote>
+<p>得到这个线程对应的value，如果是首次调用<code>get()</code>（没有调用<code>set()</code>方法直接调用<code>get()</code>），则会调用<code>initialValue()</code>方法获取这个值<br><code>get()</code>方法是先取出当前线程的<code>ThreadLocalMap</code>，然后调用<code>map.getEntry</code>方法，把本<code>ThreadLocal</code>的引用作为参数传进去，取出map中属于本<code>ThreadLocal</code>的value<br>注意，这个map以及map中的key和value都是保存再线程中的，而不是保存再ThreadLocal中的</p>
+</blockquote>
+</li>
+<li><p><code>void remove()</code></p>
+<blockquote>
+<p>删除对应这个线程的值</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="ThreadLocalMap类"><a href="#ThreadLocalMap类" class="headerlink" title="ThreadLocalMap类"></a>ThreadLocalMap类</h1><ul>
+<li>ThreadLocalMap类是每个线程Thread类里面的变量，里面最重要的是一个键值对数组<code>Entry[] table</code>，可以认为是一个map，键值对：<ul>
+<li>键：这个ThreadLocal</li>
+<li>值：实际需要的成员变量，比如user或者SimpleDateFormat对象</li>
+</ul>
+</li>
+<li>当发现hash冲突的时候，ThreadLocalMap采用的是线性探测法，也就是如果发生冲突，就继续找下一个空位置，而不是采用链表拉链</li>
+</ul>
+<h1 id="ThreadLocal注意点"><a href="#ThreadLocal注意点" class="headerlink" title="ThreadLocal注意点"></a>ThreadLocal注意点</h1><h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><ul>
+<li>什么是内存泄漏：某个对象不再有用，但是占用的内存却不能被回收</li>
+<li>key的泄漏：ThreadLocalMap中的Entry继承自WeakReference，是弱引用<ul>
+<li>弱引用的特点是，如果这个对象只被弱引用关联（没有任何强引用关联），那么这个对象就可以被回收，所以弱引用不会阻止GC</li>
+</ul>
+</li>
+<li>value的泄漏<ul>
+<li>ThreadLocalMap的每个Entry都是一个对key的弱引用，同时，每个Entry都包含了一个对value的强引用</li>
+<li>正常情况下，当线程终止，保存再ThreadLocal里面的value会被垃圾回收，因为没有任何强引用了</li>
+<li>但是如果线程不终止（比如线程需要保持很久，使用线程池的场景，线程一直被重复使用），那么key对应的value就不能被回收，因为又以下的调用链：<ul>
+<li>Thread -&gt; ThreadLocalMap -&gt; Entry(key为null) -&gt; value</li>
+</ul>
+</li>
+<li>因为value和Thread之间还存在这个强引用链路，所以导致value无法回收，就可能出现OOM</li>
+<li>JDK已经考虑到了这个问题，多以在set，remove，rehash方法中会扫描key为null的Entry，并把相应的value设置成null，这样value对象就可以被回收</li>
+<li>但是如果一个ThreadLocal不被使用，那么实际上set,remove,rehash方法也不会被调用到，如果同时线程又不停止，那么调用链就一直存在，那么就导致了value的内存泄漏</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何避免内存泄漏（阿里规约）"><a href="#如何避免内存泄漏（阿里规约）" class="headerlink" title="如何避免内存泄漏（阿里规约）"></a>如何避免内存泄漏（阿里规约）</h2><ul>
+<li>调用remove方法，就会删除相应的Entry对象，可以避免内存泄漏，所以使用完ThreadLocal之后，应该调用remove方法</li>
+</ul>
+<h2 id="空指针问题"><a href="#空指针问题" class="headerlink" title="空指针问题"></a>空指针问题</h2><ul>
+<li>当ThreadLocal.get()方法出来的值，直接被基本类型接受的时候，如果值是空，那么在转为基本类型的时候会抛出控制在异常</li>
+</ul>
+<h2 id="共享对象"><a href="#共享对象" class="headerlink" title="共享对象"></a>共享对象</h2><ul>
+<li>如果每个线程中ThreadLocal.set()进去的东西本来就是多个线程共享的同一个对象，比如static对象，那么多个线程的ThreadLocal.get()取的还是这个共享对象本身，还是会有并发访问的问题</li>
+</ul>
+<h2 id="如果使用ThreadLocal就可以解决问题，那么不要强制使用"><a href="#如果使用ThreadLocal就可以解决问题，那么不要强制使用" class="headerlink" title="如果使用ThreadLocal就可以解决问题，那么不要强制使用"></a>如果使用ThreadLocal就可以解决问题，那么不要强制使用</h2><ul>
+<li>例如在任务数很少的时候，在局部变量中可以新建对象就可以解决问题，那么就不需要使用到ThreadLocal</li>
+</ul>
+<h2 id="优先使用框架的支持，而不是自己创造"><a href="#优先使用框架的支持，而不是自己创造" class="headerlink" title="优先使用框架的支持，而不是自己创造"></a>优先使用框架的支持，而不是自己创造</h2><ul>
+<li>例如spring中，如果可以使用RequestContextHolder，那么就不需要自己维护ThreadLocal，因为自己可能会忘记调用remove()方法，造成内存泄漏</li>
 </ul>
 ]]></content>
       <categories>
@@ -5284,7 +5284,7 @@
 </tr>
 </tbody></table>
 <blockquote>
-<p>如下内容，是使用参数打印的垃圾回收信息，以及程序结束时堆的信息<br><code>-Xms20m -Xmx20m -Xmn10m -XX:+UseSerialGC -XX:+PrintGCDetails -verbose:gc</code><br>使用了上面这些jvm参数（堆内存初始20m，最大20m，新生代10m，使用Serial垃圾回收器，打印垃圾回收信息）<br>以<code>[GC</code>开头的两行，表示年轻代垃圾回收信息（老年代垃圾回收以<code>Full GC</code>开头），DefNew表示新生代，后面是回收前内存，回收后内存，总内存，使用时间；然后是整个堆回收前占用内存，回收后占用内存，总内存，回收占用时间，时间主要看最后<code>real</code>的时间，平均时间<br><code>Heap</code> 程序停止的时候的堆信息<br><code>def new generation</code> 新生代堆信息，总内存，已经占用的内存<br><code>eden</code> 的内存大小，占用比例<br><code>from</code> 性存区from的内存大小，使用占比<br><code>to</code> 性存区to的内存大小，使用占比<br><code>tenured generation</code> 老年代的内存带下，总空间，使用空间<br>老年代的空间大小，使用占比<br><code>Metaspace</code> 的相关信息</p>
+<p>如下内容，是使用参数打印的垃圾回收信息，以及程序结束时堆的信息<br><code>-Xms20m -Xmx20m -Xmn10m -XX:+UseSerialGC -XX:+PrintGCDetails -verbose:gc</code><br>使用了上面这些jvm参数（堆内存初始20m，最大20m，新生代10m，使用Serial垃圾回收器，打印垃圾回收信息）<br>以<code>[GC</code>开头的两行，表示年轻代垃圾回收信息（老年代垃圾回收以<code>Full GC</code>开头），DefNew表示新生代，后面是回收前内存，回收后内存，总内存，使用时间；然后是整个堆回收前占用内存，回收后占用内存，总内存，回收占用时间，时间主要看最后<code>real</code>的时间，平均时间<br><code>Heap</code> 程序停止的时候的堆信息<br><code>def new generation</code> 新生代堆信息，总内存，已经占用的内存<br><code>eden</code> 伊甸园的内存大小，占用比例<br><code>from</code> 幸存区from的内存大小，使用占比<br><code>to</code> 幸存区to的内存大小，使用占比<br><code>tenured generation</code> 老年代的内存带下，总空间，使用空间<br>老年代的空间大小，使用占比<br><code>Metaspace</code> 的相关信息</p>
 </blockquote>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">[GC (Allocation Failure) [DefNew: 6436K-&gt;1024K(9216K), 0.0027524 secs] 6436K-&gt;1543K(19456K), 0.0028086 secs] [Times: user=0.00 sys=0.00, real=0.00 secs] </span><br><span class="line">[GC (Allocation Failure) [DefNew: 8859K-&gt;512K(9216K), 0.0041159 secs] 9378K-&gt;9223K(19456K), 0.0041326 secs] [Times: user=0.00 sys=0.02, real=0.00 secs] </span><br><span class="line">Heap</span><br><span class="line"> def new generation   total 9216K, used 1106K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)</span><br><span class="line">  eden space 8192K,   7% used [0x00000000fec00000, 0x00000000fec94930, 0x00000000ff400000)</span><br><span class="line">  from space 1024K,  50% used [0x00000000ff400000, 0x00000000ff480048, 0x00000000ff500000)</span><br><span class="line">  to   space 1024K,   0% used [0x00000000ff500000, 0x00000000ff500000, 0x00000000ff600000)</span><br><span class="line"> tenured generation   total 10240K, used 8711K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)</span><br><span class="line">   the space 10240K,  85% used [0x00000000ff600000, 0x00000000ffe81c18, 0x00000000ffe81e00, 0x0000000100000000)</span><br><span class="line"> Metaspace       used 3328K, capacity 4496K, committed 4864K, reserved 1056768K</span><br><span class="line">  class space    used 359K, capacity 388K, committed 512K, reserved 1048576K</span><br></pre></td></tr></table></figure>
 
