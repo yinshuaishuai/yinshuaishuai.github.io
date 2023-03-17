@@ -299,81 +299,6 @@
       </tags>
   </entry>
   <entry>
-    <title>中介者模式</title>
-    <url>/2021/10/30/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
-<p>定义一个封装一组对象如何交互的对象；<br>通过使对象明确地相互引用来促进松散耦合，并允许独立的改变它们的交互；<br>行为型</p>
-</blockquote>
-<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
-<li>系统对象之间存在复杂的引用关系，产生的相互依赖关系结构混乱且难以理解；</li>
-<li>交互的公共行为，如果需要改变行为则可以增加新的中介类。</li>
-</ul>
-<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>将一对多转化成了一对一，降低程序复杂度</li>
-<li>类之间的解耦</li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>中介者过多，导致系统复杂</li>
-</ul>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
-<li><strong>抽象中介者角色</strong>：它是中介者的接口，提供了同事对象注册与转发同事对象信息的抽象方法。</li>
-<li><strong>具体中介者角色</strong>：实现中介者接口，定义一个List来管理同事对象，协调各个同事之间的交互关系，因此它依赖于同事角色。</li>
-<li><strong>抽象同事类角色</strong>：定义同事类的接口，保存中介者对象，提供同事对象交互的抽象方法，实现所有相互影响的同事类的公共功能。</li>
-<li><strong>具体同事类角色</strong>：是抽象同事类的实现者，当需要与其他同事对象交互时，由中介者对象负责后续的交互。</li>
-</ul>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设有一个中介小刘，做房产中介，有两个房东来找租客<br>抽象中介者角色，可以理解为中介这一个行业  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Mediator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Colleague colleague)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">relay</span><span class="params">(Colleague cl)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>具体中介者角色<br>中介小刘，聚合了同事角色，也就是聚合了房东，保留房东的联系方式，两个方法，一个保存房东联系方式，一个给房东联系的方法</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XiaoLiuMediator</span> <span class="keyword">extends</span> <span class="title">Mediator</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Colleague&gt; colleagues = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Colleague colleague)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!colleagues.contains(colleague)) &#123;</span><br><span class="line">            colleagues.add(colleague);</span><br><span class="line">            colleague.setMedium(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">relay</span><span class="params">(Colleague cl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Colleague ob : colleagues) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!ob.equals(cl)) &#123;</span><br><span class="line">                ob.receive();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>抽象同事类角色<br>聚合了一个中介，有三个方法，一个是保存中介信息，一个是联系中介租房的，一个是讨价还价的  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Colleague</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> Mediator mediator;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMedium</span><span class="params">(Mediator mediator)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mediator = mediator;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>具体同事类角色1  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LandlordColleague1</span> <span class="keyword">extends</span> <span class="title">Colleague</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;2000少一分都不行。&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我有房子要出租。&quot;</span>);</span><br><span class="line">        mediator.relay(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>具体同事类角色2  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LandlordColleague2</span> <span class="keyword">extends</span> <span class="title">Colleague</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;1800一分都不能少。&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我也有房子要出租。&quot;</span>);</span><br><span class="line">        mediator.relay(<span class="keyword">this</span>); <span class="comment">//请中介者转发</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>客户端调用  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Mediator mediator = <span class="keyword">new</span> XiaoLiuMediator();</span><br><span class="line"></span><br><span class="line">        Colleague l1 = <span class="keyword">new</span> LandlordColleague1();</span><br><span class="line">        Colleague l2 = <span class="keyword">new</span> LandlordColleague2();</span><br><span class="line"></span><br><span class="line">        mediator.register(l1);</span><br><span class="line">        mediator.register(l2);</span><br><span class="line"></span><br><span class="line">        l1.send();</span><br><span class="line">        System.out.println(<span class="string">&quot;-------------------&quot;</span>);</span><br><span class="line">        l2.send();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结果：  </p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">我有房子要出租。</span><br><span class="line">1800一分都不能少。</span><br><span class="line">-------------------</span><br><span class="line">我也有房子要出租。</span><br><span class="line">2000少一分都不行。</span><br></pre></td></tr></table></figure>
-
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/bP9FQuCm6CRl-HJlCIjKsAxhXB6hEss7mTZXhRv883KbUNKhnUy-jJKnLXcx1Nt-_F8exXrRp1boZSx1AnKAsLWuYsEzroe770MDKGLOAfLZilB5Q4rOrWJvUBfxNFDeF4qDkbEsGbmQFnIQJDM-c7wOgYAGT21MDSW4MTUyyp5fA7Rm11LzmxErU1fKgGmmVtF3kPs9Ru1xIOUCyLf1qbCQffof21iUheSOnH7tYleWRuHT3RHh8-Qa6f9h8xjkD3dTDSEgqCOMdl7UJnjXH_U-Tim7kOGFSElv3__9X-M2IVuxEGv-nyYZ-82gacziLLL-VW7QqerEF-XccmOA4NXssut_F48iJ9GaQH0iN35wFmrEalcVBCHmXSZXdtZdBm00">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>设计模式</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>synchronized关键字</title>
     <url>/2021/11/14/%E5%A4%9A%E7%BA%BF%E7%A8%8B/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/</url>
     <content><![CDATA[<h1 id="synchronized的作用"><a href="#synchronized的作用" class="headerlink" title="synchronized的作用"></a>synchronized的作用</h1><ul>
@@ -490,6 +415,81 @@
       </categories>
       <tags>
         <tag>多线程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>中介者模式</title>
+    <url>/2021/10/30/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>定义一个封装一组对象如何交互的对象；<br>通过使对象明确地相互引用来促进松散耦合，并允许独立的改变它们的交互；<br>行为型</p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>系统对象之间存在复杂的引用关系，产生的相互依赖关系结构混乱且难以理解；</li>
+<li>交互的公共行为，如果需要改变行为则可以增加新的中介类。</li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>将一对多转化成了一对一，降低程序复杂度</li>
+<li>类之间的解耦</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>中介者过多，导致系统复杂</li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ul>
+<li><strong>抽象中介者角色</strong>：它是中介者的接口，提供了同事对象注册与转发同事对象信息的抽象方法。</li>
+<li><strong>具体中介者角色</strong>：实现中介者接口，定义一个List来管理同事对象，协调各个同事之间的交互关系，因此它依赖于同事角色。</li>
+<li><strong>抽象同事类角色</strong>：定义同事类的接口，保存中介者对象，提供同事对象交互的抽象方法，实现所有相互影响的同事类的公共功能。</li>
+<li><strong>具体同事类角色</strong>：是抽象同事类的实现者，当需要与其他同事对象交互时，由中介者对象负责后续的交互。</li>
+</ul>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设有一个中介小刘，做房产中介，有两个房东来找租客<br>抽象中介者角色，可以理解为中介这一个行业  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Mediator</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Colleague colleague)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">relay</span><span class="params">(Colleague cl)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体中介者角色<br>中介小刘，聚合了同事角色，也就是聚合了房东，保留房东的联系方式，两个方法，一个保存房东联系方式，一个给房东联系的方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XiaoLiuMediator</span> <span class="keyword">extends</span> <span class="title">Mediator</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Colleague&gt; colleagues = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">register</span><span class="params">(Colleague colleague)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!colleagues.contains(colleague)) &#123;</span><br><span class="line">            colleagues.add(colleague);</span><br><span class="line">            colleague.setMedium(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">relay</span><span class="params">(Colleague cl)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (Colleague ob : colleagues) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!ob.equals(cl)) &#123;</span><br><span class="line">                ob.receive();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>抽象同事类角色<br>聚合了一个中介，有三个方法，一个是保存中介信息，一个是联系中介租房的，一个是讨价还价的  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Colleague</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> Mediator mediator;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMedium</span><span class="params">(Mediator mediator)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mediator = mediator;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体同事类角色1  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LandlordColleague1</span> <span class="keyword">extends</span> <span class="title">Colleague</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;2000少一分都不行。&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我有房子要出租。&quot;</span>);</span><br><span class="line">        mediator.relay(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体同事类角色2  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LandlordColleague2</span> <span class="keyword">extends</span> <span class="title">Colleague</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receive</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;1800一分都不能少。&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">send</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我也有房子要出租。&quot;</span>);</span><br><span class="line">        mediator.relay(<span class="keyword">this</span>); <span class="comment">//请中介者转发</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>客户端调用  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Mediator mediator = <span class="keyword">new</span> XiaoLiuMediator();</span><br><span class="line"></span><br><span class="line">        Colleague l1 = <span class="keyword">new</span> LandlordColleague1();</span><br><span class="line">        Colleague l2 = <span class="keyword">new</span> LandlordColleague2();</span><br><span class="line"></span><br><span class="line">        mediator.register(l1);</span><br><span class="line">        mediator.register(l2);</span><br><span class="line"></span><br><span class="line">        l1.send();</span><br><span class="line">        System.out.println(<span class="string">&quot;-------------------&quot;</span>);</span><br><span class="line">        l2.send();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">我有房子要出租。</span><br><span class="line">1800一分都不能少。</span><br><span class="line">-------------------</span><br><span class="line">我也有房子要出租。</span><br><span class="line">2000少一分都不行。</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/bP9FQuCm6CRl-HJlCIjKsAxhXB6hEss7mTZXhRv883KbUNKhnUy-jJKnLXcx1Nt-_F8exXrRp1boZSx1AnKAsLWuYsEzroe770MDKGLOAfLZilB5Q4rOrWJvUBfxNFDeF4qDkbEsGbmQFnIQJDM-c7wOgYAGT21MDSW4MTUyyp5fA7Rm11LzmxErU1fKgGmmVtF3kPs9Ru1xIOUCyLf1qbCQffof21iUheSOnH7tYleWRuHT3RHh8-Qa6f9h8xjkD3dTDSEgqCOMdl7UJnjXH_U-Tim7kOGFSElv3__9X-M2IVuxEGv-nyYZ-82gacziLLL-VW7QqerEF-XccmOA4NXssut_F48iJ9GaQH0iN35wFmrEalcVBCHmXSZXdtZdBm00">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>设计模式</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
       </tags>
   </entry>
   <entry>
@@ -2615,6 +2615,111 @@
       </tags>
   </entry>
   <entry>
+    <title>Java并发成神之路-精通JUC并发工具十八般武艺——ThreadLocal(二)</title>
+    <url>/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94ThreadLocal/</url>
+    <content><![CDATA[<h1 id="两大使用场景——ThreadLocal的用途"><a href="#两大使用场景——ThreadLocal的用途" class="headerlink" title="两大使用场景——ThreadLocal的用途"></a>两大使用场景——ThreadLocal的用途</h1><ul>
+<li>场景1：每个线程需要一个独享的对象（通常是工具类，典型需要使用的类有SimpleDateFormat和Random）<blockquote>
+<p>SimpleDateFormat为线程不安全的，如果在方法中每次都创建一个SimpleDateFormat对象<br>如果访问量较高，会导致格式化出来的时间有部分是重复的<br>可以通过使用ThreadLocal，针对每一个线程创建一个SimpleDateFormat对象，这样同一个线程的不同任务是排队进行的，不同线程使用的是不同的对象，就可以解决并发问题  </p>
+</blockquote>
+</li>
+<li>场景2：每个线程内需要保存全局变量（例如在拦截器中获取用户信息，可以让不同方法直接使用，避免参数传递的麻烦）<blockquote>
+<p>假设当前用户信息需要被线程内所有方法共享，一个比较繁琐的解决发难就是把user作为阐述层层传递，从方法1到方法2到方法3，以次类推，但是这样做代码冗余，且不利于维护<br>使用ThreadLocal，当前线程中公共变量，可以在当前线程中的任何一个方法中调用获取相应的变量值</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="ThreadLocal的两个作用"><a href="#ThreadLocal的两个作用" class="headerlink" title="ThreadLocal的两个作用"></a>ThreadLocal的两个作用</h2><ul>
+<li>让某个需要用到的对象在线程间隔离（每个线程都有自己的独立的对象）</li>
+<li>在任何方法中都可以轻松的获取到对象</li>
+</ul>
+<h2 id="根据共享对象的生产时机不同，选择initialValue或set来保存对象"><a href="#根据共享对象的生产时机不同，选择initialValue或set来保存对象" class="headerlink" title="根据共享对象的生产时机不同，选择initialValue或set来保存对象"></a>根据共享对象的生产时机不同，选择<code>initialValue</code>或<code>set</code>来保存对象</h2><ul>
+<li>场景一：<code>initialValue</code><blockquote>
+<p>在ThreadLocal第一个get的时候，把对象给初始化出来，对象的初始化时机可以由我们控制</p>
+</blockquote>
+</li>
+<li>场景二：<code>set</code><blockquote>
+<p>如果需要保存到ThreadLocal里面的对象的生产时机不由我们随意控制，例如拦截器生成的用户信息，用ThreadLocal.set()直接放到我们的ThreadLocal中去，以便后续使用</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="使用ThreadLocal带来的好处"><a href="#使用ThreadLocal带来的好处" class="headerlink" title="使用ThreadLocal带来的好处"></a>使用ThreadLocal带来的好处</h1><ul>
+<li>达到线程安全的目的</li>
+<li>不需要加锁，提高执行效率</li>
+<li>更高效的利用内存、节省开销：相比于每一个任务都新建一个SimpleDateFormat，显然用ThreadLocal可以节省内存和开销</li>
+<li>免去传参的繁琐：无论是场景一的工具类，还是场景二的用户名，都可以在任何地方直接通过ThreadLocal拿到，再也不需要每次都传同样的参数，ThreadLocal使得代码耦合度更低，更优雅</li>
+</ul>
+<h1 id="主要方法介绍"><a href="#主要方法介绍" class="headerlink" title="主要方法介绍"></a>主要方法介绍</h1><ul>
+<li><p><code>T initialValue()</code></p>
+<blockquote>
+<p>该方法会返回当前线程对应的”初始值“，这是一个延迟加载的方法，只有再调用<code>get()</code>的时候，才会触发<br>当线程第一个吃用<code>get()</code>方法访问变量时，将调用此方法，除非线程先调用了<code>set()</code>方法，在这种情况下，不会为线程调用本<code>initialValue()</code>方法<br>通常每个线程最调用一次此方法，但如果已经调用了<code>remove()</code>，再调用<code>get()</code>，则可以再次调用此方法<br>如果不重写本方法，这个放回就会返回null，一般使用匿名内部类的方法来重写<code>initialValue()</code>方法，以便再后续使用中，可以初始化副本对象<br>该方法没有默认实现，如果我们需要到该方法，需要自己实现，通常使用匿名内部类的方式</p>
+</blockquote>
+</li>
+<li><p><code>void set(T t)</code></p>
+<blockquote>
+<p>为这个线程设置一个新值</p>
+</blockquote>
+</li>
+<li><p><code>T get()</code></p>
+<blockquote>
+<p>得到这个线程对应的value，如果是首次调用<code>get()</code>（没有调用<code>set()</code>方法直接调用<code>get()</code>），则会调用<code>initialValue()</code>方法获取这个值<br><code>get()</code>方法是先取出当前线程的<code>ThreadLocalMap</code>，然后调用<code>map.getEntry</code>方法，把本<code>ThreadLocal</code>的引用作为参数传进去，取出map中属于本<code>ThreadLocal</code>的value<br>注意，这个map以及map中的key和value都是保存再线程中的，而不是保存再ThreadLocal中的</p>
+</blockquote>
+</li>
+<li><p><code>void remove()</code></p>
+<blockquote>
+<p>删除对应这个线程的值</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="ThreadLocalMap类"><a href="#ThreadLocalMap类" class="headerlink" title="ThreadLocalMap类"></a>ThreadLocalMap类</h1><ul>
+<li>ThreadLocalMap类是每个线程Thread类里面的变量，里面最重要的是一个键值对数组<code>Entry[] table</code>，可以认为是一个map，键值对：<ul>
+<li>键：这个ThreadLocal</li>
+<li>值：实际需要的成员变量，比如user或者SimpleDateFormat对象</li>
+</ul>
+</li>
+<li>当发现hash冲突的时候，ThreadLocalMap采用的是线性探测法，也就是如果发生冲突，就继续找下一个空位置，而不是采用链表拉链</li>
+</ul>
+<h1 id="ThreadLocal注意点"><a href="#ThreadLocal注意点" class="headerlink" title="ThreadLocal注意点"></a>ThreadLocal注意点</h1><h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><ul>
+<li>什么是内存泄漏：某个对象不再有用，但是占用的内存却不能被回收</li>
+<li>key的泄漏：ThreadLocalMap中的Entry继承自WeakReference，是弱引用<ul>
+<li>弱引用的特点是，如果这个对象只被弱引用关联（没有任何强引用关联），那么这个对象就可以被回收，所以弱引用不会阻止GC</li>
+</ul>
+</li>
+<li>value的泄漏<ul>
+<li>ThreadLocalMap的每个Entry都是一个对key的弱引用，同时，每个Entry都包含了一个对value的强引用</li>
+<li>正常情况下，当线程终止，保存再ThreadLocal里面的value会被垃圾回收，因为没有任何强引用了</li>
+<li>但是如果线程不终止（比如线程需要保持很久，使用线程池的场景，线程一直被重复使用），那么key对应的value就不能被回收，因为又以下的调用链：<ul>
+<li>Thread -&gt; ThreadLocalMap -&gt; Entry(key为null) -&gt; value</li>
+</ul>
+</li>
+<li>因为value和Thread之间还存在这个强引用链路，所以导致value无法回收，就可能出现OOM</li>
+<li>JDK已经考虑到了这个问题，多以在set，remove，rehash方法中会扫描key为null的Entry，并把相应的value设置成null，这样value对象就可以被回收</li>
+<li>但是如果一个ThreadLocal不被使用，那么实际上set,remove,rehash方法也不会被调用到，如果同时线程又不停止，那么调用链就一直存在，那么就导致了value的内存泄漏</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何避免内存泄漏（阿里规约）"><a href="#如何避免内存泄漏（阿里规约）" class="headerlink" title="如何避免内存泄漏（阿里规约）"></a>如何避免内存泄漏（阿里规约）</h2><ul>
+<li>调用remove方法，就会删除相应的Entry对象，可以避免内存泄漏，所以使用完ThreadLocal之后，应该调用remove方法</li>
+</ul>
+<h2 id="空指针问题"><a href="#空指针问题" class="headerlink" title="空指针问题"></a>空指针问题</h2><ul>
+<li>当ThreadLocal.get()方法出来的值，直接被基本类型接受的时候，如果值是空，那么在转为基本类型的时候会抛出控制在异常</li>
+</ul>
+<h2 id="共享对象"><a href="#共享对象" class="headerlink" title="共享对象"></a>共享对象</h2><ul>
+<li>如果每个线程中ThreadLocal.set()进去的东西本来就是多个线程共享的同一个对象，比如static对象，那么多个线程的ThreadLocal.get()取的还是这个共享对象本身，还是会有并发访问的问题</li>
+</ul>
+<h2 id="如果使用ThreadLocal就可以解决问题，那么不要强制使用"><a href="#如果使用ThreadLocal就可以解决问题，那么不要强制使用" class="headerlink" title="如果使用ThreadLocal就可以解决问题，那么不要强制使用"></a>如果使用ThreadLocal就可以解决问题，那么不要强制使用</h2><ul>
+<li>例如在任务数很少的时候，在局部变量中可以新建对象就可以解决问题，那么就不需要使用到ThreadLocal</li>
+</ul>
+<h2 id="优先使用框架的支持，而不是自己创造"><a href="#优先使用框架的支持，而不是自己创造" class="headerlink" title="优先使用框架的支持，而不是自己创造"></a>优先使用框架的支持，而不是自己创造</h2><ul>
+<li>例如spring中，如果可以使用RequestContextHolder，那么就不需要自己维护ThreadLocal，因为自己可能会忘记调用remove()方法，造成内存泄漏</li>
+</ul>
+]]></content>
+      <categories>
+        <category>多线程</category>
+      </categories>
+      <tags>
+        <tag>精通JUC并发工具十八般武艺</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java并发成神之路-精通JUC并发工具十八般武艺——原子类(四)</title>
     <url>/2021/12/04/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E5%8E%9F%E5%AD%90%E7%B1%BB/</url>
     <content><![CDATA[<h1 id="什么是原子类，有什么作用？"><a href="#什么是原子类，有什么作用？" class="headerlink" title="什么是原子类，有什么作用？"></a>什么是原子类，有什么作用？</h1><ul>
@@ -2729,111 +2834,6 @@
 <h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2></li>
 <li>适用于需要大量计算，并且可以并行计算的场景</li>
 <li>不保证计算的顺序（如上代码，使用了线程池，不能保证那个线程先执行，也许是1+3+4+2…）</li>
-</ul>
-]]></content>
-      <categories>
-        <category>多线程</category>
-      </categories>
-      <tags>
-        <tag>精通JUC并发工具十八般武艺</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java并发成神之路-精通JUC并发工具十八般武艺——ThreadLocal(二)</title>
-    <url>/2021/11/28/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94ThreadLocal/</url>
-    <content><![CDATA[<h1 id="两大使用场景——ThreadLocal的用途"><a href="#两大使用场景——ThreadLocal的用途" class="headerlink" title="两大使用场景——ThreadLocal的用途"></a>两大使用场景——ThreadLocal的用途</h1><ul>
-<li>场景1：每个线程需要一个独享的对象（通常是工具类，典型需要使用的类有SimpleDateFormat和Random）<blockquote>
-<p>SimpleDateFormat为线程不安全的，如果在方法中每次都创建一个SimpleDateFormat对象<br>如果访问量较高，会导致格式化出来的时间有部分是重复的<br>可以通过使用ThreadLocal，针对每一个线程创建一个SimpleDateFormat对象，这样同一个线程的不同任务是排队进行的，不同线程使用的是不同的对象，就可以解决并发问题  </p>
-</blockquote>
-</li>
-<li>场景2：每个线程内需要保存全局变量（例如在拦截器中获取用户信息，可以让不同方法直接使用，避免参数传递的麻烦）<blockquote>
-<p>假设当前用户信息需要被线程内所有方法共享，一个比较繁琐的解决发难就是把user作为阐述层层传递，从方法1到方法2到方法3，以次类推，但是这样做代码冗余，且不利于维护<br>使用ThreadLocal，当前线程中公共变量，可以在当前线程中的任何一个方法中调用获取相应的变量值</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="ThreadLocal的两个作用"><a href="#ThreadLocal的两个作用" class="headerlink" title="ThreadLocal的两个作用"></a>ThreadLocal的两个作用</h2><ul>
-<li>让某个需要用到的对象在线程间隔离（每个线程都有自己的独立的对象）</li>
-<li>在任何方法中都可以轻松的获取到对象</li>
-</ul>
-<h2 id="根据共享对象的生产时机不同，选择initialValue或set来保存对象"><a href="#根据共享对象的生产时机不同，选择initialValue或set来保存对象" class="headerlink" title="根据共享对象的生产时机不同，选择initialValue或set来保存对象"></a>根据共享对象的生产时机不同，选择<code>initialValue</code>或<code>set</code>来保存对象</h2><ul>
-<li>场景一：<code>initialValue</code><blockquote>
-<p>在ThreadLocal第一个get的时候，把对象给初始化出来，对象的初始化时机可以由我们控制</p>
-</blockquote>
-</li>
-<li>场景二：<code>set</code><blockquote>
-<p>如果需要保存到ThreadLocal里面的对象的生产时机不由我们随意控制，例如拦截器生成的用户信息，用ThreadLocal.set()直接放到我们的ThreadLocal中去，以便后续使用</p>
-</blockquote>
-</li>
-</ul>
-<h1 id="使用ThreadLocal带来的好处"><a href="#使用ThreadLocal带来的好处" class="headerlink" title="使用ThreadLocal带来的好处"></a>使用ThreadLocal带来的好处</h1><ul>
-<li>达到线程安全的目的</li>
-<li>不需要加锁，提高执行效率</li>
-<li>更高效的利用内存、节省开销：相比于每一个任务都新建一个SimpleDateFormat，显然用ThreadLocal可以节省内存和开销</li>
-<li>免去传参的繁琐：无论是场景一的工具类，还是场景二的用户名，都可以在任何地方直接通过ThreadLocal拿到，再也不需要每次都传同样的参数，ThreadLocal使得代码耦合度更低，更优雅</li>
-</ul>
-<h1 id="主要方法介绍"><a href="#主要方法介绍" class="headerlink" title="主要方法介绍"></a>主要方法介绍</h1><ul>
-<li><p><code>T initialValue()</code></p>
-<blockquote>
-<p>该方法会返回当前线程对应的”初始值“，这是一个延迟加载的方法，只有再调用<code>get()</code>的时候，才会触发<br>当线程第一个吃用<code>get()</code>方法访问变量时，将调用此方法，除非线程先调用了<code>set()</code>方法，在这种情况下，不会为线程调用本<code>initialValue()</code>方法<br>通常每个线程最调用一次此方法，但如果已经调用了<code>remove()</code>，再调用<code>get()</code>，则可以再次调用此方法<br>如果不重写本方法，这个放回就会返回null，一般使用匿名内部类的方法来重写<code>initialValue()</code>方法，以便再后续使用中，可以初始化副本对象<br>该方法没有默认实现，如果我们需要到该方法，需要自己实现，通常使用匿名内部类的方式</p>
-</blockquote>
-</li>
-<li><p><code>void set(T t)</code></p>
-<blockquote>
-<p>为这个线程设置一个新值</p>
-</blockquote>
-</li>
-<li><p><code>T get()</code></p>
-<blockquote>
-<p>得到这个线程对应的value，如果是首次调用<code>get()</code>（没有调用<code>set()</code>方法直接调用<code>get()</code>），则会调用<code>initialValue()</code>方法获取这个值<br><code>get()</code>方法是先取出当前线程的<code>ThreadLocalMap</code>，然后调用<code>map.getEntry</code>方法，把本<code>ThreadLocal</code>的引用作为参数传进去，取出map中属于本<code>ThreadLocal</code>的value<br>注意，这个map以及map中的key和value都是保存再线程中的，而不是保存再ThreadLocal中的</p>
-</blockquote>
-</li>
-<li><p><code>void remove()</code></p>
-<blockquote>
-<p>删除对应这个线程的值</p>
-</blockquote>
-</li>
-</ul>
-<h1 id="ThreadLocalMap类"><a href="#ThreadLocalMap类" class="headerlink" title="ThreadLocalMap类"></a>ThreadLocalMap类</h1><ul>
-<li>ThreadLocalMap类是每个线程Thread类里面的变量，里面最重要的是一个键值对数组<code>Entry[] table</code>，可以认为是一个map，键值对：<ul>
-<li>键：这个ThreadLocal</li>
-<li>值：实际需要的成员变量，比如user或者SimpleDateFormat对象</li>
-</ul>
-</li>
-<li>当发现hash冲突的时候，ThreadLocalMap采用的是线性探测法，也就是如果发生冲突，就继续找下一个空位置，而不是采用链表拉链</li>
-</ul>
-<h1 id="ThreadLocal注意点"><a href="#ThreadLocal注意点" class="headerlink" title="ThreadLocal注意点"></a>ThreadLocal注意点</h1><h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><ul>
-<li>什么是内存泄漏：某个对象不再有用，但是占用的内存却不能被回收</li>
-<li>key的泄漏：ThreadLocalMap中的Entry继承自WeakReference，是弱引用<ul>
-<li>弱引用的特点是，如果这个对象只被弱引用关联（没有任何强引用关联），那么这个对象就可以被回收，所以弱引用不会阻止GC</li>
-</ul>
-</li>
-<li>value的泄漏<ul>
-<li>ThreadLocalMap的每个Entry都是一个对key的弱引用，同时，每个Entry都包含了一个对value的强引用</li>
-<li>正常情况下，当线程终止，保存再ThreadLocal里面的value会被垃圾回收，因为没有任何强引用了</li>
-<li>但是如果线程不终止（比如线程需要保持很久，使用线程池的场景，线程一直被重复使用），那么key对应的value就不能被回收，因为又以下的调用链：<ul>
-<li>Thread -&gt; ThreadLocalMap -&gt; Entry(key为null) -&gt; value</li>
-</ul>
-</li>
-<li>因为value和Thread之间还存在这个强引用链路，所以导致value无法回收，就可能出现OOM</li>
-<li>JDK已经考虑到了这个问题，多以在set，remove，rehash方法中会扫描key为null的Entry，并把相应的value设置成null，这样value对象就可以被回收</li>
-<li>但是如果一个ThreadLocal不被使用，那么实际上set,remove,rehash方法也不会被调用到，如果同时线程又不停止，那么调用链就一直存在，那么就导致了value的内存泄漏</li>
-</ul>
-</li>
-</ul>
-<h2 id="如何避免内存泄漏（阿里规约）"><a href="#如何避免内存泄漏（阿里规约）" class="headerlink" title="如何避免内存泄漏（阿里规约）"></a>如何避免内存泄漏（阿里规约）</h2><ul>
-<li>调用remove方法，就会删除相应的Entry对象，可以避免内存泄漏，所以使用完ThreadLocal之后，应该调用remove方法</li>
-</ul>
-<h2 id="空指针问题"><a href="#空指针问题" class="headerlink" title="空指针问题"></a>空指针问题</h2><ul>
-<li>当ThreadLocal.get()方法出来的值，直接被基本类型接受的时候，如果值是空，那么在转为基本类型的时候会抛出控制在异常</li>
-</ul>
-<h2 id="共享对象"><a href="#共享对象" class="headerlink" title="共享对象"></a>共享对象</h2><ul>
-<li>如果每个线程中ThreadLocal.set()进去的东西本来就是多个线程共享的同一个对象，比如static对象，那么多个线程的ThreadLocal.get()取的还是这个共享对象本身，还是会有并发访问的问题</li>
-</ul>
-<h2 id="如果使用ThreadLocal就可以解决问题，那么不要强制使用"><a href="#如果使用ThreadLocal就可以解决问题，那么不要强制使用" class="headerlink" title="如果使用ThreadLocal就可以解决问题，那么不要强制使用"></a>如果使用ThreadLocal就可以解决问题，那么不要强制使用</h2><ul>
-<li>例如在任务数很少的时候，在局部变量中可以新建对象就可以解决问题，那么就不需要使用到ThreadLocal</li>
-</ul>
-<h2 id="优先使用框架的支持，而不是自己创造"><a href="#优先使用框架的支持，而不是自己创造" class="headerlink" title="优先使用框架的支持，而不是自己创造"></a>优先使用框架的支持，而不是自己创造</h2><ul>
-<li>例如spring中，如果可以使用RequestContextHolder，那么就不需要自己维护ThreadLocal，因为自己可能会忘记调用remove()方法，造成内存泄漏</li>
 </ul>
 ]]></content>
       <categories>
@@ -5546,94 +5546,6 @@
 <li>总会添加一个安全的空档空间</li>
 </ul>
 </li>
-</ul>
-<h1 id="垃圾回收调优"><a href="#垃圾回收调优" class="headerlink" title="垃圾回收调优"></a>垃圾回收调优</h1><p>预备知识</p>
-<ul>
-<li>掌握GC相关的JVM参数，会基本的空间调整</li>
-<li>掌握相关工具</li>
-<li>明白一点：调优跟应用、环境有关，没有放之四海皆准的法则</li>
-<li>查看JVM参数（过滤了关于GC的参数）<ul>
-<li>java -XX:+PrintFlagsFinal -version | findstr “GC”<h2 id="调优领域"><a href="#调优领域" class="headerlink" title="调优领域"></a>调优领域</h2></li>
-</ul>
-</li>
-<li>内存</li>
-<li>锁竞争</li>
-<li>cpu占用</li>
-<li>io</li>
-</ul>
-<h2 id="确定目标"><a href="#确定目标" class="headerlink" title="确定目标"></a>确定目标</h2><ul>
-<li>明确自己的项目是要做什么（如果是为了科学计算，一般要求吞吐量高，互联网项目，要求低延迟）</li>
-<li>【低延迟】还是【高吞吐量】，选择合适的回收器<ul>
-<li>低延迟：CMS，G1，ZGC</li>
-<li>高吞吐量：ParallelGC</li>
-</ul>
-</li>
-</ul>
-<h2 id="最快的GC是不发生GC"><a href="#最快的GC是不发生GC" class="headerlink" title="最快的GC是不发生GC"></a>最快的GC是不发生GC</h2><ul>
-<li>查看<code>Full GC</code>前后的内存占用，考虑下面几个问题<ul>
-<li>数据是不是太多了？<ul>
-<li>比如查询数据库，全表查询然后再代码过滤</li>
-</ul>
-</li>
-<li>数据表示是否太臃肿？<ul>
-<li>对象图<ul>
-<li>比如只需要表中的几个字段，但是却查询所有字段</li>
-</ul>
-</li>
-<li>对象大小<ul>
-<li>对象最少是16个字节，比如<code>intrger</code>24个字节，可以考虑是否使用基本类型<code>int</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>是否存在内存泄漏？</li>
-</ul>
-<h2 id="新生代调优"><a href="#新生代调优" class="headerlink" title="新生代调优"></a>新生代调优</h2><ul>
-<li>新生代的特点：<ul>
-<li>所有的 <code>new</code> 操作的内存分配非常廉价<ul>
-<li>TLAB thread-local allocation buffer</li>
-<li>每个线程会在伊甸园张中分配一块私有区域，每次创建对象都是在自己的私有区域分配，避免并发</li>
-</ul>
-</li>
-<li>死亡对象的回收代价是零</li>
-<li>大部分对象用过即死</li>
-<li><code>Minor GC</code> 的时间远远低于<code>Full GC</code></li>
-</ul>
-</li>
-</ul>
-<h3 id="新生代越大越好吗？"><a href="#新生代越大越好吗？" class="headerlink" title="新生代越大越好吗？"></a>新生代越大越好吗？</h3><blockquote>
-<p>新生代如果设置的非常小，会导致不停的做垃圾回收，那这个时候我们是不是把新生代设置的大一点就好了呢？</p>
-</blockquote>
-<p>显然新生代也不是越大越好</p>
-<ul>
-<li>首先堆得内存空间是一点的，如果新生代设置的比较大，那么老年代空间必然会被压缩，从而导致老年代大量触发GC，老年代的GC是要比新生代代价大的多</li>
-<li>另外如果新生代设置的过大，就会导致有大量的对象在新生代中留存，虽然有着年龄１５的限制，但并不是所有的对象都留到１５才晋升老年代，如果新生代过大，就会导致这一部分原本应该提前晋升老年代的对象在新生代中留存下来（比如大对象）</li>
-<li>新生代使用复制算法，如果存留的对象过多，也会导致复制时间过长，包括复制之后更新引用的时间也会增加，从而导致ＳＴＷ时间过长</li>
-<li>不过在一定范围内，适当的增加新生代的大小，确实也可以实现一定量的优化</li>
-<li>新生代比较合适的范围：【并发量×（请求－响应）】</li>
-<li>性存区大到能保存【当前活跃对象+需要晋升对象】</li>
-<li>晋升阀值配置得当，让长时间存活的对象尽快晋升（调整晋升阈值）</li>
-</ul>
-<h2 id="老年代调优"><a href="#老年代调优" class="headerlink" title="老年代调优"></a>老年代调优</h2><p>以CMS为例：</p>
-<ul>
-<li>CMS的老年代内存越大越好</li>
-<li>先尝试不做调优，如果没有Full GC那么表示已经是最优，否则尝试调优新生代</li>
-<li>观察发生 Full GC 时老年代内存占用，将老年代内存预设调大</li>
-</ul>
-<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h3 id="Full-GC和Minor-GC频繁"><a href="#Full-GC和Minor-GC频繁" class="headerlink" title="Full GC和Minor GC频繁"></a>Full GC和Minor GC频繁</h3><ul>
-<li>老年代频繁GC，但又没有OOM表示老年代每次回收掉了一些</li>
-<li>所以可以考虑是否是年轻代内存空间设置过小，导致大量短寿命对象晋升老年代</li>
-<li>或者是年轻代晋升阈值设置过小</li>
-</ul>
-<h3 id="请求高峰期发生Full-GC，单次暂停时间特别长（CMS）"><a href="#请求高峰期发生Full-GC，单次暂停时间特别长（CMS）" class="headerlink" title="请求高峰期发生Full GC，单次暂停时间特别长（CMS）"></a>请求高峰期发生Full GC，单次暂停时间特别长（CMS）</h3><ul>
-<li>因为CMS的垃圾回收是分几个阶段的，所以可以通过GC日志查看是哪个阶段导致的</li>
-<li>一般来说只有重新标记和并发清理阶段，如果是重新标记阶段时间过长，可能是因为重新标记的时候会去遍历年轻代，可以通过JVM参数设置在每次老年代垃圾收集之前，进行一次Minor GC</li>
-<li>也有可能是因为高峰期产生了大量的垃圾，导致CMS来不及回收，降级为了Serial Old垃圾收集器，可以考虑增大内存空间，或者减小回收时机的百分比</li>
-</ul>
-<h3 id="老年代内存充裕的情况下，发生Full-GC（CMS-jdk-1-7）"><a href="#老年代内存充裕的情况下，发生Full-GC（CMS-jdk-1-7）" class="headerlink" title="老年代内存充裕的情况下，发生Full GC（CMS jdk 1.7）"></a>老年代内存充裕的情况下，发生Full GC（CMS jdk 1.7）</h3><ul>
-<li>jdk1.7永久代还在JVM堆中，考虑可能是因为永久代内存设置过小，导致永久代内存不足而触发GC</li>
 </ul>
 ]]></content>
       <categories>
