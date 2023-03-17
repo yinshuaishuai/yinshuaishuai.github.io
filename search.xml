@@ -299,125 +299,6 @@
       </tags>
   </entry>
   <entry>
-    <title>synchronized关键字</title>
-    <url>/2021/11/14/%E5%A4%9A%E7%BA%BF%E7%A8%8B/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/</url>
-    <content><![CDATA[<h1 id="synchronized的作用"><a href="#synchronized的作用" class="headerlink" title="synchronized的作用"></a>synchronized的作用</h1><ul>
-<li><p>官网解释翻译</p>
-<blockquote>
-<p>同步方法支持一种简单的策略来防止线程干扰和内存一致性错误：如果一个对象对多个线程可见，则对该对象变量的所有读取或写入都是通过同步方法完成的。</p>
-</blockquote>
-</li>
-<li><p>通俗解释</p>
-<blockquote>
-<p>能够保证在同一时刻最多只有一个线程执行该段代码，以达到保证并发安全的效果。</p>
-</blockquote>
-</li>
-</ul>
-<h1 id="synchronized的地位"><a href="#synchronized的地位" class="headerlink" title="synchronized的地位"></a>synchronized的地位</h1><ul>
-<li>synchronized的java的关键字，被java语言原生支持  </li>
-<li>是最基本的互斥同步手段  </li>
-<li>是并发编程种的元老级角色，是并发编程的必学内容 </li>
-</ul>
-<h1 id="synchronized的两种用法"><a href="#synchronized的两种用法" class="headerlink" title="synchronized的两种用法"></a>synchronized的两种用法</h1><h2 id="对象锁"><a href="#对象锁" class="headerlink" title="对象锁"></a>对象锁</h2><ul>
-<li>包括方法锁（默认锁对象为this当前实例对象）和同步代码块锁（自己指定锁对象）</li>
-</ul>
-<h3 id="代码块形式"><a href="#代码块形式" class="headerlink" title="代码块形式"></a>代码块形式</h3><ul>
-<li>手动指定锁对象<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SynchronizedObjectCodeBlock2 s = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(Thread.currentThread().getName());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="方法锁形式"><a href="#方法锁形式" class="headerlink" title="方法锁形式"></a>方法锁形式</h3><ul>
-<li>synchronized修饰普通方法，锁对象默认为this<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SynchronizedObjectCodeBlock2 s = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="类锁"><a href="#类锁" class="headerlink" title="类锁"></a>类锁</h2><ul>
-<li>指synchronized修饰静态的方法或指定锁为class对象  </li>
-</ul>
-<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ul>
-<li>Java类可能有很多实例对象，但只有1个class对象</li>
-<li>所谓的类锁，不过是class对象的锁而已  </li>
-<li>类锁只能在同一时间被一个对象拥有  </li>
-</ul>
-<ul>
-<li>synchronized加在static方法上<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SynchronizedObjectCodeBlock2 s1 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        SynchronizedObjectCodeBlock2 s2 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s1);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s2);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>synchronized（*.class）代码块<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SynchronizedObjectCodeBlock2 s1 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        SynchronizedObjectCodeBlock2 s2 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s1);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s2);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (SynchronizedObjectCodeBlock2.class) &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(Thread.currentThread().getName());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h1 id="多线程访问同步方法的7种情况"><a href="#多线程访问同步方法的7种情况" class="headerlink" title="多线程访问同步方法的7种情况"></a>多线程访问同步方法的7种情况</h1><h2 id="两个线程同时访问一个对象的同步方法"><a href="#两个线程同时访问一个对象的同步方法" class="headerlink" title="两个线程同时访问一个对象的同步方法"></a>两个线程同时访问一个对象的同步方法</h2><ul>
-<li>会串行执行</li>
-<li>同步方法默认锁的是this，也就是当前对象，每次只能有一个线程获取到锁</li>
-</ul>
-<h2 id="两个线程访问的是两个对象的同步方法"><a href="#两个线程访问的是两个对象的同步方法" class="headerlink" title="两个线程访问的是两个对象的同步方法"></a>两个线程访问的是两个对象的同步方法</h2><ul>
-<li>会并行执行</li>
-<li>默认锁的是this，也就是当前对象，由于是来个对象，也就是不同的锁，所以两个线程会同时执行</li>
-</ul>
-<h2 id="两个线程访问的是synchronized的静态方法"><a href="#两个线程访问的是synchronized的静态方法" class="headerlink" title="两个线程访问的是synchronized的静态方法"></a>两个线程访问的是synchronized的静态方法</h2><ul>
-<li>会串行执行</li>
-<li>静态方法锁的是class对象，class对象只有一个，所以两个线程是同一把锁  </li>
-</ul>
-<h2 id="两个线程同时访问同步方法与非同步方法"><a href="#两个线程同时访问同步方法与非同步方法" class="headerlink" title="两个线程同时访问同步方法与非同步方法"></a>两个线程同时访问同步方法与非同步方法</h2><ul>
-<li>会并行执行</li>
-<li>同步方法会受到保护，非同步方法不会上锁，所以会并行执行</li>
-</ul>
-<h2 id="访问同一个对象的不同的普通同步方法"><a href="#访问同一个对象的不同的普通同步方法" class="headerlink" title="访问同一个对象的不同的普通同步方法"></a>访问同一个对象的不同的普通同步方法</h2><ul>
-<li>会串行执行</li>
-<li>同步方法锁的是this当前对象，即便是不同的方法，锁的也是同一个对象，所以会串行执行</li>
-</ul>
-<h2 id="同时访问静态synchronized和非静态synchronized方法"><a href="#同时访问静态synchronized和非静态synchronized方法" class="headerlink" title="同时访问静态synchronized和非静态synchronized方法"></a>同时访问静态synchronized和非静态synchronized方法</h2><ul>
-<li>并行执行</li>
-<li>静态方法锁的class类，非静态方锁的是当前对象，两个方法并不是同一个锁，所以会并行执行</li>
-</ul>
-<h2 id="方法抛异常后，会释放锁"><a href="#方法抛异常后，会释放锁" class="headerlink" title="方法抛异常后，会释放锁"></a>方法抛异常后，会释放锁</h2><ul>
-<li>异常之后会释放锁，不会影响后续的执行</li>
-<li>先抛出异常，后面才能进入同步方法</li>
-</ul>
-<h1 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h1><h2 id="可重入"><a href="#可重入" class="headerlink" title="可重入"></a>可重入</h2><ul>
-<li>什么是可重入：指的是同一个线程的外层函数获得锁之后，内层函数可以直接再次获取该锁  </li>
-<li>好处：避免死锁，提升封装性  <blockquote>
-<p>比如方法1被synchronized修饰，在方法里面递归调用该方法，也是可以重入的<br>方法1和方法2都被synchronized修饰，那么在方法1中也是可以调用方法2的  </p>
-</blockquote>
-</li>
-</ul>
-<h2 id="不可中断"><a href="#不可中断" class="headerlink" title="不可中断"></a>不可中断</h2><ul>
-<li>一旦这个锁已经被别人获得了，如果我还想获得，我只能选择等待或者阻塞，直到别人的线程释放这个锁，如果别人永远不释放锁，那么我只能永远地等待下去。</li>
-</ul>
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="加锁和释放锁的原理"><a href="#加锁和释放锁的原理" class="headerlink" title="加锁和释放锁的原理"></a>加锁和释放锁的原理</h2><ul>
-<li>获取呵呵释放锁的时机：进入和退出同步代码块（运行完毕或者抛出异常）</li>
-<li>等价代码（使用lock锁必须要显示的上锁解锁，并且需要考虑异常情况，synchronized则不需要考虑这些）</li>
-<li>看字节码：monitor相关指令<br>使用<code>javac xxx.java</code>将java文件编译成class文件<br>再使用<code>java -v xxx.class</code>反编译class文件<br>具体代码如下：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Decompilation</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Object object = <span class="keyword">new</span> Object();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(Thread thread)</span></span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (object)&#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-反编译后，insert方法如下：<br><img src="/2021/11/14/%E5%A4%9A%E7%BA%BF%E7%A8%8B/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/Decompilation%E5%8F%8D%E7%BC%96%E8%AF%91%E5%86%85%E5%AE%B9.png" alt="Decompilation反编译内容"><br>从图中可以看出，第6行monitorenter指令，上锁<br>第8行monitorexit指令，释放锁<br>第14行monitorexit指令，则是在抛出异常的情况下释放锁</li>
-</ul>
-<h2 id="可重入原理：加锁次数计数器"><a href="#可重入原理：加锁次数计数器" class="headerlink" title="可重入原理：加锁次数计数器"></a>可重入原理：加锁次数计数器</h2><ul>
-<li>JVN会记录被加锁大的次数</li>
-<li>第一次加锁时，次数从0变为1，之后如果再次加锁，就从1变成2，以次类推</li>
-<li>退出一层同步代码块时，计数减一，当计数为0的时候表示锁释放  </li>
-</ul>
-<h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><ul>
-<li>一个线程执行的结果，另一个线程不一定可见</li>
-<li>线程1操作x=5，之后线程2可能读取到之前的数据x=3</li>
-<li>synchronized可以保证可见性  </li>
-</ul>
-<h1 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h1><ul>
-<li>效率低：锁的释放情况少，试图获得锁时不能设定超时、不能中断一个正在试图获得锁的线程。  </li>
-<li>不够灵活（读写锁更灵活）：加锁和释放的时机单一，每个锁仅有单一的条件（某个对象），可能是不够的。 </li>
-<li>无法知道是否成功获取到锁</li>
-</ul>
-<h1 id="常见面试题"><a href="#常见面试题" class="headerlink" title="常见面试题"></a>常见面试题</h1><ul>
-<li>使用注意点：锁的范围不宜过大、避免锁的嵌套</li>
-<li>如何选择Look和synchronized关键字？<blockquote>
-<p>如果synchronized能够满足需求的话，优先使用synchronized，无法满足再使用Lock锁</p>
-</blockquote>
-</li>
-<li>多线程访问同步方法的各种具体情况<blockquote>
-<p>上面所述的七种情况  </p>
-</blockquote>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>java基础</category>
-      </categories>
-      <tags>
-        <tag>多线程</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>中介者模式</title>
     <url>/2021/10/30/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
@@ -1493,79 +1374,6 @@
       </tags>
   </entry>
   <entry>
-    <title>组合模式</title>
-    <url>/2021/09/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
-<p>将对象组合成树形结构以表示“整体-部分”的层次结构<br>组合模式使客户端对单个对象和组合对象保持一致的方式处理  </p>
-</blockquote>
-<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
-<li>希望客户端可以忽略组合对象与单个对象的差异时  </li>
-<li>处理一个树形结构时   </li>
-</ul>
-<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
-<li>清楚地定义分层次的复杂对象，表示对象的全部或部分层次  </li>
-<li>让客户端忽略了层次的差异，方便对整个层次结构进行控制  </li>
-<li>简化客户端代码  </li>
-<li>符合开闭原则  </li>
-</ul>
-<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
-<li>限制类型时会较为复杂  </li>
-<li>使设计变得更加抽象  </li>
-</ul>
-<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>主要角色：<br><strong>抽象构件角色</strong>： 它的主要作用是为树叶构件和树枝构件声明公共接口，并实现他们的默认行为。在透明式的组合模式中抽象构件还声明访问和管理之类的接口；在安全式的组合模式中不声明访问和管理子类的接口，管理工作由树枝构件完成。（总的抽象类或接口，定义一些通用的方法，比如新增、删除）<br><strong>树叶构件角色</strong>： 是组合中的叶节点对象，它没有子节点，用于继承或实现抽象构件。<br><strong>树枝构件角色</strong>： 是组合中的分支节点对象，它有子节点，用户继承和实现抽象构件。它的主要作用是存储和管理子部件，通常包含<code>add()</code>、<code>remove()</code>、<code>getChild()</code>等方法。  </p>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设我们现在有一个文件夹，里面有若干个文件，我们现在需要用对象来存储，需要表示清楚其中的层级关系<br>首先创建抽象构件角色，根据业务情况，来控制方法是否是必须需要重写的，也可以使用接口</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">FileComponent</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(FileComponent fileComponent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">&quot;无权操作添加方法&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(FileComponent fileComponent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">&quot;无权操作删除方法&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">&quot;无权操作获取名称方法&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Integer <span class="title">getSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">&quot;无权操获取大小方法除方法&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>创建树叶构件角色，文件类，属于叶子节点，不存在删除或者添加的方法，所以我们只需要实现获取名称和大小的方法即可，另外文件本身是拥有名称和大小属性的，也可以根据实际情况将属性上提  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileDoc</span> <span class="keyword">extends</span> <span class="title">FileComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Integer size;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FileDoc</span><span class="params">(String name, Integer size)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.size = size;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.size;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;文件的名称是：&quot;</span> + <span class="keyword">this</span>.name + <span class="string">&quot;   文件的大小是：&quot;</span> + <span class="keyword">this</span>.size);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>树枝构件角色，文件夹类，可以存放或者删除文件，拥有名称和层级属性，文件夹本身是没有大小的，但是可以依托下面文件的大小来计算大小，所以文件夹类可以实现所有的方法  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FolderDoc</span> <span class="keyword">extends</span> <span class="title">FileComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;FileComponent&gt; components = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer level;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FolderDoc</span><span class="params">(String name, Integer level)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.level = level;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Integer <span class="title">getSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> components.stream().mapToInt(FileComponent::getSize).sum();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(FileComponent fileComponent)</span> </span>&#123;</span><br><span class="line">        components.add(fileComponent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(FileComponent fileComponent)</span> </span>&#123;</span><br><span class="line">        components.remove(fileComponent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="keyword">this</span>.name + <span class="string">&quot;  size=&quot;</span> + getSize());</span><br><span class="line">        <span class="keyword">for</span> (FileComponent component : components) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.level != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.level; i++) &#123;</span><br><span class="line">                    System.out.print(<span class="string">&quot;  &quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            component.print();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>具体调用，我们在<code>视频</code>文件夹下存放了两部电影，以及一个<code>火影忍者</code>文件夹，文件夹下又有三集电视剧</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        FileComponent fileComponent = <span class="keyword">new</span> FileDoc(<span class="string">&quot;倩女幽魂&quot;</span>,<span class="number">400</span>);</span><br><span class="line">        FileComponent fileComponent1 = <span class="keyword">new</span> FileDoc(<span class="string">&quot;僵尸先生&quot;</span>,<span class="number">300</span>);</span><br><span class="line"></span><br><span class="line">        FileComponent fileComponent2 = <span class="keyword">new</span> FolderDoc(<span class="string">&quot;火影忍者&quot;</span>,<span class="number">2</span>);</span><br><span class="line">        FileComponent fileComponent3 = <span class="keyword">new</span> FileDoc(<span class="string">&quot;火影忍者第一集&quot;</span>,<span class="number">45</span>);</span><br><span class="line">        FileComponent fileComponent4 = <span class="keyword">new</span> FileDoc(<span class="string">&quot;火影忍者第二集&quot;</span>,<span class="number">56</span>);</span><br><span class="line">        FileComponent fileComponent5 = <span class="keyword">new</span> FileDoc(<span class="string">&quot;火影忍者第三集&quot;</span>,<span class="number">47</span>);</span><br><span class="line"></span><br><span class="line">        fileComponent2.add(fileComponent3);</span><br><span class="line">        fileComponent2.add(fileComponent4);</span><br><span class="line">        fileComponent2.add(fileComponent5);</span><br><span class="line"></span><br><span class="line">        FileComponent folder = <span class="keyword">new</span> FolderDoc(<span class="string">&quot;视频&quot;</span>,<span class="number">1</span>);</span><br><span class="line">        folder.add(fileComponent);</span><br><span class="line">        folder.add(fileComponent1);</span><br><span class="line">        folder.add(fileComponent2);</span><br><span class="line"></span><br><span class="line">        folder.print();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">视频  size=848</span><br><span class="line">  文件的名称是: 倩女幽魂   文件的大小是: 400</span><br><span class="line">  文件的名称是: 僵尸先生   文件的大小是: 300</span><br><span class="line">  火影忍者  size=148</span><br><span class="line">    文件的名称是: 火影忍者第一集   文件的大小是: 45</span><br><span class="line">    文件的名称是: 火影忍者第二集   文件的大小是: 56</span><br><span class="line">    文件的名称是: 火影忍者第三集   文件的大小是: 47</span><br></pre></td></tr></table></figure>
-
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/lLBBJiCm4BpxA_QO8hK_a589WP2G49ToGnoszZQovDYHlOH7rN_7SJ1fGX55GfmSxyncPdQDcy0U9OCq609SQqENhcwS9Skm4urtJ999GUkq0bIg65EsXxSPxFRJ5a-rQ-aNNMlssbPG4TzXJSK4lR5C5VaENkktBp3cE4cxYN_YObQAlH13lYidWLwOh3gMLxV8b4tOwA3yB6Rj48LZzMbZj3nkjuT-y7feiKC6ayueygVOt6gB1cvruEM8iWAPFmESWwLdkF0UNnDprKtafA26MZBbN-tctrxGjuEzfv2crwydC78y4hj6ROi-tSCZeAz2xXpBBkVpis4_Kt2nI19YM60izPMFTvSfxm00">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-]]></content>
-      <categories>
-        <category>设计模式</category>
-      </categories>
-      <tags>
-        <tag>设计模式</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>简单工厂模式</title>
     <url>/2021/07/12/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
@@ -1619,6 +1427,79 @@
 
 
 <h3 id="UML结构图"><a href="#UML结构图" class="headerlink" title="UML结构图"></a>UML结构图</h3><img src="http://www.plantuml.com/plantuml/svg/IqmgBYbAJ2vHICv9B2vMSCxFBIWjIIsgvdewjUtfvCPdNNjVR5puRDhEPvkdlj_Jywn_mfDziv_ldlzaHmEor8jrAvzEQ7coOnL4rzDryvxtRU0gA4tAoKnMI8HPKPQVcQ9GN99OLAAXQSrLomMnqh6uj1XchK9gHKbgNWgcEu1sGmo5sFryLWkozLmE_cMfHKMPAQaAK3kHhOBRv9EQbr-MJn-xF0heOm_CK3TW0ESNLIe03T--z6bVq_EDk-7nzRHrpTFMZI_dpdpMq0Wn_FcK-KzsBOSu0nPDG9DBW1JSsSb5gOabgJ2kHd19KMPUka99PK4go7Okb6YpqTD3TmaNMcXZKu8KI5Ya0G00">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>设计模式</category>
+      </categories>
+      <tags>
+        <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>组合模式</title>
+    <url>/2021/09/20/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><blockquote>
+<p>将对象组合成树形结构以表示“整体-部分”的层次结构<br>组合模式使客户端对单个对象和组合对象保持一致的方式处理  </p>
+</blockquote>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li>希望客户端可以忽略组合对象与单个对象的差异时  </li>
+<li>处理一个树形结构时   </li>
+</ul>
+<h2 id="优点和缺点"><a href="#优点和缺点" class="headerlink" title="优点和缺点"></a>优点和缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>清楚地定义分层次的复杂对象，表示对象的全部或部分层次  </li>
+<li>让客户端忽略了层次的差异，方便对整个层次结构进行控制  </li>
+<li>简化客户端代码  </li>
+<li>符合开闭原则  </li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>限制类型时会较为复杂  </li>
+<li>使设计变得更加抽象  </li>
+</ul>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>主要角色：<br><strong>抽象构件角色</strong>： 它的主要作用是为树叶构件和树枝构件声明公共接口，并实现他们的默认行为。在透明式的组合模式中抽象构件还声明访问和管理之类的接口；在安全式的组合模式中不声明访问和管理子类的接口，管理工作由树枝构件完成。（总的抽象类或接口，定义一些通用的方法，比如新增、删除）<br><strong>树叶构件角色</strong>： 是组合中的叶节点对象，它没有子节点，用于继承或实现抽象构件。<br><strong>树枝构件角色</strong>： 是组合中的分支节点对象，它有子节点，用户继承和实现抽象构件。它的主要作用是存储和管理子部件，通常包含<code>add()</code>、<code>remove()</code>、<code>getChild()</code>等方法。  </p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>假设我们现在有一个文件夹，里面有若干个文件，我们现在需要用对象来存储，需要表示清楚其中的层级关系<br>首先创建抽象构件角色，根据业务情况，来控制方法是否是必须需要重写的，也可以使用接口</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">FileComponent</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(FileComponent fileComponent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">&quot;无权操作添加方法&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(FileComponent fileComponent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">&quot;无权操作删除方法&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">&quot;无权操作获取名称方法&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Integer <span class="title">getSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">&quot;无权操获取大小方法除方法&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建树叶构件角色，文件类，属于叶子节点，不存在删除或者添加的方法，所以我们只需要实现获取名称和大小的方法即可，另外文件本身是拥有名称和大小属性的，也可以根据实际情况将属性上提  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileDoc</span> <span class="keyword">extends</span> <span class="title">FileComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Integer size;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FileDoc</span><span class="params">(String name, Integer size)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.size = size;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.size;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;文件的名称是：&quot;</span> + <span class="keyword">this</span>.name + <span class="string">&quot;   文件的大小是：&quot;</span> + <span class="keyword">this</span>.size);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>树枝构件角色，文件夹类，可以存放或者删除文件，拥有名称和层级属性，文件夹本身是没有大小的，但是可以依托下面文件的大小来计算大小，所以文件夹类可以实现所有的方法  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FolderDoc</span> <span class="keyword">extends</span> <span class="title">FileComponent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;FileComponent&gt; components = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer level;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FolderDoc</span><span class="params">(String name, Integer level)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.level = level;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Integer <span class="title">getSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> components.stream().mapToInt(FileComponent::getSize).sum();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(FileComponent fileComponent)</span> </span>&#123;</span><br><span class="line">        components.add(fileComponent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(FileComponent fileComponent)</span> </span>&#123;</span><br><span class="line">        components.remove(fileComponent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="keyword">this</span>.name + <span class="string">&quot;  size=&quot;</span> + getSize());</span><br><span class="line">        <span class="keyword">for</span> (FileComponent component : components) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.level != <span class="keyword">null</span>)&#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.level; i++) &#123;</span><br><span class="line">                    System.out.print(<span class="string">&quot;  &quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            component.print();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>具体调用，我们在<code>视频</code>文件夹下存放了两部电影，以及一个<code>火影忍者</code>文件夹，文件夹下又有三集电视剧</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        FileComponent fileComponent = <span class="keyword">new</span> FileDoc(<span class="string">&quot;倩女幽魂&quot;</span>,<span class="number">400</span>);</span><br><span class="line">        FileComponent fileComponent1 = <span class="keyword">new</span> FileDoc(<span class="string">&quot;僵尸先生&quot;</span>,<span class="number">300</span>);</span><br><span class="line"></span><br><span class="line">        FileComponent fileComponent2 = <span class="keyword">new</span> FolderDoc(<span class="string">&quot;火影忍者&quot;</span>,<span class="number">2</span>);</span><br><span class="line">        FileComponent fileComponent3 = <span class="keyword">new</span> FileDoc(<span class="string">&quot;火影忍者第一集&quot;</span>,<span class="number">45</span>);</span><br><span class="line">        FileComponent fileComponent4 = <span class="keyword">new</span> FileDoc(<span class="string">&quot;火影忍者第二集&quot;</span>,<span class="number">56</span>);</span><br><span class="line">        FileComponent fileComponent5 = <span class="keyword">new</span> FileDoc(<span class="string">&quot;火影忍者第三集&quot;</span>,<span class="number">47</span>);</span><br><span class="line"></span><br><span class="line">        fileComponent2.add(fileComponent3);</span><br><span class="line">        fileComponent2.add(fileComponent4);</span><br><span class="line">        fileComponent2.add(fileComponent5);</span><br><span class="line"></span><br><span class="line">        FileComponent folder = <span class="keyword">new</span> FolderDoc(<span class="string">&quot;视频&quot;</span>,<span class="number">1</span>);</span><br><span class="line">        folder.add(fileComponent);</span><br><span class="line">        folder.add(fileComponent1);</span><br><span class="line">        folder.add(fileComponent2);</span><br><span class="line"></span><br><span class="line">        folder.print();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">视频  size=848</span><br><span class="line">  文件的名称是: 倩女幽魂   文件的大小是: 400</span><br><span class="line">  文件的名称是: 僵尸先生   文件的大小是: 300</span><br><span class="line">  火影忍者  size=148</span><br><span class="line">    文件的名称是: 火影忍者第一集   文件的大小是: 45</span><br><span class="line">    文件的名称是: 火影忍者第二集   文件的大小是: 56</span><br><span class="line">    文件的名称是: 火影忍者第三集   文件的大小是: 47</span><br></pre></td></tr></table></figure>
+
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/lLBBJiCm4BpxA_QO8hK_a589WP2G49ToGnoszZQovDYHlOH7rN_7SJ1fGX55GfmSxyncPdQDcy0U9OCq609SQqENhcwS9Skm4urtJ999GUkq0bIg65EsXxSPxFRJ5a-rQ-aNNMlssbPG4TzXJSK4lR5C5VaENkktBp3cE4cxYN_YObQAlH13lYidWLwOh3gMLxV8b4tOwA3yB6Rj48LZzMbZj3nkjuT-y7feiKC6ayueygVOt6gB1cvruEM8iWAPFmESWwLdkF0UNnDprKtafA26MZBbN-tctrxGjuEzfv2crwydC78y4hj6ROi-tSCZeAz2xXpBBkVpis4_Kt2nI19YM60izPMFTvSfxm00">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2254,6 +2135,125 @@
       </categories>
       <tags>
         <tag>设计模式</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>synchronized关键字</title>
+    <url>/2021/11/14/%E5%A4%9A%E7%BA%BF%E7%A8%8B/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/</url>
+    <content><![CDATA[<h1 id="synchronized的作用"><a href="#synchronized的作用" class="headerlink" title="synchronized的作用"></a>synchronized的作用</h1><ul>
+<li><p>官网解释翻译</p>
+<blockquote>
+<p>同步方法支持一种简单的策略来防止线程干扰和内存一致性错误：如果一个对象对多个线程可见，则对该对象变量的所有读取或写入都是通过同步方法完成的。</p>
+</blockquote>
+</li>
+<li><p>通俗解释</p>
+<blockquote>
+<p>能够保证在同一时刻最多只有一个线程执行该段代码，以达到保证并发安全的效果。</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="synchronized的地位"><a href="#synchronized的地位" class="headerlink" title="synchronized的地位"></a>synchronized的地位</h1><ul>
+<li>synchronized的java的关键字，被java语言原生支持  </li>
+<li>是最基本的互斥同步手段  </li>
+<li>是并发编程种的元老级角色，是并发编程的必学内容 </li>
+</ul>
+<h1 id="synchronized的两种用法"><a href="#synchronized的两种用法" class="headerlink" title="synchronized的两种用法"></a>synchronized的两种用法</h1><h2 id="对象锁"><a href="#对象锁" class="headerlink" title="对象锁"></a>对象锁</h2><ul>
+<li>包括方法锁（默认锁对象为this当前实例对象）和同步代码块锁（自己指定锁对象）</li>
+</ul>
+<h3 id="代码块形式"><a href="#代码块形式" class="headerlink" title="代码块形式"></a>代码块形式</h3><ul>
+<li>手动指定锁对象<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SynchronizedObjectCodeBlock2 s = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(Thread.currentThread().getName());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="方法锁形式"><a href="#方法锁形式" class="headerlink" title="方法锁形式"></a>方法锁形式</h3><ul>
+<li>synchronized修饰普通方法，锁对象默认为this<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SynchronizedObjectCodeBlock2 s = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="类锁"><a href="#类锁" class="headerlink" title="类锁"></a>类锁</h2><ul>
+<li>指synchronized修饰静态的方法或指定锁为class对象  </li>
+</ul>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ul>
+<li>Java类可能有很多实例对象，但只有1个class对象</li>
+<li>所谓的类锁，不过是class对象的锁而已  </li>
+<li>类锁只能在同一时间被一个对象拥有  </li>
+</ul>
+<ul>
+<li>synchronized加在static方法上<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        SynchronizedObjectCodeBlock2 s1 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        SynchronizedObjectCodeBlock2 s2 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s1);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s2);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        test();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName());</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>synchronized（*.class）代码块<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SynchronizedObjectCodeBlock2</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SynchronizedObjectCodeBlock2 s1 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        SynchronizedObjectCodeBlock2 s2 = <span class="keyword">new</span> SynchronizedObjectCodeBlock2();</span><br><span class="line">        Thread t1 = <span class="keyword">new</span> Thread(s1);</span><br><span class="line">        Thread t2 = <span class="keyword">new</span> Thread(s2);</span><br><span class="line">        t1.start();</span><br><span class="line">        t2.start();</span><br><span class="line">        <span class="keyword">while</span> (t1.isAlive() || t2.isAlive()) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;-----&quot;</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (SynchronizedObjectCodeBlock2.class) &#123;</span><br><span class="line"></span><br><span class="line">            System.out.println(Thread.currentThread().getName());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">3000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="string">&quot;运行结束&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="多线程访问同步方法的7种情况"><a href="#多线程访问同步方法的7种情况" class="headerlink" title="多线程访问同步方法的7种情况"></a>多线程访问同步方法的7种情况</h1><h2 id="两个线程同时访问一个对象的同步方法"><a href="#两个线程同时访问一个对象的同步方法" class="headerlink" title="两个线程同时访问一个对象的同步方法"></a>两个线程同时访问一个对象的同步方法</h2><ul>
+<li>会串行执行</li>
+<li>同步方法默认锁的是this，也就是当前对象，每次只能有一个线程获取到锁</li>
+</ul>
+<h2 id="两个线程访问的是两个对象的同步方法"><a href="#两个线程访问的是两个对象的同步方法" class="headerlink" title="两个线程访问的是两个对象的同步方法"></a>两个线程访问的是两个对象的同步方法</h2><ul>
+<li>会并行执行</li>
+<li>默认锁的是this，也就是当前对象，由于是来个对象，也就是不同的锁，所以两个线程会同时执行</li>
+</ul>
+<h2 id="两个线程访问的是synchronized的静态方法"><a href="#两个线程访问的是synchronized的静态方法" class="headerlink" title="两个线程访问的是synchronized的静态方法"></a>两个线程访问的是synchronized的静态方法</h2><ul>
+<li>会串行执行</li>
+<li>静态方法锁的是class对象，class对象只有一个，所以两个线程是同一把锁  </li>
+</ul>
+<h2 id="两个线程同时访问同步方法与非同步方法"><a href="#两个线程同时访问同步方法与非同步方法" class="headerlink" title="两个线程同时访问同步方法与非同步方法"></a>两个线程同时访问同步方法与非同步方法</h2><ul>
+<li>会并行执行</li>
+<li>同步方法会受到保护，非同步方法不会上锁，所以会并行执行</li>
+</ul>
+<h2 id="访问同一个对象的不同的普通同步方法"><a href="#访问同一个对象的不同的普通同步方法" class="headerlink" title="访问同一个对象的不同的普通同步方法"></a>访问同一个对象的不同的普通同步方法</h2><ul>
+<li>会串行执行</li>
+<li>同步方法锁的是this当前对象，即便是不同的方法，锁的也是同一个对象，所以会串行执行</li>
+</ul>
+<h2 id="同时访问静态synchronized和非静态synchronized方法"><a href="#同时访问静态synchronized和非静态synchronized方法" class="headerlink" title="同时访问静态synchronized和非静态synchronized方法"></a>同时访问静态synchronized和非静态synchronized方法</h2><ul>
+<li>并行执行</li>
+<li>静态方法锁的class类，非静态方锁的是当前对象，两个方法并不是同一个锁，所以会并行执行</li>
+</ul>
+<h2 id="方法抛异常后，会释放锁"><a href="#方法抛异常后，会释放锁" class="headerlink" title="方法抛异常后，会释放锁"></a>方法抛异常后，会释放锁</h2><ul>
+<li>异常之后会释放锁，不会影响后续的执行</li>
+<li>先抛出异常，后面才能进入同步方法</li>
+</ul>
+<h1 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h1><h2 id="可重入"><a href="#可重入" class="headerlink" title="可重入"></a>可重入</h2><ul>
+<li>什么是可重入：指的是同一个线程的外层函数获得锁之后，内层函数可以直接再次获取该锁  </li>
+<li>好处：避免死锁，提升封装性  <blockquote>
+<p>比如方法1被synchronized修饰，在方法里面递归调用该方法，也是可以重入的<br>方法1和方法2都被synchronized修饰，那么在方法1中也是可以调用方法2的  </p>
+</blockquote>
+</li>
+</ul>
+<h2 id="不可中断"><a href="#不可中断" class="headerlink" title="不可中断"></a>不可中断</h2><ul>
+<li>一旦这个锁已经被别人获得了，如果我还想获得，我只能选择等待或者阻塞，直到别人的线程释放这个锁，如果别人永远不释放锁，那么我只能永远地等待下去。</li>
+</ul>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="加锁和释放锁的原理"><a href="#加锁和释放锁的原理" class="headerlink" title="加锁和释放锁的原理"></a>加锁和释放锁的原理</h2><ul>
+<li>获取呵呵释放锁的时机：进入和退出同步代码块（运行完毕或者抛出异常）</li>
+<li>等价代码（使用lock锁必须要显示的上锁解锁，并且需要考虑异常情况，synchronized则不需要考虑这些）</li>
+<li>看字节码：monitor相关指令<br>使用<code>javac xxx.java</code>将java文件编译成class文件<br>再使用<code>java -v xxx.class</code>反编译class文件<br>具体代码如下：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Decompilation</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Object object = <span class="keyword">new</span> Object();</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(Thread thread)</span></span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (object)&#123;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+反编译后，insert方法如下：<br><img src="/2021/11/14/%E5%A4%9A%E7%BA%BF%E7%A8%8B/synchronized%E5%85%B3%E9%94%AE%E5%AD%97/Decompilation%E5%8F%8D%E7%BC%96%E8%AF%91%E5%86%85%E5%AE%B9.png" alt="Decompilation反编译内容"><br>从图中可以看出，第6行monitorenter指令，上锁<br>第8行monitorexit指令，释放锁<br>第14行monitorexit指令，则是在抛出异常的情况下释放锁</li>
+</ul>
+<h2 id="可重入原理：加锁次数计数器"><a href="#可重入原理：加锁次数计数器" class="headerlink" title="可重入原理：加锁次数计数器"></a>可重入原理：加锁次数计数器</h2><ul>
+<li>JVN会记录被加锁大的次数</li>
+<li>第一次加锁时，次数从0变为1，之后如果再次加锁，就从1变成2，以次类推</li>
+<li>退出一层同步代码块时，计数减一，当计数为0的时候表示锁释放  </li>
+</ul>
+<h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><ul>
+<li>一个线程执行的结果，另一个线程不一定可见</li>
+<li>线程1操作x=5，之后线程2可能读取到之前的数据x=3</li>
+<li>synchronized可以保证可见性  </li>
+</ul>
+<h1 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h1><ul>
+<li>效率低：锁的释放情况少，试图获得锁时不能设定超时、不能中断一个正在试图获得锁的线程。  </li>
+<li>不够灵活（读写锁更灵活）：加锁和释放的时机单一，每个锁仅有单一的条件（某个对象），可能是不够的。 </li>
+<li>无法知道是否成功获取到锁</li>
+</ul>
+<h1 id="常见面试题"><a href="#常见面试题" class="headerlink" title="常见面试题"></a>常见面试题</h1><ul>
+<li>使用注意点：锁的范围不宜过大、避免锁的嵌套</li>
+<li>如何选择Look和synchronized关键字？<blockquote>
+<p>如果synchronized能够满足需求的话，优先使用synchronized，无法满足再使用Lock锁</p>
+</blockquote>
+</li>
+<li>多线程访问同步方法的各种具体情况<blockquote>
+<p>上面所述的七种情况  </p>
+</blockquote>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>java基础</category>
+      </categories>
+      <tags>
+        <tag>多线程</tag>
       </tags>
   </entry>
   <entry>
@@ -5193,6 +5193,35 @@
 <h3 id="终结器引用"><a href="#终结器引用" class="headerlink" title="终结器引用"></a>终结器引用</h3><blockquote>
 <p>使用 <code>FinalReference</code> 引用对象，这种引用方式为终结器引用<br>需要配合引用队列使用（终结器引用，用户一般不会使用，是jvm在回收对象的时候使用的）<br><code>finalize</code>方法的调用就使用到了终结器引用<br>当一个对象正在被回收时（还没有回收），虚拟机会创建该对象的终结器引用，并且进入引用队列，在引用队列上有一个优先级很低的线程，扫描到终结器引用，会根据引用找到对象，调用<code>finalize</code>方法实现资源清理，在下次GC时该对象会被回收。<br>由于使用<code>finalize</code>的对象在被回收时，需要两次，且调用<code>finalize</code>的线程优先级特别低，<code>finalize</code>方法可能迟迟无法调用，所以不推荐使用<code>finalize</code>方法</p>
 </blockquote>
+<h1 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h1><h2 id="标记清除"><a href="#标记清除" class="headerlink" title="标记清除"></a>标记清除</h2><ul>
+<li>标记：遍历内存区域，对需要回收的对象打上标记</li>
+<li>清除：再次遍历内存，对已经标记过的内存进行回收</li>
+<li>缺点：<ul>
+<li>遍历两次内存空间（一次标记，一次清除）</li>
+<li>容易产生内存碎片，当需要一块比较大的内存时，无法找到一块满足需求的（此时或许总剩余空间还足够），因而不得不再次发出GC</li>
+</ul>
+</li>
+</ul>
+<h3 id="标记整理"><a href="#标记整理" class="headerlink" title="标记整理"></a>标记整理</h3><ul>
+<li>标记：遍历内存区域，对需要回收的对象打上标记</li>
+<li>整理：让存活的对象，向内存的一端移动，然后直接清理掉没有用的内存</li>
+<li>缺点：<ul>
+<li>在整理内存空间的时候，牵扯到对象引用地址的改变，速度比较慢</li>
+</ul>
+</li>
+</ul>
+<h3 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h3><blockquote>
+<p>将内存划分为等大的两块，每次只使用其中的一块<br>当一块用完之后，触发GC，将该快内存中存活的对象复制到另外一块区域，然后一次性清理掉这块没有用的内存，下次GC再重新复制回来，如此往复</p>
+</blockquote>
+<ul>
+<li>先做标记，然后复制对象</li>
+<li>相对于标记清除算法，解决了内存碎片化的问题</li>
+<li>效率更高（清理内存时，记住首尾地址，一次性抹掉）</li>
+<li>缺点：<ul>
+<li>内存利用率不高，每次只能使用一半内存</li>
+</ul>
+</li>
+</ul>
 <h1 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h1><h2 id="常见的垃圾收集器"><a href="#常见的垃圾收集器" class="headerlink" title="常见的垃圾收集器"></a>常见的垃圾收集器</h2><table>
 <thead>
 <tr>
