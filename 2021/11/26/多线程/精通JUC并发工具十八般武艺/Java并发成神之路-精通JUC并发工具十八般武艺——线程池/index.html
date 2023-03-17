@@ -14,10 +14,11 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"ysymj.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"ysymj.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="慕课网《Java并发成神之路-精通JUC并发工具十八般武艺》课程学习笔记；本课程主要将Java并发相关的工具类，以及一些相关算法。本文主要讲线程池相关的一些内容。">
@@ -27,13 +28,14 @@
 <meta property="og:site_name" content="YS">
 <meta property="og:description" content="慕课网《Java并发成神之路-精通JUC并发工具十八般武艺》课程学习笔记；本课程主要将Java并发相关的工具类，以及一些相关算法。本文主要讲线程池相关的一些内容。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ysymj.gitee.io/2021/11/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E6%B1%A0/%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%9A%84%E5%88%86%E7%B1%BB.png">
 <meta property="og:image" content="http://www.plantuml.com/plantuml/svg/oymhIIrAIqnELN2jI4qkBSalggxboiGG34ujAii4ybChIbBpKegH5ISc5PSK9IQNA2Jd91ONApX2kUWwCtCBSb9pK_DAYj4D1Pe1qHgIKPIQc1AGdvy3Km6t3uUfrRK0">
 <meta property="article:published_time" content="2021-11-26T12:18:03.000Z">
-<meta property="article:modified_time" content="2022-08-19T13:11:10.102Z">
+<meta property="article:modified_time" content="2023-03-17T02:54:19.577Z">
 <meta property="article:author" content="YS">
 <meta property="article:tag" content="精通JUC并发工具十八般武艺">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.plantuml.com/plantuml/svg/oymhIIrAIqnELN2jI4qkBSalggxboiGG34ujAii4ybChIbBpKegH5ISc5PSK9IQNA2Jd91ONApX2kUWwCtCBSb9pK_DAYj4D1Pe1qHgIKPIQc1AGdvy3Km6t3uUfrRK0">
+<meta name="twitter:image" content="http://ysymj.gitee.io/2021/11/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E6%B1%A0/%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%9A%84%E5%88%86%E7%B1%BB.png">
 
 <link rel="canonical" href="http://ysymj.gitee.io/2021/11/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
 
@@ -227,7 +229,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-19 21:11:10" itemprop="dateModified" datetime="2022-08-19T21:11:10+08:00">2022-08-19</time>
+                <time title="修改时间：2023-03-17 10:54:19" itemprop="dateModified" datetime="2023-03-17T10:54:19+08:00">2023-03-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -274,232 +276,149 @@
         <h1 id="并发工具类——分类"><a href="#并发工具类——分类" class="headerlink" title="并发工具类——分类"></a>并发工具类——分类</h1><ul>
 <li>为了并发安全：互斥同步、非互斥同步、无同步方案</li>
 <li>管理线程、提高效率</li>
-<li>线程协作<blockquote class="pullquote mindmap mindmap-md"><ul>
-<li>并发工具类的分类<ul>
-<li>为了线程安全（从底层原理来看）<ul>
-<li>互斥同步<ul>
-<li>使用各种互斥同步的锁<ul>
-<li>synchronized</li>
-<li>ReentrantLock</li>
-<li>ReadWriteLock</li>
-<li>…</li>
+<li>线程协作</li>
 </ul>
-</li>
-<li>使用同步的工具类<ul>
-<li>Collections.synchronizedList(new ArrayList&lt;&gt;())等</li>
-<li>Vector等</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>非互斥同步<ul>
-<li>atomic包，原子类<ul>
-<li>Atomic*基本类型原子类<ul>
-<li>AtomicInteger：整型原子类</li>
-<li>AtomicLong：长整型原子类</li>
-<li>AtomicBoolean：布尔型原子类</li>
-</ul>
-</li>
-<li>Atomic*Array数组类型原子类(数组里面的元素，都可以保证原子性)<ul>
-<li>AtomicIntegerArray：整型数组原子类</li>
-<li>AtomicLongArray：长整型数组原子类</li>
-<li>AtomicReferenceArray：引用类型数组原子类</li>
-</ul>
-</li>
-<li>Atomic*Reference引用类型子类<ul>
-<li>AtomicReference：引用类型原子类</li>
-<li>AtomicStampedReference：引用类型原子类的升级，带时间戳，可以解决ABA问题</li>
-<li>AtomicMarkableReference</li>
-</ul>
-</li>
-<li>Atomic*FieldUpdater升级原子类<ul>
-<li>用Atomic*FieldUpdater等升级自己的变量</li>
-<li>AtomicIntegerFieldUpdater：原子更新整型字段的更新器</li>
-<li>AtomicLongFieldUpdater：原子更新长整型字段的更新器</li>
-</ul>
-</li>
-<li>Adder加法器<ul>
-<li>LongAdder</li>
-<li>DoubleAdder</li>
-</ul>
-</li>
-<li>Accumulator累加器<ul>
-<li>LongAccumulator</li>
-<li>DoubleAccumulator</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>结合互斥和非互斥同步<ul>
-<li>线程安全的并发容器<ul>
-<li>ConcurrentHashMap</li>
-<li>CopyOnWriteArrayList</li>
-<li>并发队列<ul>
-<li>阻塞队列<ul>
-<li>ArrayBlockingQueue</li>
-<li>LinkedBlockingQueue</li>
-<li>PriorityBlockingQueue</li>
-<li>SynchronousQueue</li>
-<li>DelayedQueue</li>
-<li>TransferQueue</li>
-<li>…</li>
-</ul>
-</li>
-<li>非阻塞队列<ul>
-<li>ConcurrentLinkedQueue</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>ConcurrentSkipListMap和ConcurrentSkipListSet</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>无同步方、不可变<ul>
-<li>final关键字</li>
-<li>线程封闭<ul>
-<li>ThreadLocal</li>
-<li>栈封闭</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>为了线程安全（从使用者角度来看）<ul>
-<li>避免共享变量<ul>
-<li>线程封闭<ul>
-<li>ThreadLocal</li>
-<li>栈封闭</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>共享变量，但是可以限制和处理<ul>
-<li>互斥同步<ul>
-<li>使用各种互斥同步的锁<ul>
-<li>synchronized</li>
-<li>Lock接口相关的类</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>final关键字</li>
-</ul>
-</li>
-<li>使用成熟工具类<ul>
-<li>线程安全的并发容器<ul>
-<li>ConcurrentHashMap</li>
-<li>CopyOnWriteArrayList</li>
-<li>并发队列<ul>
-<li>阻塞队列<ul>
-<li>ArrayBlockingQueue</li>
-<li>LinkedBlockingQueue</li>
-<li>PriorityBlockingQueue</li>
-<li>SynchronousQueue</li>
-<li>DelayedQueue</li>
-<li>TransferQueue</li>
-<li>…</li>
-</ul>
-</li>
-<li>非阻塞队列<ul>
-<li>ConcurrentLinkedQueue</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>ConcurrentSkipListMap和ConcurrentSkipListSet</li>
-<li>使用同步的工具类<ul>
-<li>Collections.synchronizedList(new ArrayList&lt;&gt;())等</li>
-<li>Vector等</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>atomic包，原子类<ul>
-<li>Atomic*基本类型原子类<ul>
-<li>AtomicInteger：整型原子类</li>
-<li>AtomicLong：长整型原子类</li>
-<li>AtomicBoolean：布尔型原子类</li>
-</ul>
-</li>
-<li>Atomic*Array数组类型原子类(数组里面的元素，都可以保证原子性)<ul>
-<li>AtomicIntegerArray：整型数组原子类</li>
-<li>AtomicLongArray：长整型数组原子类</li>
-<li>AtomicReferenceArray：引用类型数组原子类</li>
-</ul>
-</li>
-<li>Atomic*Reference引用类型子类<ul>
-<li>AtomicReference：引用类型原子类</li>
-<li>AtomicStampedReference：引用类型原子类的升级，带时间戳，可以解决ABA问题</li>
-<li>AtomicMarkableReference</li>
-</ul>
-</li>
-<li>Atomic*FieldUpdater升级原子类<ul>
-<li>用Atomic*FieldUpdater等升级自己的变量</li>
-<li>AtomicIntegerFieldUpdater：原子更新整型字段的更新器</li>
-<li>AtomicLongFieldUpdater：原子更新长整型字段的更新器</li>
-</ul>
-</li>
-<li>Adder加法器<ul>
-<li>LongAdder</li>
-<li>DoubleAdder</li>
-</ul>
-</li>
-<li>Accumulator累加器<ul>
-<li>LongAccumulator</li>
-<li>DoubleAccumulator</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>为了方便管理线程、提高效率<ul>
-<li>线程池相关<ul>
-<li>Executor</li>
-<li>Executors</li>
-<li>ExecutorService</li>
-<li>常见线程池<ul>
-<li>FixedThreadPool</li>
-<li>CachedThreadPool</li>
-<li>ScheduledThreadPool</li>
-<li>SingleThreadExecutor</li>
-<li>ForkJoinPool</li>
-<li>…</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>能获取子线程的运行结果<ul>
-<li>Callable</li>
-<li>Future</li>
-<li>FutureTask</li>
-<li>…</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>为了线程之间配合，来满足业务逻辑<ul>
-<li>CountDownLath</li>
-<li>CyclicBarrier</li>
-<li>Semaphore</li>
-<li>Condition</li>
-<li>Exchanger</li>
-<li>Phaser</li>
-<li>…</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</blockquote></li>
-</ul>
+<p><img src="/2021/11/26/%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA/Java%E5%B9%B6%E5%8F%91%E6%88%90%E7%A5%9E%E4%B9%8B%E8%B7%AF-%E7%B2%BE%E9%80%9AJUC%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8D%81%E5%85%AB%E8%88%AC%E6%AD%A6%E8%89%BA%E2%80%94%E2%80%94%E7%BA%BF%E7%A8%8B%E6%B1%A0/%E5%B9%B6%E5%8F%91%E5%B7%A5%E5%85%B7%E7%9A%84%E5%88%86%E7%B1%BB.png" alt="并发工具的分类"></p>
+<!--
+
+- 并发工具类的分类
+  - 为了线程安全（从底层原理来看）
+    - 互斥同步
+      - 使用各种互斥同步的锁
+        - synchronized
+        - ReentrantLock
+        - ReadWriteLock
+        - ...
+      - 使用同步的工具类
+        - Collections.synchronizedList(new ArrayList<>())等
+        - Vector等
+    - 非互斥同步
+      - atomic包，原子类
+        - Atomic*基本类型原子类
+          - AtomicInteger：整型原子类
+          - AtomicLong：长整型原子类
+          - AtomicBoolean：布尔型原子类
+        - Atomic*Array数组类型原子类(数组里面的元素，都可以保证原子性)
+          - AtomicIntegerArray：整型数组原子类
+          - AtomicLongArray：长整型数组原子类
+          - AtomicReferenceArray：引用类型数组原子类
+        - Atomic*Reference引用类型子类
+          - AtomicReference：引用类型原子类
+          - AtomicStampedReference：引用类型原子类的升级，带时间戳，可以解决ABA问题
+          - AtomicMarkableReference
+        - Atomic*FieldUpdater升级原子类
+          - 用Atomic*FieldUpdater等升级自己的变量
+          - AtomicIntegerFieldUpdater：原子更新整型字段的更新器
+          - AtomicLongFieldUpdater：原子更新长整型字段的更新器
+        - Adder加法器
+          - LongAdder
+          - DoubleAdder
+        - Accumulator累加器
+          - LongAccumulator
+          - DoubleAccumulator
+    - 结合互斥和非互斥同步
+      - 线程安全的并发容器
+        - ConcurrentHashMap
+        - CopyOnWriteArrayList
+        - 并发队列
+          - 阻塞队列
+            - ArrayBlockingQueue
+            - LinkedBlockingQueue
+            - PriorityBlockingQueue
+            - SynchronousQueue
+            - DelayedQueue
+            - TransferQueue
+            - ...
+          - 非阻塞队列
+            - ConcurrentLinkedQueue
+        - ConcurrentSkipListMap和ConcurrentSkipListSet
+    - 无同步方、不可变
+      - final关键字
+      - 线程封闭
+        - ThreadLocal
+        - 栈封闭
+  - 为了线程安全（从使用者角度来看）
+    - 避免共享变量
+      - 线程封闭
+        - ThreadLocal
+        - 栈封闭
+    - 共享变量，但是可以限制和处理
+      - 互斥同步
+        - 使用各种互斥同步的锁
+          - synchronized
+          - Lock接口相关的类
+      - final关键字
+    - 使用成熟工具类
+      - 线程安全的并发容器
+        - ConcurrentHashMap
+        - CopyOnWriteArrayList
+        - 并发队列
+          - 阻塞队列
+            - ArrayBlockingQueue
+            - LinkedBlockingQueue
+            - PriorityBlockingQueue
+            - SynchronousQueue
+            - DelayedQueue
+            - TransferQueue
+            - ...
+          - 非阻塞队列
+            - ConcurrentLinkedQueue
+        - ConcurrentSkipListMap和ConcurrentSkipListSet
+        - 使用同步的工具类
+          - Collections.synchronizedList(new ArrayList<>())等
+          - Vector等
+      - atomic包，原子类
+        - Atomic*基本类型原子类
+          - AtomicInteger：整型原子类
+          - AtomicLong：长整型原子类
+          - AtomicBoolean：布尔型原子类
+        - Atomic*Array数组类型原子类(数组里面的元素，都可以保证原子性)
+          - AtomicIntegerArray：整型数组原子类
+          - AtomicLongArray：长整型数组原子类
+          - AtomicReferenceArray：引用类型数组原子类
+        - Atomic*Reference引用类型子类
+          - AtomicReference：引用类型原子类
+          - AtomicStampedReference：引用类型原子类的升级，带时间戳，可以解决ABA问题
+          - AtomicMarkableReference
+        - Atomic*FieldUpdater升级原子类
+          - 用Atomic*FieldUpdater等升级自己的变量
+          - AtomicIntegerFieldUpdater：原子更新整型字段的更新器
+          - AtomicLongFieldUpdater：原子更新长整型字段的更新器
+        - Adder加法器
+          - LongAdder
+          - DoubleAdder
+        - Accumulator累加器
+          - LongAccumulator
+          - DoubleAccumulator
+  - 为了方便管理线程、提高效率
+    - 线程池相关
+      - Executor
+      - Executors
+      - ExecutorService
+      - 常见线程池
+        - FixedThreadPool
+        - CachedThreadPool
+        - ScheduledThreadPool
+        - SingleThreadExecutor
+        - ForkJoinPool
+        - ...
+    - 能获取子线程的运行结果
+      - Callable
+      - Future
+      - FutureTask
+      - ...
+  - 为了线程之间配合，来满足业务逻辑
+    - CountDownLath
+    - CyclicBarrier
+    - Semaphore
+    - Condition
+    - Exchanger
+    - Phaser
+    - ...
+
+
+-->
+
 <h1 id="线程池的自我介绍"><a href="#线程池的自我介绍" class="headerlink" title="线程池的自我介绍"></a>线程池的自我介绍</h1><h2 id="线程池的重要性"><a href="#线程池的重要性" class="headerlink" title="线程池的重要性"></a>线程池的重要性</h2><ul>
 <li>如果不使用线程池，每个任务都需要新开一个线程处理<ul>
 <li>一个线程还好，如果是几千的任务，每次都创建线程</li>
@@ -766,7 +685,7 @@ e=>end: 结束
 o2->e
 o3->e
 o4->e
-o5->e</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kity@2.0.4/dist/kity.min.js"></script><script type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/kityminder-core@1.4.50/dist/kityminder.core.min.js"></script><script defer="true" type="text&#x2F;javascript" src="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.js"></script><link rel="stylesheet" type="text&#x2F;css" href="https://cdn.jsdelivr.net/npm/hexo-simple-mindmap@0.7.0/dist/mindmap.min.css">
+o5->e</textarea><textarea id="flowchart-0-options" style="display: none">{"scale":1,"line-width":2,"line-length":50,"text-margin":10,"font-size":12}</textarea><script>  var code = document.getElementById("flowchart-0-code").value;  var options = JSON.parse(decodeURIComponent(document.getElementById("flowchart-0-options").value));  var diagram = flowchart.parse(code);  diagram.drawSVG("flowchart-0", options);</script>
     </div>
 
     
@@ -866,20 +785,20 @@ o5->e</textarea><textarea id="flowchart-0-options" style="display: none">{"scale
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -906,7 +825,7 @@ o5->e</textarea><textarea id="flowchart-0-options" style="display: none">{"scale
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -928,6 +847,8 @@ o5->e</textarea><textarea id="flowchart-0-options" style="display: none">{"scale
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
