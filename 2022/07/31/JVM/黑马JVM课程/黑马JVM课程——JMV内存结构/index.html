@@ -28,22 +28,22 @@
 <meta property="og:site_name" content="YS">
 <meta property="og:description" content="黑马JVM课程学习笔记，http:&#x2F;&#x2F;yun.itheima.com&#x2F;course&#x2F;584.html，本章节主要是学习JVM虚拟机内存结构相关内容">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/jvm-jre-jdk%E6%AF%94%E8%BE%83.png">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%B8%B8%E8%A7%81%E7%9A%84JVM%E5%9B%BE%E7%A4%BA.png">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E9%80%92%E5%BD%92%E6%A0%88%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E4%BB%A3%E7%A0%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/jsconsole%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/jconsole%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA1.png">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA2.png">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA3.png">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E6%96%B9%E6%B3%95%E5%8C%BA%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jvm-jre-jdk%E6%AF%94%E8%BE%83.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%B8%B8%E8%A7%81%E7%9A%84JVM%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E9%80%92%E5%BD%92%E6%A0%88%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E4%BB%A3%E7%A0%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jsconsole%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jconsole%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA1.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA2.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA3.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E6%96%B9%E6%B3%95%E5%8C%BA%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
 <meta property="article:published_time" content="2022-07-31T05:44:19.000Z">
-<meta property="article:modified_time" content="2023-03-23T02:04:26.170Z">
+<meta property="article:modified_time" content="2023-03-25T13:34:06.878Z">
 <meta property="article:author" content="YS">
 <meta property="article:tag" content="黑马JVM课程">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/jvm-jre-jdk%E6%AF%94%E8%BE%83.png">
+<meta name="twitter:image" content="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jvm-jre-jdk%E6%AF%94%E8%BE%83.png">
 
 <link rel="canonical" href="http://ysymj.gitee.io/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/">
 
@@ -237,7 +237,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-23 10:04:26" itemprop="dateModified" datetime="2023-03-23T10:04:26+08:00">2023-03-23</time>
+                <time title="修改时间：2023-03-25 21:34:06" itemprop="dateModified" datetime="2023-03-25T21:34:06+08:00">2023-03-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -290,8 +290,8 @@
 <li>数组下标越界检查；</li>
 <li>多态。</li>
 </ul>
-<h3 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h3><p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/jvm-jre-jdk%E6%AF%94%E8%BE%83.png" alt="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/jvm-jre-jdk比较.png"></p>
-<h2 id="常见的JVM"><a href="#常见的JVM" class="headerlink" title="常见的JVM"></a>常见的JVM</h2><p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%B8%B8%E8%A7%81%E7%9A%84JVM%E5%9B%BE%E7%A4%BA.png" alt="常见的JVM图示"></p>
+<h3 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h3><p><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jvm-jre-jdk%E6%AF%94%E8%BE%83.png" alt="jvm-jre-jdk比较.png"></p>
+<h2 id="常见的JVM"><a href="#常见的JVM" class="headerlink" title="常见的JVM"></a>常见的JVM</h2><p><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%B8%B8%E8%A7%81%E7%9A%84JVM%E5%9B%BE%E7%A4%BA.png" alt="常见的JVM图示"></p>
 <h1 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h1><h2 id="程序计数器"><a href="#程序计数器" class="headerlink" title="程序计数器"></a>程序计数器</h2><h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ul>
 <li>记住下一条jvm指令的执行地址<blockquote>
 <p>java代码在编译之后，会编译成一条条指令，然后将指令交给解释器，解释器将指令解释成机器码然后交给CPU执行<br>当程序执行一条指令的时候，程序计数器就会记录下一条指令的位置<br>程序计数器是通过寄存器实现的，寄存器是CPU中运行最快的单元，因为从程序计数器获取执行位置的操作是非常频繁的</p>
@@ -331,7 +331,7 @@
 <h3 id="栈内存溢出"><a href="#栈内存溢出" class="headerlink" title="栈内存溢出"></a>栈内存溢出</h3><h4 id="栈帧过多导致栈内存溢出（递归）"><a href="#栈帧过多导致栈内存溢出（递归）" class="headerlink" title="栈帧过多导致栈内存溢出（递归）"></a>栈帧过多导致栈内存溢出（递归）</h4><blockquote>
 <p>如下图所示，使用递归调用，没有设置临界值，最终会导致栈内存溢出<br><code>java.lang.StackOverflowError</code><br>注意，并不一定就是 39689 次调用会溢出，根据机器配置不同，会略有差异</p>
 </blockquote>
-<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E9%80%92%E5%BD%92%E6%A0%88%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E4%BB%A3%E7%A0%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="递归栈内存溢出代码示意图"></p>
+<p><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E9%80%92%E5%BD%92%E6%A0%88%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E4%BB%A3%E7%A0%81%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="递归栈内存溢出代码示意图"></p>
 <ul>
 <li>栈帧过大导致栈内存溢出</li>
 </ul>
@@ -376,7 +376,7 @@
 <h3 id="堆内存溢出"><a href="#堆内存溢出" class="headerlink" title="堆内存溢出"></a>堆内存溢出</h3><blockquote>
 <p>如下图所示，不停的想list中添加字符串，最终会导致堆内存溢出<br><code>java.lang.OutOfMemoryError: Java heap space</code><br>添加字符串的个数，也就是<code>i</code>的值，跟对内存的大小有关<br><code>-Xms8m</code> 可以通过jvm参数调整堆内存的大小</p>
 </blockquote>
-<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E7%A4%BA%E6%84%8F%E5%9B%BE.png"></p>
+<p><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%A0%86%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E7%A4%BA%E6%84%8F%E5%9B%BE.png"></p>
 <h3 id="堆内存诊断"><a href="#堆内存诊断" class="headerlink" title="堆内存诊断"></a>堆内存诊断</h3><h4 id="jps-工具（命令行）"><a href="#jps-工具（命令行）" class="headerlink" title="jps 工具（命令行）"></a>jps 工具（命令行）</h4><ul>
 <li>查看当前系统中有哪些java进程</li>
 </ul>
@@ -411,9 +411,9 @@
 <p>直接在命令行输入<code>jconsole</code>命令即可打开工具图形界面<br>在图形界面打开的时候会列出当前服务器上所有的java程序，可以选择链接其中的一个程序查看jvm运行情况</p>
 <p>同样入上的代码，可以从界面中看出，对内存开始占用将近30M的内存<br>创建对象之后，升至40多兆<br>执行垃圾回收之后又极速下降<br>同时该图形界面还可以查看线程、类、CPU的具体情况</p>
 </blockquote>
-<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/jsconsole%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="jsconsole图形界面示意图"></p>
-<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h4 id="垃圾回收之后，内存占用依旧很高"><a href="#垃圾回收之后，内存占用依旧很高" class="headerlink" title="垃圾回收之后，内存占用依旧很高"></a>垃圾回收之后，内存占用依旧很高</h4><p>1.可以先使用<code>jmap</code>指令查看具体占用堆内存的大小，或者直接使用<code>jconsole</code>指令查看<br>2.可以尝试直接使用<code>jconsole</code>面板手动执行GC<br>3.从图中可以看出，执行GC之后，虽然内存占用有所下降，但是下降的并不明显，依旧有二百多兆的占用，此时可以常使用使用<code>jvisualvm</code>工具<br>4.<code>jvisualvm</code>工具和<code>jconsole</code>类似，不过拥有更多的功能<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/jconsole%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="jconsole问题排查示意图"></p>
-<p>5.如下图，<code>jvisualvm</code>工具可以对当前堆内存进行dump<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA1.png" alt="垃圾回收案例分析图示1"><br>6.对堆内存进行dump之后，可以对结果进行分析，从图中可以看出，其中最大的对象是ArrayList<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA2.png" alt="垃圾回收案例分析图示2"><br>7.点击查看详情后可以发现，List中包含了许多的Status对象，一直没有被垃圾回收，导致内存占用过高，然后可以根据具体代码分析，可能是有一个Status类的集合一直没有被释放掉<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA3.png" alt="垃圾回收案例分析图示3"></p>
+<p><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jsconsole%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="jsconsole图形界面示意图"></p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><h4 id="垃圾回收之后，内存占用依旧很高"><a href="#垃圾回收之后，内存占用依旧很高" class="headerlink" title="垃圾回收之后，内存占用依旧很高"></a>垃圾回收之后，内存占用依旧很高</h4><p>1.可以先使用<code>jmap</code>指令查看具体占用堆内存的大小，或者直接使用<code>jconsole</code>指令查看<br>2.可以尝试直接使用<code>jconsole</code>面板手动执行GC<br>3.从图中可以看出，执行GC之后，虽然内存占用有所下降，但是下降的并不明显，依旧有二百多兆的占用，此时可以常使用使用<code>jvisualvm</code>工具<br>4.<code>jvisualvm</code>工具和<code>jconsole</code>类似，不过拥有更多的功能<br><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/jconsole%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="jconsole问题排查示意图"></p>
+<p>5.如下图，<code>jvisualvm</code>工具可以对当前堆内存进行dump<br><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA1.png" alt="垃圾回收案例分析图示1"><br>6.对堆内存进行dump之后，可以对结果进行分析，从图中可以看出，其中最大的对象是ArrayList<br><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA2.png" alt="垃圾回收案例分析图示2"><br>7.点击查看详情后可以发现，List中包含了许多的Status对象，一直没有被垃圾回收，导致内存占用过高，然后可以根据具体代码分析，可能是有一个Status类的集合一直没有被释放掉<br><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA3.png" alt="垃圾回收案例分析图示3"></p>
 <p>8.伪代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test2</span> </span>&#123;  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;  </span><br><span class="line">        List&lt;Status&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();  </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">200</span>; i++) &#123;  </span><br><span class="line">            list.add(<span class="keyword">new</span> Status());  </span><br><span class="line">        &#125;  </span><br><span class="line">        Thread.sleep(<span class="number">100000000</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Status</span></span>&#123;  </span><br><span class="line">    <span class="keyword">byte</span>[] big = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>*<span class="number">1024</span>];  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -425,7 +425,7 @@
 <li>从jdk8开始，更改为元空间，方法区不在属于堆得一部分，使用服务器直接内存</li>
 <li>不过方法区中的字符串表（stringTable）依旧存储在堆内</li>
 </ul>
-<h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E6%96%B9%E6%B3%95%E5%8C%BA%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="方法区内存分布示意图"></p>
+<h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p><img src="/2022/07/31/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94JMV%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84/%E6%96%B9%E6%B3%95%E5%8C%BA%E5%86%85%E5%AD%98%E5%88%86%E5%B8%83%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="方法区内存分布示意图"></p>
 <blockquote>
 <p>在jdk8之前，方法区依托永久代来实现，主要是为了能公用java堆得垃圾回收机制，不用再单独为方法区开发垃圾回收功能，不过并不是所有的虚拟机都是依托于永久代来实现的<br>在逻辑上属于堆的一部分，不过并不是堆，又名非堆</p>
 </blockquote>
@@ -507,7 +507,6 @@
 <p>下面代码是 <code>DirectByteBuffer</code> 构造方法的源代码<br><code>base = unsafe.allocateMemory(size);</code> 可以看到是通过<code>Unsafe</code>来进行分配内存的<br>至于回收内存，则是在 <code>cleaner = Cleaner.create(this, new Deallocator(base, size, cap));</code> 这一行<br><code>Deallocator</code> 是一个任务对象，实现了<code>Runnable</code>接口，会在run方法中对直接内存进行回收<br>分配完直接内存后，会依托<code>Cleaner</code>创建一个任务，而任务的执行时间，则是需要看<code>Cleaner</code>对象<br><code>Cleaner</code>是一个虚引用对象，当和他关联的对象被回收了之后，就会调用他的<code>clean</code>方法，在<code>clean</code>方法中，会执行与之 绑定的任务</p>
 </blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">DirectByteBuffer(<span class="keyword">int</span> cap) &#123;                   <span class="comment">// package-private  </span></span><br><span class="line">  </span><br><span class="line">    <span class="keyword">super</span>(-<span class="number">1</span>, <span class="number">0</span>, cap, cap);  </span><br><span class="line">    <span class="keyword">boolean</span> pa = VM.isDirectMemoryPageAligned();  </span><br><span class="line">    <span class="keyword">int</span> ps = Bits.pageSize();  </span><br><span class="line">    <span class="keyword">long</span> size = Math.max(<span class="number">1L</span>, (<span class="keyword">long</span>)cap + (pa ? ps : <span class="number">0</span>));  </span><br><span class="line">    Bits.reserveMemory(size, cap);  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">long</span> base = <span class="number">0</span>;  </span><br><span class="line">    <span class="keyword">try</span> &#123;  </span><br><span class="line">        base = unsafe.allocateMemory(size);  </span><br><span class="line">    &#125; <span class="keyword">catch</span> (OutOfMemoryError x) &#123;  </span><br><span class="line">        Bits.unreserveMemory(size, cap);  </span><br><span class="line">        <span class="keyword">throw</span> x;  </span><br><span class="line">    &#125;  </span><br><span class="line">    unsafe.setMemory(base, size, (<span class="keyword">byte</span>) <span class="number">0</span>);  </span><br><span class="line">    <span class="keyword">if</span> (pa &amp;&amp; (base % ps != <span class="number">0</span>)) &#123;  </span><br><span class="line">        <span class="comment">// Round up to page boundary  </span></span><br><span class="line">        address = base + ps - (base &amp; (ps - <span class="number">1</span>));  </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">        address = base;  </span><br><span class="line">    &#125;  </span><br><span class="line">    cleaner = Cleaner.create(<span class="keyword">this</span>, <span class="keyword">new</span> Deallocator(base, size, cap));  </span><br><span class="line">    att = <span class="keyword">null</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
     </div>
 
     

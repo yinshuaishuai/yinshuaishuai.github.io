@@ -28,11 +28,13 @@
 <meta property="og:site_name" content="YS">
 <meta property="og:description" content="将作用于某种数据结构中的各种元素的操作分离出来封装成独立的类，使其在不改变数据结构的前提下可以添加作用于这些元素的新的操作，为数据结构中的每个元素提供多种访问方式。它将数据的操作与数据结构进行分离，是行为类模式中最复杂的一种模式。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/nPBDJeGm4CVlFCKSws5v0P44Z3SJ3nelnaEtZ9inq99sg36RVNVPXRALW1y7umdQ_Zh_3o3DQ5-aGdWaHsmix1Dlg09_N8fhevL5nfiQ6zHS00ul5vTVK6L47P94rT8v2CmeKm0rxK2vIBhjjZKf-8a3s1--nyjF-9gPyf_Cq5J-I8JofLBOiWXM_F1SgdDo4YKu3uijhSoCdD-p9Rq3qwALJ4ONOhcrASuVQ9OppRljAohkgKvnP_4utvANZ71BZhDHDeUwNy4LQ7o3mbhvVZhDHL_Px_mCM5M946Zj2rjiZCT5R3B_W2vgn76VSBpTID9YoFxq3DBkNBWPl6Lf7afDvYMOpUPyU1B9qXaJjjFmFty0">
 <meta property="article:published_time" content="2021-10-31T03:14:41.000Z">
 <meta property="article:modified_time" content="2022-08-19T13:20:23.648Z">
 <meta property="article:author" content="YS">
 <meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.plantuml.com/plantuml/svg/nPBDJeGm4CVlFCKSws5v0P44Z3SJ3nelnaEtZ9inq99sg36RVNVPXRALW1y7umdQ_Zh_3o3DQ5-aGdWaHsmix1Dlg09_N8fhevL5nfiQ6zHS00ul5vTVK6L47P94rT8v2CmeKm0rxK2vIBhjjZKf-8a3s1--nyjF-9gPyf_Cq5J-I8JofLBOiWXM_F1SgdDo4YKu3uijhSoCdD-p9Rq3qwALJ4ONOhcrASuVQ9OppRljAohkgKvnP_4utvANZ71BZhDHDeUwNy4LQ7o3mbhvVZhDHL_Px_mCM5M946Zj2rjiZCT5R3B_W2vgn76VSBpTID9YoFxq3DBkNBWPl6Lf7afDvYMOpUPyU1B9qXaJjjFmFty0">
 
 <link rel="canonical" href="http://ysymj.gitee.io/2021/10/31/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8F/">
 
@@ -310,7 +312,7 @@
 <p>结果：  </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">具体访问者A访问--&gt;具体元素A的操作。</span><br><span class="line">具体访问者A访问--&gt;具体元素B的操作。</span><br><span class="line">------------------------</span><br><span class="line">具体访问者B访问--&gt;具体元素A的操作。</span><br><span class="line">具体访问者B访问--&gt;具体元素B的操作。</span><br></pre></td></tr></table></figure>
 
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img  src=http://www.plantuml.com/plantuml/svg/nPBDJeGm4CVlFCKSws5v0P44Z3SJ3nelnaEtZ9inq99sg36RVNVPXRALW1y7umdQ_Zh_3o3DQ5-aGdWaHsmix1Dlg09_N8fhevL5nfiQ6zHS00ul5vTVK6L47P94rT8v2CmeKm0rxK2vIBhjjZKf-8a3s1--nyjF-9gPyf_Cq5J-I8JofLBOiWXM_F1SgdDo4YKu3uijhSoCdD-p9Rq3qwALJ4ONOhcrASuVQ9OppRljAohkgKvnP_4utvANZ71BZhDHDeUwNy4LQ7o3mbhvVZhDHL_Px_mCM5M946Zj2rjiZCT5R3B_W2vgn76VSBpTID9YoFxq3DBkNBWPl6Lf7afDvYMOpUPyU1B9qXaJjjFmFty0>
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/nPBDJeGm4CVlFCKSws5v0P44Z3SJ3nelnaEtZ9inq99sg36RVNVPXRALW1y7umdQ_Zh_3o3DQ5-aGdWaHsmix1Dlg09_N8fhevL5nfiQ6zHS00ul5vTVK6L47P94rT8v2CmeKm0rxK2vIBhjjZKf-8a3s1--nyjF-9gPyf_Cq5J-I8JofLBOiWXM_F1SgdDo4YKu3uijhSoCdD-p9Rq3qwALJ4ONOhcrASuVQ9OppRljAohkgKvnP_4utvANZ71BZhDHDeUwNy4LQ7o3mbhvVZhDHL_Px_mCM5M946Zj2rjiZCT5R3B_W2vgn76VSBpTID9YoFxq3DBkNBWPl6Lf7afDvYMOpUPyU1B9qXaJjjFmFty0">
 
 
 

@@ -28,11 +28,13 @@
 <meta property="og:site_name" content="YS">
 <meta property="og:description" content="为了避免请求发送者与多个请求处理者耦合在一起，于是将所有请求的处理者通过前一对象记住其下一个对象的引用而连成一条链；当由请求发生时，可将请求沿着这条链传递，直到有对象处理它为止。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/fP2n3e8m48RtFiMDiF02kBaukKZYO1oEze9Di9ZsH1B2kqlRK974oQLD_zvzz_ydMtGEpfrLC8g7rJqomOcjDWsmvfRAhIexmsIu59CGM3ksA1bam1pGg9Pi87LCaaabxHRl6VUiMosXxxG2HtoaWRDDKGxZz667IXhmhWrbmUbhFl9W8CwjlD65CVF8g6Hc53_w_On4sCTGVp4gSkoZntoEaPUOTzGcY-kxN05juvREWDeLnJ8f2SN6qkfZdLQ8ZNFFyaR4rqwIkgBCppS0">
 <meta property="article:published_time" content="2021-10-30T11:22:16.000Z">
 <meta property="article:modified_time" content="2022-08-19T13:20:55.084Z">
 <meta property="article:author" content="YS">
 <meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.plantuml.com/plantuml/svg/fP2n3e8m48RtFiMDiF02kBaukKZYO1oEze9Di9ZsH1B2kqlRK974oQLD_zvzz_ydMtGEpfrLC8g7rJqomOcjDWsmvfRAhIexmsIu59CGM3ksA1bam1pGg9Pi87LCaaabxHRl6VUiMosXxxG2HtoaWRDDKGxZz667IXhmhWrbmUbhFl9W8CwjlD65CVF8g6Hc53_w_On4sCTGVp4gSkoZntoEaPUOTzGcY-kxN05juvREWDeLnJ8f2SN6qkfZdLQ8ZNFFyaR4rqwIkgBCppS0">
 
 <link rel="canonical" href="http://ysymj.gitee.io/2021/10/30/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%B4%A3%E4%BB%BB%E9%93%BE%E6%A8%A1%E5%BC%8F/">
 
@@ -301,7 +303,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        TitleHandler titleHandler = <span class="keyword">new</span> TitleHandler();</span><br><span class="line">        ContentHandler contentHandler = <span class="keyword">new</span> ContentHandler();</span><br><span class="line">        titleHandler.setNext(contentHandler);</span><br><span class="line"></span><br><span class="line">        Word word = <span class="keyword">new</span> Word();</span><br><span class="line">        word.setTitle(<span class="string">&quot;责任链模式&quot;</span>);</span><br><span class="line"><span class="comment">//        word.setContent(&quot;责任链模式内容&quot;);</span></span><br><span class="line"></span><br><span class="line">        titleHandler.examine(word);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>结果：  </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">标题合格，通用审核</span><br><span class="line">内容不合格，不通过审核</span><br></pre></td></tr></table></figure>
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img  src=http://www.plantuml.com/plantuml/svg/fP2n3e8m48RtFiMDiF02kBaukKZYO1oEze9Di9ZsH1B2kqlRK974oQLD_zvzz_ydMtGEpfrLC8g7rJqomOcjDWsmvfRAhIexmsIu59CGM3ksA1bam1pGg9Pi87LCaaabxHRl6VUiMosXxxG2HtoaWRDDKGxZz667IXhmhWrbmUbhFl9W8CwjlD65CVF8g6Hc53_w_On4sCTGVp4gSkoZntoEaPUOTzGcY-kxN05juvREWDeLnJ8f2SN6qkfZdLQ8ZNFFyaR4rqwIkgBCppS0>
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/fP2n3e8m48RtFiMDiF02kBaukKZYO1oEze9Di9ZsH1B2kqlRK974oQLD_zvzz_ydMtGEpfrLC8g7rJqomOcjDWsmvfRAhIexmsIu59CGM3ksA1bam1pGg9Pi87LCaaabxHRl6VUiMosXxxG2HtoaWRDDKGxZz667IXhmhWrbmUbhFl9W8CwjlD65CVF8g6Hc53_w_On4sCTGVp4gSkoZntoEaPUOTzGcY-kxN05juvREWDeLnJ8f2SN6qkfZdLQ8ZNFFyaR4rqwIkgBCppS0">
 
 
 

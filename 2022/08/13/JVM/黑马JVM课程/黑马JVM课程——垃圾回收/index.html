@@ -28,16 +28,17 @@
 <meta property="og:site_name" content="YS">
 <meta property="og:description" content="黑马JVM课程学习笔记，http:&#x2F;&#x2F;yun.itheima.com&#x2F;course&#x2F;584.html，本章节主要是学习JVM虚拟机垃圾回收相关内容">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/GC-ROOT%E6%9F%A5%E7%9C%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E4%B8%B2%E8%A1%8C%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/Parallel-Scavenge%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E8%BF%90%E8%A1%8C%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
-<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/CMS%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/Iyv9B2vMS7owVkUBZGkhQnKKk9B18av88a04LQ2WQmUJ0Gew8GIXyW00">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/08/13/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/GC-ROOT%E6%9F%A5%E7%9C%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/08/13/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E4%B8%B2%E8%A1%8C%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/08/13/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Parallel-Scavenge%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E8%BF%90%E8%A1%8C%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2022/08/13/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/CMS%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
 <meta property="article:published_time" content="2022-08-13T02:39:45.000Z">
-<meta property="article:modified_time" content="2023-03-25T10:56:00.232Z">
+<meta property="article:modified_time" content="2023-03-25T13:38:53.027Z">
 <meta property="article:author" content="YS">
 <meta property="article:tag" content="黑马JVM课程">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/GC-ROOT%E6%9F%A5%E7%9C%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta name="twitter:image" content="http://www.plantuml.com/plantuml/svg/Iyv9B2vMS7owVkUBZGkhQnKKk9B18av88a04LQ2WQmUJ0Gew8GIXyW00">
 
 <link rel="canonical" href="http://ysymj.gitee.io/2022/08/13/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">
 
@@ -231,7 +232,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-03-25 18:56:00" itemprop="dateModified" datetime="2023-03-25T18:56:00+08:00">2023-03-25</time>
+                <time title="修改时间：2023-03-25 21:38:53" itemprop="dateModified" datetime="2023-03-25T21:38:53+08:00">2023-03-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -278,7 +279,7 @@
         <h1 id="如何判断对象可以回收"><a href="#如何判断对象可以回收" class="headerlink" title="如何判断对象可以回收"></a>如何判断对象可以回收</h1><h2 id="引用计数分析算法"><a href="#引用计数分析算法" class="headerlink" title="引用计数分析算法"></a>引用计数分析算法</h2><blockquote>
 <p>在对象头中使用一个计数器，每当一个对象被引用的时候+1，断开引用的时候-1<br>这种方案可能会出现循环引用的情况<br>如下图，A对象引用B对象，B对象又引用A对象，此时他们两个是没有被其他对象引用的<br>应该被回收，但因为互相引用，就会导致无法回收</p>
 </blockquote>
-<img  src=http://www.plantuml.com/plantuml/svg/Iyv9B2vMS7owVkUBZGkhQnKKk9B18av88a04LQ2WQmUJ0Gew8GIXyW00>
+<img src="http://www.plantuml.com/plantuml/svg/Iyv9B2vMS7owVkUBZGkhQnKKk9B18av88a04LQ2WQmUJ0Gew8GIXyW00">
 
 <h2 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h2><ul>
 <li>Java 虚拟机中的垃圾回收器采用可达性分析算法来探索所有存活的对象</li>
@@ -300,7 +301,7 @@
 <li><code>JNI Global</code></li>
 <li><code>Thread</code> 活动线程正在使用的一些对象</li>
 <li><code>Busy Monitor</code> 被作为锁的对象</li>
-<li>其他（并不一定只有这些）<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/GC-ROOT%E6%9F%A5%E7%9C%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="GC-ROOT查看示意图"></li>
+<li>其他（并不一定只有这些）<br><img src="/2022/08/13/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/GC-ROOT%E6%9F%A5%E7%9C%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="GC-ROOT查看示意图"></li>
 </ul>
 <h2 id="四种引用"><a href="#四种引用" class="headerlink" title="四种引用"></a>四种引用</h2><h3 id="强引用"><a href="#强引用" class="headerlink" title="强引用"></a>强引用</h3><blockquote>
 <p>我们平时使用的大多数对象引用，都是强引用（使用new关键字创建的对象，当然强引用对象的创建方式并不只有这一种）<br>特点：如果所有的GC Root对象都没有与某个对象有强引用链接，那么这个对象就可以被垃圾回收了</p>
@@ -594,7 +595,7 @@
 <li>单线程</li>
 <li>堆内存比较小，适合个人电脑(CPU核数少)</li>
 </ul>
-<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E4%B8%B2%E8%A1%8C%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="串行垃圾收集器示意图"></p>
+<p><img src="/2022/08/13/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/%E4%B8%B2%E8%A1%8C%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="串行垃圾收集器示意图"></p>
 <h2 id="吞吐量优先"><a href="#吞吐量优先" class="headerlink" title="吞吐量优先"></a>吞吐量优先</h2><ul>
 <li>多线程</li>
 <li>堆内存比较大，需要多核CPU</li>
@@ -602,14 +603,14 @@
 <li>（假设在一个小时内回收垃圾2次，一次0.2秒，一共0.4，一个小时内回收的总耗时是最短的）</li>
 <li>垃圾回收时间占程序运行时间的比例越低，吞吐量越高</li>
 </ul>
-<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/Parallel-Scavenge%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E8%BF%90%E8%A1%8C%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="Parallel-Scavenge垃圾收集器运行示意图"></p>
+<p><img src="/2022/08/13/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/Parallel-Scavenge%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E8%BF%90%E8%A1%8C%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="Parallel-Scavenge垃圾收集器运行示意图"></p>
 <h2 id="响应时间优先"><a href="#响应时间优先" class="headerlink" title="响应时间优先"></a>响应时间优先</h2><ul>
 <li>多线程</li>
 <li>堆内存比较大，需要多核CPU</li>
 <li>尽可能让单次STW的时间最短</li>
 <li>（假设在一个小时内垃圾回收5次，一次0.1秒，一共0.5秒，每次回收的时间是最短）</li>
 </ul>
-<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/CMS%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="CMS垃圾收集器示意图"></p>
+<p><img src="/2022/08/13/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/CMS%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="CMS垃圾收集器示意图"></p>
 <h2 id="Full-GC"><a href="#Full-GC" class="headerlink" title="Full GC"></a>Full GC</h2><ul>
 <li><p>Serial GC</p>
 <ul>
