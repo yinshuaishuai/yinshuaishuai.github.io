@@ -28,55 +28,55 @@
 <meta property="og:site_name" content="YS">
 <meta property="og:description" content="黑马JVM课程学习笔记，http:&#x2F;&#x2F;yun.itheima.com&#x2F;course&#x2F;584.html，本章节主要是学习JVM虚拟机class字节码以及类加载相关内容">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%E5%9B%BE%E7%A4%BA.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E6%96%B9%E6%B3%95%E5%8C%BA%E5%AD%97%E8%8A%82%E7%A0%81%E8%BD%BD%E5%85%A5%E5%9B%BE%E7%A4%BA.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E4%B8%BB%E7%BA%BF%E7%A8%8B%E5%88%86%E9%85%8D%E6%A0%88%E5%B8%A7%E5%86%85%E5%AD%98%E5%9B%BE%E7%A4%BA.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA1.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA2.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA3.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA4.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA5.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA6.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA7.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA8.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA9.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA10.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA11.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA12.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA13.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA14.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA15.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA16.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA17.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA18.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA1.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA2.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA3.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA4.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA5.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA6.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220826210747224.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220826211136301.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220826211226285.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220826211519082.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220826211549138.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827200010149.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827201110213.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827201623999.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827202159236.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827220420879.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827220754264.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827221154955.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220828193546824.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220829210956575.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220830211359736.png">
-<meta property="og:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220902062543333.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E6%96%B9%E6%B3%95%E5%8C%BA%E5%AD%97%E8%8A%82%E7%A0%81%E8%BD%BD%E5%85%A5%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E4%B8%BB%E7%BA%BF%E7%A8%8B%E5%88%86%E9%85%8D%E6%A0%88%E5%B8%A7%E5%86%85%E5%AD%98%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA1.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA2.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA3.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA4.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA5.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA6.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA7.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA8.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA9.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA10.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA11.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA12.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA13.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA14.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA15.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA16.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA17.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA18.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA1.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA2.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA3.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA4.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA5.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA6.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA7.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA8.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA9.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA10.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA11.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA12.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA13.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA14.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA15.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA16.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA17.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA18.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%AF%B9%E8%B1%A1%E5%A4%B4%E7%BB%93%E6%9E%84%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/mysql-spi%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%86%85%E8%81%94%E4%BC%98%E5%8C%96%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/arthas-boot%E5%9B%BE%E7%A4%BA.png">
 <meta property="article:published_time" content="2022-08-20T07:07:13.000Z">
-<meta property="article:modified_time" content="2022-09-03T01:46:04.415Z">
+<meta property="article:modified_time" content="2023-03-25T11:11:49.816Z">
 <meta property="article:author" content="YS">
 <meta property="article:tag" content="黑马JVM课程">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%E5%9B%BE%E7%A4%BA.png">
+<meta name="twitter:image" content="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%E5%9B%BE%E7%A4%BA.png">
 
 <link rel="canonical" href="http://ysymj.gitee.io/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/">
 
@@ -270,7 +270,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-09-03 09:46:04" itemprop="dateModified" datetime="2022-09-03T09:46:04+08:00">2022-09-03</time>
+                <time title="修改时间：2023-03-25 19:11:49" itemprop="dateModified" datetime="2023-03-25T19:11:49+08:00">2023-03-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -332,8 +332,8 @@
 <li><p>根据JVM规范，类文件结构如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ClassFile&#123;</span><br><span class="line">	u4               magic;<span class="comment">//魔数</span></span><br><span class="line">	u2               minor_version;<span class="comment">//小版本号</span></span><br><span class="line">	u2               major_version;<span class="comment">//注版本号</span></span><br><span class="line">	u2               constant_pool_count;<span class="comment">//常量池信息</span></span><br><span class="line">	cp_info          constant_pool[constant_pool_count-<span class="number">1</span>];<span class="comment">//常量池信息</span></span><br><span class="line">	u2               access_flags;<span class="comment">//访问修饰符</span></span><br><span class="line">	u2               this_class;<span class="comment">//当前类名信息</span></span><br><span class="line">	u2               super_class;<span class="comment">//父类信息</span></span><br><span class="line">	u2               interfaces_count;<span class="comment">//接口信息</span></span><br><span class="line">	u2               interfaces[interfaces_count];<span class="comment">//接口信息</span></span><br><span class="line">	u2               fields_count;<span class="comment">//类中成员变量信息</span></span><br><span class="line">	field_info       fields[fields_count];<span class="comment">//类中成员变量信息</span></span><br><span class="line">	u2               methods_count;<span class="comment">//类中方法信息</span></span><br><span class="line">	method_info      methods[methods_count];<span class="comment">//类中方法信息</span></span><br><span class="line">	u2               attributes_count;<span class="comment">//类中附加信息</span></span><br><span class="line">	attribute+info   attributes[attributes_count];<span class="comment">//类中附加信息</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="魔数"><a href="#魔数" class="headerlink" title="魔数"></a>魔数</h2><p>0-3字节，表示他是否是【class】类型的文件<br>0000000 <font color="red">ca fe ba be</font> 00 00 00 34 00 1f 0a 00 06 00 11 09</p>
-<h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><p>4-7字节，表示类的版本，00 34（16进制，10进制为52，jdk8）表示jdk8<br>0-3字节，表示他是否是【class】类型的文件<br>0000000 ca fe ba be <font color="red">00 00 00 34</font> 00 1f 0a 00 06 00 11 09</p>
+<h2 id="魔数"><a href="#魔数" class="headerlink" title="魔数"></a>魔数</h2><p>0-3字节，表示他是否是【class】类型的文件<br>0000000 <font color=red>ca fe ba be</font> 00 00 00 34 00 1f 0a 00 06 00 11 09</p>
+<h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><p>4-7字节，表示类的版本，00 34（16进制，10进制为52，jdk8）表示jdk8<br>0-3字节，表示他是否是【class】类型的文件<br>0000000 ca fe ba be <font color=red>00 00 00 34</font> 00 1f 0a 00 06 00 11 09</p>
 <h2 id="常量池"><a href="#常量池" class="headerlink" title="常量池"></a>常量池</h2><p><strong>常量池信息对照表</strong></p>
 <table>
 <thead>
@@ -399,37 +399,37 @@
 <td align="left">18</td>
 </tr>
 </tbody></table>
-<h3 id="常量池长度"><a href="#常量池长度" class="headerlink" title="常量池长度"></a>常量池长度</h3><p>8~9字节，表示常量池的长度，00 1f（31）表示常量池有#1-#30项，注意，#0项不计入，也没有值<br>0000000 ca fe ba be 00 00 00 34 <font color="red">00 1f</font> 0a 00 06 00 11 09</p>
-<h4 id="1"><a href="#1" class="headerlink" title="#1"></a>#1</h4><p>第#1项，0a（10）表示一个Method信息，00 06和 00 11（17） 表示它引用了常量池中#6和#17项来获得这个方法的【所属类】和【方法名】<br>0000000 ca fe ba be 00 00 00 34 00 1f <font color="red">0a 00 06 00 11</font> 09</p>
-<h4 id="2"><a href="#2" class="headerlink" title="#2"></a>#2</h4><p>第#2项，09 表示一个Field信息，向后数4个字节，00 12（18）和 00 13（19） 表示它引用了常量池中#18和#19项来获得这个方法的【所属类】和【成员变量名】<br>0000000 ca fe ba be 00 00 00 34 00 1f 0a 00 06 00 11 <font color="red">09</font><br>0000020 <font color="red">00 12 00 13</font> 08 00 14 0a 00 15 00 16 07 00 17 07</p>
-<h4 id="3"><a href="#3" class="headerlink" title="#3"></a>#3</h4><p>第#3项，08 表示一个字符串常量名称，向后数2个字节，00 14（20）， 表示它引用了常量池中#20项<br>0000020 00 12 00 13 <font color="red">08 00 14</font> 0a 00 15 00 16 07 00 17 07</p>
-<h4 id="4"><a href="#4" class="headerlink" title="#4"></a>#4</h4><p>第#4项，0a（10）表示一个Method信息，00 15（21）和 00 16（22） 表示它引用了常量池中#21和#22项来获得这个方法的【所属类】和【方法名】<br>0000020 00 12 00 13 08 00 14 <font color="red">0a 00 15 00 16</font> 07 00 17 07</p>
-<h4 id="5"><a href="#5" class="headerlink" title="#5"></a>#5</h4><p>第#5项，07 表示一个Class信息，00 17（23） 表示它引用了常量池中#23项<br>0000020 00 12 00 13 08 00 14 0a 00 15 00 16 <font color="red">07 00 17</font> 07</p>
-<h4 id="6"><a href="#6" class="headerlink" title="#6"></a>#6</h4><p>第#6项，07 表示一个Class信息，00 18（24） 表示它引用了常量池中#24项<br>0000020 00 12 00 13 08 00 14 0a 00 15 00 16 07 00 17 <font color="red">07</font><br>0000040 <font color="red">00 18</font> 01 00 06 3c 69 6e 69 74 3e 01 00 03 28 29</p>
-<h4 id="7"><a href="#7" class="headerlink" title="#7"></a>#7</h4><p>第#7项，01 表示一个UTF8串，00 06表示字符串的长度，【3c 69 6e 69 74 3e】=【&lt;init&gt;】<br>0000040 00 18 <font color="red">01 00 06 3c 69 6e 69 74 3e</font> 01 00 03 28 29</p>
-<h4 id="8"><a href="#8" class="headerlink" title="#8"></a>#8</h4><p>第#8项，01 表示一个UTF8串，00 03表示字符串的长度，【28 29 56】=【()V】<br>0000040 00 18 01 00 06 3c 69 6e 69 74 3e <font color="red">01 00 03 28 29</font><br>0000060 <font color="red">56</font> 01 00 04 43 6f 64 65 01 00 0f 4c 69 6e 65 4e</p>
-<h4 id="9"><a href="#9" class="headerlink" title="#9"></a>#9</h4><p>第#9项，01 表示一个UTF8串，00 04表示字符串的长度，【43 6f 64 65】=【Code】<br>0000060 56 <font color="red">01 00 04 43 6f 64 65</font> 01 00 0f 4c 69 6e 65 4e</p>
-<h4 id="10"><a href="#10" class="headerlink" title="#10"></a>#10</h4><p>第#10项，01 表示一个UTF8串，00 0f（15）表示字符串的长度，【4c 69 6e 65 4e 75 6d 62 65 72 54 61 62 6c 65】=【LineNumberTable】<br>0000060 56 01 00 04 43 6f 64 65 <font color="red">01 00 0f 4c 69 6e 65 4e</font><br>0000100 <font color="red">75 6d 62 65 72 54 61 62 6c 65</font> 01 00 04 6d 61 69</p>
-<h4 id="11"><a href="#11" class="headerlink" title="#11"></a>#11</h4><p>第#11项，01 表示一个UTF8串，00 04表示字符串的长度，【6d 61 69 6e】=【main】<br>0000100 75 6d 62 65 72 54 61 62 6c 65 <font color="red">01 00 04 6d 61 69</font><br>0000120 <font color="red">6e</font> 01 00 16 28 5b 4c 6a 61 76 61 2f 6c 61 6e 67</p>
-<h4 id="12"><a href="#12" class="headerlink" title="#12"></a>#12</h4><p>第#12项，01 表示一个UTF8串，00 16（22）表示字符串的长度，【28 5b 4c 6a 61 76 61 2f 6c 61 6e 67 2f 53 74 72 69 6e 67 3b 29 56】=【([Ljava/lang/String;)V】<br>0000120 6e <font color="red">01 00 16 28 5b 4c 6a 61 76 61 2f 6c 61 6e 67</font><br>0000140 <font color="red">2f 53 74 72 69 6e 67 3b 29 56</font> 01 00 10 4d 65 74</p>
-<h4 id="13"><a href="#13" class="headerlink" title="#13"></a>#13</h4><p>第#13项，01 表示一个UTF8串，00 10（16）表示字符串的长度，【4d 65 74 68 6f 64 50 61 72 61 6d 65 74 65 72 73】=【MethodParameters】<br>0000140 2f 53 74 72 69 6e 67 3b 29 56 <font color="red">01 00 10 4d 65 74</font><br>0000160 <font color="red">68 6f 64 50 61 72 61 6d 65 74 65 72 73</font> 01 00 04</p>
-<h4 id="14"><a href="#14" class="headerlink" title="#14"></a>#14</h4><p>第#14项，01 表示一个UTF8串，00 04（16）表示字符串的长度，【61 72 67 73】=【args】<br>0000160 68 6f 64 50 61 72 61 6d 65 74 65 72 73 <font color="red">01 00 04</font><br>0000200 <font color="red">61 72 67 73</font> 01 00 0a 53 6f 75 72 63 65 46 69 6c</p>
-<h4 id="15"><a href="#15" class="headerlink" title="#15"></a>#15</h4><p>第#15项，01 表示一个UTF8串，00 0a（10）表示字符串的长度，【53 6f 75 72 63 65 46 69 6c 65】=【SourceFile】<br>0000200 61 72 67 73 <font color="red">01 00 0a 53 6f 75 72 63 65 46 69 6c</font><br>0000220 <font color="red">65</font> 01 00 0f 48 65 6c 6c 6f 57 6f 72 6c 64 2e 6a</p>
-<h4 id="16"><a href="#16" class="headerlink" title="#16"></a>#16</h4><p>第#16项，01 表示一个UTF8串，00 0f（15）表示字符串的长度，【48 65 6c 6c 6f 57 6f 72 6c 64 2e 6a 61 76 61】=【HelloWorld.java】<br>0000220 65 <font color="red">01 00 0f 48 65 6c 6c 6f 57 6f 72 6c 64 2e 6a</font><br>0000240 <font color="red">61 76 61</font> 0c 00 07 00 08 07 00 19 0c 00 1a 00 1b</p>
-<h4 id="17"><a href="#17" class="headerlink" title="#17"></a>#17</h4><p>第#17项，0c（12） 表示一个NameAndType【名+类型】，00 07和00 08表示引用了常量池中的#7和#8项【&lt;init&gt;:()V】<br>0000240 61 76 61 <font color="red">0c 00 07 00 08</font> 07 00 19 0c 00 1a 00 1b</p>
-<h4 id="18"><a href="#18" class="headerlink" title="#18"></a>#18</h4><p>第#18项，07 表示一个Class信息，00 19（25） 表示它引用了常量池中#25项<br>0000240 61 76 61 0c 00 07 00 08 <font color="red">07 00 19</font> 0c 00 1a 00 1b</p>
-<h4 id="19"><a href="#19" class="headerlink" title="#19"></a>#19</h4><p>第#19项，0c（12） 表示一个NameAndType【名+类型】，00 1a（26）和00 1b（27）表示引用了常量池中的#26和#27项<br>0000240 61 76 61 0c 00 07 00 08 07 00 19 <font color="red">0c 00 1a 00 1b</font></p>
-<h4 id="20"><a href="#20" class="headerlink" title="#20"></a>#20</h4><p>第#20项，01 表示一个UTF8串，00 0b（11）表示字符串的长度，【68 65 6c 6c 6f 20 77 6f 72 6c 64】=【hello world】<br>0000260  <font color="red">01 00 0b 68 65 6c 6c 6f 20 77 6f 72 6c 64</font> 07 00</p>
-<h4 id="21"><a href="#21" class="headerlink" title="#21"></a>#21</h4><p>第#21项，07 表示一个Class信息，00 1c（28） 表示它引用了常量池中#28项<br>0000260  01 00 0b 68 65 6c 6c 6f 20 77 6f 72 6c 64 <font color="red">07 00</font><br>0000300 <font color="red">1c</font> 0c 00 1d 00 1e 01 00 21 63 6f 6d 2f 65 78 61</p>
-<h4 id="22"><a href="#22" class="headerlink" title="#22"></a>#22</h4><p>第#22项，0c（12） 表示一个NameAndType【名+类型】，00 1d（29）和00 1e（30）表示引用了常量池中的#29和#30项<br>0000300 1c <font color="red">0c 00 1d 00 1e </font>01 00 21 63 6f 6d 2f 65 78 61</p>
-<h4 id="23"><a href="#23" class="headerlink" title="#23"></a>#23</h4><p>第#23项，01 表示一个UTF8串，00 21（33）表示字符串的长度，【63 6f 6d 2f 65 78 61 6d 70 6c 65 2f 64 65 6d 6f 31 2f 74 65 73 74 2f 48 65 6c 6c 6f 57 6f 72 6c 64】=【com/example/demo1/test/HelloWorld】<br>0000300 1c 0c 00 1d 00 1e <font color="red">01 00 21 63 6f 6d 2f 65 78 61</font><br>0000320 <font color="red">6d 70 6c 65 2f 64 65 6d 6f 31 2f 74 65 73 74 2f</font><br>0000340 <font color="red">48 65 6c 6c 6f 57 6f 72 6c 64</font> 01 00 10 6a 61 76</p>
-<h4 id="24"><a href="#24" class="headerlink" title="#24"></a>#24</h4><p>第#24项，01 表示一个UTF8串，00 10（16）表示字符串的长度，【6a 61 76 61 2f 6c 61 6e 67 2f 4f 62 6a 65 63 74】=【java/lang/Object】<br>0000340 48 65 6c 6c 6f 57 6f 72 6c 64 <font color="red">01 00 10 6a 61 76</font><br>0000360 <font color="red">61 2f 6c 61 6e 67 2f 4f 62 6a 65 63 74</font> 01 00 10</p>
-<h4 id="25"><a href="#25" class="headerlink" title="#25"></a>#25</h4><p>第#25项，01 表示一个UTF8串，00 10（16）表示字符串的长度，【6a 61 76 61 2f 6c 61 6e 67 2f 53 79 73 74 65 6d】=【java/lang/System】<br>0000360 61 2f 6c 61 6e 67 2f 4f 62 6a 65 63 74 <font color="red">01 00 10</font><br>0000400 <font color="red">6a 61 76 61 2f 6c 61 6e 67 2f 53 79 73 74 65 6d</font></p>
-<h4 id="26"><a href="#26" class="headerlink" title="#26"></a>#26</h4><p>第#26项，01 表示一个UTF8串，00 03（16）表示字符串的长度，【6f 75 74】=【out】<br>0000420 <font color="red">01 00 03 6f 75 74</font> 01 00 15 4c 6a 61 76 61 2f 69</p>
-<h4 id="27"><a href="#27" class="headerlink" title="#27"></a>#27</h4><p>第#27项，01 表示一个UTF8串，00 15（21）表示字符串的长度，【4c 6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d 3b】=【Ljava/io/PrintStream;】<br>0000420 01 00 03 6f 75 74 <font color="red">01 00 15 4c 6a 61 76 61 2f 69</font><br>0000440 <font color="red">6f 2f 50 72 69 6e 74 53 74 72 65 61 6d 3b</font> 01 00</p>
-<h4 id="28"><a href="#28" class="headerlink" title="#28"></a>#28</h4><p>第#28项，01 表示一个UTF8串，00 13（19）表示字符串的长度，【6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d】=【java/io/PrintStream】<br>0000440 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d 3b <font color="red">01 00</font><br>0000460 <font color="red">13 6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74</font><br>0000500 <font color="red">72 65 61 6d</font> 01 00 07 70 72 69 6e 74 6c 6e 01 00</p>
-<h4 id="29"><a href="#29" class="headerlink" title="#29"></a>#29</h4><p>第#29项，01 表示一个UTF8串，00 07表示字符串的长度，【70 72 69 6e 74 6c 6e】=【println】<br>0000500 72 65 61 6d <font color="red">01 00 07 70 72 69 6e 74 6c 6e</font> 01 00</p>
-<h4 id="30"><a href="#30" class="headerlink" title="#30"></a>#30</h4><p>第#30项，01 表示一个UTF8串，00 15（21）表示字符串的长度，【28 4c 6a 61 76 61 2f 6c 61 6e 67 2f 53 74 72 69 6e 67 3b 29 56】=【(Ljava/lang/String;)V】<br>0000500 72 65 61 6d 01 00 07 70 72 69 6e 74 6c 6e <font color="red">01 00</font><br>0000520 <font color="red">15 28 4c 6a 61 76 61 2f 6c 61 6e 67 2f 53 74 72</font><br>0000540 <font color="red">69 6e 67 3b 29 56</font> 00 21 00 05 00 06 00 00 00 00</p>
+<h3 id="常量池长度"><a href="#常量池长度" class="headerlink" title="常量池长度"></a>常量池长度</h3><p>8~9字节，表示常量池的长度，00 1f（31）表示常量池有#1-#30项，注意，#0项不计入，也没有值<br>0000000 ca fe ba be 00 00 00 34 <font color=red>00 1f</font> 0a 00 06 00 11 09</p>
+<h4 id="1"><a href="#1" class="headerlink" title="#1"></a>#1</h4><p>第#1项，0a（10）表示一个Method信息，00 06和 00 11（17） 表示它引用了常量池中#6和#17项来获得这个方法的【所属类】和【方法名】<br>0000000 ca fe ba be 00 00 00 34 00 1f <font color=red>0a 00 06 00 11</font> 09</p>
+<h4 id="2"><a href="#2" class="headerlink" title="#2"></a>#2</h4><p>第#2项，09 表示一个Field信息，向后数4个字节，00 12（18）和 00 13（19） 表示它引用了常量池中#18和#19项来获得这个方法的【所属类】和【成员变量名】<br>0000000 ca fe ba be 00 00 00 34 00 1f 0a 00 06 00 11 <font color=red>09</font><br>0000020 <font color=red>00 12 00 13</font> 08 00 14 0a 00 15 00 16 07 00 17 07</p>
+<h4 id="3"><a href="#3" class="headerlink" title="#3"></a>#3</h4><p>第#3项，08 表示一个字符串常量名称，向后数2个字节，00 14（20）， 表示它引用了常量池中#20项<br>0000020 00 12 00 13 <font color=red>08 00 14</font> 0a 00 15 00 16 07 00 17 07</p>
+<h4 id="4"><a href="#4" class="headerlink" title="#4"></a>#4</h4><p>第#4项，0a（10）表示一个Method信息，00 15（21）和 00 16（22） 表示它引用了常量池中#21和#22项来获得这个方法的【所属类】和【方法名】<br>0000020 00 12 00 13 08 00 14 <font color=red>0a 00 15 00 16</font> 07 00 17 07</p>
+<h4 id="5"><a href="#5" class="headerlink" title="#5"></a>#5</h4><p>第#5项，07 表示一个Class信息，00 17（23） 表示它引用了常量池中#23项<br>0000020 00 12 00 13 08 00 14 0a 00 15 00 16 <font color=red>07 00 17</font> 07</p>
+<h4 id="6"><a href="#6" class="headerlink" title="#6"></a>#6</h4><p>第#6项，07 表示一个Class信息，00 18（24） 表示它引用了常量池中#24项<br>0000020 00 12 00 13 08 00 14 0a 00 15 00 16 07 00 17 <font color=red>07</font><br>0000040 <font color=red>00 18</font> 01 00 06 3c 69 6e 69 74 3e 01 00 03 28 29</p>
+<h4 id="7"><a href="#7" class="headerlink" title="#7"></a>#7</h4><p>第#7项，01 表示一个UTF8串，00 06表示字符串的长度，【3c 69 6e 69 74 3e】=【&lt;init&gt;】<br>0000040 00 18 <font color=red>01 00 06 3c 69 6e 69 74 3e</font> 01 00 03 28 29</p>
+<h4 id="8"><a href="#8" class="headerlink" title="#8"></a>#8</h4><p>第#8项，01 表示一个UTF8串，00 03表示字符串的长度，【28 29 56】=【()V】<br>0000040 00 18 01 00 06 3c 69 6e 69 74 3e <font color=red>01 00 03 28 29</font><br>0000060 <font color=red>56</font> 01 00 04 43 6f 64 65 01 00 0f 4c 69 6e 65 4e</p>
+<h4 id="9"><a href="#9" class="headerlink" title="#9"></a>#9</h4><p>第#9项，01 表示一个UTF8串，00 04表示字符串的长度，【43 6f 64 65】=【Code】<br>0000060 56 <font color=red>01 00 04 43 6f 64 65</font> 01 00 0f 4c 69 6e 65 4e</p>
+<h4 id="10"><a href="#10" class="headerlink" title="#10"></a>#10</h4><p>第#10项，01 表示一个UTF8串，00 0f（15）表示字符串的长度，【4c 69 6e 65 4e 75 6d 62 65 72 54 61 62 6c 65】=【LineNumberTable】<br>0000060 56 01 00 04 43 6f 64 65 <font color=red>01 00 0f 4c 69 6e 65 4e</font><br>0000100 <font color=red>75 6d 62 65 72 54 61 62 6c 65</font> 01 00 04 6d 61 69</p>
+<h4 id="11"><a href="#11" class="headerlink" title="#11"></a>#11</h4><p>第#11项，01 表示一个UTF8串，00 04表示字符串的长度，【6d 61 69 6e】=【main】<br>0000100 75 6d 62 65 72 54 61 62 6c 65 <font color=red>01 00 04 6d 61 69</font><br>0000120 <font color=red>6e</font> 01 00 16 28 5b 4c 6a 61 76 61 2f 6c 61 6e 67</p>
+<h4 id="12"><a href="#12" class="headerlink" title="#12"></a>#12</h4><p>第#12项，01 表示一个UTF8串，00 16（22）表示字符串的长度，【28 5b 4c 6a 61 76 61 2f 6c 61 6e 67 2f 53 74 72 69 6e 67 3b 29 56】=【([Ljava/lang/String;)V】<br>0000120 6e <font color=red>01 00 16 28 5b 4c 6a 61 76 61 2f 6c 61 6e 67</font><br>0000140 <font color=red>2f 53 74 72 69 6e 67 3b 29 56</font> 01 00 10 4d 65 74</p>
+<h4 id="13"><a href="#13" class="headerlink" title="#13"></a>#13</h4><p>第#13项，01 表示一个UTF8串，00 10（16）表示字符串的长度，【4d 65 74 68 6f 64 50 61 72 61 6d 65 74 65 72 73】=【MethodParameters】<br>0000140 2f 53 74 72 69 6e 67 3b 29 56 <font color=red>01 00 10 4d 65 74</font><br>0000160 <font color=red>68 6f 64 50 61 72 61 6d 65 74 65 72 73</font> 01 00 04</p>
+<h4 id="14"><a href="#14" class="headerlink" title="#14"></a>#14</h4><p>第#14项，01 表示一个UTF8串，00 04（16）表示字符串的长度，【61 72 67 73】=【args】<br>0000160 68 6f 64 50 61 72 61 6d 65 74 65 72 73 <font color=red>01 00 04</font><br>0000200 <font color=red>61 72 67 73</font> 01 00 0a 53 6f 75 72 63 65 46 69 6c</p>
+<h4 id="15"><a href="#15" class="headerlink" title="#15"></a>#15</h4><p>第#15项，01 表示一个UTF8串，00 0a（10）表示字符串的长度，【53 6f 75 72 63 65 46 69 6c 65】=【SourceFile】<br>0000200 61 72 67 73 <font color=red>01 00 0a 53 6f 75 72 63 65 46 69 6c</font><br>0000220 <font color=red>65</font> 01 00 0f 48 65 6c 6c 6f 57 6f 72 6c 64 2e 6a</p>
+<h4 id="16"><a href="#16" class="headerlink" title="#16"></a>#16</h4><p>第#16项，01 表示一个UTF8串，00 0f（15）表示字符串的长度，【48 65 6c 6c 6f 57 6f 72 6c 64 2e 6a 61 76 61】=【HelloWorld.java】<br>0000220 65 <font color=red>01 00 0f 48 65 6c 6c 6f 57 6f 72 6c 64 2e 6a</font><br>0000240 <font color=red>61 76 61</font> 0c 00 07 00 08 07 00 19 0c 00 1a 00 1b</p>
+<h4 id="17"><a href="#17" class="headerlink" title="#17"></a>#17</h4><p>第#17项，0c（12） 表示一个NameAndType【名+类型】，00 07和00 08表示引用了常量池中的#7和#8项【&lt;init&gt;:()V】<br>0000240 61 76 61 <font color=red>0c 00 07 00 08</font> 07 00 19 0c 00 1a 00 1b</p>
+<h4 id="18"><a href="#18" class="headerlink" title="#18"></a>#18</h4><p>第#18项，07 表示一个Class信息，00 19（25） 表示它引用了常量池中#25项<br>0000240 61 76 61 0c 00 07 00 08 <font color=red>07 00 19</font> 0c 00 1a 00 1b</p>
+<h4 id="19"><a href="#19" class="headerlink" title="#19"></a>#19</h4><p>第#19项，0c（12） 表示一个NameAndType【名+类型】，00 1a（26）和00 1b（27）表示引用了常量池中的#26和#27项<br>0000240 61 76 61 0c 00 07 00 08 07 00 19 <font color=red>0c 00 1a 00 1b</font></p>
+<h4 id="20"><a href="#20" class="headerlink" title="#20"></a>#20</h4><p>第#20项，01 表示一个UTF8串，00 0b（11）表示字符串的长度，【68 65 6c 6c 6f 20 77 6f 72 6c 64】=【hello world】<br>0000260  <font color=red>01 00 0b 68 65 6c 6c 6f 20 77 6f 72 6c 64</font> 07 00</p>
+<h4 id="21"><a href="#21" class="headerlink" title="#21"></a>#21</h4><p>第#21项，07 表示一个Class信息，00 1c（28） 表示它引用了常量池中#28项<br>0000260  01 00 0b 68 65 6c 6c 6f 20 77 6f 72 6c 64 <font color=red>07 00</font><br>0000300 <font color=red>1c</font> 0c 00 1d 00 1e 01 00 21 63 6f 6d 2f 65 78 61</p>
+<h4 id="22"><a href="#22" class="headerlink" title="#22"></a>#22</h4><p>第#22项，0c（12） 表示一个NameAndType【名+类型】，00 1d（29）和00 1e（30）表示引用了常量池中的#29和#30项<br>0000300 1c <font color=red>0c 00 1d 00 1e </font>01 00 21 63 6f 6d 2f 65 78 61</p>
+<h4 id="23"><a href="#23" class="headerlink" title="#23"></a>#23</h4><p>第#23项，01 表示一个UTF8串，00 21（33）表示字符串的长度，【63 6f 6d 2f 65 78 61 6d 70 6c 65 2f 64 65 6d 6f 31 2f 74 65 73 74 2f 48 65 6c 6c 6f 57 6f 72 6c 64】=【com/example/demo1/test/HelloWorld】<br>0000300 1c 0c 00 1d 00 1e <font color=red>01 00 21 63 6f 6d 2f 65 78 61</font><br>0000320 <font color=red>6d 70 6c 65 2f 64 65 6d 6f 31 2f 74 65 73 74 2f</font><br>0000340 <font color=red>48 65 6c 6c 6f 57 6f 72 6c 64</font> 01 00 10 6a 61 76</p>
+<h4 id="24"><a href="#24" class="headerlink" title="#24"></a>#24</h4><p>第#24项，01 表示一个UTF8串，00 10（16）表示字符串的长度，【6a 61 76 61 2f 6c 61 6e 67 2f 4f 62 6a 65 63 74】=【java/lang/Object】<br>0000340 48 65 6c 6c 6f 57 6f 72 6c 64 <font color=red>01 00 10 6a 61 76</font><br>0000360 <font color=red>61 2f 6c 61 6e 67 2f 4f 62 6a 65 63 74</font> 01 00 10</p>
+<h4 id="25"><a href="#25" class="headerlink" title="#25"></a>#25</h4><p>第#25项，01 表示一个UTF8串，00 10（16）表示字符串的长度，【6a 61 76 61 2f 6c 61 6e 67 2f 53 79 73 74 65 6d】=【java/lang/System】<br>0000360 61 2f 6c 61 6e 67 2f 4f 62 6a 65 63 74 <font color=red>01 00 10</font><br>0000400 <font color=red>6a 61 76 61 2f 6c 61 6e 67 2f 53 79 73 74 65 6d</font></p>
+<h4 id="26"><a href="#26" class="headerlink" title="#26"></a>#26</h4><p>第#26项，01 表示一个UTF8串，00 03（16）表示字符串的长度，【6f 75 74】=【out】<br>0000420 <font color=red>01 00 03 6f 75 74</font> 01 00 15 4c 6a 61 76 61 2f 69</p>
+<h4 id="27"><a href="#27" class="headerlink" title="#27"></a>#27</h4><p>第#27项，01 表示一个UTF8串，00 15（21）表示字符串的长度，【4c 6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d 3b】=【Ljava/io/PrintStream;】<br>0000420 01 00 03 6f 75 74 <font color=red>01 00 15 4c 6a 61 76 61 2f 69</font><br>0000440 <font color=red>6f 2f 50 72 69 6e 74 53 74 72 65 61 6d 3b</font> 01 00</p>
+<h4 id="28"><a href="#28" class="headerlink" title="#28"></a>#28</h4><p>第#28项，01 表示一个UTF8串，00 13（19）表示字符串的长度，【6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d】=【java/io/PrintStream】<br>0000440 6f 2f 50 72 69 6e 74 53 74 72 65 61 6d 3b <font color=red>01 00</font><br>0000460 <font color=red>13 6a 61 76 61 2f 69 6f 2f 50 72 69 6e 74 53 74</font><br>0000500 <font color=red>72 65 61 6d</font> 01 00 07 70 72 69 6e 74 6c 6e 01 00</p>
+<h4 id="29"><a href="#29" class="headerlink" title="#29"></a>#29</h4><p>第#29项，01 表示一个UTF8串，00 07表示字符串的长度，【70 72 69 6e 74 6c 6e】=【println】<br>0000500 72 65 61 6d <font color=red>01 00 07 70 72 69 6e 74 6c 6e</font> 01 00</p>
+<h4 id="30"><a href="#30" class="headerlink" title="#30"></a>#30</h4><p>第#30项，01 表示一个UTF8串，00 15（21）表示字符串的长度，【28 4c 6a 61 76 61 2f 6c 61 6e 67 2f 53 74 72 69 6e 67 3b 29 56】=【(Ljava/lang/String;)V】<br>0000500 72 65 61 6d 01 00 07 70 72 69 6e 74 6c 6e <font color=red>01 00</font><br>0000520 <font color=red>15 28 4c 6a 61 76 61 2f 6c 61 6e 67 2f 53 74 72</font><br>0000540 <font color=red>69 6e 67 3b 29 56</font> 00 21 00 05 00 06 00 00 00 00</p>
 <h2 id="访问标识与继承信息"><a href="#访问标识与继承信息" class="headerlink" title="访问标识与继承信息"></a>访问标识与继承信息</h2><table>
 <thead>
 <tr>
@@ -479,11 +479,11 @@
 <td align="left">表示是一个枚举</td>
 </tr>
 </tbody></table>
-<h3 id="修饰符"><a href="#修饰符" class="headerlink" title="修饰符"></a>修饰符</h3><p>00 21 表示（0x0001）+（0x0020），表示该class是一个公共的类<br>0000540 69 6e 67 3b 29 56 <font color="red">00 21</font> 00 05 00 06 00 00 00 00</p>
-<h3 id="全限定名"><a href="#全限定名" class="headerlink" title="全限定名"></a>全限定名</h3><p>00 05 表示全限定名的位置，常量池中#5项的位置【com/example/demo1/test/HelloWorld】<br>0000540 69 6e 67 3b 29 56 00 21 <font color="red">00 05</font> 00 06 00 00 00 00</p>
-<h3 id="父类全限定名"><a href="#父类全限定名" class="headerlink" title="父类全限定名"></a>父类全限定名</h3><p>00 06 表示父类全限定名的位置，常量池中#6项的位置【java/lang/Object】<br>0000540 69 6e 67 3b 29 56 00 21 00 05 <font color="red">00 06</font> 00 00 00 00</p>
-<h3 id="接口信息"><a href="#接口信息" class="headerlink" title="接口信息"></a>接口信息</h3><p>00 00 表示该类继承的接口数量，现在表示没有继承接口，如果继承了接口，后面就会跟随接口的描述信息<br>0000540 69 6e 67 3b 29 56 00 21 00 05 00 06 <font color="red">00 00</font> 00 00</p>
-<h2 id="成员变量信息-Field"><a href="#成员变量信息-Field" class="headerlink" title="成员变量信息(Field)"></a>成员变量信息(Field)</h2><p>00 00 表示该类的成员变量的数量，现在表示没有成员变量，如果有成员变量，后面会跟随成员变量的信息<br>0000540 69 6e 67 3b 29 56 00 21 00 05 00 06 00 00 <font color="red">00 00</font></p>
+<h3 id="修饰符"><a href="#修饰符" class="headerlink" title="修饰符"></a>修饰符</h3><p>00 21 表示（0x0001）+（0x0020），表示该class是一个公共的类<br>0000540 69 6e 67 3b 29 56 <font color=red>00 21</font> 00 05 00 06 00 00 00 00</p>
+<h3 id="全限定名"><a href="#全限定名" class="headerlink" title="全限定名"></a>全限定名</h3><p>00 05 表示全限定名的位置，常量池中#5项的位置【com/example/demo1/test/HelloWorld】<br>0000540 69 6e 67 3b 29 56 00 21 <font color=red>00 05</font> 00 06 00 00 00 00</p>
+<h3 id="父类全限定名"><a href="#父类全限定名" class="headerlink" title="父类全限定名"></a>父类全限定名</h3><p>00 06 表示父类全限定名的位置，常量池中#6项的位置【java/lang/Object】<br>0000540 69 6e 67 3b 29 56 00 21 00 05 <font color=red>00 06</font> 00 00 00 00</p>
+<h3 id="接口信息"><a href="#接口信息" class="headerlink" title="接口信息"></a>接口信息</h3><p>00 00 表示该类继承的接口数量，现在表示没有继承接口，如果继承了接口，后面就会跟随接口的描述信息<br>0000540 69 6e 67 3b 29 56 00 21 00 05 00 06 <font color=red>00 00</font> 00 00</p>
+<h2 id="成员变量信息-Field"><a href="#成员变量信息-Field" class="headerlink" title="成员变量信息(Field)"></a>成员变量信息(Field)</h2><p>00 00 表示该类的成员变量的数量，现在表示没有成员变量，如果有成员变量，后面会跟随成员变量的信息<br>0000540 69 6e 67 3b 29 56 00 21 00 05 00 06 00 00 <font color=red>00 00</font></p>
 <table>
 <thead>
 <tr>
@@ -642,12 +642,12 @@
 <h3 id="常量池载入运行时常量池"><a href="#常量池载入运行时常量池" class="headerlink" title="常量池载入运行时常量池"></a>常量池载入运行时常量池</h3><blockquote>
 <p>一些比较小的数字，不会存储在常量池中，而是跟方法的字节码存在一起，比如<code>int a = 10;</code> 中10就是存在字节码中的<br> 而<code>b</code>的值<code>32768</code>则是存在常量池中的</p>
 </blockquote>
-<p><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%E5%9B%BE%E7%A4%BA.png" alt="运行时常量池图示"></p>
+<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E8%BF%90%E8%A1%8C%E6%97%B6%E5%B8%B8%E9%87%8F%E6%B1%A0%E5%9B%BE%E7%A4%BA.png" alt="运行时常量池图示"></p>
 <h3 id="方法字节码载入方法区"><a href="#方法字节码载入方法区" class="headerlink" title="方法字节码载入方法区"></a>方法字节码载入方法区</h3><blockquote>
 <p>方法区域中的字节码，会载入到方法区</p>
 </blockquote>
-<p><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E6%96%B9%E6%B3%95%E5%8C%BA%E5%AD%97%E8%8A%82%E7%A0%81%E8%BD%BD%E5%85%A5%E5%9B%BE%E7%A4%BA.png" alt="方法区字节码载入图示"></p>
-<h3 id="main-线程开始运行，分配栈帧内存"><a href="#main-线程开始运行，分配栈帧内存" class="headerlink" title="main 线程开始运行，分配栈帧内存"></a>main 线程开始运行，分配栈帧内存</h3><p>(stack=2, locals=4)<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E4%B8%BB%E7%BA%BF%E7%A8%8B%E5%88%86%E9%85%8D%E6%A0%88%E5%B8%A7%E5%86%85%E5%AD%98%E5%9B%BE%E7%A4%BA.png" alt="主线程分配栈帧内存图示"></p>
+<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E6%96%B9%E6%B3%95%E5%8C%BA%E5%AD%97%E8%8A%82%E7%A0%81%E8%BD%BD%E5%85%A5%E5%9B%BE%E7%A4%BA.png" alt="方法区字节码载入图示"></p>
+<h3 id="main-线程开始运行，分配栈帧内存"><a href="#main-线程开始运行，分配栈帧内存" class="headerlink" title="main 线程开始运行，分配栈帧内存"></a>main 线程开始运行，分配栈帧内存</h3><p>(stack=2, locals=4)<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E4%B8%BB%E7%BA%BF%E7%A8%8B%E5%88%86%E9%85%8D%E6%A0%88%E5%B8%A7%E5%86%85%E5%AD%98%E5%9B%BE%E7%A4%BA.png" alt="主线程分配栈帧内存图示"></p>
 <h3 id="执行引擎开始执行字节码"><a href="#执行引擎开始执行字节码" class="headerlink" title="执行引擎开始执行字节码"></a>执行引擎开始执行字节码</h3><h4 id="bipush-10"><a href="#bipush-10" class="headerlink" title="bipush 10"></a>bipush 10</h4><ul>
 <li>将一个<code>byte</code>压入操作数栈（操作数栈宽度是4，<code>byte</code>是1，不足的部分会补足），类似的指令还有<ul>
 <li><code>sipush</code> 将一个<code>short</code> 压入操作数栈，（长度会补足4个字节）</li>
@@ -657,53 +657,53 @@
 </ul>
 </li>
 </ul>
-<p><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA1.png" alt="java代码运行图示1"></p>
+<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA1.png" alt="java代码运行图示1"></p>
 <h4 id="istore-1"><a href="#istore-1" class="headerlink" title="istore_1"></a>istore_1</h4><ul>
 <li>将操作数栈顶数据弹出，存入局部变量表的<code>slot_1</code></li>
 </ul>
-<p><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA2.png" alt="java代码运行图示2"></p>
+<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA2.png" alt="java代码运行图示2"></p>
 <ul>
-<li>实现给a变量赋值<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA3.png" alt="java代码运行图示3"></li>
+<li>实现给a变量赋值<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA3.png" alt="java代码运行图示3"></li>
 </ul>
 <h4 id="ldc-32"><a href="#ldc-32" class="headerlink" title="ldc #32"></a>ldc #32</h4><ul>
 <li>从常量池中加载#3项数据到操作数栈</li>
 <li><strong>注意</strong> <code>short.MAX_VALUE</code> 是 <code>32767</code>，所以<code>32768=Short.MAX_VALUE + 1</code>实际是在编译期间计算好的</li>
 </ul>
-<p><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA4.png" alt="java代码运行图示4"></p>
+<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA4.png" alt="java代码运行图示4"></p>
 <h4 id="istore-2"><a href="#istore-2" class="headerlink" title="istore_2"></a>istore_2</h4><ul>
-<li>将操作数栈顶数据弹出，放入局部变量表<code>slot_2</code><br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA5.png" alt="java代码运行图示5"></li>
-<li>数据读取之后入图所示：<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA6.png" alt="java代码运行图示6"><h4 id="iload-1"><a href="#iload-1" class="headerlink" title="iload_1"></a>iload_1</h4></li>
-<li>将局部变量表中1位置的变量读取到操作数栈<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA7.png" alt="java代码运行图示7"></li>
+<li>将操作数栈顶数据弹出，放入局部变量表<code>slot_2</code><br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA5.png" alt="java代码运行图示5"></li>
+<li>数据读取之后入图所示：<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA6.png" alt="java代码运行图示6"><h4 id="iload-1"><a href="#iload-1" class="headerlink" title="iload_1"></a>iload_1</h4></li>
+<li>将局部变量表中1位置的变量读取到操作数栈<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA7.png" alt="java代码运行图示7"></li>
 </ul>
 <h4 id="iload-2"><a href="#iload-2" class="headerlink" title="iload_2"></a>iload_2</h4><ul>
-<li>将局部变量表中2位置的变量读取到操作数栈<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA8.png" alt="java代码运行图示8"></li>
+<li>将局部变量表中2位置的变量读取到操作数栈<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA8.png" alt="java代码运行图示8"></li>
 </ul>
 <h4 id="iadd"><a href="#iadd" class="headerlink" title="iadd"></a>iadd</h4><ul>
-<li>  将栈顶两int类型整数相加，结果入栈<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA9.png" alt="java代码运行图示9"></li>
+<li>  将栈顶两int类型整数相加，结果入栈<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA9.png" alt="java代码运行图示9"></li>
 </ul>
-<p><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA10.png" alt="java代码运行图示10"></p>
+<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA10.png" alt="java代码运行图示10"></p>
 <h4 id="istore-3"><a href="#istore-3" class="headerlink" title="istore_3"></a>istore_3</h4><ul>
-<li>将操作数栈中的数据取出来存到局部变量表3的位置<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA11.png" alt="java代码运行图示11"></li>
-<li>执行之后：<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA12.png" alt="java代码运行图示12"></li>
+<li>将操作数栈中的数据取出来存到局部变量表3的位置<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA11.png" alt="java代码运行图示11"></li>
+<li>执行之后：<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA12.png" alt="java代码运行图示12"></li>
 </ul>
 <h4 id="getstatic-4"><a href="#getstatic-4" class="headerlink" title="getstatic #4"></a>getstatic #4</h4><ul>
 <li>从常量池中找到对应类型，然后从堆中找到该类型的对象（或者创建对象），然后将引用放入操作数栈</li>
 </ul>
-<p><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA13.png" alt="java代码运行图示13"></p>
+<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA13.png" alt="java代码运行图示13"></p>
 <ul>
-<li>注意：放入操作数栈的并不是对象，而是对象的引用<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA14.png" alt="java代码运行图示14"></li>
+<li>注意：放入操作数栈的并不是对象，而是对象的引用<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA14.png" alt="java代码运行图示14"></li>
 </ul>
 <h4 id="iload-3"><a href="#iload-3" class="headerlink" title="iload_3"></a>iload_3</h4><ul>
-<li>将局部变量表3号位置的数据放入操作数栈<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA15.png" alt="java代码运行图示15"></li>
+<li>将局部变量表3号位置的数据放入操作数栈<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA15.png" alt="java代码运行图示15"></li>
 </ul>
-<p><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA16.png" alt="java代码运行图示16"></p>
+<p><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA16.png" alt="java代码运行图示16"></p>
 <h4 id="invokevirtual-5"><a href="#invokevirtual-5" class="headerlink" title="invokevirtual #5"></a>invokevirtual #5</h4><ul>
 <li>找到常量池中#5项</li>
 <li>定位到方法区 【java/io/PrintStream.println:(I)V】 方法</li>
 <li>生成新的栈帧，（分配<code>locals</code>，<code>stack</code>等）</li>
-<li>传递参数，执行新栈帧中的字节码<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA17.png" alt="java代码运行图示17"></li>
+<li>传递参数，执行新栈帧中的字节码<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA17.png" alt="java代码运行图示17"></li>
 <li>执行完毕，弹出栈帧</li>
-<li>清除main操作数栈内容<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA18.png" alt="java代码运行图示18"></li>
+<li>清除main操作数栈内容<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/java%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E5%9B%BE%E7%A4%BA18.png" alt="java代码运行图示18"></li>
 </ul>
 <h4 id="return"><a href="#return" class="headerlink" title="return"></a>return</h4><ul>
 <li>完成main方法调用，弹出main栈帧</li>
@@ -724,41 +724,41 @@
 </li>
 </ul>
 <h3 id="bipush-10-1"><a href="#bipush-10-1" class="headerlink" title="bipush 10"></a>bipush 10</h3><ul>
-<li>把10先放到操作数栈<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA1.png"></li>
+<li>把10先放到操作数栈<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA1.png" alt="分析图示1"></li>
 </ul>
 <h3 id="istore-1-1"><a href="#istore-1-1" class="headerlink" title="istore_1"></a>istore_1</h3><ul>
-<li>把操作数栈中栈顶的数据弹出，存到局部变量表一号桶位<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA2.png"></li>
+<li>把操作数栈中栈顶的数据弹出，存到局部变量表一号桶位<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA2.png" alt="分析图示2"></li>
 </ul>
 <h3 id="iload-1-1"><a href="#iload-1-1" class="headerlink" title="iload_1"></a>iload_1</h3><ul>
-<li>把局部变量表一号槽位中的数据读取到操作数栈<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA3.png"></li>
+<li>把局部变量表一号槽位中的数据读取到操作数栈<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA3.png" alt="分析图示3"></li>
 </ul>
 <h3 id="iinc-1-1"><a href="#iinc-1-1" class="headerlink" title="iinc 1,1"></a>iinc 1,1</h3><ul>
 <li>执行 <code>a++</code></li>
 <li>局部变量表一号槽位数据自增1</li>
 <li>前面的1表示局部变量表的槽位，后面的1表示自增1</li>
-<li>该操作直接在局部变量表中完成，并不会影响操作数栈中的数据<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA4.png"></li>
+<li>该操作直接在局部变量表中完成，并不会影响操作数栈中的数据<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA4.png" alt="分析图示4"></li>
 </ul>
 <h3 id="iinc-1-1-1"><a href="#iinc-1-1-1" class="headerlink" title="iinc 1,1"></a>iinc 1,1</h3><ul>
 <li>执行<code>++a</code></li>
-<li>局部变量表一号槽位自增1（不会影响到操作数栈）<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA5.png"></li>
+<li>局部变量表一号槽位自增1（不会影响到操作数栈）<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA5.png" alt="分析图示5"></li>
 </ul>
 <h3 id="iload-1-2"><a href="#iload-1-2" class="headerlink" title="iload_1"></a>iload_1</h3><ul>
-<li>把局部变量表一号槽位的数据加载到操作数栈（12加载到操作数栈）<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA6.png"></li>
+<li>把局部变量表一号槽位的数据加载到操作数栈（12加载到操作数栈）<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA6.png" alt="分析图示6"></li>
 </ul>
 <h3 id="iadd-1"><a href="#iadd-1" class="headerlink" title="iadd"></a>iadd</h3><ul>
-<li>将栈顶两int类型整数相加，结果入栈<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220826210747224.png"></li>
+<li>将栈顶两int类型整数相加，结果入栈<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA7.png" alt="分析图示7"></li>
 </ul>
 <h3 id="iload-1-3"><a href="#iload-1-3" class="headerlink" title="iload_1"></a>iload_1</h3><ul>
 <li><code>a--</code> 先<code>iload</code>再<code>iinc</code></li>
-<li>先将12放入操作数栈<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220826211136301.png"></li>
+<li>先将12放入操作数栈<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA8.png" alt="分析图示8"></li>
 </ul>
 <h3 id="iinc-1-1-2"><a href="#iinc-1-1-2" class="headerlink" title="iinc 1,-1"></a>iinc 1,-1</h3><ul>
 <li>执行 <code>a--</code></li>
-<li>局部变量表一号槽位增加-1，也就是减1<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220826211226285.png"><h3 id="iadd-2"><a href="#iadd-2" class="headerlink" title="iadd"></a>iadd</h3></li>
-<li> 将栈顶两int类型整数相加，结果入栈<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220826211519082.png"></li>
+<li>局部变量表一号槽位增加-1，也就是减1<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA9.png" alt="分析图示9"><h3 id="iadd-2"><a href="#iadd-2" class="headerlink" title="iadd"></a>iadd</h3></li>
+<li> 将栈顶两int类型整数相加，结果入栈<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA10.png" alt="分析图示10"></li>
 </ul>
 <h3 id="istore-2-1"><a href="#istore-2-1" class="headerlink" title="istore_2"></a>istore_2</h3><ul>
-<li>把操作数栈顶的数据弹出到局部变了表2号槽位<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220826211549138.png"></li>
+<li>把操作数栈顶的数据弹出到局部变了表2号槽位<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA11.png" alt="分析图示11"></li>
 </ul>
 <h2 id="条件判断指令"><a href="#条件判断指令" class="headerlink" title="条件判断指令"></a>条件判断指令</h2><p>详情见《Java字节码指令大全》&lt;1.11  控制流指令——条件跳转指令&gt;<br><a href="https://ysymj.gitee.io/2021/11/16/java%E5%9F%BA%E7%A1%80/Java%E5%AD%97%E8%8A%82%E7%A0%81%E6%8C%87%E4%BB%A4%E5%A4%A7%E5%85%A8/">Java字节码指令大全 | YS (gitee.io)</a></p>
 <p><font color="red">说明:</font></p>
@@ -820,34 +820,34 @@
 <li>打开图形界面，点击file再点击<code>Attach to HotSpot...</code>，之后输入进程id，就会连上当前进程</li>
 <li>然后点击<code>Tools</code>，再点击<code>Find Object by Query</code>，之后输入查询语句，类似于sql语句<ul>
 <li><code>select + 别名 + from + 需要查询的类的全限定名 + 别名</code></li>
-<li>如：<code>select d from com.example.demo1.test1.Dog d</code><br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827200010149.png"></li>
+<li>如：<code>select d from com.example.demo1.test1.Dog d</code><br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA12.png" alt="分析图示12"></li>
 </ul>
 </li>
 <li>如下图所示，可以在<code>Inspector</code>框里面查看对象的相关信息，不过这些并不是对象的真正信息</li>
 <li>点击标记1处，会弹出标记2处的框，然后使用mem指令查看对象头信息的地址信息</li>
-<li><code>mem</code>命令后面跟随的是标记3处的地址信息，后面的2表示要查看几个mark word<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827201110213.png"></li>
+<li><code>mem</code>命令后面跟随的是标记3处的地址信息，后面的2表示要查看几个mark word<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA13.png" alt="分析图示13"></li>
 <li>在标记1处敲击回车，就会显示出类型的指针</li>
 <li>然后再在<code>Tools</code>处打开一个<code>Inspector</code>框，使用刚刚查出来的类型指针查询</li>
-<li>如标记2处，就是对象在虚拟机中完整的类型表示<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827201623999.png"></li>
+<li>如标记2处，就是对象在虚拟机中完整的类型表示<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA14.png" alt="分析图示14"></li>
 <li>类的多态方法都存在一个<code>vtable</code>表中，也就是最后一行箭头所指的位置</li>
 <li><code>vtable</code>的和当前类型指针的偏移量是<code>1b8</code>，所以只需要以16进制将当前指针地址加上<code>1b8</code>就可以得到<code>vtable</code>的地址<ul>
 <li><code>0x000000001c7c3ca0 + 1b8 = 0x000000001c7c3e58</code></li>
 </ul>
 </li>
 <li>下面就是执行<code>mem</code>指令，从上面第二张图可以看到<code>vtable_len=6</code>，所以查6个mark<ul>
-<li><code>eme 0x000000001c7c3e58 6</code><br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827202159236.png"></li>
+<li><code>eme 0x000000001c7c3e58 6</code><br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA15.png" alt="分析图示15"></li>
 </ul>
 </li>
 <li>如图所示，查询出对应的work，一共有六个，<code>Dog</code>类对应的多态方法</li>
 <li>可以通过<code>Class Browser</code>查询<code>Dog</code>类，对应一下这六个方法</li>
-<li>从图中可以看出，<code>0x000000001c453c48</code> 对应的是<code>cat()</code>方法<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827220420879.png"></li>
+<li>从图中可以看出，<code>0x000000001c453c48</code> 对应的是<code>cat()</code>方法<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA16.png" alt="分析图示16"></li>
 <li>如图所示，<code>0x000000001c453768</code> 对应的是<code>Dog</code>类的父类<code>Animal</code>类的<code>toString()</code>方法</li>
-<li><code> toString()</code>方法也是一个多态方法，只不过<code>Dog</code>并没有重写这个方法，所以使用的是父类的方法<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827220754264.png"></li>
+<li><code> toString()</code>方法也是一个多态方法，只不过<code>Dog</code>并没有重写这个方法，所以使用的是父类的方法<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA17.png" alt="分析图示17"></li>
 <li>剩下的四个方法均来自<code>Animal</code>的父类<code>Object</code>，对应关系如下图所示</li>
 <li><code>finalize()</code>：该方法并没有在<code>Animal</code>和<code>Dog</code>类中重写，所以使用的是所有类的超类<code>Object</code>类的</li>
 <li><code>equals()</code>：该方法同样没有重写，使用的也是<code>Object</code>中的</li>
 <li><code> hashCode()</code>：同样使用的是<code>Object</code>中的</li>
-<li><code> clone()</code>：同样使用的是<code>Object</code>中的<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220827221154955.png"></li>
+<li><code> clone()</code>：同样使用的是<code>Object</code>中的<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%88%86%E6%9E%90%E5%9B%BE%E7%A4%BA18.png" alt="分析图示18"></li>
 <li>虚方法表是在类加载链接阶段就会诞生的，所以就是说在类链接阶段，就已经配置好了每个方法需要调用的具体实现</li>
 </ul>
 <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>执行<code>invokevirtual</code>指令时</p>
@@ -1050,7 +1050,7 @@
 <ul>
 <li><code>instanceKlass</code> 这样的【元数据】是存储在方法区的（jdk1.8之后的元空间），但<code>_java_mirror</code>是存储在堆中的</li>
 <li>可以通过前面介绍的<code>HSDB</code>工具查看</li>
-<li>类加载之后，会在堆中保留一份信息，也就是类对象，类对象中会有地址指向元空间中的元数据，元空间中<code>_java_mirror</code>也会有指针指向堆中的元数据，可以通过类对象创建实例对象，创建出来的实例对象中，对象头里面会保留类对象信息<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220828193546824.png"></li>
+<li>类加载之后，会在堆中保留一份信息，也就是类对象，类对象中会有地址指向元空间中的元数据，元空间中<code>_java_mirror</code>也会有指针指向堆中的元数据，可以通过类对象创建实例对象，创建出来的实例对象中，对象头里面会保留类对象信息<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%AF%B9%E8%B1%A1%E5%A4%B4%E7%BB%93%E6%9E%84%E5%9B%BE%E7%A4%BA.png" alt="对象头结构图示"></li>
 </ul>
 <h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><ul>
 <li>验证类是否符合JVM规范，安全性检查<br>用可以编辑16进制文件的工具修改编译后的class内容，然后在控制台运行：<br>(报错内容为magic魔数部分值不正确)<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Error: A JNI error has occurred, please check your installation and <span class="keyword">try</span> again</span><br><span class="line">Exception in thread <span class="string">&quot;main&quot;</span> java.lang.ClassFormatError: Incompatible magic value <span class="number">3405691578</span> in <span class="class"><span class="keyword">class</span> <span class="title">file</span> <span class="title">com</span>/<span class="title">example</span>/<span class="title">demo1</span>/<span class="title">test3</span>/<span class="title">Test6</span></span></span><br><span class="line"><span class="class">        <span class="title">at</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">ClassLoader</span>.<span class="title">defineClass1</span>(<span class="title">Native</span> <span class="title">Method</span>)</span></span><br><span class="line"><span class="class">        <span class="title">at</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">ClassLoader</span>.<span class="title">defineClass</span>(<span class="title">ClassLoader</span>.<span class="title">java</span>:763)</span></span><br><span class="line"><span class="class">        <span class="title">at</span> <span class="title">java</span>.<span class="title">security</span>.<span class="title">SecureClassLoader</span>.<span class="title">defineClass</span>(<span class="title">SecureClassLoader</span>.<span class="title">java</span>:142)</span></span><br><span class="line"><span class="class">        <span class="title">at</span> <span class="title">java</span>.<span class="title">net</span>.<span class="title">URLClassLoader</span>.<span class="title">defineClass</span>(<span class="title">URLClassLoader</span>.<span class="title">java</span>:467)</span></span><br><span class="line"><span class="class">        <span class="title">at</span> <span class="title">java</span>.<span class="title">net</span>.<span class="title">URLClassLoader</span>.<span class="title">access</span>$100(<span class="title">URLClassLoader</span>.<span class="title">java</span>:73)</span></span><br><span class="line"><span class="class">        <span class="title">at</span> <span class="title">java</span>.<span class="title">net</span>.<span class="title">URLClassLoader</span>$1.<span class="title">run</span>(<span class="title">URLClassLoader</span>.<span class="title">java</span>:368)</span></span><br><span class="line"><span class="class">        <span class="title">at</span> <span class="title">java</span>.<span class="title">net</span>.<span class="title">URLClassLoader</span>$1.<span class="title">run</span>(<span class="title">URLClassLoader</span>.<span class="title">java</span>:362)</span></span><br><span class="line"><span class="class">        <span class="title">at</span> <span class="title">java</span>.<span class="title">security</span>.<span class="title">AccessController</span>.<span class="title">doPrivileged</span>(<span class="title">Native</span> <span class="title">Method</span>)</span></span><br><span class="line"><span class="class">        <span class="title">at</span> <span class="title">java</span>.<span class="title">net</span>.<span class="title">URLClassLoader</span>.<span class="title">findClass</span>(<span class="title">URLClassLoader</span>.<span class="title">java</span>:361)</span></span><br><span class="line"><span class="class">        <span class="title">at</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">ClassLoader</span>.<span class="title">loadClass</span>(<span class="title">ClassLoader</span>.<span class="title">java</span>:424)</span></span><br><span class="line"><span class="class">        <span class="title">at</span> <span class="title">sun</span>.<span class="title">misc</span>.<span class="title">Launcher</span>$<span class="title">AppClassLoader</span>.<span class="title">loadClass</span>(<span class="title">Launcher</span>.<span class="title">java</span>:338)</span></span><br><span class="line"><span class="class">        <span class="title">at</span> <span class="title">java</span>.<span class="title">lang</span>.<span class="title">ClassLoader</span>.<span class="title">loadClass</span>(<span class="title">ClassLoader</span>.<span class="title">java</span>:357)</span></span><br><span class="line"><span class="class">        <span class="title">at</span> <span class="title">sun</span>.<span class="title">launcher</span>.<span class="title">LauncherHelper</span>.<span class="title">checkAndLoadMain</span>(<span class="title">LauncherHelper</span>.<span class="title">java</span>:495)</span></span><br></pre></td></tr></table></figure></li>
@@ -1186,7 +1186,7 @@
 </ul>
 </li>
 </ul>
-<p>如图，mysql的驱动：<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220829210956575.png"></p>
+<p>如图，mysql的驱动：<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/mysql-spi%E5%9B%BE%E7%A4%BA.png" alt="mysql-spi图示"></p>
 <ul>
 <li><p>这样就可以通过下面的方法使用：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ServiceLoader&lt;接口类型&gt; loader = ServiceLoader.load(接口类型.class);  </span><br><span class="line">Iterator&lt;接口类型&gt; iterator = loader.iterator();  </span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext())&#123;  </span><br><span class="line">    iterator.next();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
@@ -1254,7 +1254,7 @@
 <p>还能够进行常量折叠（<code>constant folding</code>）的优化</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(<span class="number">81</span>);</span><br></pre></td></tr></table></figure>
 
-<p>可以使用参数打印内联信息<code>-XX:+UnlockDiagnosticVMOptions -XX:+PrintInlining</code><br>从输出的结果可以看到，自定义的 <code>square()</code> 方法已经内联优化<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220830211359736.png"></p>
+<p>可以使用参数打印内联信息<code>-XX:+UnlockDiagnosticVMOptions -XX:+PrintInlining</code><br>从输出的结果可以看到，自定义的 <code>square()</code> 方法已经内联优化<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/%E5%86%85%E8%81%94%E4%BC%98%E5%8C%96%E5%9B%BE%E7%A4%BA.png" alt="内联优化图示"></p>
 <p>也可以使用参数禁用内联<code>-XX:CompileCommand=dontinline,*Test.square</code>   （*号表示所有包下的Test类中的square方法）</p>
 <h3 id="字段优化"><a href="#字段优化" class="headerlink" title="字段优化"></a>字段优化</h3><p>JWH基准测试请参考 ： <a target="_blank" rel="noopener" href="https://openjdk.org/projects/code-tools/jmh/">OpenJDK: jmh</a></p>
 <p>创建Maven工程，添加以下依赖：</p>
@@ -1276,7 +1276,7 @@
 
 <p> <code>foo.invoke()</code>前面0-15次调用，使用的是 MethodAccessor 的 NativeMethodAccessorImpl 实现<br> 之后会生成一个新的实现<br>下面的代码是 <code>NativeMethodAccessorImpl</code> 类删减之后的内容<br>可以看到，每次调用<code> this.numInvocations</code> 都会加一，当大于<code>ReflectionFactory.inflationThreshold()</code>的结果时就会进入判断中的内容，而判断中会通过字节码技术，重新生成一个 <code>MethodAccessorImpl</code> 的实现类 </p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NativeMethodAccessorImpl</span> <span class="keyword">extends</span> <span class="title">MethodAccessorImpl</span> </span>&#123;  </span><br><span class="line">	......</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object var1, Object[] var2)</span> <span class="keyword">throws</span> IllegalArgumentException, InvocationTargetException </span>&#123;  </span><br><span class="line">        <span class="keyword">if</span> (++<span class="keyword">this</span>.numInvocations &gt; ReflectionFactory.inflationThreshold() &amp;&amp; !ReflectUtil.isVMAnonymousClass(<span class="keyword">this</span>.method.getDeclaringClass())) &#123;  </span><br><span class="line">            MethodAccessorImpl var3 = (MethodAccessorImpl)(<span class="keyword">new</span> MethodAccessorGenerator()).generateMethod(<span class="keyword">this</span>.method.getDeclaringClass(), <span class="keyword">this</span>.method.getName(), <span class="keyword">this</span>.method.getParameterTypes(), <span class="keyword">this</span>.method.getReturnType(), <span class="keyword">this</span>.method.getExceptionTypes(), <span class="keyword">this</span>.method.getModifiers());  </span><br><span class="line">            <span class="keyword">this</span>.parent.setDelegate(var3);  </span><br><span class="line">        &#125;  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">return</span> invoke0(<span class="keyword">this</span>.method, var1, var2);  </span><br><span class="line">    &#125;  </span><br><span class="line">	  ........</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">native</span> Object <span class="title">invoke0</span><span class="params">(Method var0, Object var1, Object[] var2)</span></span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以通过 阿里巴巴提供的工具包 arthas-boot 来查看通过字节码技术生成的类  下载路径：   <a target="_blank" rel="noopener" href="https://arthas.gitee.io/arthas-boot.jar">https://arthas.gitee.io/arthas-boot.jar</a><br><code>java -jar .\arthas-boot.jar</code><br>工具启动后会列出来对应的程序，主要选择自己想要查看的程序即可<br><img src="/2022/08/20/JVM/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B/%E9%BB%91%E9%A9%ACJVM%E8%AF%BE%E7%A8%8B%E2%80%94%E2%80%94%E7%B1%BB%E5%8A%A0%E8%BD%BD/image-20220902062543333.png"></p>
+<p>可以通过 阿里巴巴提供的工具包 arthas-boot 来查看通过字节码技术生成的类  下载路径：   <a target="_blank" rel="noopener" href="https://arthas.gitee.io/arthas-boot.jar">https://arthas.gitee.io/arthas-boot.jar</a><br><code>java -jar .\arthas-boot.jar</code><br>工具启动后会列出来对应的程序，主要选择自己想要查看的程序即可<br><img src="https://ystest-bucket.s3.cn-north-1.jdcloud-oss.com/arthas-boot%E5%9B%BE%E7%A4%BA.png" alt="arthas-boot图示"></p>
 <p>然后使用 <code>jad sun.reflect.GeneratedMethodAccessor1</code> 命令，后面是需要查看的类的全限定名称<br>下面是自动生成的代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Decompiled with CFR.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Could not load the following classes:</span></span><br><span class="line"><span class="comment"> *  com.example.demo1.test11.Test</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">package</span> sun.reflect;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.example.demo1.test11.Test;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationTargetException;</span><br><span class="line"><span class="keyword">import</span> sun.reflect.MethodAccessorImpl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GeneratedMethodAccessor1</span></span></span><br><span class="line"><span class="class"><span class="keyword">extends</span> <span class="title">MethodAccessorImpl</span> </span>&#123;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * Loose catch block</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object object, Object[] objectArray)</span> <span class="keyword">throws</span> InvocationTargetException </span>&#123;</span><br><span class="line">		    <span class="comment">//如果有参数，直接抛出非法参数异常</span></span><br><span class="line">		    <span class="comment">//会根据调用方法的实际情况来生成，如果方法有一个参数，则会限制为1个参数</span></span><br><span class="line">		    <span class="comment">//如果方法为普通方法，object为对象，会使用object.fangfa()调用</span></span><br><span class="line">        block4: &#123;</span><br><span class="line">            <span class="keyword">if</span> (objectArray == <span class="keyword">null</span> || objectArray.length == <span class="number">0</span>) <span class="keyword">break</span> block4;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">	        <span class="comment">//可以看到，这里已经是使用直接调用了</span></span><br><span class="line">            Test.foo();</span><br><span class="line">            <span class="comment">//没有返回值</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (Throwable throwable) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InvocationTargetException(throwable);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (ClassCastException | NullPointerException runtimeException) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="keyword">super</span>.toString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 

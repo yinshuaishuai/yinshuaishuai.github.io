@@ -28,13 +28,11 @@
 <meta property="og:site_name" content="YS">
 <meta property="og:description" content="工厂方法模式是一种常用的类创建型设计模式，此模式的核心精神是封装类中变化的部分，提取其中个性化善变的部分为独立类，通过依赖注入以达到解耦、复用和方法后期维护拓展的目的。它的核心结构有四个角色，分别是抽象工厂、具体工厂、抽象产品、具体产品。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/IqmgBYbAJ2vHICv9B2vMSCxFBIWjIIsgvdewjUtfvCPdNNjVR5puRDhEPvkdlj_Jywn_mfDziv_ldlzaHmEor8jrAvzEQ7coOnL4rzDryvxtRU0gA4tAoKnMI8HPKPQVcQ9GN99OLAAXQSrLoyK5iTEnkBGOPgz2QaL9QbuAfaE0baDCXLZ-V5OBilrS3lvbgKL5cIcf2b1BaUsghaLOvfEQbr-MJpVhF0heO5KYzZXq0mhb5rKg02tQllHfNzFpZRiX9WCPHCKbMDVJjHE0wd74ADnpoKMfYIMfC2xEw8Kv2Jqi44w5k0JPQlpX0vBjcFrqzwvdyoU0P9VtGa8LvbISBiITA0Qf8n59QP0wC2IrkAGQfWEOG4jWYJKtCJDF8xYaA3ClFJfM8R4elLXJ0QAH2oNls-ZfOKijN6Xv5gGCQunn8UKsa2AC44Er3nPS8AKWjtDXJmPmQSm8W4a10000">
 <meta property="article:published_time" content="2021-08-09T08:00:01.000Z">
 <meta property="article:modified_time" content="2022-08-19T13:20:27.055Z">
 <meta property="article:author" content="YS">
 <meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.plantuml.com/plantuml/svg/IqmgBYbAJ2vHICv9B2vMSCxFBIWjIIsgvdewjUtfvCPdNNjVR5puRDhEPvkdlj_Jywn_mfDziv_ldlzaHmEor8jrAvzEQ7coOnL4rzDryvxtRU0gA4tAoKnMI8HPKPQVcQ9GN99OLAAXQSrLoyK5iTEnkBGOPgz2QaL9QbuAfaE0baDCXLZ-V5OBilrS3lvbgKL5cIcf2b1BaUsghaLOvfEQbr-MJpVhF0heO5KYzZXq0mhb5rKg02tQllHfNzFpZRiX9WCPHCKbMDVJjHE0wd74ADnpoKMfYIMfC2xEw8Kv2Jqi44w5k0JPQlpX0vBjcFrqzwvdyoU0P9VtGa8LvbISBiITA0Qf8n59QP0wC2IrkAGQfWEOG4jWYJKtCJDF8xYaA3ClFJfM8R4elLXJ0QAH2oNls-ZfOKijN6Xv5gGCQunn8UKsa2AC44Er3nPS8AKWjtDXJmPmQSm8W4a10000">
 
 <link rel="canonical" href="http://ysymj.gitee.io/2021/08/09/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95%E6%A8%A1%E5%BC%8F/">
 
@@ -319,7 +317,7 @@
 <p><strong><em>客户端调用</em></strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//通过工厂方法的子类去创建对应的工厂类</span></span><br><span class="line">        <span class="comment">//每次增加新的产品，只需要新建一个抽象工厂方法的子类即可，不会对现有的产品产生影响</span></span><br><span class="line">        ComputerFactory computerFactory = <span class="keyword">new</span> HpComputerFactory();</span><br><span class="line">        Computer computer = computerFactory.createComputer();</span><br><span class="line">        computer.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="UML图"><a href="#UML图" class="headerlink" title="UML图"></a>UML图</h2><img src="http://www.plantuml.com/plantuml/svg/IqmgBYbAJ2vHICv9B2vMSCxFBIWjIIsgvdewjUtfvCPdNNjVR5puRDhEPvkdlj_Jywn_mfDziv_ldlzaHmEor8jrAvzEQ7coOnL4rzDryvxtRU0gA4tAoKnMI8HPKPQVcQ9GN99OLAAXQSrLoyK5iTEnkBGOPgz2QaL9QbuAfaE0baDCXLZ-V5OBilrS3lvbgKL5cIcf2b1BaUsghaLOvfEQbr-MJpVhF0heO5KYzZXq0mhb5rKg02tQllHfNzFpZRiX9WCPHCKbMDVJjHE0wd74ADnpoKMfYIMfC2xEw8Kv2Jqi44w5k0JPQlpX0vBjcFrqzwvdyoU0P9VtGa8LvbISBiITA0Qf8n59QP0wC2IrkAGQfWEOG4jWYJKtCJDF8xYaA3ClFJfM8R4elLXJ0QAH2oNls-ZfOKijN6Xv5gGCQunn8UKsa2AC44Er3nPS8AKWjtDXJmPmQSm8W4a10000">
+<h2 id="UML图"><a href="#UML图" class="headerlink" title="UML图"></a>UML图</h2><img  src=http://www.plantuml.com/plantuml/svg/IqmgBYbAJ2vHICv9B2vMSCxFBIWjIIsgvdewjUtfvCPdNNjVR5puRDhEPvkdlj_Jywn_mfDziv_ldlzaHmEor8jrAvzEQ7coOnL4rzDryvxtRU0gA4tAoKnMI8HPKPQVcQ9GN99OLAAXQSrLoyK5iTEnkBGOPgz2QaL9QbuAfaE0baDCXLZ-V5OBilrS3lvbgKL5cIcf2b1BaUsghaLOvfEQbr-MJpVhF0heO5KYzZXq0mhb5rKg02tQllHfNzFpZRiX9WCPHCKbMDVJjHE0wd74ADnpoKMfYIMfC2xEw8Kv2Jqi44w5k0JPQlpX0vBjcFrqzwvdyoU0P9VtGa8LvbISBiITA0Qf8n59QP0wC2IrkAGQfWEOG4jWYJKtCJDF8xYaA3ClFJfM8R4elLXJ0QAH2oNls-ZfOKijN6Xv5gGCQunn8UKsa2AC44Er3nPS8AKWjtDXJmPmQSm8W4a10000>
 
 
 

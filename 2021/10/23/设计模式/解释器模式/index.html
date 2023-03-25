@@ -28,13 +28,11 @@
 <meta property="og:site_name" content="YS">
 <meta property="og:description" content="给分析对象定义一个语言，并定义语言的文法表示，再设计一个解析器来解析语言中的句子。也就是说，用编译语言的方式来分析应用中的实力。这种模式实现了文法表达式处理大的接口，该接口解释一个特定的上下文。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/lLEnJiCm4Dtz5JUcYEO76YenC30K8PKDCRY9Mvr87CjtAKXL_vqOcjgnep0WiJZEtRlt_CvdrApiNfOA7jtEMDMlS1Ae6N28P8kLE0jHrf88xgigX69ZQjKepHGn68j7oMFUFLhYXy_-ZmXRVGkaobPNFh8IfjlLM4OgsIn9c8m95t0w3voH9vUvkjfqDUC_-8fr_kGCvgnvRqzTirFsTtFUcwFJtrNNWoSacGU5JKvnMxQe3nFGkVlmFf-bfL7ZjopBzo9GM0Ev4Do1LX-NzDhDRA1Z7Cjm568xLdjHn4xX1z-pSVyvjbX18r5VobxVGDe33PLXFulbyYQvsXGn7kg88i_pnBL8nhAOGaLFSXAJ3i4aJ2IDTp3Ndoy0">
 <meta property="article:published_time" content="2021-10-23T02:51:05.000Z">
 <meta property="article:modified_time" content="2022-08-19T13:20:36.295Z">
 <meta property="article:author" content="YS">
 <meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.plantuml.com/plantuml/svg/lLEnJiCm4Dtz5JUcYEO76YenC30K8PKDCRY9Mvr87CjtAKXL_vqOcjgnep0WiJZEtRlt_CvdrApiNfOA7jtEMDMlS1Ae6N28P8kLE0jHrf88xgigX69ZQjKepHGn68j7oMFUFLhYXy_-ZmXRVGkaobPNFh8IfjlLM4OgsIn9c8m95t0w3voH9vUvkjfqDUC_-8fr_kGCvgnvRqzTirFsTtFUcwFJtrNNWoSacGU5JKvnMxQe3nFGkVlmFf-bfL7ZjopBzo9GM0Ev4Do1LX-NzDhDRA1Z7Cjm568xLdjHn4xX1z-pSVyvjbX18r5VobxVGDe33PLXFulbyYQvsXGn7kg88i_pnBL8nhAOGaLFSXAJ3i4aJ2IDTp3Ndoy0">
 
 <link rel="canonical" href="http://ysymj.gitee.io/2021/10/23/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E8%A7%A3%E9%87%8A%E5%99%A8%E6%A8%A1%E5%BC%8F/">
 
@@ -309,7 +307,7 @@
 <p>结果：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">入栈：6</span><br><span class="line">入栈：100</span><br><span class="line">入栈：11</span><br><span class="line">出栈：11 和 100</span><br><span class="line">应用运算符：+</span><br><span class="line">阶段结果入栈： 111</span><br><span class="line">出栈：111 和 6</span><br><span class="line">应用运算符：*</span><br><span class="line">阶段结果入栈： 666</span><br><span class="line">解释器计算结果：666</span><br></pre></td></tr></table></figure>
 
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/lLEnJiCm4Dtz5JUcYEO76YenC30K8PKDCRY9Mvr87CjtAKXL_vqOcjgnep0WiJZEtRlt_CvdrApiNfOA7jtEMDMlS1Ae6N28P8kLE0jHrf88xgigX69ZQjKepHGn68j7oMFUFLhYXy_-ZmXRVGkaobPNFh8IfjlLM4OgsIn9c8m95t0w3voH9vUvkjfqDUC_-8fr_kGCvgnvRqzTirFsTtFUcwFJtrNNWoSacGU5JKvnMxQe3nFGkVlmFf-bfL7ZjopBzo9GM0Ev4Do1LX-NzDhDRA1Z7Cjm568xLdjHn4xX1z-pSVyvjbX18r5VobxVGDe33PLXFulbyYQvsXGn7kg88i_pnBL8nhAOGaLFSXAJ3i4aJ2IDTp3Ndoy0">
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img  src=http://www.plantuml.com/plantuml/svg/lLEnJiCm4Dtz5JUcYEO76YenC30K8PKDCRY9Mvr87CjtAKXL_vqOcjgnep0WiJZEtRlt_CvdrApiNfOA7jtEMDMlS1Ae6N28P8kLE0jHrf88xgigX69ZQjKepHGn68j7oMFUFLhYXy_-ZmXRVGkaobPNFh8IfjlLM4OgsIn9c8m95t0w3voH9vUvkjfqDUC_-8fr_kGCvgnvRqzTirFsTtFUcwFJtrNNWoSacGU5JKvnMxQe3nFGkVlmFf-bfL7ZjopBzo9GM0Ev4Do1LX-NzDhDRA1Z7Cjm568xLdjHn4xX1z-pSVyvjbX18r5VobxVGDe33PLXFulbyYQvsXGn7kg88i_pnBL8nhAOGaLFSXAJ3i4aJ2IDTp3Ndoy0>
     </div>
 
     

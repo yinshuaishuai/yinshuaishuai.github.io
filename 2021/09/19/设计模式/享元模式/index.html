@@ -28,13 +28,11 @@
 <meta property="og:site_name" content="YS">
 <meta property="og:description" content="运用共享技术来有效地支持大量细粒度对象的复用。它通过共享已经存在的对象类大幅度减少需要创建的对象数量、避免大量相似类的开销，从而提高系统资源的利用率。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/XKzB3e8m4Dtt5BC4eru0D25-ua8CYUnDhICsWK9AnHZYtQrIclgBgqxdpVkndDOrp4isAuL2eQ0bbUGDLGXR9Rd8W7L0G6w4S3tA8sK8AHPL_hXgILFo0p29-gTrF4VBKFqdb_LEbihrYuK-gAtSXxiom8OM693glCyvW_-EqDvUF9UKgL9UdNP7BcWECQt2pcde99j2keYJTPGkTd6Km0G4Nc15wzFZVEhvDeYjag7gP-zBSh-BumGDnsFBVjyxIGYn5WOnJPvYlx0NQ3GQEDWT">
 <meta property="article:published_time" content="2021-09-19T11:48:43.000Z">
 <meta property="article:modified_time" content="2022-08-19T13:20:51.277Z">
 <meta property="article:author" content="YS">
 <meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.plantuml.com/plantuml/svg/XKzB3e8m4Dtt5BC4eru0D25-ua8CYUnDhICsWK9AnHZYtQrIclgBgqxdpVkndDOrp4isAuL2eQ0bbUGDLGXR9Rd8W7L0G6w4S3tA8sK8AHPL_hXgILFo0p29-gTrF4VBKFqdb_LEbihrYuK-gAtSXxiom8OM693glCyvW_-EqDvUF9UKgL9UdNP7BcWECQt2pcde99j2keYJTPGkTd6Km0G4Nc15wzFZVEhvDeYjag7gP-zBSh-BumGDnsFBVjyxIGYn5WOnJPvYlx0NQ3GQEDWT">
 
 <link rel="canonical" href="http://ysymj.gitee.io/2021/09/19/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%BA%AB%E5%85%83%E6%A8%A1%E5%BC%8F/">
 
@@ -309,7 +307,7 @@
 <p>输出结果，从结果中可以看出，每一种模板在第一次使用的时候会创建新的，但是后续再次调用的时候就不会再新创建对象，而模板的内容每次调用都是不一样的</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">新建模板:  接口文档   当前模板是:  接口文档  内容是:  接口文档的内容是0.....</span><br><span class="line">新建模板:  设计文档   当前模板是:  设计文档  内容是:  设计文档的内容是1.....</span><br><span class="line">新建模板:  需求文档   当前模板是:  需求文档  内容是:  需求文档的内容是2.....</span><br><span class="line">当前模板是:  设计文档  内容是:  设计文档的内容是3.....</span><br><span class="line">当前模板是:  设计文档  内容是:  设计文档的内容是4.....</span><br><span class="line">当前模板是:  接口文档  内容是:  接口文档的内容是5.....</span><br><span class="line">新建模板:  简历   当前模板是:  简历  内容是:  简历的内容是6.....</span><br><span class="line">当前模板是:  接口文档  内容是:  接口文档的内容是7.....</span><br><span class="line">当前模板是:  设计文档  内容是:  设计文档的内容是8.....</span><br><span class="line">当前模板是:  设计文档  内容是:  设计文档的内容是9.....</span><br></pre></td></tr></table></figure>
 
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/XKzB3e8m4Dtt5BC4eru0D25-ua8CYUnDhICsWK9AnHZYtQrIclgBgqxdpVkndDOrp4isAuL2eQ0bbUGDLGXR9Rd8W7L0G6w4S3tA8sK8AHPL_hXgILFo0p29-gTrF4VBKFqdb_LEbihrYuK-gAtSXxiom8OM693glCyvW_-EqDvUF9UKgL9UdNP7BcWECQt2pcde99j2keYJTPGkTd6Km0G4Nc15wzFZVEhvDeYjag7gP-zBSh-BumGDnsFBVjyxIGYn5WOnJPvYlx0NQ3GQEDWT">
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img  src=http://www.plantuml.com/plantuml/svg/XKzB3e8m4Dtt5BC4eru0D25-ua8CYUnDhICsWK9AnHZYtQrIclgBgqxdpVkndDOrp4isAuL2eQ0bbUGDLGXR9Rd8W7L0G6w4S3tA8sK8AHPL_hXgILFo0p29-gTrF4VBKFqdb_LEbihrYuK-gAtSXxiom8OM693glCyvW_-EqDvUF9UKgL9UdNP7BcWECQt2pcde99j2keYJTPGkTd6Km0G4Nc15wzFZVEhvDeYjag7gP-zBSh-BumGDnsFBVjyxIGYn5WOnJPvYlx0NQ3GQEDWT>
 
 
 

@@ -28,13 +28,11 @@
 <meta property="og:site_name" content="YS">
 <meta property="og:description" content="抽象工厂模式提供一个创建一系列相关或者相互依赖对象的接口，无须指定他们具体的类">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/hLAzRi8m4Dxz53VI9I_G2WcrGbsOoeOOZd14bcB7ybqGAEBT6nVYf25fAi5u-VxkEqTR8N_0bE2zCAwiXoMcKlWpLEf3iylnJ1uoaZZCNbxL2hKzU3GKa3W4vA8KxbXyRG9fZipGkbJAbRjSfn0PnqBlWGMz36lRd2bj45yrdwxVH1kNao4ht2yPNSUgGdKPBHkmJcfhGISXk-yqZp7TdNloDgMHno_JyWMN_EJMDyg_oeVuX-e7WuSEi2QMoAe9qf1DxJ7x4gzjjja2-emRuVr_aYJpxZkECk9UIWqTFf1-NUHFreJPMvByb1jOfe6-0G00">
 <meta property="article:published_time" content="2021-08-15T02:38:12.000Z">
 <meta property="article:modified_time" content="2022-08-19T13:20:16.102Z">
 <meta property="article:author" content="YS">
 <meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.plantuml.com/plantuml/svg/hLAzRi8m4Dxz53VI9I_G2WcrGbsOoeOOZd14bcB7ybqGAEBT6nVYf25fAi5u-VxkEqTR8N_0bE2zCAwiXoMcKlWpLEf3iylnJ1uoaZZCNbxL2hKzU3GKa3W4vA8KxbXyRG9fZipGkbJAbRjSfn0PnqBlWGMz36lRd2bj45yrdwxVH1kNao4ht2yPNSUgGdKPBHkmJcfhGISXk-yqZp7TdNloDgMHno_JyWMN_EJMDyg_oeVuX-e7WuSEi2QMoAe9qf1DxJ7x4gzjjja2-emRuVr_aYJpxZkECk9UIWqTFf1-NUHFreJPMvByb1jOfe6-0G00">
 
 <link rel="canonical" href="http://ysymj.gitee.io/2021/08/15/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%8A%BD%E8%B1%A1%E5%B7%A5%E5%8E%82%E6%A8%A1%E5%BC%8F/">
 
@@ -315,7 +313,7 @@
 <p>具体调用</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//通过具体的某个工厂实现来获取这个工厂</span></span><br><span class="line">        ComputerFactory computerFactory = <span class="keyword">new</span> HpComputerFactory();</span><br><span class="line">        <span class="comment">//通过这个工厂获取这个工厂下的显示器</span></span><br><span class="line">        Displayer displayer = computerFactory.getDisplayer();</span><br><span class="line">        <span class="comment">//通过工厂获取工厂下的主机</span></span><br><span class="line">        Mainframe mainframe = computerFactory.getMainframe();</span><br><span class="line">        <span class="comment">//具体业务</span></span><br><span class="line">        displayer.start();</span><br><span class="line">        mainframe.start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="UML图"><a href="#UML图" class="headerlink" title="UML图"></a>UML图</h2><img src="http://www.plantuml.com/plantuml/svg/hLAzRi8m4Dxz53VI9I_G2WcrGbsOoeOOZd14bcB7ybqGAEBT6nVYf25fAi5u-VxkEqTR8N_0bE2zCAwiXoMcKlWpLEf3iylnJ1uoaZZCNbxL2hKzU3GKa3W4vA8KxbXyRG9fZipGkbJAbRjSfn0PnqBlWGMz36lRd2bj45yrdwxVH1kNao4ht2yPNSUgGdKPBHkmJcfhGISXk-yqZp7TdNloDgMHno_JyWMN_EJMDyg_oeVuX-e7WuSEi2QMoAe9qf1DxJ7x4gzjjja2-emRuVr_aYJpxZkECk9UIWqTFf1-NUHFreJPMvByb1jOfe6-0G00">
+<h2 id="UML图"><a href="#UML图" class="headerlink" title="UML图"></a>UML图</h2><img  src=http://www.plantuml.com/plantuml/svg/hLAzRi8m4Dxz53VI9I_G2WcrGbsOoeOOZd14bcB7ybqGAEBT6nVYf25fAi5u-VxkEqTR8N_0bE2zCAwiXoMcKlWpLEf3iylnJ1uoaZZCNbxL2hKzU3GKa3W4vA8KxbXyRG9fZipGkbJAbRjSfn0PnqBlWGMz36lRd2bj45yrdwxVH1kNao4ht2yPNSUgGdKPBHkmJcfhGISXk-yqZp7TdNloDgMHno_JyWMN_EJMDyg_oeVuX-e7WuSEi2QMoAe9qf1DxJ7x4gzjjja2-emRuVr_aYJpxZkECk9UIWqTFf1-NUHFreJPMvByb1jOfe6-0G00>
 
 
 

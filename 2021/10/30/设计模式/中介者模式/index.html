@@ -28,13 +28,11 @@
 <meta property="og:site_name" content="YS">
 <meta property="og:description" content="定义一个中介对象类封装一系列对象之间的交互，使原有对象之间的耦合松散，且可以独立改变它们之间的交互。中介者模式又叫调停模式，它是迪米特法则的典型应用。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.plantuml.com/plantuml/svg/bP9FQuCm6CRl-HJlCIjKsAxhXB6hEss7mTZXhRv883KbUNKhnUy-jJKnLXcx1Nt-_F8exXrRp1boZSx1AnKAsLWuYsEzroe770MDKGLOAfLZilB5Q4rOrWJvUBfxNFDeF4qDkbEsGbmQFnIQJDM-c7wOgYAGT21MDSW4MTUyyp5fA7Rm11LzmxErU1fKgGmmVtF3kPs9Ru1xIOUCyLf1qbCQffof21iUheSOnH7tYleWRuHT3RHh8-Qa6f9h8xjkD3dTDSEgqCOMdl7UJnjXH_U-Tim7kOGFSElv3__9X-M2IVuxEGv-nyYZ-82gacziLLL-VW7QqerEF-XccmOA4NXssut_F48iJ9GaQH0iN35wFmrEalcVBCHmXSZXdtZdBm00">
 <meta property="article:published_time" content="2021-10-30T10:53:47.000Z">
 <meta property="article:modified_time" content="2022-08-19T13:20:57.069Z">
 <meta property="article:author" content="YS">
 <meta property="article:tag" content="设计模式">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.plantuml.com/plantuml/svg/bP9FQuCm6CRl-HJlCIjKsAxhXB6hEss7mTZXhRv883KbUNKhnUy-jJKnLXcx1Nt-_F8exXrRp1boZSx1AnKAsLWuYsEzroe770MDKGLOAfLZilB5Q4rOrWJvUBfxNFDeF4qDkbEsGbmQFnIQJDM-c7wOgYAGT21MDSW4MTUyyp5fA7Rm11LzmxErU1fKgGmmVtF3kPs9Ru1xIOUCyLf1qbCQffof21iUheSOnH7tYleWRuHT3RHh8-Qa6f9h8xjkD3dTDSEgqCOMdl7UJnjXH_U-Tim7kOGFSElv3__9X-M2IVuxEGv-nyYZ-82gacziLLL-VW7QqerEF-XccmOA4NXssut_F48iJ9GaQH0iN35wFmrEalcVBCHmXSZXdtZdBm00">
 
 <link rel="canonical" href="http://ysymj.gitee.io/2021/10/30/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E4%B8%AD%E4%BB%8B%E8%80%85%E6%A8%A1%E5%BC%8F/">
 
@@ -307,7 +305,7 @@
 <p>结果：  </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">我有房子要出租。</span><br><span class="line">1800一分都不能少。</span><br><span class="line">-------------------</span><br><span class="line">我也有房子要出租。</span><br><span class="line">2000少一分都不行。</span><br></pre></td></tr></table></figure>
 
-<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img src="http://www.plantuml.com/plantuml/svg/bP9FQuCm6CRl-HJlCIjKsAxhXB6hEss7mTZXhRv883KbUNKhnUy-jJKnLXcx1Nt-_F8exXrRp1boZSx1AnKAsLWuYsEzroe770MDKGLOAfLZilB5Q4rOrWJvUBfxNFDeF4qDkbEsGbmQFnIQJDM-c7wOgYAGT21MDSW4MTUyyp5fA7Rm11LzmxErU1fKgGmmVtF3kPs9Ru1xIOUCyLf1qbCQffof21iUheSOnH7tYleWRuHT3RHh8-Qa6f9h8xjkD3dTDSEgqCOMdl7UJnjXH_U-Tim7kOGFSElv3__9X-M2IVuxEGv-nyYZ-82gacziLLL-VW7QqerEF-XccmOA4NXssut_F48iJ9GaQH0iN35wFmrEalcVBCHmXSZXdtZdBm00">
+<h2 id="UML类图"><a href="#UML类图" class="headerlink" title="UML类图"></a>UML类图</h2><img  src=http://www.plantuml.com/plantuml/svg/bP9FQuCm6CRl-HJlCIjKsAxhXB6hEss7mTZXhRv883KbUNKhnUy-jJKnLXcx1Nt-_F8exXrRp1boZSx1AnKAsLWuYsEzroe770MDKGLOAfLZilB5Q4rOrWJvUBfxNFDeF4qDkbEsGbmQFnIQJDM-c7wOgYAGT21MDSW4MTUyyp5fA7Rm11LzmxErU1fKgGmmVtF3kPs9Ru1xIOUCyLf1qbCQffof21iUheSOnH7tYleWRuHT3RHh8-Qa6f9h8xjkD3dTDSEgqCOMdl7UJnjXH_U-Tim7kOGFSElv3__9X-M2IVuxEGv-nyYZ-82gacziLLL-VW7QqerEF-XccmOA4NXssut_F48iJ9GaQH0iN35wFmrEalcVBCHmXSZXdtZdBm00>
 
 
 
