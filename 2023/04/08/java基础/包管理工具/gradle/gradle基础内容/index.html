@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ys_ico.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/ys_ico.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"ysymj.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Gradle是一个基于Apache Ant和Apache Maven概念的项目自动化构建开源工具。它使用一种基于Groovy的特定领域语言(DSL)来声明项目设置，也增加了基于Kotlin语言的kotlin-based DSL，抛弃了基于XML的各种繁琐配置。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gradle基础内容">
+<meta property="og:url" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/index.html">
+<meta property="og:site_name" content="YS">
+<meta property="og:description" content="Gradle是一个基于Apache Ant和Apache Maven概念的项目自动化构建开源工具。它使用一种基于Groovy的特定领域语言(DSL)来声明项目设置，也增加了基于Kotlin语言的kotlin-based DSL，抛弃了基于XML的各种繁琐配置。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/%E6%9F%A5%E7%9C%8Bidea%E5%AF%B9%E5%BA%94%E7%9A%84gradle%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE%E5%9B%BE%E7%A4%BA2.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/GRADLE_USER_HOME%E9%85%8D%E7%BD%AE%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E5%AE%89%E8%A3%85%E5%90%8E%E6%A3%80%E6%9F%A5%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/%E4%BD%BF%E7%94%A8spring%E8%84%9A%E6%89%8B%E6%9E%B6%E5%88%9B%E5%BB%BAgradle%E9%A1%B9%E7%9B%AE%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E7%9A%84init%E6%96%87%E4%BB%B6%E5%A4%B9%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/M2_HOME%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/%E6%B5%8B%E8%AF%95%E6%BA%90%E7%A0%81%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/%E6%B5%8B%E8%AF%95%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%90%8E%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/Gradle%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E5%9B%BE.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/Gradle%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E6%A0%91.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E9%BB%98%E8%AE%A4%E5%90%84%E6%8C%87%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E9%BB%98%E8%AE%A4%E5%90%84%E6%8C%87%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E8%A7%A3%E9%87%8A.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E4%BE%9D%E8%B5%96%E4%BC%A0%E9%80%92%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/%E6%8F%92%E4%BB%B6%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9B%BE%E7%A4%BA.png">
+<meta property="article:published_time" content="2023-04-08T05:44:57.000Z">
+<meta property="article:modified_time" content="2023-04-23T02:18:27.822Z">
+<meta property="article:author" content="YS">
+<meta property="article:tag" content="gradle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/%E6%9F%A5%E7%9C%8Bidea%E5%AF%B9%E5%BA%94%E7%9A%84gradle%E5%9B%BE%E7%A4%BA.png">
+
+<link rel="canonical" href="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>gradle基础内容 | YS</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">YS</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">学无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.png">
+      <meta itemprop="name" content="YS">
+      <meta itemprop="description" content="学海无涯苦作舟">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YS">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          gradle基础内容
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-04-08 13:44:57" itemprop="dateCreated datePublished" datetime="2023-04-08T13:44:57+08:00">2023-04-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-04-23 10:18:27" itemprop="dateModified" datetime="2023-04-23T10:18:27+08:00">2023-04-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/" class="post-meta-item leancloud_visitors" data-flag-title="gradle基础内容" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Gradle入门"><a href="#Gradle入门" class="headerlink" title="Gradle入门"></a>Gradle入门</h1><h2 id="常见的项目构建工具"><a href="#常见的项目构建工具" class="headerlink" title="常见的项目构建工具"></a>常见的项目构建工具</h2><p><strong>Ant</strong></p>
+<blockquote>
+<p>2000年Apache推出的纯Java编写的构建工具，通过xml [build.xml]文件管理项目<br>优点：使用灵活，速度快（快于gradle和maven）<br>缺点：Ant没有加强任何编码约定的项目目录结构，开发人员需要编写繁杂的XML文件构建指令，对开发人员是一个挑战</p>
+</blockquote>
+<p><strong>Maven</strong></p>
+<blockquote>
+<p>2004年Apache组织推出的再次使用xml文件[pom.xml]管理项目的构建工具<br>优点：遵循一套约定大于配置的项目目录结构，使用统一的GAV坐标进行依赖管理，侧重于包管理。<br>缺点：项目构建过程僵化，配置文件编写不够灵活、不方便自定义组件，构建速度慢于gradle</p>
+</blockquote>
+<p><strong>Gradle</strong></p>
+<blockquote>
+<p>2012年Google推出的基于Groovy语言的全新项目构建工具，集合了Ant和Maven各自的优势。<br>优点：集Ant脚本的灵活性+Maven约定大于配置的项目目录优势，支持多种远程仓库和插件，侧重于大项目构建。<br>缺点：学习成本高、资料少、脚本灵活、版本兼容性差等。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">自动化构建工具对比</th>
+<th align="center">Ant</th>
+<th align="center">Maven</th>
+<th align="center">Gradle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">构建性能</td>
+<td align="center">最高</td>
+<td align="center">最低</td>
+<td align="center">居中</td>
+</tr>
+<tr>
+<td align="center">仓库</td>
+<td align="center">开发者自己处理</td>
+<td align="center">maven仓库</td>
+<td align="center">支持多种远程仓库</td>
+</tr>
+<tr>
+<td align="center">依赖管理</td>
+<td align="center">ivy管理</td>
+<td align="center">GAV坐标</td>
+<td align="center">GNV坐标</td>
+</tr>
+<tr>
+<td align="center">插件主持</td>
+<td align="center">实现方便</td>
+<td align="center">实现较难</td>
+<td align="center">实现方便</td>
+</tr>
+<tr>
+<td align="center">遵循特定目录结构</td>
+<td align="center">No</td>
+<td align="center">遵循</td>
+<td align="center">同Maven</td>
+</tr>
+<tr>
+<td align="center">配置文件</td>
+<td align="center">xml文件最为繁琐</td>
+<td align="center">xml文件</td>
+<td align="center">代码脚本，便于写业务逻辑</td>
+</tr>
+<tr>
+<td align="center">侧重点</td>
+<td align="center">小型项目构建</td>
+<td align="center">项目包管理</td>
+<td align="center">大型项目构建</td>
+</tr>
+<tr>
+<td align="center">目前地位</td>
+<td align="center">使用较少</td>
+<td align="center">目前主流</td>
+<td align="center">未来趋势（spring家族）</td>
+</tr>
+</tbody></table>
+<h2 id="Gradle安装"><a href="#Gradle安装" class="headerlink" title="Gradle安装"></a>Gradle安装</h2><h3 id="安装jdk"><a href="#安装jdk" class="headerlink" title="安装jdk"></a>安装jdk</h3><blockquote>
+<p>gradle的运行需要jdk的支持，所以安装Gradle之前需要先安装jdk，至少是jdk8以上版本<br>（jdk安装不再描述）</p>
+</blockquote>
+<h3 id="下载并解压到指定目录"><a href="#下载并解压到指定目录" class="headerlink" title="下载并解压到指定目录"></a>下载并解压到指定目录</h3><ul>
+<li>可以去gradle官网下载需要的版本进行安装<br><a target="_blank" rel="noopener" href="https://gradle.org/releases/">Gradle | Releases</a><br>或者<br><a target="_blank" rel="noopener" href="https://services.gradle.org/distributions/">Gradle Distributions</a><br>gradle官网下载由于某些原因网速会特别慢，也可以去国内镜像网站下载：<br><a target="_blank" rel="noopener" href="http://mirrors.cloud.tencent.com/gradle/">Index of /gradle/ (tencent.com)</a></li>
+</ul>
+<p><strong>说明：</strong> gradle有完整版（以all结尾的）和二进制版（以bin结尾的）两种，完整版的相对于二进制版的多了一个gradle的源码和文档。</p>
+<p><font color="red">注意：</font> idea和gradle也会有兼容性问题，如果想要知道自己安装的idea对应的gradle是什么版本，可以去安装目录下的<code>\plugins\gradle\lib</code> 下去查看<br><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/%E6%9F%A5%E7%9C%8Bidea%E5%AF%B9%E5%BA%94%E7%9A%84gradle%E5%9B%BE%E7%A4%BA.png" alt="查看idea对应的gradle图示"></p>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><ul>
+<li>将gradle解压到对应目录中之后，在环境变量中配置gradle的路径<ul>
+<li>先在环境变量中新增一个<code>GRADLE_HOME</code> 的变量</li>
+<li>然后把gradle下的bin目录配置到path中<br><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE%E5%9B%BE%E7%A4%BA.png" alt="gradle环境变量配置图示"></li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE%E5%9B%BE%E7%A4%BA2.png" alt="gradle环境变量配置图示2"></p>
+<p><strong>注意：</strong> gradle默认会把相关依赖下载到C盘用户目录下，需要在环境变量中配置<code>GRADLE_USER_HOME</code>，配置了该变量相当于是maven指定本地仓库</p>
+<p><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/GRADLE_USER_HOME%E9%85%8D%E7%BD%AE%E5%9B%BE%E7%A4%BA.png" alt="GRADLE_USER_HOME配置图示"></p>
+<h3 id="检查是否按照成功"><a href="#检查是否按照成功" class="headerlink" title="检查是否按照成功"></a>检查是否按照成功</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle -v # 或者 graddle --version</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E5%AE%89%E8%A3%85%E5%90%8E%E6%A3%80%E6%9F%A5%E5%9B%BE%E7%A4%BA.png" alt="gradle安装后检查图示"></p>
+<h2 id="Gradle项目目录结构"><a href="#Gradle项目目录结构" class="headerlink" title="Gradle项目目录结构"></a>Gradle项目目录结构</h2><blockquote>
+<p>gradle项目目录结构和maven项目结构一直，都是基于约定大于配置；<br>其完整目录结构如下所示：</p>
+</blockquote>
+<p><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E5%9B%BE%E7%A4%BA.png" alt="gradle目录结构图示"></p>
+<ul>
+<li>build：封装编译后的字节码、打成的包（jar、war）、测试报告等信息</li>
+<li>gradle：封装包装器文件夹<ul>
+<li>gradle-wrapper.jar</li>
+<li>gradle-wrapper.properties</li>
+</ul>
+</li>
+<li>src：源码<ul>
+<li>main：项目源码<ul>
+<li>java：java的代码</li>
+<li>resources：配置</li>
+</ul>
+</li>
+<li>test：项目测试源码<ul>
+<li>java：测试java代码</li>
+<li>resources：测试配置</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>build.gradle：构建脚本，类似与maven中的pom.xml</li>
+<li>gradlew：包装器启动脚本，linux下的可执行脚本</li>
+<li>gradlew.bat：Windows下的可执行脚本，（无论是在linux还是window下，启动脚本执行的都是<code>gradle/wrapper</code>目录中配置的gradle的版本，而不是本地安装的graddle）</li>
+<li>settings.gradle：设置文件，低调定义项目及子项目名称信息，和项目是一一对应</li>
+</ul>
+<h2 id="创建gradle项目"><a href="#创建gradle项目" class="headerlink" title="创建gradle项目"></a>创建gradle项目</h2><ul>
+<li>创建gradle项目有两种方式，第一种是可以使用spring脚手架的方式</li>
+<li>springboot脚手架：<a target="_blank" rel="noopener" href="https://start.spring.io/">Spring Initializr</a></li>
+</ul>
+<p><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/%E4%BD%BF%E7%94%A8spring%E8%84%9A%E6%89%8B%E6%9E%B6%E5%88%9B%E5%BB%BAgradle%E9%A1%B9%E7%9B%AE%E5%9B%BE%E7%A4%BA.png" alt="使用spring脚手架创建gradle项目图示"></p>
+<ul>
+<li>第二种方式是使用gradle命令创建<ul>
+<li>新建一个文件夹，在文件夹内打开命令行，并执行 <code>graddle init</code> 命令</li>
+<li>第一步：选择是生成一个应用还是其他的，我们是生成一个应用所以选择2</li>
+<li>第二步：选择语言，我们是使用java语言，选择3</li>
+<li>第三步：创建单应用还是多模块应用，我们这里是单应用，选择1</li>
+<li>第四步：选择构建脚本的语言，选择1</li>
+<li>第五步：选择测试框架，选择1</li>
+<li>第六部：输入项目名，如果不输入，默认使用当前文件夹名称</li>
+<li>第七步：输入包名称</li>
+</ul>
+</li>
+</ul>
+<p><strong>注意：</strong> 通过命令行创建出来的项目根目录下没有src和build.gradle文件，而是多了一个app目录，src和build.gradle就在app目录中，其实就是相当于创建了一个多模块应用，只不过只有一个模块。</p>
+<p><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E5%9B%BE%E7%A4%BA.png" alt="gradle命令行创建项目图示"></p>
+<h2 id="Gradle中的常用命令"><a href="#Gradle中的常用命令" class="headerlink" title="Gradle中的常用命令"></a>Gradle中的常用命令</h2><table>
+<thead>
+<tr>
+<th align="center">常用命令</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">gradle clean</td>
+<td align="center">清空build目录</td>
+</tr>
+<tr>
+<td align="center">gradle classes</td>
+<td align="center">编译业务代码和配置文件</td>
+</tr>
+<tr>
+<td align="center">gradle test</td>
+<td align="center">编译测试代码，生成测试报告</td>
+</tr>
+<tr>
+<td align="center">gradle build</td>
+<td align="center">构建项目</td>
+</tr>
+<tr>
+<td align="center">gradle build -x test</td>
+<td align="center">跳过测试构建项目</td>
+</tr>
+</tbody></table>
+<p><font color="red">注意：</font> gradle的指令要在含有build.gradle的目录下执行。</p>
+<h3 id="修改Gradle下载源"><a href="#修改Gradle下载源" class="headerlink" title="修改Gradle下载源"></a>修改Gradle下载源</h3><blockquote>
+<p>gradle默认的下载源是国外地址，该下载源在国内访问特别慢，有时甚至访问失败，可以修改成国内下载源</p>
+</blockquote>
+<h4 id="认识init-d文件夹"><a href="#认识init-d文件夹" class="headerlink" title="认识init.d文件夹"></a>认识<code>init.d</code>文件夹</h4><blockquote>
+<p>我们可以在gradle的init.d目录下创建以 <code>.gradle</code> 结尾的文件，<code>.gradle</code> 文件可以实现在build开始之前执行，所以你可以在这个文件内配置一些你想要预先加载的操作</p>
+</blockquote>
+<p><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E7%9A%84init%E6%96%87%E4%BB%B6%E5%A4%B9%E5%9B%BE%E7%A4%BA.png" alt="gradle的init文件夹图示"></p>
+<h4 id="在init-d文件夹创建init-gradle文件"><a href="#在init-d文件夹创建init-gradle文件" class="headerlink" title="在init.d文件夹创建init.gradle文件"></a>在<code>init.d</code>文件夹创建<code>init.gradle</code>文件</h4><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">allprojects</span> &#123;</span><br><span class="line">    <span class="keyword">repositories</span> &#123;</span><br><span class="line">        mavenLocal()</span><br><span class="line">        maven &#123; name <span class="string">&quot;Alibaba&quot;</span> ; url <span class="string">&quot;https://maven.aliyun.com/repository/public/&quot;</span> &#125;</span><br><span class="line">        maven &#123; name <span class="string">&quot;Bstek&quot;</span> ; url <span class="string">&quot;http://nexus.bsdn.org/content/groups/public/&quot;</span> &#125;</span><br><span class="line">        mavenCentral()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">buildscript</span> &#123; </span><br><span class="line">        <span class="keyword">repositories</span> &#123; </span><br><span class="line">            maven &#123; name <span class="string">&quot;Alibaba&quot;</span> ; url <span class="string">&quot;https://maven.aliyun.com/repository/public/&quot;</span> &#125;</span><br><span class="line">            maven &#123; name <span class="string">&quot;Bstek&quot;</span> ; url <span class="string">&quot;http://nexus.bsdn.org/content/groups/public/&quot;</span> &#125;</span><br><span class="line">            maven &#123; name <span class="string">&quot;M2&quot;</span> ; url <span class="string">&quot;http://plugins.gradle.org/m2/&quot;</span> &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><font color="red">注意：</font> <code>mavenLocal()</code>是指本地maven仓库，需要配置环境变量才行，<code>M2_HOME</code><br><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/M2_HOME%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE%E5%9B%BE%E7%A4%BA.png" alt="M2_HOME环境变量配置图示"></p>
+<h4 id="启用-init-gradle-文件的方法"><a href="#启用-init-gradle-文件的方法" class="headerlink" title="启用 init.gradle 文件的方法"></a>启用 <code>init.gradle</code> 文件的方法</h4><ol>
+<li>在命令行指定文件，例如 <code>gradle --init-script dir/init.graddle -q taskName</code> 你可以多次输入此命令来指定多个init文件</li>
+<li>把 <code>init.gradle</code> 放到 <code>USER_HOME/.gradle/</code> 目录下</li>
+<li>把以 <code>.gradle</code> 结尾的文件放到 <code>USER_HOME/.gradle/init.d/</code> 目录下</li>
+<li>把以 <code>.gradle</code> 结尾的文件放到 <code>GRADLE_HOME/init.d/</code> 目录下</li>
+</ol>
+<blockquote>
+<p>如果存在上面4中方式的2种以上，gradle会按照 1-4 的顺序依次依次执行这些文件，如果给定的目录中存在多个初始化脚本，会按照拼音 a-z 顺序执行这些脚本。</p>
+</blockquote>
+<h4 id="仓库地址说明"><a href="#仓库地址说明" class="headerlink" title="仓库地址说明"></a>仓库地址说明</h4><blockquote>
+<p><code>mavenLocal()</code> : 指定使用maven本地仓库，而本地仓库在配置maven时settings.xml指定的位置，gradle查找jar包顺序如下：<br><code>USER_HOME/.m2/settings.xml</code> &gt;&gt; <code>M2_HOME/conf/settings.xml</code> &gt;&gt; <code>USER_HOME/.m2/repository</code></p>
+</blockquote>
+<blockquote>
+<p>maven {url 地址} ：指定maven仓库，一般使用私有仓库后置其他第三方仓库，例如阿里云仓库地址<br>mavenCentral() ：这是maven中央仓库，无序配置，直接声明即可</p>
+</blockquote>
+<h3 id="Wrapper包装器"><a href="#Wrapper包装器" class="headerlink" title="Wrapper包装器"></a>Wrapper包装器</h3><blockquote>
+<p>Gradle Wrapper实际上就是对gradle的一层包装，用来解决实际开发中可能会遇到的不同项目需要不同版本的gradle的问题。</p>
+</blockquote>
+<ul>
+<li>项目中的gradlew和gradlew.bat脚本使用的就是wrapper中规定的gradle版本</li>
+<li>在项目根目录下操作项目，可以使用gradlew命令，指令方式和gradle完全一致</li>
+</ul>
+<p><strong>使用gradle命令控制Wrapper的生成</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">参数名</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">–gradle-version</td>
+<td align="center">用于指定使用的gradle版本</td>
+</tr>
+<tr>
+<td align="center">–gradle-distribution-url</td>
+<td align="center">用于指定下载gradle发行版本的url地址</td>
+</tr>
+</tbody></table>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle wrapper --gradle-version=xxx</span><br></pre></td></tr></table></figure>
+
+<p>gradle-wrapper.properties文件解读</p>
+<table>
+<thead>
+<tr>
+<th align="center">字段名</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">distributionBase</td>
+<td align="center">下载的gradle压缩包解压后的存放主目录</td>
+</tr>
+<tr>
+<td align="center">distributionPath</td>
+<td align="center">相对于distributionBase的路径</td>
+</tr>
+<tr>
+<td align="center">distributionUrl</td>
+<td align="center">gradle发行版压缩包下载地址</td>
+</tr>
+<tr>
+<td align="center">zipStoreBase</td>
+<td align="center">存放压缩包的路径</td>
+</tr>
+<tr>
+<td align="center">zipStorePath</td>
+<td align="center">存放压缩包的子路径</td>
+</tr>
+</tbody></table>
+<p><font color="red">注意：</font> 如果没有配置 <code>GRADLE_USER_HOME</code> 会存放到C盘用户目录下的<code>.gradle</code>目录下</p>
+<h1 id="Gradle和idea整合"><a href="#Gradle和idea整合" class="headerlink" title="Gradle和idea整合"></a>Gradle和idea整合</h1><h2 id="Groovy简介"><a href="#Groovy简介" class="headerlink" title="Groovy简介"></a>Groovy简介</h2><blockquote>
+<p>在某种程度上，groovy可以被视为java的一种脚本化改良，和java相同，也是运行在jvm上的，可以很好的和java相关库进行交互。<br>它是一种成熟的面向对象语言，既可以面向对象编程，也可以作为纯粹的脚本语言</p>
+</blockquote>
+<ul>
+<li>功能强大，例如提供了动态类型转换、闭包和元编程支持</li>
+<li>支持函数式编程，不需要main函数</li>
+<li>默认导入常用的包</li>
+<li>类不支持default作用域，且默认作用域为public</li>
+<li>Groovy中基本类型也是对象，可以直接调用对象的方法</li>
+<li>支持DSL（领域特定语言）和其它简洁的语法，让代码变得易于阅读和维护</li>
+<li>Groovy是基于java语言的，所以完全兼容java语法，所以对于java程序员学习成本较低</li>
+</ul>
+<h2 id="Groovy安装"><a href="#Groovy安装" class="headerlink" title="Groovy安装"></a>Groovy安装</h2><p>下载地址 ： <a target="_blank" rel="noopener" href="https://groovy.apache.org/download.html">The Apache Groovy programming language - Download</a></p>
+<p>下载groovy之后解压到指定目录，然后把groovy下的bin目录配置到环境变量<br>配置完环境变量后可以执行 <code>groovy -version</code> 命令查看是否安装成功</p>
+<h2 id="Groovy基本语法"><a href="#Groovy基本语法" class="headerlink" title="Groovy基本语法"></a>Groovy基本语法</h2><ul>
+<li>Groovy是基于java语言的，所以完全兼容java语法，可作为面向对象编程语言（定义类），也可以作为脚本型语言（文件定义中不出现类）</li>
+<li>在一个groovy文件中可以混合类的定义和脚本定义（不可定义和文件名相同的类名）</li>
+<li>groovy中使用def定义变量、方法，不建议使用具体的数据类型</li>
+<li>groovy中的注释：单行注释 // ，多行注释： /**/</li>
+<li>groovy中语句末尾的分号是可以省略的，以换行行为作为结束</li>
+<li>默认类、方法、字段都是public修饰</li>
+<li>对象的属性操作<ul>
+<li>给对象属性赋值<ul>
+<li>对象.属性名 = xxx</li>
+<li>对象的setter方法</li>
+<li>具名构造器（groovy自带的）<ul>
+<li>用处：后面给task指定分组，description描述信息使用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对象属性读取<ul>
+<li>对象.属性名</li>
+<li>对象[“属性名”]</li>
+<li>对象.getter方法</li>
+</ul>
+</li>
+<li>对象属性的操作本质是通过属性的getter和setter方法完成的</li>
+</ul>
+</li>
+<li>方法<ul>
+<li>声明时<ul>
+<li>参数类型、返回值类型可以省略</li>
+<li>return关键字：默认使用方法最后一句的返回值作为方法返回值</li>
+</ul>
+</li>
+<li>调用时，()可以省略</li>
+</ul>
+</li>
+<li>支持顺序结构、分支结构、循环结构语句</li>
+<li>支持各种元算符：算术、关系、位、赋值、范围运算符</li>
+<li>基本类型也是对象，可以直接调用对象放方法<ul>
+<li>groovy中的字符串有单引号、双引号、三引号<ul>
+<li>单引号：作为字符串常量使用，没有运算能力</li>
+<li>双引号：可以引用变量${}，有运算能力</li>
+<li>三引号：模板字符串，支持换行，不支持变量引用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>数据类型：变量、属性、方法、闭包的参数以及方法返回值都类型都是可有可无的，都是在给变量赋值的时候才决定他的类型</li>
+</ul>
+<p><font color="blue">类型转换：</font> 当需要时，类型之间会自动发生类型转换，字符串（String）、基本类型（如int）和包装类型（如Integer）<br><font color="blue">类说明：</font> 如果在一个groovy文件中没有任何类定义，它将被当成script来处理，也就意味着这个文件将被透明的转换为一个script类型的类，这个自动转换得到的类型将使用原始的groovy文件作为类的名字，groovy文件的内容被打包进run方法，另外在新生产的类中被加入一个main方法以进行外部执行该脚本</p>
+<p><strong>Groovy和java类之间的主要区别：</strong></p>
+<blockquote>
+<ol>
+<li>没有可见性修饰符的类或者方法，默认是公共的（可以使用一个特殊的注解来实现包的私有可见性）</li>
+<li>没有可见性修饰符的字段将自动转化为属性，不需要显示的getter和setter方法</li>
+<li>如果属性声明为final，则不会生成setter方法</li>
+<li>一个源文件可能包含一个或多个类（但是如果一个文件不包含类定义的代码，则将其视为脚本），脚本只是具有一些特殊约定的类，他们的名称与原文件相同（所以不要再脚本 中包含与脚本源文件名相同的类定义）</li>
+</ol>
+</blockquote>
+<h2 id="Gradle-对测试的支持"><a href="#Gradle-对测试的支持" class="headerlink" title="Gradle 对测试的支持"></a>Gradle 对测试的支持</h2><blockquote>
+<p>测试任务自动检测并执行测试源集中的所有单元测试，测试执行完后会生成一个报告。<br>支持Junit测试和TestNG测试。</p>
+</blockquote>
+<p><strong>测试源码目录结构：</strong></p>
+<p><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/%E6%B5%8B%E8%AF%95%E6%BA%90%E7%A0%81%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E5%9B%BE%E7%A4%BA.png" alt="测试源码目录结构图示"></p>
+<p><strong>测试源码编译后目录结构：</strong></p>
+<p><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/%E6%B5%8B%E8%AF%95%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%90%8E%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png" alt="测试源码编译后目录结构"></p>
+<h3 id="Junit使用"><a href="#Junit使用" class="headerlink" title="Junit使用"></a>Junit使用</h3><ul>
+<li><p>Gradle 对Junit4.x支持</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;  </span><br><span class="line">	testImplementation(<span class="string">&#x27;junit:junit:4.12&#x27;</span>)  </span><br><span class="line">&#125;  </span><br><span class="line">test&#123;  </span><br><span class="line">	useJUnit()  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Gradle 对Junit5.x版本的支持</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;  </span><br><span class="line">	testImplementation platform(<span class="string">&#x27;org.junit:junit-bom:5.9.1&#x27;</span>)  </span><br><span class="line">	testImplementation <span class="string">&#x27;org.junit.jupiter:junit-jupiter&#x27;</span>  </span><br><span class="line">&#125;  </span><br><span class="line">test &#123;  </span><br><span class="line">	useJUnitPlatform()  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><font color="red">注意：</font> 无论是Junit4.x还是Junit5.x版本，我们只需要再<code>build.gradle</code>目录下执行<code>gradle test</code> 指令，gradle就会帮我们执行所有加了<code>@Test</code>注解的测试，并生成测试报告。</p>
+<h3 id="包含和排除特定测试"><a href="#包含和排除特定测试" class="headerlink" title="包含和排除特定测试"></a>包含和排除特定测试</h3><ul>
+<li><p>在执行<code>gradle build</code>打包的时候默认是会执行测试命令的；</p>
+</li>
+<li><p>使用命令跳过测试 <code>gradle build -X test</code>。</p>
+</li>
+<li><p>也可以在<code>build.gradle</code>文件中进行配置跳过测试</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">test &#123;  </span><br><span class="line">	enabled <span class="keyword">false</span>  </span><br><span class="line">	useJUnitPlatform()  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>也可以指定只执行某个包下的测试类</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">test &#123;  </span><br><span class="line">	enabled <span class="keyword">true</span>  </span><br><span class="line">	useJUnitPlatform()  </span><br><span class="line">	<span class="keyword">include</span>(<span class="string">&#x27;example/**&#x27;</span>)  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>排除不执行某个包下面的测试类</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">test &#123;  </span><br><span class="line">	enabled <span class="keyword">true</span>  </span><br><span class="line">	useJUnitPlatform()  </span><br><span class="line">	<span class="keyword">exclude</span>(<span class="string">&#x27;example/**&#x27;</span>)  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="Gradle进阶"><a href="#Gradle进阶" class="headerlink" title="Gradle进阶"></a>Gradle进阶</h1><h2 id="项目的生命周期"><a href="#项目的生命周期" class="headerlink" title="项目的生命周期"></a>项目的生命周期</h2><blockquote>
+<p>Gradle项目的生命周期分为三大阶段：Initialization -&gt; Configuration -&gt; Execution（初始化-&gt;配置-&gt;执行），每个阶段都有自己的职责，具体如下图所示：</p>
+</blockquote>
+<p><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/Gradle%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%9B%BE%E7%A4%BA.png" alt="Gradle生命周期图示"></p>
+<blockquote>
+<p>首先在初始化阶段，会按照上面说的  <code>USER_HOME/.gradle/</code> -&gt;  <code>USER_HOME/.gradle/init.d/</code> -&gt;  <code>GRADLE_HOME/init.d/</code> 的顺序去寻找初始化脚本，然后执行初始化脚本；<br>之后会执行项目根目录下的<code>settings.gradle</code>文件，里面配置了根项目的项目名，以及各个子项目的项目名；<br>配置阶段会根据初始化阶段<code>settings.gradle</code>中的信息，找到各个子项目，然后执行子项目中的<code>build.gradle</code>文件，执行的时候会按照层级结构进行执行，先加载根工程的脚本，然后再加载各个子工程的脚本，如果子工程还有子模块，会在所有二级子工程加载完毕之后继续向下加载；<br>最后按照有向无环树的结构执行任务task</p>
+</blockquote>
+<ul>
+<li><font color="blue">Initialization：</font>阶段主要目的是初始化构建，它又分两个子过程，一个是执行 init Script ，另一个是执行 setting Script。<ul>
+<li><code>init.gradle</code> 文件会在每个项目 build 之前被调用，用于做一些初始化的操作，他主要有如下作用：<ul>
+<li>配置内部的仓库信息（如公司的maven仓库信息）</li>
+<li>配置一些全局属性</li>
+<li>配置用户名及密码信息（如果公司仓库需要用户名和密码）</li>
+</ul>
+</li>
+<li>Setting Script 则更重要，它初始化了一次构建所参与的所有模块</li>
+</ul>
+</li>
+<li><font color="blue">Configuration：</font> 这个阶段开始加载项目中所有模块的 Build Script ，所谓的加载就是执行<code>build.gradle</code>中的语句，根据脚本代码构建对应的 task ，最终根据所有task生成由 Task 组成的<strong>有向无环图</strong>，如下<br><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E5%9B%BE.png" alt="gradle有向无环图"></li>
+</ul>
+<p> 最终构成有向无环图<br><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/Gradle%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E6%A0%91.png" alt="Gradle有向无环树"></p>
+<ul>
+<li><font color="blue">Execution阶段：</font> 这个阶段会根据上个阶段构建好的有向无环图，按着顺序执行task【Action动作】</li>
+</ul>
+<h2 id="settings文件"><a href="#settings文件" class="headerlink" title="settings文件"></a>settings文件</h2><ul>
+<li>作用：主要在项目初始化阶段确定一下引入那些工程需要加入到项目构建中，为项目工程树做准备。</li>
+<li>工程树：gradle中有工程树的概念，类似于maven中的project与module。</li>
+<li>内容：里面主要定义了当前gradle项目及子project的项目名称。</li>
+<li>位置：必须放在根工程目录下，有且仅有一个。</li>
+<li>名字：为<code>settings.gradle</code>文件，不能发生变化。</li>
+<li>对应实例：与<code>org.gradle.api.initialization.Settings</code>实例是一一对应的关系，每个项目只有一个settings文件。</li>
+<li>关注：作为开发者我们只需要关注该文件中的<code>include</code>方法即可，使用相对路径【:】引入子工程</li>
+<li>一个子工程只有在setting文件中配置才会被gradle识别，这样在构建的时候才会被包含进去。<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rootProject.name = <span class="string">&#x27;demo-gradle&#x27;</span>  </span><br><span class="line">rootProject.name = <span class="string">&#x27;demo-gradle&#x27;</span>  </span><br><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;demo1&#x27;</span>)  </span><br><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;demo1:demo11&#x27;</span>)  </span><br><span class="line"><span class="keyword">include</span>(<span class="string">&#x27;demo1:demo12&#x27;</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>项目名称中【:】表示项目的分隔符，类似于路径中的【/】，如果以【:】开头表示相对于rootProject，</p>
+</blockquote>
+<h2 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h2><blockquote>
+<p>项目实质上是 Task 对象的集合，一个Task表示一个逻辑上较为独立的执行过程，比如编译java源代码，拷贝文件，打包jar文件，甚至可以执行一个系统命令，另外一个Task可以读取和设置项目的属性以完成特定的操作</p>
+</blockquote>
+<p>一个简单的任务：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> A&#123;  </span><br><span class="line">	<span class="comment">//任务的配置阶段  </span></span><br><span class="line">	<span class="keyword">println</span> <span class="string">&#x27;root task A&#x27;</span>  </span><br><span class="line">	<span class="comment">//任务的行为  </span></span><br><span class="line">	<span class="keyword">doFirst</span> &#123;  </span><br><span class="line">		<span class="keyword">println</span> <span class="string">&#x27;root task A doFirst&#x27;</span>  </span><br><span class="line">	&#125;  </span><br><span class="line">	<span class="keyword">doLast</span> &#123;  </span><br><span class="line">		<span class="keyword">println</span> <span class="string">&#x27;root task A doLast&#x27;</span>  </span><br><span class="line">	&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在文件所在目录执行命令 <code>gradle A</code> 即可执行该任务</p>
+<ul>
+<li>task 的配置段是在配置阶段完成</li>
+<li>task 的doFirst、doLast 方法是在执行阶段完成，并且doFirst在doLast之情执行</li>
+<li>区分任务的配置段和任务的行为，任务的配置段在配置阶段执行，任务的行为在执行阶段执行</li>
+</ul>
+<p>也可以在任务外部定义行为：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> A&#123;  </span><br><span class="line">	<span class="comment">//任务的配置阶段  </span></span><br><span class="line">	<span class="keyword">println</span> <span class="string">&#x27;root task A&#x27;</span>  </span><br><span class="line">	<span class="comment">//任务的行为  </span></span><br><span class="line">	<span class="keyword">doFirst</span> &#123;  </span><br><span class="line">		<span class="keyword">println</span> <span class="string">&#x27;root task A doFirst&#x27;</span>  </span><br><span class="line">	&#125;  </span><br><span class="line">	<span class="keyword">doLast</span> &#123;  </span><br><span class="line">		<span class="keyword">println</span> <span class="string">&#x27;root task A doLast&#x27;</span>  </span><br><span class="line">	&#125;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line">A.<span class="keyword">doFirst</span>&#123;  </span><br><span class="line">	<span class="keyword">println</span> <span class="string">&#x27;doFirst&#x27;</span>  </span><br><span class="line">&#125;  </span><br><span class="line">A.<span class="keyword">doLast</span>&#123;  </span><br><span class="line">	<span class="keyword">println</span> <span class="string">&#x27;rdoLast&#x27;</span>  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>给任务设置action：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> map = <span class="keyword">new</span> HashMap&lt;String,Object&gt;()  </span><br><span class="line">map.put(<span class="string">&#x27;action&#x27;</span>,&#123;<span class="keyword">println</span> <span class="string">&#x27;task A action&#x27;</span>&#125;)  </span><br><span class="line"><span class="keyword">task</span> (map,<span class="string">&quot;A&quot;</span>)&#123;  </span><br><span class="line">	<span class="comment">//任务的配置阶段  </span></span><br><span class="line">	<span class="keyword">println</span> <span class="string">&#x27;root task A&#x27;</span>  </span><br><span class="line">	<span class="comment">//任务的行为  </span></span><br><span class="line">	<span class="keyword">doFirst</span> &#123;  </span><br><span class="line">		<span class="keyword">println</span> <span class="string">&#x27;root task A doFirst&#x27;</span>  </span><br><span class="line">	&#125;  </span><br><span class="line">	<span class="keyword">doLast</span> &#123;  </span><br><span class="line">		<span class="keyword">println</span> <span class="string">&#x27;root task A doLast&#x27;</span>  </span><br><span class="line">	&#125;  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line">A.<span class="keyword">doFirst</span>&#123;  </span><br><span class="line">	<span class="keyword">println</span> <span class="string">&#x27;doFirst&#x27;</span>  </span><br><span class="line">&#125;  </span><br><span class="line">A.<span class="keyword">doLast</span>&#123;  </span><br><span class="line">	<span class="keyword">println</span> <span class="string">&#x27;rdoLast&#x27;</span>  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>底层原理分析：无论是定义任务自身的 action 还是添加的doLast、doFirst方法，其实底层都是被放入到一个Action的List中了，最初这个action list是空的，当我们设置了action【任务自身的行为】，它先将action添加到列表中，此时列表中只有一个action，后续执行 doFirst的时候doFirst在action前面添加，执行doLast的时候，doLast在action后面添加。<br>doFirst永远在action list的第一位，保证添加的方法在现有的action list元素的最前面；<br>doLast永远在action list末尾添加，保证其添加的方法在现有action list元素的最后面；<br>一个往前添加，一个往后添加，最后这个action list就按顺序形成了 doFirst、doSelf、doLast的顺序，只需要从头开始执行，就形成了执行顺序。</p>
+</blockquote>
+<h3 id="任务的依赖关系"><a href="#任务的依赖关系" class="headerlink" title="任务的依赖关系"></a>任务的依赖关系</h3><p>不同的任务之间可以有关系也可以没有关系，如果不同任务之间需要建立依赖关系，可以通过下面的方式。<br>Task之间的依赖关系可以在以下几部分设置：</p>
+<ol>
+<li>参数依赖</li>
+<li>内部依赖</li>
+<li>外部依赖</li>
+</ol>
+<p>方式一：参数依赖</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> A&#123;  </span><br><span class="line">	<span class="keyword">doLast</span> &#123;<span class="keyword">println</span>(<span class="string">&#x27;Task A&#x27;</span>)&#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">task</span> B&#123;  </span><br><span class="line">	<span class="keyword">doLast</span> &#123;<span class="keyword">println</span>(<span class="string">&#x27;Task B&#x27;</span>)&#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">//参数方式依赖：dependsOn后面用冒号</span></span><br><span class="line"><span class="keyword">task</span> (<span class="string">&#x27;C&#x27;</span>,dependsOn: [<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>])&#123;  </span><br><span class="line">	<span class="keyword">doLast</span> &#123;<span class="keyword">println</span>(<span class="string">&#x27;Task C&#x27;</span>)&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>方式二：内部依赖</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> A&#123;  </span><br><span class="line">	<span class="keyword">doLast</span> &#123;<span class="keyword">println</span>(<span class="string">&#x27;Task A&#x27;</span>)&#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">task</span> B&#123;  </span><br><span class="line">	<span class="keyword">doLast</span> &#123;<span class="keyword">println</span>(<span class="string">&#x27;Task B&#x27;</span>)&#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">task</span> C&#123;  </span><br><span class="line">	<span class="comment">//内部依赖dependsOn后面要用  = 号</span></span><br><span class="line">	dependsOn= [<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>]  </span><br><span class="line">	<span class="keyword">doLast</span> &#123;<span class="keyword">println</span>(<span class="string">&#x27;Task C&#x27;</span>)&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>方式三：外部依赖</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//可变参数，引号可加可不加</span></span><br><span class="line">C.dependsOn(<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>也可以跨项目执行，比如子工程demo01下面定义了一个任务A：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> C&#123;  </span><br><span class="line">	<span class="comment">//使用相对于根工程的相对路径</span></span><br><span class="line">	dependsOn(<span class="string">&#x27;:demo01:A&#x27;</span>) </span><br><span class="line">	<span class="keyword">doLast</span> &#123;<span class="keyword">println</span>(<span class="string">&#x27;Task C&#x27;</span>)&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当一个task依赖多个task的时候，被依赖的task之间如果没有依赖关系，那么他们的执行顺序是随机的，并无影响。</li>
+<li>重复的任务只会执行一次，比如：<ul>
+<li>A依赖B和C，B也依赖C，那么C只会被执行一次</li>
+</ul>
+</li>
+</ul>
+<h3 id="任务执行"><a href="#任务执行" class="headerlink" title="任务执行"></a>任务执行</h3><p>任务执行的语法： <font color="blue">gradle [taskName…] [–option-name…]</font></p>
+<p><strong>常见任务：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">gradle build</td>
+<td align="center">构建项目：编译、测试、打包等操作</td>
+</tr>
+<tr>
+<td align="center">gradle run</td>
+<td align="center">运行一个服务，需要 application 插件支持，并且指定了主启动类才能运行</td>
+</tr>
+<tr>
+<td align="center">gradle clean</td>
+<td align="center">清空当前项目的build目录</td>
+</tr>
+<tr>
+<td align="center">gradle init</td>
+<td align="center">初始化gradle项目</td>
+</tr>
+<tr>
+<td align="center">gradle wrapper</td>
+<td align="center">生成wrapper文件夹<br>gradle wrapper –gradle-version=4.4 升级wrapper版本号<br>gradle wrapper – gradle-version 5.2.1 –distribution-type all 关联源码用</td>
+</tr>
+</tbody></table>
+<p><strong>项目报告相关任务：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">gradle projects</td>
+<td align="center">列出所选项目及子项目列表，以层次结构的形式显示</td>
+</tr>
+<tr>
+<td align="center">gradle tasks</td>
+<td align="center">列出所选项目（当前项目，不包含父子）的已分配给任务组的那些任务</td>
+</tr>
+<tr>
+<td align="center">gradle tasks –all</td>
+<td align="center">列出所选项目的所有任务</td>
+</tr>
+<tr>
+<td align="center">gradle tasks –group=”build setup”</td>
+<td align="center">列出所选项目中指定分组中的任务</td>
+</tr>
+<tr>
+<td align="center">gradle help –task someTask</td>
+<td align="center">显示某个任务的详细信息</td>
+</tr>
+<tr>
+<td align="center">gradle dependencies</td>
+<td align="center">查看整个项目的依赖信息，以依赖树的方式显示</td>
+</tr>
+<tr>
+<td align="center">gradle properties</td>
+<td align="center">列出所选项目的属性列表</td>
+</tr>
+</tbody></table>
+<p><strong>调试相关：</strong><br>| 命令 | 解释 |<br>| :—-: | :—-: |<br>| gradle -h / –help | 查看帮助信息 |<br>| gradle -v / –version | 打印版本信息(Gradle、Kotlin、Groovy、Ant、JVM、OS) |<br>| gradle -S/ –full-stacktrace | 打印出所有异常的完整(非常详细)堆栈跟踪信息|<br>| gradle -s/–stacktrace|打印出用户异常的堆栈跟踪(例如编译错误)|<br>| -Dorg.gradle.daemon.debug=true | 调试 Gradle 守护进程|<br>| -Dorg.gradle.debug=true | :调试 Gradle 客户端(非 daemon)进程|<br>| -Dorg.gradle.debug.port=(port number) | 指定启用调试时要侦听的端口号。默认值为 5005|</p>
+<p><strong>性能选项：</strong>【在gradle.properties中指定这些选项中的许多选项，因此不需要命令行标志】</p>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">–build-cache, –no-build-cache</td>
+<td align="center">尝试重用先前版本的输出。默认关闭(off)</td>
+</tr>
+<tr>
+<td align="center">–max-workers</td>
+<td align="center">设置 Gradle 可以使用的 woker 数。默认值是处理器数。</td>
+</tr>
+<tr>
+<td align="center">-parallel, –no-parallel</td>
+<td align="center">并行执行项目。有关此选项的限制，请参阅并行项目执行。 默认设置为关闭(off)</td>
+</tr>
+</tbody></table>
+<p><strong>守护进程选项：</strong><br>| 命令 | 解释 |<br>| :—-: | :—-: |<br>| –daemon, –no-daemon|  使用 Gradle 守护进程运行构建。默认是 on|<br>| –foreground|在前台进程中启动 Gradle 守护进程。|<br>|-Dorg.gradle.daemon.idletimeout=(number of milliseconds)| Gradle Daemon 将在这个空闲时间的毫秒数之后停止自己。默认值为 10800000(3 小时)。|</p>
+<p><strong>日志选项</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-Dorg.gradle.logging.level=(quiet,warn,lifecycle,info,debug)</td>
+<td align="center">通过 Gradle 属性设置日志记录级别。</td>
+</tr>
+<tr>
+<td align="center">-q, –quiet</td>
+<td align="center">只能记录错误信息</td>
+</tr>
+<tr>
+<td align="center">-w, –warn</td>
+<td align="center">设置日志级别为 warn</td>
+</tr>
+<tr>
+<td align="center">-i, –info</td>
+<td align="center">将日志级别设置为 info</td>
+</tr>
+<tr>
+<td align="center">-d, –debug</td>
+<td align="center">登录调试模式(包括正常的堆栈跟踪)</td>
+</tr>
+</tbody></table>
+<p><strong>其他：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-x</td>
+<td align="center">-x 等价于: –exclude-task : 常见 gradle -x test clean build</td>
+</tr>
+<tr>
+<td align="center">–rerun-tasks</td>
+<td align="center">强制执行任务，忽略 up-to-date ,常见 gradle build –rerun-tasks</td>
+</tr>
+<tr>
+<td align="center">–continue</td>
+<td align="center">忽略前面失败的任务,继续执行,而不是在遇到第一个失败时立即停止执行。每个遇到的故障都将在构建结束时报告，常见：gradle build –continue。</td>
+</tr>
+<tr>
+<td align="center">gradle init –type pom</td>
+<td align="center">将 maven 项目转换为 gradle 项目(根目录执行)</td>
+</tr>
+<tr>
+<td align="center">gradle [taskName]</td>
+<td align="center">执行自定义任务</td>
+</tr>
+</tbody></table>
+<p>任务名称可以使用缩写，任务名称支持驼峰命名风格，然后执行任务的时候使用缩写，例如：connecTask，简写是cT，执行任务的时候直接执行 <code>gradle cT</code>命令</p>
+<p>gradle默认各指令之间的依赖关系：<br><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E9%BB%98%E8%AE%A4%E5%90%84%E6%8C%87%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB.png" alt="gradle默认各指令之间的依赖关系"></p>
+<p>相关解释：<br><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E9%BB%98%E8%AE%A4%E5%90%84%E6%8C%87%E4%BB%A4%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB%E8%A7%A3%E9%87%8A.png" alt="gradle默认各指令之间的依赖关系解释"></p>
+<h3 id="任务的定义-方式"><a href="#任务的定义-方式" class="headerlink" title="任务的定义 方式"></a>任务的定义 方式</h3><blockquote>
+<p>任务定义方式总体分为两大类，一种是通过Proiject中的 <code>task()</code> 方法，另一种是通过tasks对象中的 <code>tasks.create()</code> 或者 <code>tasks.register()</code> 方法<br><code>tasks.register()</code>执行的是延迟创建，只有当该任务被需要的时候才会被创建</p>
+</blockquote>
+<p>我们可以在定义任务的时候同时指定任务的属性，具体属性有：</p>
+<table>
+<thead>
+<tr>
+<th align="center">配置项</th>
+<th align="center">描述</th>
+<th align="center">默认值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">type</td>
+<td align="center">基于一个存在的Task来创建，和我们的类继承差不多</td>
+<td align="center">DefaultTask</td>
+</tr>
+<tr>
+<td align="center">overwrite</td>
+<td align="center">是否替换存在的Task，这个和type配合起来使用</td>
+<td align="center">false</td>
+</tr>
+<tr>
+<td align="center">dependsOn</td>
+<td align="center">用于配置任务的依赖</td>
+<td align="center">[]</td>
+</tr>
+<tr>
+<td align="center">action</td>
+<td align="center">添加到任务中的一个Action或者一个闭包</td>
+<td align="center">null</td>
+</tr>
+<tr>
+<td align="center">description</td>
+<td align="center">用于配置任务的描述</td>
+<td align="center">null</td>
+</tr>
+<tr>
+<td align="center">group</td>
+<td align="center">用于配置任务的分组</td>
+<td align="center">null</td>
+</tr>
+</tbody></table>
+<p><strong>定义任务时也可以给任务分配属性：可以定义任务的时候直接指定任务属性，也可以给已有的任务动态分配属性</strong></p>
+<h3 id="任务类型"><a href="#任务类型" class="headerlink" title="任务类型"></a>任务类型</h3><blockquote>
+<p>前面我们定义的task都是DefaultTask类型的，如果我们想要完成某些具体的操作完全需要我们自己去编写gradle脚本，这样有些麻烦，所以gradle官网给出了一些现成的任务类型帮助我们快速完成想要的任务，我们只需要在创建任务的时候，指定当前任务的类型即可，然后就可以使用这种类型中的属性和API方法了</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">常见任务类型</th>
+<th align="center">该类型任务的作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Delete</td>
+<td align="center">删除文件或者目录</td>
+</tr>
+<tr>
+<td align="center">Copy</td>
+<td align="center">将文件复制到目标目录中，此任务还可以在复制时重命名和筛选文件。</td>
+</tr>
+<tr>
+<td align="center">CreateStartScripts</td>
+<td align="center">创建启动脚本</td>
+</tr>
+<tr>
+<td align="center">Exec</td>
+<td align="center">执行任务命令行进程</td>
+</tr>
+<tr>
+<td align="center">GenerateMavenPom</td>
+<td align="center">生成Maven模块描述(POM)文件</td>
+</tr>
+<tr>
+<td align="center">GradleBuild</td>
+<td align="center">执行Gradle构建</td>
+</tr>
+<tr>
+<td align="center">Jar</td>
+<td align="center">组装JAR归档文件</td>
+</tr>
+<tr>
+<td align="center">JavaCompile</td>
+<td align="center">编译Java源文件</td>
+</tr>
+<tr>
+<td align="center">Javadoc</td>
+<td align="center">为Java类生成Html Api文档</td>
+</tr>
+<tr>
+<td align="center">PublishToMavenRepository</td>
+<td align="center">将 MavenPublication 发布到 mavenartifactrepostal。</td>
+</tr>
+<tr>
+<td align="center">Tar</td>
+<td align="center">组装 TAR 存档文件</td>
+</tr>
+<tr>
+<td align="center">Test</td>
+<td align="center">执行 JUnit (3.8.x、4.x 或 5.x)或 TestNG 测试。</td>
+</tr>
+<tr>
+<td align="center">Upload</td>
+<td align="center">将 Configuration 的构件上传到一组存储库。</td>
+</tr>
+<tr>
+<td align="center">War</td>
+<td align="center">组装 WAR 档案。</td>
+</tr>
+<tr>
+<td align="center">Zip</td>
+<td align="center">组装</td>
+</tr>
+</tbody></table>
+<p>更详细的可以参考官方文档：<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/index.html">https://docs.gradle.org/current/dsl/index.html</a></p>
+<h3 id="任务的执行顺序"><a href="#任务的执行顺序" class="headerlink" title="任务的执行顺序"></a>任务的执行顺序</h3><p>在Gradle中，有三种方式可以指定Task指定顺序：</p>
+<ol>
+<li>dependsOn 强依赖方式</li>
+<li>通过Task输入输出</li>
+<li>通过API指定执行顺序</li>
+</ol>
+<p>详细的可以参考官网文档：<a target="_blank" rel="noopener" href="https://docs.gradle.org/current/dsl/org.gradle.api.Task.html">https://docs.gradle.org/current/dsl/org.gradle.api.Task.html</a></p>
+<h3 id="动态分配任务"><a href="#动态分配任务" class="headerlink" title="动态分配任务"></a>动态分配任务</h3><p>gradle支持在循环中注册同一类型的多个任务：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">4</span>.<span class="keyword">times</span> &#123;counter-&gt;&#123;  </span><br><span class="line">	tasks.register(<span class="string">&quot;task$counter&quot;</span>)&#123;  </span><br><span class="line">		<span class="keyword">doLast</span> &#123;<span class="keyword">println</span> <span class="string">&quot;task$counter&quot;</span>&#125;  </span><br><span class="line">	&#125;  </span><br><span class="line">&#125;&#125;  </span><br><span class="line">  <span class="comment">//注册完任务之后，可以通过 API 访问他们，比如在运行时动态的向任务添加依赖项</span></span><br><span class="line">tasks.named(<span class="string">&#x27;task0&#x27;</span>)&#123;  </span><br><span class="line">	dependsOn(<span class="string">&#x27;task1&#x27;</span>,<span class="string">&#x27;task2&#x27;</span>)  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="任务的关系和开启"><a href="#任务的关系和开启" class="headerlink" title="任务的关系和开启"></a>任务的关系和开启</h3><p>每个任务都有一个 enabled 标志，默认为 true ，将其设置为 flase 可以阻止任务执行，任务将会标记为”跳过”</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> A&#123;  </span><br><span class="line">	enabled = <span class="keyword">false</span>  </span><br><span class="line">	<span class="keyword">doLast</span> &#123;<span class="keyword">println</span>(<span class="string">&#x27;Task A&#x27;</span>)&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="任务超时"><a href="#任务超时" class="headerlink" title="任务超时"></a>任务超时</h3><p>每个任务都有一个 timeout 属性可以限制其执行时间，当任务达到超时时间时，任务执行线程将被中断，该任务将被标记为失败。如果 –continue 使用，其他任务可以在此之后继续运行。</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> A&#123;  </span><br><span class="line">	<span class="keyword">doLast</span> &#123;  </span><br><span class="line">		Thread.sleep(<span class="number">1000</span>)  </span><br><span class="line">		<span class="keyword">println</span>(<span class="string">&#x27;Task A&#x27;</span>)  </span><br><span class="line">	&#125;  </span><br><span class="line">	timeout = Duration.ofMillis(<span class="number">500</span>)  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">task</span> B&#123;  </span><br><span class="line">	<span class="keyword">doLast</span> &#123;<span class="keyword">println</span>(<span class="string">&#x27;task B&#x27;</span>)&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在控制台使用: gradle A B 测试会发现执行 A 的时候,由于 A 执行超时，抛出异常，所以没有继续往下执行【B 也没执行】。 然后在控制台使用: gradle A B –continue,测试会发现 a 虽然执行失败，但是 B 还是执行</p>
+<h3 id="任务的查找"><a href="#任务的查找" class="headerlink" title="任务的查找"></a>任务的查找</h3><p>常见的任务查找方法：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过任务名查找</span></span><br><span class="line">tasks.getByName()  </span><br><span class="line">tasks.findByName()  </span><br><span class="line"><span class="comment">//通过相对路径查找</span></span><br><span class="line">tasks.getByPath()  </span><br><span class="line">tasks.findByPath()</span><br></pre></td></tr></table></figure>
+
+<h3 id="任务的规则"><a href="#任务的规则" class="headerlink" title="任务的规则"></a>任务的规则</h3><p>当我们执行或者依赖一个不存在的任务时，gradle会执行失败，报错误信息，那我们是否能够修改规则，当一个任务不存在时，不是报错而是打印提示信息呢？</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> hello &#123; </span><br><span class="line">	<span class="keyword">doLast</span> &#123; </span><br><span class="line">		<span class="keyword">println</span> <span class="string">&#x27;hello world!&#x27;</span> </span><br><span class="line">	&#125;</span><br><span class="line">&#125; </span><br><span class="line">tasks.addRule(<span class="string">&quot;对该规则的一个描述，便于调试、查看等&quot;</span>)&#123;</span><br><span class="line">	String taskName -&gt; <span class="keyword">task</span>(taskName) &#123;</span><br><span class="line">		<span class="keyword">doLast</span> &#123; </span><br><span class="line">			<span class="keyword">println</span> <span class="string">&quot;该$&#123;taskName&#125;任务不存在，请查证后再执行&quot;</span> </span><br><span class="line">		&#125;</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试: 使用 gradle abc hello 进行测试,此时当 abc 任务不存在时，也不会报异常【不中断执行】而是提示自定义的规则信 息，继续执行 hello 任务。此外，它还可以根据不同的规则动态创建需要的任务等情况。</p>
+<h3 id="任务的-onlyIf-断言"><a href="#任务的-onlyIf-断言" class="headerlink" title="任务的 onlyIf 断言"></a>任务的 onlyIf 断言</h3><p>断言就是一个条件表达式。Task 有一个 onlyIf 方法。它接受一个闭包作为参数，如果该闭包返回 true 则该任务执行， 否则跳过。这有很多用途，比如控制程序哪些情况下打什么包，什么时候执行单元测试，什么情况下执行单元测试的时 候不执行网络测试等。具体案例如下所示:</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> hello &#123; </span><br><span class="line">	<span class="keyword">doLast</span> &#123; </span><br><span class="line">		<span class="keyword">println</span> <span class="string">&#x27;hello 尚硅谷的粉丝们&#x27;</span> </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//是否存在 fensi 属性</span></span><br><span class="line">hello.onlyIf &#123; !<span class="keyword">project</span>.hasProperty(<span class="string">&#x27;fensi&#x27;</span>) &#125;</span><br></pre></td></tr></table></figure>
+<p>测试：通过-P 为 Projec<br>gradle hello -Pfensi</p>
+<h2 id="gradle中的文件操作"><a href="#gradle中的文件操作" class="headerlink" title="gradle中的文件操作"></a>gradle中的文件操作</h2><p>几种常见的文件操作方式：</p>
+<ul>
+<li>本地文件</li>
+<li>文件集合</li>
+<li>文件树</li>
+<li>文件拷贝</li>
+<li>归档文件</li>
+</ul>
+<h3 id="本地文件"><a href="#本地文件" class="headerlink" title="本地文件"></a>本地文件</h3><p>使用 <code>Project.file(java.lang.Object)</code>方法，通过指定文件的相对路径或绝对路径来对文件的操作,其中相对路径为相对当前 project[根 project 或者子 project]的目录。其实使用 <code>Project.file(java.lang.Object)</code>方法创建的 File 对象就是 Java 中的 File 对象，我们可以使用它就像在 Java 中使用一样</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用相对路径 </span></span><br><span class="line"><span class="keyword">File</span> configFile = <span class="keyword">file</span>(<span class="string">&#x27;src/conf.xml&#x27;</span>) </span><br><span class="line">configFile.createNewFile(); </span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用绝对路径 </span></span><br><span class="line">configFile = <span class="keyword">file</span>(<span class="string">&#x27;D:\\conf.xml&#x27;</span>) </span><br><span class="line"><span class="keyword">println</span>(configFile.createNewFile()) </span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用一个文件对象 </span></span><br><span class="line">configFile = <span class="keyword">new</span> <span class="keyword">File</span>(<span class="string">&#x27;src/config.xml&#x27;</span>)</span><br><span class="line"><span class="keyword">println</span>(configFile.exists())</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件集合"><a href="#文件集合" class="headerlink" title="文件集合"></a>文件集合</h3><p>文 件 集 合 就 是 一 组 文 件 的 列 表 , 在 Gradle 中 , 文 件 集 合 用 FileCollection 接 口 表 示 。 我 们 可 以 使 用 Project.files(java.lang.Object[])方法来获得一个文件集合对象</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> collection = files(<span class="string">&#x27;src/test1.txt&#x27;</span>,<span class="keyword">new</span> <span class="keyword">File</span>(<span class="string">&#x27;src/test2.txt&#x27;</span>),[<span class="string">&#x27;src/test3.txt&#x27;</span>, <span class="string">&#x27;src/test4.txt&#x27;</span>]) </span><br><span class="line">collection.forEach()&#123;<span class="keyword">File</span> it -&gt; </span><br><span class="line">	it.createNewFile() <span class="comment">//创建该文件 </span></span><br><span class="line">	<span class="keyword">println</span> it.name <span class="comment">//输出文件名 </span></span><br><span class="line">&#125;</span><br><span class="line">Set set1 = collection.files <span class="comment">// 把文件集合转换为java中的Set类型 </span></span><br><span class="line">Set set2 = collection as Set </span><br><span class="line">List list = collection as List<span class="comment">// 把文件集合转换为java中的List类型 </span></span><br><span class="line"><span class="keyword">for</span> (item in list) &#123; </span><br><span class="line">	<span class="keyword">println</span> item.name</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">def</span> union = collection + files(<span class="string">&#x27;src/test5.txt&#x27;</span>) <span class="comment">// 添加或者删除一个集合</span></span><br><span class="line"><span class="keyword">def</span> <span class="keyword">minus</span> = collection - files(<span class="string">&#x27;src/test3.txt&#x27;</span>) </span><br><span class="line">union.forEach()&#123;<span class="keyword">File</span> it -&gt;</span><br><span class="line">	<span class="keyword">println</span> it.name</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于文件集合我们可以遍历它；也可以把它转换成 java 类型；同时还能使用+来添加一个集合，或使用-来删除集合。</p>
+<h3 id="文件树"><a href="#文件树" class="headerlink" title="文件树"></a>文件树</h3><p>文件树是有层级结构的文件集合,一个文件树它可以代表一个目录结构或一 ZIP 压缩包中的内容结构。文件树是从文件集 合继承过来的,所以文件树具有文件集合所有的功能。我们可以使用 Project.fileTree(java.util.Map)方法来创建文件树对象， 还可以使用过虑条件来包含或排除相关文件。</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 第一种方式:使用路径创建文件树对象，同时指定包含的文件</span></span><br><span class="line">tree = <span class="keyword">fileTree</span>(<span class="string">&#x27;src/main&#x27;</span>).<span class="keyword">include</span>(<span class="string">&#x27;**/*.java&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//第二种方式:通过闭包创建文件树: </span></span><br><span class="line">tree = <span class="keyword">fileTree</span>(<span class="string">&#x27;src/main&#x27;</span>) &#123; </span><br><span class="line">	<span class="keyword">include</span> <span class="string">&#x27;**/*.java&#x27;</span></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"> <span class="comment">//第三种方式:通过路径和闭包创建文件树：具名参数给map传值</span></span><br><span class="line">tree = <span class="keyword">fileTree</span>(dir: <span class="string">&#x27;src/main&#x27;</span>, <span class="keyword">include</span>: <span class="string">&#x27;**/*.java&#x27;</span>) </span><br><span class="line"></span><br><span class="line">tree = <span class="keyword">fileTree</span>(dir: <span class="string">&#x27;src/main&#x27;</span>, <span class="keyword">includes</span>: [<span class="string">&#x27;**/*.java&#x27;</span>, <span class="string">&#x27;**/*.xml&#x27;</span>, <span class="string">&#x27;**/*.txt&#x27;</span>], <span class="keyword">exclude</span>: <span class="string">&#x27;**/*test*/**&#x27;</span>)</span><br><span class="line"></span><br><span class="line">tree.<span class="keyword">each</span> &#123;<span class="keyword">File</span> <span class="keyword">file</span> -&gt; <span class="comment">// 遍历文件树的所有文件</span></span><br><span class="line">	<span class="keyword">println</span> <span class="keyword">file</span></span><br><span class="line">	<span class="keyword">println</span> <span class="keyword">file</span>.name </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件拷贝"><a href="#文件拷贝" class="headerlink" title="文件拷贝"></a>文件拷贝</h3><p>我们可以使用 Copy 任务来拷贝文件，通过它可以过虑指定拷贝内容，还能对文件进行重命名操作等。Copy 任务必须指 定一组需要拷贝的文件和拷贝到的目录，这里使用 CopySpec.from(java.lang.Object[])方法指定原文件；使用 CopySpec.into(java.lang.Object)方法指定目标目录。</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> copyTask(type: <span class="keyword">Copy</span>) &#123; </span><br><span class="line">	<span class="keyword">from</span> <span class="string">&#x27;src/main/resources&#x27;</span> </span><br><span class="line">	<span class="keyword">into</span> <span class="string">&#x27;build/config&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>from()方法接受的参数和文件集合时 files()一样。当参数为一个目录时，该目录下所有的文件都会被拷贝到指定目录下（目 录自身不会被拷贝）；当参数为一个文件时，该文件会被拷贝到指定目录；如果参数指定的文件不存在，就会被忽略； 当参数为一个 Zip 压缩文件，该压缩文件的内容会被拷贝到指定目录。<br>into()方法接受的参数与本地文件时 file()一样。</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> copyTask(type: <span class="keyword">Copy</span>) &#123; </span><br><span class="line">	<span class="comment">// 拷贝src/main/webapp目录下所有的文件 </span></span><br><span class="line">	<span class="keyword">from</span> <span class="string">&#x27;src/main/webapp&#x27;</span> </span><br><span class="line">	<span class="comment">// 拷贝单独的一个文件 </span></span><br><span class="line">	<span class="keyword">from</span> <span class="string">&#x27;src/staging/index.html&#x27;</span> </span><br><span class="line">	<span class="comment">// 从Zip压缩文件中拷贝内容 </span></span><br><span class="line">	<span class="keyword">from</span> zipTree(<span class="string">&#x27;src/main/assets.zip&#x27;</span>) </span><br><span class="line">	<span class="comment">// 拷贝到的目标目录 </span></span><br><span class="line">	<span class="keyword">into</span> <span class="string">&#x27;build/explodedWar&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在拷贝文件的时候还可以添加过虑条件来指定包含或排除的文件，示例如下：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> copyTaskWithPatterns(type: <span class="keyword">Copy</span>) &#123; </span><br><span class="line">	<span class="keyword">from</span> <span class="string">&#x27;src/main/webapp&#x27;</span> </span><br><span class="line">	<span class="keyword">into</span> <span class="string">&#x27;build/explodedWar&#x27;</span> </span><br><span class="line">	<span class="keyword">include</span> <span class="string">&#x27;**/*.html&#x27;</span> <span class="keyword">include</span> <span class="string">&#x27;**/*.jsp&#x27;</span> </span><br><span class="line">	<span class="keyword">exclude</span> &#123; details -&gt; details.<span class="keyword">file</span>.name.endsWith(<span class="string">&#x27;.html&#x27;</span>) &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在拷贝文件的时候还可以对文件进行重命名操作，示例如下：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> rename(type: <span class="keyword">Copy</span>) &#123; </span><br><span class="line">	<span class="keyword">from</span> <span class="string">&#x27;src/main/webapp&#x27;</span> </span><br><span class="line">	<span class="keyword">into</span> <span class="string">&#x27;build/explodedWar&#x27;</span> </span><br><span class="line">	<span class="comment">// 使用一个闭包方式重命名文件 </span></span><br><span class="line">	rename &#123; String fileName -&gt; </span><br><span class="line">		fileName.replace(<span class="string">&#x27;-staging-&#x27;</span>, <span class="string">&#x27;&#x27;</span>) </span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中我们都是使用 Copy 任务来完成拷贝功能的，那么有没有另外一种方式呢？答案是肯定的，那就是 Project.copy(org.gradle.api.Action)方法。下面示例展示了 copy()方法的使用方式：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">task</span> copyMethod &#123; </span><br><span class="line">	<span class="keyword">doLast</span> &#123; </span><br><span class="line">		<span class="keyword">copy</span> &#123; </span><br><span class="line">			<span class="keyword">from</span> <span class="string">&#x27;src/main/webapp&#x27;</span> </span><br><span class="line">			<span class="keyword">into</span> <span class="string">&#x27;build/explodedWar&#x27;</span> </span><br><span class="line">			<span class="keyword">include</span> <span class="string">&#x27;**/*.html&#x27;</span></span><br><span class="line">			<span class="keyword">include</span> <span class="string">&#x27;**/*.jsp&#x27;</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或者使用 project 对象的 copy 方法</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">copy</span> &#123; </span><br><span class="line">	<span class="comment">//相对路径或者绝对路径 </span></span><br><span class="line">	<span class="keyword">from</span> <span class="keyword">file</span>(<span class="string">&#x27;src/main/resources/ddd.txt&#x27;</span>) <span class="comment">//file也可以换成new File()</span></span><br><span class="line">	<span class="keyword">into</span> <span class="keyword">this</span>.buildDir.absolutePath</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行 gradle build 指令即可。去 build 目录的本地磁盘查看，就能看到</p>
+<h3 id="归档文件"><a href="#归档文件" class="headerlink" title="归档文件"></a>归档文件</h3><p>通常一个项目会有很多的 Jar 包，我们希望把项目打包成一个 WAR，ZIP 或 TAR 包进行发布，这时我们就可以使用 Zip，Tar，Jar，War 和 Ear 任务来实现，不过它们的用法都一样，所以在这里我只介绍 Zip 任务的示例。 首先，创建一个 Zip 压缩文件,并指定压缩文件名称，如下代码所示：</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">apply plugin: <span class="string">&#x27;java&#x27;</span></span><br><span class="line">version=<span class="number">1.0</span> </span><br><span class="line"><span class="keyword">task</span> myZip(type: Zip) &#123; </span><br><span class="line">	<span class="keyword">from</span> <span class="string">&#x27;src/main&#x27;</span> </span><br><span class="line">	<span class="keyword">into</span> <span class="string">&#x27;build&#x27;</span> <span class="comment">//保存到build目录中 </span></span><br><span class="line">	baseName = <span class="string">&#x27;myGame&#x27;</span> </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">println</span> myZip.archiveNam</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Dependencies"><a href="#Dependencies" class="headerlink" title="Dependencies"></a>Dependencies</h2><h3 id="依赖方式"><a href="#依赖方式" class="headerlink" title="依赖方式"></a>依赖方式</h3><p>Gradle 中的依赖分别为直接依赖，项目依赖，本地 jar</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123; </span><br><span class="line">	<span class="comment">//①.依赖当前项目下的某个模块[子工程] </span></span><br><span class="line">	implementation <span class="keyword">project</span>(<span class="string">&#x27;:subject01&#x27;</span>) </span><br><span class="line">	</span><br><span class="line">	<span class="comment">//②.直接依赖本地的某个jar文件 </span></span><br><span class="line">	implementation files(<span class="string">&#x27;libs/foo.jar&#x27;</span>, <span class="string">&#x27;libs/bar.jar&#x27;</span>) </span><br><span class="line">	</span><br><span class="line">	<span class="comment">//②.配置某文件夹作为依赖项 </span></span><br><span class="line">	implementation <span class="keyword">fileTree</span>(dir: <span class="string">&#x27;libs&#x27;</span>, <span class="keyword">include</span>: [<span class="string">&#x27;*.jar&#x27;</span>]) </span><br><span class="line">	</span><br><span class="line">	<span class="comment">//③.直接依赖 </span></span><br><span class="line">	implementation <span class="string">&#x27;org.apache.logging.log4j:log4j:2.17.2&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>直接依赖：在项目中直接导入的依赖，就是直接依赖</li>
+<li>项目依赖: 从项目的某个模块依赖另一个模块</li>
+<li>本地 jar 依赖：本地 jar 文件依赖，一般包含以下两种方式</li>
+</ul>
+<h3 id="依赖下载"><a href="#依赖下载" class="headerlink" title="依赖下载"></a>依赖下载</h3><p>当执行 build 命令时，gradle 就会去配置的依赖仓库中下载对应的 Jar，并应用到项目中。</p>
+<h3 id="依赖的类型"><a href="#依赖的类型" class="headerlink" title="依赖的类型"></a>依赖的类型</h3><p>类似于 Maven 的 scope 标签，gradle 也提供了依赖的类型,具体如下所示</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">compileOnly</td>
+<td align="center">由java插件提供,曾短暂的叫provided,后续版本已经改成了compileOnly,适用于编译期需要而不需要打包的情况</td>
+</tr>
+<tr>
+<td align="center">runtimeOnly</td>
+<td align="center">由 java 插件提供,只在运行期有效,编译时不需要,比如 mysql 驱动包。,取代老版本中被移除的 runtime</td>
+</tr>
+<tr>
+<td align="center">implementation</td>
+<td align="center">由 java 插件提供,针对源码[src/main 目录] ,在编译、运行时都有效,取代老版本中被移除的 compile</td>
+</tr>
+<tr>
+<td align="center">testCompileOnly</td>
+<td align="center">由 java 插件提供,用于编译测试的依赖项，运行时不需要</td>
+</tr>
+<tr>
+<td align="center">testRuntimeOnly</td>
+<td align="center">由 java 插件提供,只在测试运行时需要，而不是在测试编译时需要,取代老版本中被移除的 testRuntime</td>
+</tr>
+<tr>
+<td align="center">testImplementation</td>
+<td align="center">由 java 插件提供,针对测试代码[src/test 目录] 取代老版本中被移除的 testCompile</td>
+</tr>
+<tr>
+<td align="center">providedCompile</td>
+<td align="center">war 插件提供支持，编译、测试阶段代码需要依赖此类 jar 包，而运行阶段容器已经提供了相应的支持，所 以无需将这些文件打入到 war 包中了;例如 servlet-api.jar、jsp-api.jar</td>
+</tr>
+<tr>
+<td align="center">api</td>
+<td align="center">java-library 插件提供支持,这些依赖项可以传递性地导出给使用者，用于编译时和运行时。取代老版本中被 移除的 compile</td>
+</tr>
+<tr>
+<td align="center">compileOnlyApi</td>
+<td align="center">java-library 插件提供支持,在声明模块和使用者在编译时需要的依赖项，但在运行时不需要</td>
+</tr>
+<tr>
+<td align="center">官方文档：</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/java_library_plugin.html">各个依赖范围的关系和说明</a></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/upgrading_version_6.html">依赖范围升级和移除</a></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/java_library_plugin.html#java_library_plugin">API 和 implemention 区别</a></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://docs.gradle.org/current/userguide/java_plugin.html">执行java 命令时都使用了哪些依赖范围的依赖。</a></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>java 插件提供的功能，java-library 插件都提供（java-library可以替代java插件）。</p>
+<h3 id="api-与-implementation-区别"><a href="#api-与-implementation-区别" class="headerlink" title="api 与 implementation 区别"></a>api 与 implementation 区别</h3><p>| api | implementation|<br>|:—-:|:—-:|:—-:|<br>|编译时|能进行依赖传递，底层变，全部都要变，编译速度慢|不能进行依赖传递，底层变，不用全部都要变，编译速度快|<br>|运行时|运行时会加载，所有模块的class都要被加载|运行时会加载，所有模块的class都要被加载|<br>|应用场景|适用于多模块依赖，避免重复依赖模块|多数情况下使用implementation|</p>
+<p><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/gradle%E4%BE%9D%E8%B5%96%E4%BC%A0%E9%80%92%E5%9B%BE%E7%A4%BA.png" alt="gradle依赖传递图示"></p>
+<p><strong>编译时</strong>:如果 libC 的内容发生变化,由于使用的是 api 依赖,依赖会传递,所以 libC、libA、projectX 都要发生变化,都需要重新编译,速度慢；<br><strong>运行时：</strong> libC、libA、projectX 中的 class 都要被加载。<br><strong>编译时:</strong> 如果 libD 的内容发生变化,由于使用的是 implemetation 依赖,依赖不会传递,只有 libD、libB 要变化并重新编译,速度快。<br><strong>运行时：</strong> libC、libA、projectX 中的 class 都要被加载。</p>
+<h3 id="依赖冲突及解决方案"><a href="#依赖冲突及解决方案" class="headerlink" title="依赖冲突及解决方案"></a>依赖冲突及解决方案</h3><p>依赖冲突是指在编译过程中，如果存在某个依赖的多个版本，构建系统是应该选择哪个进行构建的问题。<br>gradle默认情况下会使用最新的版本，因为考虑到大多数情况下新版本都会向下兼容<br>不过也可以强制排除某个版本<br><strong>排除某个依赖</strong></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line"></span><br><span class="line">	testImplementation <span class="string">&#x27;org.junit.jupiter:junit-jupiter-api:5.8.1&#x27;</span>  </span><br><span class="line">	testRuntimeOnly <span class="string">&#x27;org.junit.jupiter:junit-jupiter-engine:5.8.1&#x27;</span>  </span><br><span class="line">	implementation(<span class="string">&#x27;org.hibernate:hibernate-core:3.6.3.Final&#x27;</span>)&#123;</span><br><span class="line">		<span class="comment">//排除某一个库(slf4j)依赖:如下三种写法都行  </span></span><br><span class="line">		<span class="keyword">exclude</span> <span class="keyword">group</span>: <span class="string">&#x27;org.slf4j&#x27;</span>  </span><br><span class="line">		<span class="keyword">exclude</span> module: <span class="string">&#x27;slf4j-api&#x27;</span>  </span><br><span class="line">		<span class="keyword">exclude</span> <span class="keyword">group</span>: <span class="string">&#x27;org.slf4j&#x27;</span>,module: <span class="string">&#x27;slf4j-api&#x27;</span></span><br><span class="line">	&#125;  </span><br><span class="line">	<span class="comment">//排除之后,使用手动的引入即可。  </span></span><br><span class="line">	implementation <span class="string">&#x27;org.slf4j:slf4j-api:1.4.0&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>不允许依赖传递</strong></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">	testImplementation <span class="string">&#x27;org.junit.jupiter:junit-jupiter-api:5.8.1&#x27;</span>  </span><br><span class="line">	testRuntimeOnly <span class="string">&#x27;org.junit.jupiter:junit-jupiter-engine:5.8.1&#x27;</span>  </span><br><span class="line">	implementation(<span class="string">&#x27;org.hibernate:hibernate-core:3.6.3.Final&#x27;</span>)&#123;</span><br><span class="line">		<span class="comment">//不允许依赖传递，一般不用  </span></span><br><span class="line">		transitive(<span class="keyword">false</span>)</span><br><span class="line">	&#125;  </span><br><span class="line">	<span class="comment">//排除之后,使用手动的引入即可  </span></span><br><span class="line">	implementation <span class="string">&#x27;org.slf4j:slf4j-api:1.4.0&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>强制使用某个版本</strong></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dependencies</span> &#123;</span><br><span class="line">	testImplementation <span class="string">&#x27;org.junit.jupiter:junit-jupiter-api:5.8.1&#x27;</span>  </span><br><span class="line">	testRuntimeOnly <span class="string">&#x27;org.junit.jupiter:junit-jupiter-engine:5.8.1&#x27;</span>  </span><br><span class="line">	implementation(<span class="string">&#x27;org.hibernate:hibernate-core:3.6.3.Final&#x27;</span>)  </span><br><span class="line">	<span class="comment">//强制使用某个版本!!【官方建议使用这种方式】  </span></span><br><span class="line">	implementation(<span class="string">&#x27;org.slf4j:slf4j-api:1.4.0!!&#x27;</span>)  </span><br><span class="line">	<span class="comment">//这种效果和上面那种一样,强制指定某个版本  </span></span><br><span class="line">	implementation(<span class="string">&#x27;org.slf4j:slf4j-api:1.4.0&#x27;</span>)&#123;</span><br><span class="line">		version&#123;</span><br><span class="line">			strictly(<span class="string">&quot;1.4.0&quot;</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//下面我们配置，当 Gradle 构建遇到依赖冲突时，就立即构建失败  </span></span><br><span class="line"><span class="keyword">configurations</span>.all() &#123;</span><br><span class="line">	Configuration configuration -&gt;</span><br><span class="line">		<span class="comment">//当遇到版本冲突时直接构建失败  </span></span><br><span class="line">		configuration.resolutionStrategy.failOnVersionConflict()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Gradle插件"><a href="#Gradle插件" class="headerlink" title="Gradle插件"></a>Gradle插件</h2><h3 id="使用插件的原因"><a href="#使用插件的原因" class="headerlink" title="使用插件的原因"></a>使用插件的原因</h3><p>简单的说,通过应用插件我们可以:</p>
+<ol>
+<li>促进代码重用、减少功能类似代码编写、提升工作效率  </li>
+<li>促进项目更高程度的模块化、自动化、便捷化  </li>
+<li>可插拔式的的扩展项目的功能</li>
+</ol>
+<h3 id="插件的作用"><a href="#插件的作用" class="headerlink" title="插件的作用"></a>插件的作用</h3><p>在项目构建过程中做很多事情，把插件应用到项目中，通常可以完成:</p>
+<ol>
+<li>可以添加任务【task】到项目中，从而帮助完成测试、编译、打包等。</li>
+<li>可以添加依赖配置到项目中。</li>
+<li>可以向项目中拓展新的扩展属性、方法等。</li>
+<li>可以对项目进行一些约定，如应用 Java 插件后，约定 src/main/java 目录是我们的源代码存在位置，编译时编译这个目录下的 Java 源代码文件。</li>
+</ol>
+<h3 id="插件的分类和使用"><a href="#插件的分类和使用" class="headerlink" title="插件的分类和使用"></a>插件的分类和使用</h3><p><img src="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/%E6%8F%92%E4%BB%B6%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E4%BD%BF%E7%94%A8%E5%9B%BE%E7%A4%BA.png" alt="插件的分类和使用图示"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gradle/" rel="tag"><i class="fa fa-tag"></i> gradle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/11/04/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E5%9B%BE%E7%81%B5%E8%AF%BE%E5%A0%82mongodb/%E5%9B%BE%E7%81%B5%E8%AF%BE%E5%A0%82MongoDB/" rel="prev" title="图灵课堂MongoDB(一)">
+      <i class="fa fa-chevron-left"></i> 图灵课堂MongoDB(一)
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle%E5%85%A5%E9%97%A8"><span class="nav-number">1.</span> <span class="nav-text">Gradle入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7"><span class="nav-number">1.1.</span> <span class="nav-text">常见的项目构建工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle%E5%AE%89%E8%A3%85"><span class="nav-number">1.2.</span> <span class="nav-text">Gradle安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85jdk"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装jdk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E5%B9%B6%E8%A7%A3%E5%8E%8B%E5%88%B0%E6%8C%87%E5%AE%9A%E7%9B%AE%E5%BD%95"><span class="nav-number">1.2.2.</span> <span class="nav-text">下载并解压到指定目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.2.3.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E6%98%AF%E5%90%A6%E6%8C%89%E7%85%A7%E6%88%90%E5%8A%9F"><span class="nav-number">1.2.4.</span> <span class="nav-text">检查是否按照成功</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">Gradle项目目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAgradle%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.4.</span> <span class="nav-text">创建gradle项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle%E4%B8%AD%E7%9A%84%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.5.</span> <span class="nav-text">Gradle中的常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9Gradle%E4%B8%8B%E8%BD%BD%E6%BA%90"><span class="nav-number">1.5.1.</span> <span class="nav-text">修改Gradle下载源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A4%E8%AF%86init-d%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">认识init.d文件夹</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8init-d%E6%96%87%E4%BB%B6%E5%A4%B9%E5%88%9B%E5%BB%BAinit-gradle%E6%96%87%E4%BB%B6"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">在init.d文件夹创建init.gradle文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E7%94%A8-init-gradle-%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">启用 init.gradle 文件的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80%E8%AF%B4%E6%98%8E"><span class="nav-number">1.5.1.4.</span> <span class="nav-text">仓库地址说明</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Wrapper%E5%8C%85%E8%A3%85%E5%99%A8"><span class="nav-number">1.5.2.</span> <span class="nav-text">Wrapper包装器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle%E5%92%8Cidea%E6%95%B4%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">Gradle和idea整合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Groovy%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">Groovy简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Groovy%E5%AE%89%E8%A3%85"><span class="nav-number">2.2.</span> <span class="nav-text">Groovy安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Groovy%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">Groovy基本语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle-%E5%AF%B9%E6%B5%8B%E8%AF%95%E7%9A%84%E6%94%AF%E6%8C%81"><span class="nav-number">2.4.</span> <span class="nav-text">Gradle 对测试的支持</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Junit%E4%BD%BF%E7%94%A8"><span class="nav-number">2.4.1.</span> <span class="nav-text">Junit使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%85%E5%90%AB%E5%92%8C%E6%8E%92%E9%99%A4%E7%89%B9%E5%AE%9A%E6%B5%8B%E8%AF%95"><span class="nav-number">2.4.2.</span> <span class="nav-text">包含和排除特定测试</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle%E8%BF%9B%E9%98%B6"><span class="nav-number">3.</span> <span class="nav-text">Gradle进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">3.1.</span> <span class="nav-text">项目的生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#settings%E6%96%87%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">settings文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Task"><span class="nav-number">3.3.</span> <span class="nav-text">Task</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"><span class="nav-number">3.3.1.</span> <span class="nav-text">任务的依赖关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C"><span class="nav-number">3.3.2.</span> <span class="nav-text">任务执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%AE%9A%E4%B9%89-%E6%96%B9%E5%BC%8F"><span class="nav-number">3.3.3.</span> <span class="nav-text">任务的定义 方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.3.4.</span> <span class="nav-text">任务类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="nav-number">3.3.5.</span> <span class="nav-text">任务的执行顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E4%BB%BB%E5%8A%A1"><span class="nav-number">3.3.6.</span> <span class="nav-text">动态分配任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%85%B3%E7%B3%BB%E5%92%8C%E5%BC%80%E5%90%AF"><span class="nav-number">3.3.7.</span> <span class="nav-text">任务的关系和开启</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E8%B6%85%E6%97%B6"><span class="nav-number">3.3.8.</span> <span class="nav-text">任务超时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-number">3.3.9.</span> <span class="nav-text">任务的查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E8%A7%84%E5%88%99"><span class="nav-number">3.3.10.</span> <span class="nav-text">任务的规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84-onlyIf-%E6%96%AD%E8%A8%80"><span class="nav-number">3.3.11.</span> <span class="nav-text">任务的 onlyIf 断言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradle%E4%B8%AD%E7%9A%84%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">3.4.</span> <span class="nav-text">gradle中的文件操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6"><span class="nav-number">3.4.1.</span> <span class="nav-text">本地文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E9%9B%86%E5%90%88"><span class="nav-number">3.4.2.</span> <span class="nav-text">文件集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%A0%91"><span class="nav-number">3.4.3.</span> <span class="nav-text">文件树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D"><span class="nav-number">3.4.4.</span> <span class="nav-text">文件拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%92%E6%A1%A3%E6%96%87%E4%BB%B6"><span class="nav-number">3.4.5.</span> <span class="nav-text">归档文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dependencies"><span class="nav-number">3.5.</span> <span class="nav-text">Dependencies</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E6%96%B9%E5%BC%8F"><span class="nav-number">3.5.1.</span> <span class="nav-text">依赖方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E4%B8%8B%E8%BD%BD"><span class="nav-number">3.5.2.</span> <span class="nav-text">依赖下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.5.3.</span> <span class="nav-text">依赖的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#api-%E4%B8%8E-implementation-%E5%8C%BA%E5%88%AB"><span class="nav-number">3.5.4.</span> <span class="nav-text">api 与 implementation 区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E5%86%B2%E7%AA%81%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">3.5.5.</span> <span class="nav-text">依赖冲突及解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle%E6%8F%92%E4%BB%B6"><span class="nav-number">3.6.</span> <span class="nav-text">Gradle插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">3.6.1.</span> <span class="nav-text">使用插件的原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">3.6.2.</span> <span class="nav-text">插件的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">3.6.3.</span> <span class="nav-text">插件的分类和使用</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YS"
+      src="/images/author.png">
+  <p class="site-author-name" itemprop="name">YS</p>
+  <div class="site-description" itemprop="description">学海无涯苦作舟</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">YS</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
+      appKey     : 'BCtPpmnU41TOE7Wr5O0CJFgS',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
