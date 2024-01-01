@@ -2,9 +2,10 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/ys_ico.ico">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/ys_ico.ico">
@@ -13,15 +14,14 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"ysymj.gitee.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
-  </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
 
-  <meta name="description" content="Gradle是一个基于Apache Ant和Apache Maven概念的项目自动化构建开源工具。它使用一种基于Groovy的特定领域语言(DSL)来声明项目设置，也增加了基于Kotlin语言的kotlin-based DSL，抛弃了基于XML的各种繁琐配置。">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ysymj.gitee.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.19.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Gradle是一个基于Apache Ant和Apache Maven概念的项目自动化构建开源工具。它使用一种基于Groovy的特定领域语言(DSL)来声明项目设置，也增加了基于Kotlin语言的kotlin-based DSL，抛弃了基于XML的各种繁琐配置。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="gradle基础内容">
 <meta property="og:url" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/index.html">
@@ -61,20 +61,15 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/%E6%9F%A5%E7%9C%8Bidea%E5%AF%B9%E5%BA%94%E7%9A%84gradle%E5%9B%BE%E7%A4%BA.png">
 
+
 <link rel="canonical" href="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/">
 
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
 
-  <title>gradle基础内容 | YS</title>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/","path":"2023/04/08/java基础/包管理工具/gradle/gradle基础内容/","title":"gradle基础内容"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>gradle基础内容 | YS</title>
   
 
 
@@ -82,57 +77,39 @@
 
 
 
+
+
   <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
   <div class="site-meta">
 
     <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">YS</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
+      <p class="site-title">YS</p>
+      <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">学无止境</p>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
         <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
@@ -140,34 +117,8 @@
 
 
 
-
 <nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -178,115 +129,164 @@
 
 
   <div class="search-pop-overlay">
-    <div class="popup search-popup">
-        <div class="search-header">
+    <div class="popup search-popup"><div class="search-header">
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
   <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
            placeholder="搜索..." spellcheck="false"
            type="search" class="search-input">
   </div>
-  <span class="popup-btn-close">
+  <span class="popup-btn-close" role="button">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
   </div>
 </div>
 
     </div>
   </div>
 
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle%E5%85%A5%E9%97%A8"><span class="nav-number">1.</span> <span class="nav-text">Gradle入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7"><span class="nav-number">1.1.</span> <span class="nav-text">常见的项目构建工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle%E5%AE%89%E8%A3%85"><span class="nav-number">1.2.</span> <span class="nav-text">Gradle安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85jdk"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装jdk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E5%B9%B6%E8%A7%A3%E5%8E%8B%E5%88%B0%E6%8C%87%E5%AE%9A%E7%9B%AE%E5%BD%95"><span class="nav-number">1.2.2.</span> <span class="nav-text">下载并解压到指定目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.2.3.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E6%98%AF%E5%90%A6%E6%8C%89%E7%85%A7%E6%88%90%E5%8A%9F"><span class="nav-number">1.2.4.</span> <span class="nav-text">检查是否按照成功</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">Gradle项目目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAgradle%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.4.</span> <span class="nav-text">创建gradle项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle%E4%B8%AD%E7%9A%84%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.5.</span> <span class="nav-text">Gradle中的常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9Gradle%E4%B8%8B%E8%BD%BD%E6%BA%90"><span class="nav-number">1.5.1.</span> <span class="nav-text">修改Gradle下载源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A4%E8%AF%86init-d%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">认识init.d文件夹</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8init-d%E6%96%87%E4%BB%B6%E5%A4%B9%E5%88%9B%E5%BB%BAinit-gradle%E6%96%87%E4%BB%B6"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">在init.d文件夹创建init.gradle文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E7%94%A8-init-gradle-%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">启用 init.gradle 文件的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80%E8%AF%B4%E6%98%8E"><span class="nav-number">1.5.1.4.</span> <span class="nav-text">仓库地址说明</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Wrapper%E5%8C%85%E8%A3%85%E5%99%A8"><span class="nav-number">1.5.2.</span> <span class="nav-text">Wrapper包装器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle%E5%92%8Cidea%E6%95%B4%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">Gradle和idea整合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Groovy%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">Groovy简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Groovy%E5%AE%89%E8%A3%85"><span class="nav-number">2.2.</span> <span class="nav-text">Groovy安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Groovy%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">Groovy基本语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle-%E5%AF%B9%E6%B5%8B%E8%AF%95%E7%9A%84%E6%94%AF%E6%8C%81"><span class="nav-number">2.4.</span> <span class="nav-text">Gradle 对测试的支持</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Junit%E4%BD%BF%E7%94%A8"><span class="nav-number">2.4.1.</span> <span class="nav-text">Junit使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%85%E5%90%AB%E5%92%8C%E6%8E%92%E9%99%A4%E7%89%B9%E5%AE%9A%E6%B5%8B%E8%AF%95"><span class="nav-number">2.4.2.</span> <span class="nav-text">包含和排除特定测试</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle%E8%BF%9B%E9%98%B6"><span class="nav-number">3.</span> <span class="nav-text">Gradle进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">3.1.</span> <span class="nav-text">项目的生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#settings%E6%96%87%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">settings文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Task"><span class="nav-number">3.3.</span> <span class="nav-text">Task</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"><span class="nav-number">3.3.1.</span> <span class="nav-text">任务的依赖关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C"><span class="nav-number">3.3.2.</span> <span class="nav-text">任务执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%AE%9A%E4%B9%89-%E6%96%B9%E5%BC%8F"><span class="nav-number">3.3.3.</span> <span class="nav-text">任务的定义 方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.3.4.</span> <span class="nav-text">任务类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="nav-number">3.3.5.</span> <span class="nav-text">任务的执行顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E4%BB%BB%E5%8A%A1"><span class="nav-number">3.3.6.</span> <span class="nav-text">动态分配任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%85%B3%E7%B3%BB%E5%92%8C%E5%BC%80%E5%90%AF"><span class="nav-number">3.3.7.</span> <span class="nav-text">任务的关系和开启</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E8%B6%85%E6%97%B6"><span class="nav-number">3.3.8.</span> <span class="nav-text">任务超时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-number">3.3.9.</span> <span class="nav-text">任务的查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E8%A7%84%E5%88%99"><span class="nav-number">3.3.10.</span> <span class="nav-text">任务的规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84-onlyIf-%E6%96%AD%E8%A8%80"><span class="nav-number">3.3.11.</span> <span class="nav-text">任务的 onlyIf 断言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradle%E4%B8%AD%E7%9A%84%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">3.4.</span> <span class="nav-text">gradle中的文件操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6"><span class="nav-number">3.4.1.</span> <span class="nav-text">本地文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E9%9B%86%E5%90%88"><span class="nav-number">3.4.2.</span> <span class="nav-text">文件集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%A0%91"><span class="nav-number">3.4.3.</span> <span class="nav-text">文件树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D"><span class="nav-number">3.4.4.</span> <span class="nav-text">文件拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%92%E6%A1%A3%E6%96%87%E4%BB%B6"><span class="nav-number">3.4.5.</span> <span class="nav-text">归档文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dependencies"><span class="nav-number">3.5.</span> <span class="nav-text">Dependencies</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E6%96%B9%E5%BC%8F"><span class="nav-number">3.5.1.</span> <span class="nav-text">依赖方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E4%B8%8B%E8%BD%BD"><span class="nav-number">3.5.2.</span> <span class="nav-text">依赖下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.5.3.</span> <span class="nav-text">依赖的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#api-%E4%B8%8E-implementation-%E5%8C%BA%E5%88%AB"><span class="nav-number">3.5.4.</span> <span class="nav-text">api 与 implementation 区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E5%86%B2%E7%AA%81%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">3.5.5.</span> <span class="nav-text">依赖冲突及解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle%E6%8F%92%E4%BB%B6"><span class="nav-number">3.6.</span> <span class="nav-text">Gradle插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">3.6.1.</span> <span class="nav-text">使用插件的原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">3.6.2.</span> <span class="nav-text">插件的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">3.6.3.</span> <span class="nav-text">插件的分类和使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%EF%BC%9A%E8%84%9A%E6%9C%AC%E6%8F%92%E4%BB%B6"><span class="nav-number">3.6.3.1.</span> <span class="nav-text">第一种：脚本插件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%84%8F%E4%B9%89"><span class="nav-number">3.6.3.1.1.</span> <span class="nav-text">意义</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%EF%BC%9A%E5%AF%B9%E8%B1%A1%E6%8F%92%E4%BB%B6%E4%B9%8B%E5%86%85%E9%83%A8%E6%8F%92%E4%BB%B6%E3%80%90%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6%E3%80%91"><span class="nav-number">3.6.3.2.</span> <span class="nav-text">第二种：对象插件之内部插件【核心插件】</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6%E3%80%90%E5%86%85%E9%83%A8%E6%8F%92%E4%BB%B6%E3%80%91"><span class="nav-number">3.6.3.2.1.</span> <span class="nav-text">核心插件【内部插件】</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#plugins-DSL-%E5%BC%95%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">3.6.3.2.1.1.</span> <span class="nav-text">plugins DSL 引入方式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#apply%E6%96%B9%E5%BC%8F"><span class="nav-number">3.6.3.2.1.2.</span> <span class="nav-text">apply方式</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8F%92%E4%BB%B6"><span class="nav-number">3.6.3.2.2.</span> <span class="nav-text">第三方插件</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E4%BC%A0%E7%BB%9F%E6%96%B9%E5%BC%8F"><span class="nav-number">3.6.3.2.2.1.</span> <span class="nav-text">使用传统方式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#plugins-DSL%E6%96%B9%E5%BC%8F"><span class="nav-number">3.6.3.2.2.2.</span> <span class="nav-text">plugins DSL方式</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8F%92%E4%BB%B6"><span class="nav-number">3.6.3.2.3.</span> <span class="nav-text">自定义插件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#buildSrc%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.6.4.</span> <span class="nav-text">buildSrc项目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%B9%E8%BF%9B"><span class="nav-number">3.6.4.1.</span> <span class="nav-text">改进</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%9A%84%E5%85%B3%E6%B3%A8%E7%82%B9"><span class="nav-number">3.6.5.</span> <span class="nav-text">插件的关注点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%82%B9%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E5%BC%95%E7%94%A8"><span class="nav-number">3.6.5.1.</span> <span class="nav-text">第一点：插件的引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%82%B9%EF%BC%9A%E4%B8%BB%E8%A6%81%E7%9A%84%E5%8A%9F%E8%83%BD%E3%80%90%E4%BB%BB%E5%8A%A1%E3%80%91"><span class="nav-number">3.6.5.2.</span> <span class="nav-text">第二点：主要的功能【任务】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%82%B9%EF%BC%9A%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">3.6.5.3.</span> <span class="nav-text">第三点：工程目录结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%82%B9%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="nav-number">3.6.5.4.</span> <span class="nav-text">第四点：依赖管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%82%B9%EF%BC%9A%E5%B8%B8%E7%94%A8%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-number">3.6.5.5.</span> <span class="nav-text">第五点：常用的属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#build-gradle-%E6%96%87%E4%BB%B6"><span class="nav-number">3.7.</span> <span class="nav-text">build.gradle 文件</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YS"
+      src="/images/author.png">
+  <p class="site-author-name" itemprop="name">YS</p>
+  <div class="site-description" itemprop="description">学海无涯苦作舟</div>
 </div>
-    </header>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
+  </aside>
 
 
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
+    </div>
 
-          <div class="content post posts-expand">
-            
+    <div class="main-inner post posts-expand">
 
-    
+
+  
+
+
+<div class="post-block">
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://ysymj.gitee.io/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/author.png">
       <meta itemprop="name" content="YS">
-      <meta itemprop="description" content="学海无涯苦作舟">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="YS">
+      <meta itemprop="description" content="学海无涯苦作舟">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="gradle基础内容 | YS">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           gradle基础内容
         </h1>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2023-04-08 13:44:57" itemprop="dateCreated datePublished" datetime="2023-04-08T13:44:57+08:00">2023-04-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-05-31 21:21:12" itemprop="dateModified" datetime="2023-05-31T21:21:12+08:00">2023-05-31</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/" class="post-meta-item leancloud_visitors" data-flag-title="gradle基础内容" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
       <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
+        <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2023/04/08/java%E5%9F%BA%E7%A1%80/%E5%8C%85%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/gradle/gradle%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/" itemprop="commentCount"></span>
-    </a>
-  </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-04-08 13:44:57" itemprop="dateCreated datePublished" datetime="2023-04-08T13:44:57+08:00">2023-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-31 21:21:12" itemprop="dateModified" datetime="2023-05-31T21:21:12+08:00">2023-05-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">java基础</span></a>
+        </span>
+    </span>
+
   
-  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>28k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>51 分钟</span>
+    </span>
+</div>
 
         </div>
       </header>
@@ -294,10 +294,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <h1 id="Gradle入门"><a href="#Gradle入门" class="headerlink" title="Gradle入门"></a>Gradle入门</h1><h2 id="常见的项目构建工具"><a href="#常见的项目构建工具" class="headerlink" title="常见的项目构建工具"></a>常见的项目构建工具</h2><p><strong>Ant</strong></p>
+    <div class="post-body" itemprop="articleBody"><h1 id="Gradle入门"><a href="#Gradle入门" class="headerlink" title="Gradle入门"></a>Gradle入门</h1><h2 id="常见的项目构建工具"><a href="#常见的项目构建工具" class="headerlink" title="常见的项目构建工具"></a>常见的项目构建工具</h2><p><strong>Ant</strong></p>
 <blockquote>
 <p>2000年Apache推出的纯Java编写的构建工具，通过xml [build.xml]文件管理项目<br>优点：使用灵活，速度快（快于gradle和maven）<br>缺点：Ant没有加强任何编码约定的项目目录结构，开发人员需要编写繁杂的XML文件构建指令，对开发人员是一个挑战</p>
 </blockquote>
@@ -1240,231 +1237,108 @@
     
     
 
-      <footer class="post-footer">
+    <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/gradle/" rel="tag"><i class="fa fa-tag"></i> gradle</a>
+              <a href="/tags/gradle/" rel="tag"># gradle</a>
           </div>
 
         
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2022/11/04/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E5%9B%BE%E7%81%B5%E8%AF%BE%E5%A0%82mongodb/%E5%9B%BE%E7%81%B5%E8%AF%BE%E5%A0%82MongoDB/" rel="prev" title="图灵课堂MongoDB(一)">
-      <i class="fa fa-chevron-left"></i> 图灵课堂MongoDB(一)
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2023/07/15/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7SpringBoot2%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/" rel="next" title="尚硅谷SpringBoot2核心技术-基础入门(一)">
-      尚硅谷SpringBoot2核心技术-基础入门(一) <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/04/%E4%B8%AD%E9%97%B4%E4%BB%B6/%E5%9B%BE%E7%81%B5%E8%AF%BE%E5%A0%82mongodb/%E5%9B%BE%E7%81%B5%E8%AF%BE%E5%A0%82MongoDB/" rel="prev" title="图灵课堂MongoDB(一)">
+                  <i class="fa fa-angle-left"></i> 图灵课堂MongoDB(一)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/07/15/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7SpringBoot2%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF-%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/" rel="next" title="尚硅谷SpringBoot2核心技术-基础入门(一)">
+                  尚硅谷SpringBoot2核心技术-基础入门(一) <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
           </div>
-          
-    <div class="comments" id="valine-comments"></div>
-
+<hr>
+<div id="comment-container"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
 <script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle%E5%85%A5%E9%97%A8"><span class="nav-number">1.</span> <span class="nav-text">Gradle入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E9%A1%B9%E7%9B%AE%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7"><span class="nav-number">1.1.</span> <span class="nav-text">常见的项目构建工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle%E5%AE%89%E8%A3%85"><span class="nav-number">1.2.</span> <span class="nav-text">Gradle安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85jdk"><span class="nav-number">1.2.1.</span> <span class="nav-text">安装jdk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E5%B9%B6%E8%A7%A3%E5%8E%8B%E5%88%B0%E6%8C%87%E5%AE%9A%E7%9B%AE%E5%BD%95"><span class="nav-number">1.2.2.</span> <span class="nav-text">下载并解压到指定目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.2.3.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E6%98%AF%E5%90%A6%E6%8C%89%E7%85%A7%E6%88%90%E5%8A%9F"><span class="nav-number">1.2.4.</span> <span class="nav-text">检查是否按照成功</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">Gradle项目目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAgradle%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.4.</span> <span class="nav-text">创建gradle项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle%E4%B8%AD%E7%9A%84%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.5.</span> <span class="nav-text">Gradle中的常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9Gradle%E4%B8%8B%E8%BD%BD%E6%BA%90"><span class="nav-number">1.5.1.</span> <span class="nav-text">修改Gradle下载源</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A4%E8%AF%86init-d%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">认识init.d文件夹</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8init-d%E6%96%87%E4%BB%B6%E5%A4%B9%E5%88%9B%E5%BB%BAinit-gradle%E6%96%87%E4%BB%B6"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">在init.d文件夹创建init.gradle文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E7%94%A8-init-gradle-%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">启用 init.gradle 文件的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%93%E5%BA%93%E5%9C%B0%E5%9D%80%E8%AF%B4%E6%98%8E"><span class="nav-number">1.5.1.4.</span> <span class="nav-text">仓库地址说明</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Wrapper%E5%8C%85%E8%A3%85%E5%99%A8"><span class="nav-number">1.5.2.</span> <span class="nav-text">Wrapper包装器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle%E5%92%8Cidea%E6%95%B4%E5%90%88"><span class="nav-number">2.</span> <span class="nav-text">Gradle和idea整合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Groovy%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">Groovy简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Groovy%E5%AE%89%E8%A3%85"><span class="nav-number">2.2.</span> <span class="nav-text">Groovy安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Groovy%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">Groovy基本语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle-%E5%AF%B9%E6%B5%8B%E8%AF%95%E7%9A%84%E6%94%AF%E6%8C%81"><span class="nav-number">2.4.</span> <span class="nav-text">Gradle 对测试的支持</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Junit%E4%BD%BF%E7%94%A8"><span class="nav-number">2.4.1.</span> <span class="nav-text">Junit使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%85%E5%90%AB%E5%92%8C%E6%8E%92%E9%99%A4%E7%89%B9%E5%AE%9A%E6%B5%8B%E8%AF%95"><span class="nav-number">2.4.2.</span> <span class="nav-text">包含和排除特定测试</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Gradle%E8%BF%9B%E9%98%B6"><span class="nav-number">3.</span> <span class="nav-text">Gradle进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">3.1.</span> <span class="nav-text">项目的生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#settings%E6%96%87%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">settings文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Task"><span class="nav-number">3.3.</span> <span class="nav-text">Task</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E4%BE%9D%E8%B5%96%E5%85%B3%E7%B3%BB"><span class="nav-number">3.3.1.</span> <span class="nav-text">任务的依赖关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%89%A7%E8%A1%8C"><span class="nav-number">3.3.2.</span> <span class="nav-text">任务执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%AE%9A%E4%B9%89-%E6%96%B9%E5%BC%8F"><span class="nav-number">3.3.3.</span> <span class="nav-text">任务的定义 方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.3.4.</span> <span class="nav-text">任务类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F"><span class="nav-number">3.3.5.</span> <span class="nav-text">任务的执行顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%88%86%E9%85%8D%E4%BB%BB%E5%8A%A1"><span class="nav-number">3.3.6.</span> <span class="nav-text">动态分配任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%85%B3%E7%B3%BB%E5%92%8C%E5%BC%80%E5%90%AF"><span class="nav-number">3.3.7.</span> <span class="nav-text">任务的关系和开启</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E8%B6%85%E6%97%B6"><span class="nav-number">3.3.8.</span> <span class="nav-text">任务超时</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-number">3.3.9.</span> <span class="nav-text">任务的查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E8%A7%84%E5%88%99"><span class="nav-number">3.3.10.</span> <span class="nav-text">任务的规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84-onlyIf-%E6%96%AD%E8%A8%80"><span class="nav-number">3.3.11.</span> <span class="nav-text">任务的 onlyIf 断言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradle%E4%B8%AD%E7%9A%84%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">3.4.</span> <span class="nav-text">gradle中的文件操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6"><span class="nav-number">3.4.1.</span> <span class="nav-text">本地文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E9%9B%86%E5%90%88"><span class="nav-number">3.4.2.</span> <span class="nav-text">文件集合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%A0%91"><span class="nav-number">3.4.3.</span> <span class="nav-text">文件树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%8B%B7%E8%B4%9D"><span class="nav-number">3.4.4.</span> <span class="nav-text">文件拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BD%92%E6%A1%A3%E6%96%87%E4%BB%B6"><span class="nav-number">3.4.5.</span> <span class="nav-text">归档文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dependencies"><span class="nav-number">3.5.</span> <span class="nav-text">Dependencies</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E6%96%B9%E5%BC%8F"><span class="nav-number">3.5.1.</span> <span class="nav-text">依赖方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E4%B8%8B%E8%BD%BD"><span class="nav-number">3.5.2.</span> <span class="nav-text">依赖下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.5.3.</span> <span class="nav-text">依赖的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#api-%E4%B8%8E-implementation-%E5%8C%BA%E5%88%AB"><span class="nav-number">3.5.4.</span> <span class="nav-text">api 与 implementation 区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E5%86%B2%E7%AA%81%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">3.5.5.</span> <span class="nav-text">依赖冲突及解决方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradle%E6%8F%92%E4%BB%B6"><span class="nav-number">3.6.</span> <span class="nav-text">Gradle插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8F%92%E4%BB%B6%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">3.6.1.</span> <span class="nav-text">使用插件的原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">3.6.2.</span> <span class="nav-text">插件的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">3.6.3.</span> <span class="nav-text">插件的分类和使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D%EF%BC%9A%E8%84%9A%E6%9C%AC%E6%8F%92%E4%BB%B6"><span class="nav-number">3.6.3.1.</span> <span class="nav-text">第一种：脚本插件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%84%8F%E4%B9%89"><span class="nav-number">3.6.3.1.1.</span> <span class="nav-text">意义</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D%EF%BC%9A%E5%AF%B9%E8%B1%A1%E6%8F%92%E4%BB%B6%E4%B9%8B%E5%86%85%E9%83%A8%E6%8F%92%E4%BB%B6%E3%80%90%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6%E3%80%91"><span class="nav-number">3.6.3.2.</span> <span class="nav-text">第二种：对象插件之内部插件【核心插件】</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%8F%92%E4%BB%B6%E3%80%90%E5%86%85%E9%83%A8%E6%8F%92%E4%BB%B6%E3%80%91"><span class="nav-number">3.6.3.2.1.</span> <span class="nav-text">核心插件【内部插件】</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#plugins-DSL-%E5%BC%95%E5%85%A5%E6%96%B9%E5%BC%8F"><span class="nav-number">3.6.3.2.1.1.</span> <span class="nav-text">plugins DSL 引入方式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#apply%E6%96%B9%E5%BC%8F"><span class="nav-number">3.6.3.2.1.2.</span> <span class="nav-text">apply方式</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8F%92%E4%BB%B6"><span class="nav-number">3.6.3.2.2.</span> <span class="nav-text">第三方插件</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E4%BC%A0%E7%BB%9F%E6%96%B9%E5%BC%8F"><span class="nav-number">3.6.3.2.2.1.</span> <span class="nav-text">使用传统方式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#plugins-DSL%E6%96%B9%E5%BC%8F"><span class="nav-number">3.6.3.2.2.2.</span> <span class="nav-text">plugins DSL方式</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8F%92%E4%BB%B6"><span class="nav-number">3.6.3.2.3.</span> <span class="nav-text">自定义插件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#buildSrc%E9%A1%B9%E7%9B%AE"><span class="nav-number">3.6.4.</span> <span class="nav-text">buildSrc项目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%B9%E8%BF%9B"><span class="nav-number">3.6.4.1.</span> <span class="nav-text">改进</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%9A%84%E5%85%B3%E6%B3%A8%E7%82%B9"><span class="nav-number">3.6.5.</span> <span class="nav-text">插件的关注点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%82%B9%EF%BC%9A%E6%8F%92%E4%BB%B6%E7%9A%84%E5%BC%95%E7%94%A8"><span class="nav-number">3.6.5.1.</span> <span class="nav-text">第一点：插件的引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%82%B9%EF%BC%9A%E4%B8%BB%E8%A6%81%E7%9A%84%E5%8A%9F%E8%83%BD%E3%80%90%E4%BB%BB%E5%8A%A1%E3%80%91"><span class="nav-number">3.6.5.2.</span> <span class="nav-text">第二点：主要的功能【任务】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%82%B9%EF%BC%9A%E5%B7%A5%E7%A8%8B%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">3.6.5.3.</span> <span class="nav-text">第三点：工程目录结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%82%B9%EF%BC%9A%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86"><span class="nav-number">3.6.5.4.</span> <span class="nav-text">第四点：依赖管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%82%B9%EF%BC%9A%E5%B8%B8%E7%94%A8%E7%9A%84%E5%B1%9E%E6%80%A7"><span class="nav-number">3.6.5.5.</span> <span class="nav-text">第五点：常用的属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#build-gradle-%E6%96%87%E4%BB%B6"><span class="nav-number">3.7.</span> <span class="nav-text">build.gradle 文件</span></a></li></ol></li></ol></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="YS"
-      src="/images/author.png">
-  <p class="site-author-name" itemprop="name">YS</p>
-  <div class="site-description" itemprop="description">学海无涯苦作舟</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">56</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">8</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">14</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2023</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">YS</span>
-</div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-  
-<script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
-
-<script>
-NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
-  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
-    var GUEST = ['nick', 'mail', 'link'];
-    var guest = 'nick,mail,link';
-    guest = guest.split(',').filter(item => {
-      return GUEST.includes(item);
-    });
     new Valine({
-      el         : '#valine-comments',
-      verify     : false,
-      notify     : false,
-      appId      : 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
-      appKey     : 'BCtPpmnU41TOE7Wr5O0CJFgS',
-      placeholder: "Just go go",
-      avatar     : 'mm',
-      meta       : guest,
-      pageSize   : '10' || 10,
-      visitor    : true,
-      lang       : 'zh-cn' || 'zh-cn',
-      path       : location.pathname,
-      recordIP   : false,
-      serverURLs : ''
-    });
-  }, window.Valine);
-});
+        el: '#comment-container',
+        appId: 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
+        appKey: 'BCtPpmnU41TOE7Wr5O0CJFgS'
+    })
 </script>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">YS</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">699k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:10</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
 
 </body>
 </html>

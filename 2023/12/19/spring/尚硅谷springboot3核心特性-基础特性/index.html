@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ys_ico.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/ys_ico.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ysymj.gitee.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.19.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="哔哩哔哩视频《尚硅谷SpringBoot零基础教程，面试&amp;加薪必会springboot3》学习笔记，地址：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1Es4y1q7B">
+<meta property="og:type" content="article">
+<meta property="og:title" content="尚硅谷springboot3核心特性-基础特性(四)">
+<meta property="og:url" content="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E5%9F%BA%E7%A1%80%E7%89%B9%E6%80%A7/index.html">
+<meta property="og:site_name" content="YS">
+<meta property="og:description" content="哔哩哔哩视频《尚硅谷SpringBoot零基础教程，面试&amp;加薪必会springboot3》学习笔记，地址：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1Es4y1q7B">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E5%9F%BA%E7%A1%80%E7%89%B9%E6%80%A7/springboot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%94%9F%E6%95%88%E5%9B%BE%E7%A4%BA.png">
+<meta property="article:published_time" content="2023-12-19T12:46:17.000Z">
+<meta property="article:modified_time" content="2023-12-31T11:05:45.382Z">
+<meta property="article:author" content="YS">
+<meta property="article:tag" content="springboot3">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E5%9F%BA%E7%A1%80%E7%89%B9%E6%80%A7/springboot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%94%9F%E6%95%88%E5%9B%BE%E7%A4%BA.png">
+
+
+<link rel="canonical" href="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E5%9F%BA%E7%A1%80%E7%89%B9%E6%80%A7/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E5%9F%BA%E7%A1%80%E7%89%B9%E6%80%A7/","path":"2023/12/19/spring/尚硅谷springboot3核心特性-基础特性/","title":"尚硅谷springboot3核心特性-基础特性(四)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>尚硅谷springboot3核心特性-基础特性(四) | YS</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">YS</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">学无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringApplication"><span class="nav-number">1.</span> <span class="nav-text">SpringApplication</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89banner"><span class="nav-number">1.1.</span> <span class="nav-text">自定义banner</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89SpringApplication"><span class="nav-number">1.2.</span> <span class="nav-text">自定义SpringApplication</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FluentBuilder-API"><span class="nav-number">1.3.</span> <span class="nav-text">FluentBuilder API</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Profiles"><span class="nav-number">2.</span> <span class="nav-text">Profiles</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E7%8E%AF%E5%A2%83"><span class="nav-number">2.1.1.</span> <span class="nav-text">指定环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%BF%80%E6%B4%BB"><span class="nav-number">2.1.2.</span> <span class="nav-text">环境激活</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8C%85%E5%90%AB"><span class="nav-number">2.1.3.</span> <span class="nav-text">环境包含</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Peofile%E5%88%86%E7%BB%84"><span class="nav-number">2.2.</span> <span class="nav-text">Peofile分组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Profile%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.3.</span> <span class="nav-text">Profile配置文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%96%E9%83%A8%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">外部化配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">3.1.</span> <span class="nav-text">配置优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%96%E9%83%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">3.2.</span> <span class="nav-text">外部配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E9%85%8D%E7%BD%AE"><span class="nav-number">3.3.</span> <span class="nav-text">导入配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E5%8D%A0%E4%BD%8D%E7%AC%A6"><span class="nav-number">3.4.</span> <span class="nav-text">属性占位符</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95-JUnit5"><span class="nav-number">4.</span> <span class="nav-text">单元测试-JUnit5</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E5%90%88"><span class="nav-number">4.1.</span> <span class="nav-text">整合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">4.2.</span> <span class="nav-text">测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E6%B5%8B%E8%AF%95"><span class="nav-number">4.2.1.</span> <span class="nav-text">组件测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3"><span class="nav-number">4.2.2.</span> <span class="nav-text">注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%AD%E8%A8%80"><span class="nav-number">4.2.3.</span> <span class="nav-text">断言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%A5%97%E6%B5%8B%E8%AF%95"><span class="nav-number">4.2.4.</span> <span class="nav-text">嵌套测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E5%8C%96%E6%B5%8B%E8%AF%95"><span class="nav-number">4.2.5.</span> <span class="nav-text">参数化测试</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YS"
+      src="/images/author.png">
+  <p class="site-author-name" itemprop="name">YS</p>
+  <div class="site-description" itemprop="description">学海无涯苦作舟</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E5%9F%BA%E7%A1%80%E7%89%B9%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.png">
+      <meta itemprop="name" content="YS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YS">
+      <meta itemprop="description" content="学海无涯苦作舟">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="尚硅谷springboot3核心特性-基础特性(四) | YS">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          尚硅谷springboot3核心特性-基础特性(四)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-12-19 20:46:17" itemprop="dateCreated datePublished" datetime="2023-12-19T20:46:17+08:00">2023-12-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-12-31 19:05:45" itemprop="dateModified" datetime="2023-12-31T19:05:45+08:00">2023-12-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">java框架</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>16 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="SpringApplication"><a href="#SpringApplication" class="headerlink" title="SpringApplication"></a>SpringApplication</h1><h2 id="自定义banner"><a href="#自定义banner" class="headerlink" title="自定义banner"></a>自定义banner</h2><ol>
+<li>类路径添加<code>banner.txt</code>或者设置<code>spring.banner.location</code>指定banner文件位置</li>
+<li>推荐网站：<a target="_blank" rel="noopener" href="https://www.bootschool.net/ascii">Spring Boot banner在线生成工具，制作下载英文banner.txt，修改替换banner.txt文字实现自定义，个性化启动banner-bootschool.net</a></li>
+</ol>
+<h2 id="自定义SpringApplication"><a href="#自定义SpringApplication" class="headerlink" title="自定义SpringApplication"></a>自定义SpringApplication</h2><p>springboot项目启动类执行<code>SpringApplication.run()</code>方法其实就是内部new了一个<code>SpringApplication</code>对象，然后调用了实例的<code>run()</code>方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.boot.Banner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication application = <span class="keyword">new</span> SpringApplication(MyApplication.class);</span><br><span class="line">        application.setBannerMode(Banner.Mode.OFF);</span><br><span class="line">        application.run(args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="FluentBuilder-API"><a href="#FluentBuilder-API" class="headerlink" title="FluentBuilder API"></a>FluentBuilder API</h2><p>springboot提供的链式创建<code>SpringApplication</code>实例的方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> SpringApplicationBuilder()</span><br><span class="line">    .sources(Parent.class)</span><br><span class="line">    .child(Application.class)</span><br><span class="line">    .bannerMode(Banner.Mode.OFF)</span><br><span class="line">    .run(args);</span><br></pre></td></tr></table></figure>
+<h1 id="Profiles"><a href="#Profiles" class="headerlink" title="Profiles"></a>Profiles</h1><blockquote>
+<p>环境隔离能力；快速切换开发、测试、生产环境<br>步骤：</p>
+<ol>
+<li>标识环境：指定哪些组件、配置在哪个环境生效</li>
+<li>切换环境：这个环境对应的所有组件和配置就应该生效</li>
+</ol>
+</blockquote>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="指定环境"><a href="#指定环境" class="headerlink" title="指定环境"></a>指定环境</h3><ul>
+<li>Spring Profiles 提供一种隔离配置的方式，使其仅在特定环境生效；</li>
+<li>任何<code>@Component</code>、<code>@Configuration</code>或<code>@ConfigurationProperties</code>都可以使用<code>@Profiles</code>标记，来指定何时被加载。【容器中的组件都可以被<code>@Profiles</code>标记】</li>
+</ul>
+<h3 id="环境激活"><a href="#环境激活" class="headerlink" title="环境激活"></a>环境激活</h3><ol>
+<li>配置激活指定环境；配置文件<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">spring.profiles.active</span>=<span class="string">production,hsqldb</span></span><br></pre></td></tr></table></figure></li>
+<li>也可以使用命令激活<code>--spring.profiles.active=dev,hsqldb</code></li>
+<li>还可以配置默认环境；不标注<code>@Profiles</code>的组件永远都存在<ul>
+<li>以前默认环境叫<code>default</code></li>
+<li><code>spring.profiles.default=test</code></li>
+</ul>
+</li>
+<li>推荐使用激活方式激活指定环境<h3 id="环境包含"><a href="#环境包含" class="headerlink" title="环境包含"></a>环境包含</h3></li>
+</ol>
+<p><font color="#c0504d">注意：</font></p>
+<ol>
+<li><code>spring.profiles.active</code>和<code>spring.profiles.default</code>只能用到无<code>profile</code>的文件中，如果在<code>application-dev.yml</code>中编写就是无效的</li>
+<li>也可以额外添加生效文件，而不是激活替换，比如：<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">spring.profiles.include[0]</span>=<span class="string">common</span></span><br><span class="line"><span class="meta">spring.profiles.include[1]</span>=<span class="string">local</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>最佳实战</strong>：</p>
+<ul>
+<li>生效环境 = 激活的环境/默认环境 + 包含的环境</li>
+<li>项目里这么用<ul>
+<li>基础的配置<code>mybatis</code>、<code>log</code>、<code>xxx</code>：写到包含文件中</li>
+<li>需要动态切换变化的<code>db</code>、<code>redis</code>：写到激活的环境中<h2 id="Peofile分组"><a href="#Peofile分组" class="headerlink" title="Peofile分组"></a>Peofile分组</h2>创建<code>prod</code>组，指定包含<code>db</code>和<code>mq</code>配置<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">spring.profiles.group.prod[0]</span>=<span class="string">db</span></span><br><span class="line"><span class="meta">spring.profiles.group.prod[1]</span>=<span class="string">mq</span></span><br></pre></td></tr></table></figure>
+使用<code>--spring.profiles.active=prod</code>，就会激活<code>prod</code> <code>db</code> <code>mq</code>配置文件</li>
+</ul>
+</li>
+</ul>
+<h2 id="Profile配置文件"><a href="#Profile配置文件" class="headerlink" title="Profile配置文件"></a>Profile配置文件</h2><ul>
+<li><code>application-&#123;profile&#125;.properties</code> 可以作为指定环境的配置文件</li>
+<li>激活这个环境，配置就会生效。最终生效的所有配置是<ul>
+<li><code>application.properties</code> ：默认配置文件，任意时候都会生效</li>
+<li><code>application-&#123;profile&#125;.properties</code>：指定环境配置文件，激活指定环境生效<br>profile优先级 &gt; application</li>
+</ul>
+</li>
+</ul>
+<h1 id="外部化配置"><a href="#外部化配置" class="headerlink" title="外部化配置"></a>外部化配置</h1><blockquote>
+<p>场景：线上应用如何快速修改配置，并应用最新配置</p>
+<ul>
+<li>SpringBoot使用 配置优先级 + 外部配置 简化配置更新、简化运维。</li>
+<li>只需要给<code>jar</code>应用所在的文件夹放一个<code>application.properties</code>最新配置文件，重启项目就能自动应用最新配置</li>
+<li>如果使用<code>war</code>包配合tomcat，则需要放在tomcat启动脚本所在目录</li>
+</ul>
+</blockquote>
+<h2 id="配置优先级"><a href="#配置优先级" class="headerlink" title="配置优先级"></a>配置优先级</h2><p>SpringBoot允许将配置外部化，以便可以在不同的环境中使用相同的应用程序代码。<br>我们可以使用各种外部配置源，包括<code>Java Properties文件</code>、<code>YAML文件</code>、<code>命令行参数</code>。<br><code>@Value</code>可以获取值，也可以用<code>@ConfigurationProperties</code>及那个所有属性绑定到<code>java object</code>中。<br><strong>以下是SpringBoot属性源加载顺序。</strong> <font color="#17365d">后面的会覆盖前面的值。由低到高，高优先级配置覆盖低优先级。</font></p>
+<ol>
+<li>默认属性（通过<code>SpringApplication.setDefaultProperties()</code>指定的）</li>
+<li><code>@PropertySource</code>指定加载的配置（需要写在<code>@Configuration</code>类上才可生效）</li>
+<li>配置文件（<code>application.properties/yml</code>等）</li>
+<li><code>RandomValuePropertySource</code>支持的<code>random.*</code>配置（如：<code>@Value(&quot;$&#123;random.int&#125;&quot;)</code>）</li>
+<li>OS环境变量</li>
+<li>Java系统属性（<code>System.getProperties()</code>）</li>
+<li>JNDI属性（来自<code>java:comp/env</code>）</li>
+<li><code>ServletContext</code>初始化参数</li>
+<li><code>ServletConfig</code>初始化参数</li>
+<li><code>SPRING_APPLICATION_JSON</code>属性（内置环境变量或系统属性中的JSON）</li>
+<li>命令行参数</li>
+<li>测试属性。（<code>@SpringBootTest</code>进行测试时指定的属性）</li>
+<li>测试类<code>@TestPropertySource</code>注解</li>
+<li>Devtools 设置的全局属性。（<code>$HOME/.config/spring-boot</code>）</li>
+</ol>
+<blockquote>
+<p>结论：配置可以写到很多位置，常见的优先级顺序：<br><code>命令行</code> &gt; <code>配置文件</code> &gt; <code>springapplication配置</code></p>
+</blockquote>
+<p><font color="#953734">配置文件优先级如下</font>：（后面覆盖前面）</p>
+<ol>
+<li>jar包<font color="#953734">内</font>的<code>application.properties/yml</code></li>
+<li>jar包<font color="#953734">内</font>的<code>application-&#123;profile&#125;.properties/yml</code></li>
+<li>jar包<font color="#953734">外</font>的<code>application.properties/yml</code></li>
+<li>jar包<font color="#953734">外</font>的<code>application-&#123;profile&#125;.properties/yml</code></li>
+</ol>
+<p><strong>建议</strong>：使用同一种格式的配置文件，如果<code>.properties</code>和<code>.yml</code>同时存在，则<code>.properties</code>优先</p>
+<blockquote>
+<p>结论：包外 &gt; 包内；同级情况：<code>profile配置</code> &gt; <code>application配置</code></p>
+</blockquote>
+<p>所有参数均可由命令行传入，使用<code>--参数项=参数值</code>，将会被添加到环境变量中，并优先于<code>配置文件</code>。<br>比如<code>java -jar app.jar --name=Spring</code> ，可以使用<code>@value($&#123;&quot;name&quot;&#125;)</code>获取</p>
+<h2 id="外部配置"><a href="#外部配置" class="headerlink" title="外部配置"></a>外部配置</h2><p>SpringBoot应用启动时会自动寻找<code>application.properties</code>和<code>application.yml</code>位置，进行加载。顺序如下：（后面覆盖前面）</p>
+<ol>
+<li>类路径：内部<ul>
+<li>类根路径</li>
+<li>类下<code>/config</code>包</li>
+</ul>
+</li>
+<li>当前路径（项目所在的位置）<ul>
+<li>当前路径</li>
+<li>当前下<code>/config</code>子目录</li>
+<li><code>/config</code>目录的直接子目录</li>
+</ul>
+</li>
+</ol>
+<p>最终效果：优先级由高到低，前面的覆盖后面</p>
+<ul>
+<li>命令行 &gt; 包外config直接子目录 &gt; 包外config目录 &gt; 包外根目录 &gt; 包内目录</li>
+<li>同级比较<ul>
+<li>profile配置 &gt; 默认配置</li>
+<li>properties配置 &gt; yml配置</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E5%9F%BA%E7%A1%80%E7%89%B9%E6%80%A7/springboot%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%94%9F%E6%95%88%E5%9B%BE%E7%A4%BA.png" alt="springboot配置文件生效图示"></p>
+<p>规律：最外层的最优先。</p>
+<ul>
+<li>命令行 &gt; 所有</li>
+<li>包外 &gt; 包内</li>
+<li>config目录 &gt; 根目录</li>
+<li>peofile &gt; application</li>
+</ul>
+<p>配置不同就都生效（互补），配置相投高优先级覆盖低优先级。</p>
+<h2 id="导入配置"><a href="#导入配置" class="headerlink" title="导入配置"></a>导入配置</h2><p>使用<code>spring.config.import</code>可以导入额外配置</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">spring.config.import</span>=<span class="string">my.properties</span></span><br><span class="line"><span class="meta">my.property</span>=<span class="string">value</span></span><br></pre></td></tr></table></figure>
+<p>无论以上写法的先后顺序，<code>my.properties</code>的值总是优先于直接在文件中<code>my.property</code>。</p>
+<h2 id="属性占位符"><a href="#属性占位符" class="headerlink" title="属性占位符"></a>属性占位符</h2><p>配置文件中可以使用<code>$&#123;name.default&#125;</code>形式取出之前配置过的值。</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">app.name</span>=<span class="string">MyApp</span></span><br><span class="line"><span class="meta">app.description</span>=<span class="string">$&#123;app.name&#125; is a Spring Boot application written by $&#123;username:Unknown&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="单元测试-JUnit5"><a href="#单元测试-JUnit5" class="headerlink" title="单元测试-JUnit5"></a>单元测试-JUnit5</h1><h2 id="整合"><a href="#整合" class="headerlink" title="整合"></a>整合</h2><p>SpringBoot提供了一系列测试工具集及注解方便我们进行测试。<br><code>spring-boot-test</code>提供核心测试能力，<code>spring-boot-test-autoconfigure</code>提供测试的一些自动配置。<br>我们只需要导入<code>spring-boot-starter-test</code>即可整合测试。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>spring-boot-starter-test</code>默认提供了以下库供我们测试使用</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://junit.org/junit5/">JUnit 5</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/6.0.4/reference/html/testing.html#integration-testing">Spring Test</a></li>
+<li><a target="_blank" rel="noopener" href="https://assertj.github.io/doc/">AssertJ</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hamcrest/JavaHamcrest">Hamcrest</a></li>
+<li><a target="_blank" rel="noopener" href="https://site.mockito.org/">Mockito</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/skyscreamer/JSONassert">JSONassert</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/jayway/JsonPath">JsonPath</a><h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2></li>
+</ul>
+<h3 id="组件测试"><a href="#组件测试" class="headerlink" title="组件测试"></a>组件测试</h3><p>直接使用<code>@Autowired</code>注入容器中的组件进行测试。</p>
+<h3 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h3><p>JUnit5的注解与Junit4的注解有所变化<br><a target="_blank" rel="noopener" href="https://junit.org/junit5/docs/current/user-guide/#writing-tests-annotations">JUnit 5 User Guide</a></p>
+<ul>
+<li><strong>@Test :</strong> 表示方法是测试方法。但是与JUnit4的<code>@Test</code>不同，他的职责非常单一不能声明任何属性，拓展的测试将会由Jupiter提供额外测试</li>
+<li><strong>@ParameterizedTest :</strong> 表示方法是参数化测试，下方会有详细介绍</li>
+<li><strong>@RepeatedTest :</strong> 表示方法可重复执行，下方会有详细介绍</li>
+<li><strong>@DisplayName :</strong> 为测试类或者测试方法设置展示名称</li>
+<li><strong>@BeforeEach :</strong> 表示在每个单元测试之前执行</li>
+<li><strong>@AfterEach :</strong> 表示在每个单元测试之后执行</li>
+<li><strong>@BeforeAll :</strong> 表示在所有单元测试之前执行</li>
+<li><strong>@AfterAll :</strong> 表示在所有单元测试之后执行</li>
+<li><strong>@Tag :</strong> 表示单元测试类别，类似于JUnit4中的<code>@Categories</code></li>
+<li><strong>@Disabled :</strong> 表示测试类或测试方法不执行，类似于JUnit4中的<code>@Ignore</code></li>
+<li><strong>@Timeout :</strong> 表示测试方法运行如果超过了指定时间将会返回错误</li>
+<li><strong>@ExtendWith :</strong> 为测试类或测试方法提供扩展类引用</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.jupiter.api.Assertions.fail;</span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.jupiter.api.Assumptions.assumeTrue;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.junit.jupiter.api.AfterAll;</span><br><span class="line"><span class="keyword">import</span> org.junit.jupiter.api.AfterEach;</span><br><span class="line"><span class="keyword">import</span> org.junit.jupiter.api.BeforeAll;</span><br><span class="line"><span class="keyword">import</span> org.junit.jupiter.api.BeforeEach;</span><br><span class="line"><span class="keyword">import</span> org.junit.jupiter.api.Disabled;</span><br><span class="line"><span class="keyword">import</span> org.junit.jupiter.api.Test;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StandardTests</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@BeforeAll</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@BeforeEach</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@DisplayName(&quot;😱&quot;)</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">succeedingTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">failingTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        fail(<span class="string">&quot;a failing test&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="meta">@Disabled(&quot;for demonstration purposes&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">skippedTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// not executed</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">abortedTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        assumeTrue(<span class="string">&quot;abc&quot;</span>.contains(<span class="string">&quot;Z&quot;</span>));</span><br><span class="line">        fail(<span class="string">&quot;test should have been aborted&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@AfterEach</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">tearDown</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@AfterAll</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">tearDownAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>assertEquals</td>
+<td>判断两个对象或两个原始类型是否相等</td>
+</tr>
+<tr>
+<td>assertNotEquals</td>
+<td>判断两个对象或两个原始类型是否不相等</td>
+</tr>
+<tr>
+<td>assertSame</td>
+<td>判断两个对象引用是否指向同一个对象</td>
+</tr>
+<tr>
+<td>assertNotSame</td>
+<td>判断两个对象引用是否指向不同的对象</td>
+</tr>
+<tr>
+<td>assertTrue</td>
+<td>判断给定的布尔值是否为 true</td>
+</tr>
+<tr>
+<td>assertFalse</td>
+<td>判断给定的布尔值是否为 false</td>
+</tr>
+<tr>
+<td>assertNull</td>
+<td>判断给定的对象引用是否为 null</td>
+</tr>
+<tr>
+<td>assertNotNull</td>
+<td>判断给定的对象引用是否不为 null</td>
+</tr>
+<tr>
+<td>assertArrayEquals</td>
+<td>数组断言</td>
+</tr>
+<tr>
+<td>assertAll</td>
+<td>组合断言</td>
+</tr>
+<tr>
+<td>assertThrows</td>
+<td>异常断言</td>
+</tr>
+<tr>
+<td>assertTimeout</td>
+<td>超时断言</td>
+</tr>
+<tr>
+<td>fail</td>
+<td>快速失败</td>
+</tr>
+</tbody></table>
+<h3 id="嵌套测试"><a href="#嵌套测试" class="headerlink" title="嵌套测试"></a>嵌套测试</h3><blockquote>
+<p>JUnit5可以通过Java中的内部类和<code>@Nested</code>注解实现嵌套测试，从而可以更好的把相关的测试方法组织在一起。在内部类中可以使用<code>@BeforEach</code>和<code>@AfterEach</code>注解，而且嵌套的层次没有限制。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@DisplayName(&quot;A stack&quot;)</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestingAStackDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Stack&lt;Object&gt; stack;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="meta">@DisplayName(&quot;is instantiated with new Stack()&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">isInstantiatedWithNew</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Nested</span></span><br><span class="line">    <span class="meta">@DisplayName(&quot;when new&quot;)</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">WhenNew</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@BeforeEach</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">createNewStack</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            stack = <span class="keyword">new</span> Stack&lt;&gt;();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Test</span></span><br><span class="line">        <span class="meta">@DisplayName(&quot;is empty&quot;)</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            assertTrue(stack.isEmpty());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Test</span></span><br><span class="line">        <span class="meta">@DisplayName(&quot;throws EmptyStackException when popped&quot;)</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">throwsExceptionWhenPopped</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            assertThrows(EmptyStackException.class, stack::pop);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Test</span></span><br><span class="line">        <span class="meta">@DisplayName(&quot;throws EmptyStackException when peeked&quot;)</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">throwsExceptionWhenPeeked</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            assertThrows(EmptyStackException.class, stack::peek);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Nested</span></span><br><span class="line">        <span class="meta">@DisplayName(&quot;after pushing an element&quot;)</span></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">AfterPushing</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            String anElement = <span class="string">&quot;an element&quot;</span>;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@BeforeEach</span></span><br><span class="line">            <span class="function"><span class="keyword">void</span> <span class="title">pushAnElement</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                stack.push(anElement);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Test</span></span><br><span class="line">            <span class="meta">@DisplayName(&quot;it is no longer empty&quot;)</span></span><br><span class="line">            <span class="function"><span class="keyword">void</span> <span class="title">isNotEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                assertFalse(stack.isEmpty());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Test</span></span><br><span class="line">            <span class="meta">@DisplayName(&quot;returns the element when popped and is empty&quot;)</span></span><br><span class="line">            <span class="function"><span class="keyword">void</span> <span class="title">returnElementWhenPopped</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                assertEquals(anElement, stack.pop());</span><br><span class="line">                assertTrue(stack.isEmpty());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Test</span></span><br><span class="line">            <span class="meta">@DisplayName(&quot;returns the element when peeked but remains not empty&quot;)</span></span><br><span class="line">            <span class="function"><span class="keyword">void</span> <span class="title">returnElementWhenPeeked</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                assertEquals(anElement, stack.peek());</span><br><span class="line">                assertFalse(stack.isEmpty());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="参数化测试"><a href="#参数化测试" class="headerlink" title="参数化测试"></a>参数化测试</h3><blockquote>
+<p>参数化测试是JUnit5很重要的一个新特性，它使得用不同的参数多次运行测试成为了可能，也为我们的单元测试带来许多便利。 </p>
+</blockquote>
+<blockquote>
+<p>利用<code>@ValueSource</code>等注解，指定入参，我们将可以使用不同的参数进行多次单元测试，而不需要每新增一个参数就新增一个单元测试，省去了很多冗余代码。</p>
+</blockquote>
+<ul>
+<li><strong>@ValueSource</strong>: 为参数化测试指定入参来源，支持八大基础类以及String类型,Class类型</li>
+<li><strong>@NullSource</strong>: 表示为参数化测试提供一个null的入参</li>
+<li><strong>@EnumSource</strong>: 表示为参数化测试提供一个枚举入参</li>
+<li><strong>@CsvFileSource</strong>：表示读取指定CSV文件内容作为参数化测试入参</li>
+<li><strong>@MethodSource</strong>：表示读取指定方法的返回值作为参数化测试入参(注意方法返回需要是一个流)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ParameterizedTest</span></span><br><span class="line"><span class="meta">@ValueSource(strings = &#123;&quot;one&quot;, &quot;two&quot;, &quot;three&quot;&#125;)</span></span><br><span class="line"><span class="meta">@DisplayName(&quot;参数化测试1&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">parameterizedTest1</span><span class="params">(String string)</span> </span>&#123;</span><br><span class="line">    System.out.println(string);</span><br><span class="line">    Assertions.assertTrue(StringUtils.isNotBlank(string));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@ParameterizedTest</span></span><br><span class="line"><span class="meta">@MethodSource(&quot;method&quot;)</span>    <span class="comment">//指定方法名</span></span><br><span class="line"><span class="meta">@DisplayName(&quot;方法来源参数&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testWithExplicitLocalMethodSource</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">    System.out.println(name);</span><br><span class="line">    Assertions.assertNotNull(name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> Stream&lt;String&gt; <span class="title">method</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Stream.of(<span class="string">&quot;apple&quot;</span>, <span class="string">&quot;banana&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/springboot3/" rel="tag"># springboot3</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE/" rel="prev" title="尚硅谷springboot3核心特性-数据访问(三)">
+                  <i class="fa fa-angle-left"></i> 尚硅谷springboot3核心特性-数据访问(三)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/" rel="next" title="尚硅谷springboot3核心特性-核心原理(五)">
+                  尚硅谷springboot3核心特性-核心原理(五) <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+<hr>
+<div id="comment-container"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#comment-container',
+        appId: 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
+        appKey: 'BCtPpmnU41TOE7Wr5O0CJFgS'
+    })
+</script>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">YS</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">699k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:10</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

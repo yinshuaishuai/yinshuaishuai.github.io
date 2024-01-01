@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/ys_ico.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/ys_ico.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.css" integrity="sha256-6cQIC71/iBIYXFK+0RHAvwmjwWzkWd+r7v/BX3/vZDc=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"ysymj.gitee.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.19.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="哔哩哔哩视频《尚硅谷SpringBoot零基础教程，面试&amp;加薪必会springboot3》学习笔记，地址：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1Es4y1q7B">
+<meta property="og:type" content="article">
+<meta property="og:title" content="尚硅谷springboot3核心特性-核心原理(五)">
+<meta property="og:url" content="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="YS">
+<meta property="og:description" content="哔哩哔哩视频《尚硅谷SpringBoot零基础教程，面试&amp;加薪必会springboot3》学习笔记，地址：https:&#x2F;&#x2F;www.bilibili.com&#x2F;video&#x2F;BV1Es4y1q7B">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%85%A8%E6%B5%81%E7%A8%8B%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%85%A8%E6%B5%81%E7%A8%8B%E5%9B%BE%E7%A4%BA1.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E5%BA%94%E7%94%A8%E5%AE%9E%E8%B7%B5%E5%8F%91%E9%80%81%E9%A1%BA%E5%BA%8F%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E5%9B%BE%E7%A4%BA1.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E6%B5%81%E7%A8%8B%E5%9B%BE%E7%A4%BA.png">
+<meta property="og:image" content="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9Fi%E4%B8%9C%E5%8A%A0%E8%BD%BD%E6%B5%81%E7%A8%8B.png">
+<meta property="article:published_time" content="2023-12-19T12:50:58.000Z">
+<meta property="article:modified_time" content="2024-01-01T08:24:40.363Z">
+<meta property="article:author" content="YS">
+<meta property="article:tag" content="springboot3">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%85%A8%E6%B5%81%E7%A8%8B%E5%9B%BE%E7%A4%BA.png">
+
+
+<link rel="canonical" href="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/","path":"2023/12/19/spring/尚硅谷springboot3核心特性-核心原理/","title":"尚硅谷springboot3核心特性-核心原理(五)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>尚硅谷springboot3核心特性-核心原理(五) | YS</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">YS</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">学无止境</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E5%92%8C%E7%9B%91%E5%90%AC"><span class="nav-number">1.</span> <span class="nav-text">事件和监听</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E7%9B%91%E5%90%AC"><span class="nav-number">1.1.</span> <span class="nav-text">生命周期监听</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%91%E5%90%AC%E5%99%A8-SpringApplicationRunListener"><span class="nav-number">1.1.1.</span> <span class="nav-text">监听器-SpringApplicationRunListener</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%85%A8%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.2.</span> <span class="nav-text">生命周期全流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E8%A7%A6%E5%8F%91%E6%97%B6%E6%9C%BA"><span class="nav-number">1.2.</span> <span class="nav-text">事件触发时机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%84%E7%A7%8D%E5%9B%9E%E8%B0%83%E7%9B%91%E5%90%AC%E5%99%A8"><span class="nav-number">1.2.1.</span> <span class="nav-text">各种回调监听器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E8%A7%A6%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.2.</span> <span class="nav-text">完整触发流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SpringBoot%E4%BA%8B%E4%BB%B6%E9%A9%B1%E5%8A%A8%E5%BC%80%E5%8F%91"><span class="nav-number">1.2.3.</span> <span class="nav-text">SpringBoot事件驱动开发</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">自动配置原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A5%E9%97%A8%E7%90%86%E8%A7%A3"><span class="nav-number">2.1.</span> <span class="nav-text">入门理解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E6%B5%81%E7%A8%8B"><span class="nav-number">2.1.1.</span> <span class="nav-text">自动配置流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SPI%E6%9C%BA%E5%88%B6"><span class="nav-number">2.1.2.</span> <span class="nav-text">SPI机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E5%BC%80%E5%85%B3"><span class="nav-number">2.1.3.</span> <span class="nav-text">功能开关</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E7%90%86%E8%A7%A3"><span class="nav-number">2.2.</span> <span class="nav-text">进阶理解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SpringBootApplication"><span class="nav-number">2.2.1.</span> <span class="nav-text">@SpringBootApplication</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SpringBootConfiguration"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">@SpringBootConfiguration</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#EnableAutoConfiguration%EF%BC%9A%E5%BC%80%E5%90%AF%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">@EnableAutoConfiguration：开启自动配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#AutoConfigurationPackage%EF%BC%9A%E6%89%AB%E6%8F%8F%E4%B8%BB%E7%A8%8B%E5%BA%8F%E5%8C%85%EF%BC%8C%E5%8A%A0%E8%BD%BD%E8%87%AA%E5%B7%B1%E7%9A%84%E7%BB%84%E4%BB%B6"><span class="nav-number">2.2.1.2.1.</span> <span class="nav-text">@AutoConfigurationPackage：扫描主程序包，加载自己的组件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Import-AutoConfigurationImportSelector-class-%EF%BC%9A%E5%8A%A0%E8%BD%BD%E6%89%80%E6%9C%89%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E7%B1%BB%EF%BC%9A%E5%8A%A0%E8%BD%BDstarter%E5%AF%BC%E5%85%A5%E7%9A%84%E7%BB%84%E4%BB%B6"><span class="nav-number">2.2.1.2.2.</span> <span class="nav-text">@Import(AutoConfigurationImportSelector.class)：加载所有自动配置类：加载starter导入的组件</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ComponentScan"><span class="nav-number">2.2.1.3.</span> <span class="nav-text">@ComponentScan</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E5%90%AF%E5%8A%A8%E5%8A%A0%E8%BD%BD%E6%B5%81%E7%A8%8B"><span class="nav-number">2.2.2.</span> <span class="nav-text">完整启动加载流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89starter"><span class="nav-number">3.</span> <span class="nav-text">自定义starter</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">业务代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%8A%BD%E5%8F%96"><span class="nav-number">3.2.</span> <span class="nav-text">基本抽取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-EnableXxx%E6%9C%BA%E5%88%B6"><span class="nav-number">3.3.</span> <span class="nav-text">使用@EnableXxx机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E5%85%A8%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">3.4.</span> <span class="nav-text">完全自动配置</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="YS"
+      src="/images/author.png">
+  <p class="site-author-name" itemprop="name">YS</p>
+  <div class="site-description" itemprop="description">学海无涯苦作舟</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://ysymj.gitee.io/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.png">
+      <meta itemprop="name" content="YS">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YS">
+      <meta itemprop="description" content="学海无涯苦作舟">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="尚硅谷springboot3核心特性-核心原理(五) | YS">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          尚硅谷springboot3核心特性-核心原理(五)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-12-19 20:50:58" itemprop="dateCreated datePublished" datetime="2023-12-19T20:50:58+08:00">2023-12-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-01-01 16:24:40" itemprop="dateModified" datetime="2024-01-01T16:24:40+08:00">2024-01-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/java%E6%A1%86%E6%9E%B6/" itemprop="url" rel="index"><span itemprop="name">java框架</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="事件和监听"><a href="#事件和监听" class="headerlink" title="事件和监听"></a>事件和监听</h1><h2 id="生命周期监听"><a href="#生命周期监听" class="headerlink" title="生命周期监听"></a>生命周期监听</h2><p>场景：监听应用的<font color="#953734">生命周期</font></p>
+<h3 id="监听器-SpringApplicationRunListener"><a href="#监听器-SpringApplicationRunListener" class="headerlink" title="监听器-SpringApplicationRunListener"></a>监听器-SpringApplicationRunListener</h3><ol>
+<li>自定义<code>SpringApplicationRunListener</code>来监听事件；<ul>
+<li>编写<code>SpringApplicationRunListener</code>实现类</li>
+<li>在<code>META-INF/spring.factories</code>中配置<code>org.springframework.boot.SpringApplicationRunListener=自己的Listener</code>，还可以指定一个有参构造器，接受两个参数<code>(SpringApplication application,String[] args)</code></li>
+<li>springboot在<code>spring-boot.jar</code>中配置了默认的Listener，如下<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//EventPublishingRunListener用来做事件监听</span><br><span class="line">org.springframework.boot.SpringApplicationRunListener=\  </span><br><span class="line">org.springframework.boot.context.event.EventPublishingRunListener</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<p>Listener先要从<code>META-INF/spring.factories</code>文件中读到</p>
+<table> 
+    <thead>
+        <tr>
+            <th>类型</th>
+            <th>方法名</th>
+            <th>描述</th> 
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="2"><b>引导</b>：<br>利用BootstrapContext引导整个项目启动</td> 
+            <td><font color="#c0504d">starting</font></td>
+            <td>应用开始，<font color="#1f497d">SpringApplication</font>的run方法一调用，只要有了<font color="#1f497d">BootstrapContext</font>就执行</td>
+        </tr> 
+            <tr>
+            <td><font color="#c0504d">environmentPrepared</font></td>
+            <td>环境准备好（把启动参数等绑定到环境变量中，但是ioc还没有创建）</td>
+        </tr> 
+        <tr> 
+            <td rowspan="5">启动</td> 
+            <td><font color="#c0504d">contextPrepared</font></td> 
+            <td>ioc容器创建并准备好，但是source（主配置类）没有加载。并关闭引导上下文；组件都没有创建</td> 
+        </tr> 
+        <tr> 
+            <td><font color="#c0504d">contextLoaded</font></td> 
+            <td>ioc容器加载，主配置类加载进去了，但是ioc容器还没刷新（我们的bean没创建）</td>  
+        </tr> 
+        <tr> 
+            <td colspan="2">====截至以上，ioc容器里面还没创建bean呢====</td> 
+        </tr> 
+        <tr> 
+            <td><font color="#c0504d">started</font></td> 
+            <td>ioc容器刷新了（所有bean造好了），但是 runner 没有调用</td>  
+        </tr> 
+        <tr> 
+            <td><font color="#c0504d">ready</font></td> 
+            <td>ioc容器刷新了（所有bean造好了），所有 runner 调用完了</td>  
+        </tr> 
+        <tr> 
+            <td>运行</td> 
+            <td colspan="2">以上步骤都正确执行了，代表容器 running</td>  
+        </tr> 
+        <tr> 
+            <td>失败</td> 
+            <td><font color="#c0504d">failed</font></td> 
+            <td>成功启动并不会执行该方法，<font color="#c0504d">started</font>之前如果异常了会直接执行该方法，如果没有异常执行<font color="#c0504d">ready</font>，<font color="#c0504d">ready</font>异常了也会执行该方法</td>  
+        </tr> 
+    </tbody>
+</table>
+
+<h3 id="生命周期全流程"><a href="#生命周期全流程" class="headerlink" title="生命周期全流程"></a>生命周期全流程</h3><p><img src="/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%85%A8%E6%B5%81%E7%A8%8B%E5%9B%BE%E7%A4%BA.png" alt="生命周期全流程图示"></p>
+<h2 id="事件触发时机"><a href="#事件触发时机" class="headerlink" title="事件触发时机"></a>事件触发时机</h2><h3 id="各种回调监听器"><a href="#各种回调监听器" class="headerlink" title="各种回调监听器"></a>各种回调监听器</h3><ul>
+<li><code>BootstrapRegistryInitializer</code>：<font color="#1f497d">感知特定阶段</font>：感知<strong>引导初始化</strong><ul>
+<li><code>META-INF/spring.factories</code></li>
+<li>创建引导上下文<code>BootstrapContext</code>的时候触发</li>
+<li><code>application.addBootstrapRegistryInitializer()</code></li>
+<li>场景：项目启动进行密钥对授权。</li>
+</ul>
+</li>
+<li><code>ApplicationContextInitializer</code>：<font color="#1f497d">感知特定阶段</font>：感知<strong>ioc容器初始化</strong><ul>
+<li><code>META-INF/spring.factories</code></li>
+<li><code>application.addInitializers()</code></li>
+</ul>
+</li>
+<li><code>ApplicationListener</code>：感知全阶段：基于事件机制，感知事件，一旦到了哪个阶段可以做别的事情<ul>
+<li><code>@Bean</code>或<code>@EventListener</code>：事件驱动</li>
+<li><code>application.addListeners()</code>或<code>SpringApplicationBuilder().listeners()</code></li>
+<li><code>META-INF/spring.factories</code></li>
+<li><code>ApplicationListener</code>可以监听springboot提供的事件，也可以监听自定义事件，监听自定义事件可以使用 <code>@Bean</code>或<code>@EventListener</code>方式配置，监听springboot提供的事件需要使用<code>META-INF/spring.factories</code>方式配置</li>
+</ul>
+</li>
+<li><code>SpringApplicationRunListener</code>：感知全阶段生命周期+各种阶段都能自定义操作；功能更完善<ul>
+<li><code>META-INF/spring.factories</code></li>
+</ul>
+</li>
+<li><code>ApplicationRunner</code>：感知特定阶段：感知应用就绪<code>ready</code>，卡死应用，就不会就绪<ul>
+<li><code>@Bean</code></li>
+</ul>
+</li>
+<li><code>CommandLineRunner</code>：感知特定阶段：感知应用就绪<code>ready</code>，卡死应用，就不会就绪<ul>
+<li><code>@Bean</code></li>
+<li>和<code>ApplicationRunner</code>在同一时机执行，区别在于参数不同，<code>ApplicationRunner</code>实现的方法参数会更全面一些</li>
+</ul>
+</li>
+</ul>
+<p>最佳实战：</p>
+<ul>
+<li>如果项目启动前做事：<code>BootstrapRegistryInitializer</code> 和 <code>ApplicationContextInitializer</code></li>
+<li>如果想要在项目启动完成后做事：<code>ApplicationRunner</code> 和 <code>CommandLineRunner</code></li>
+<li><font color="#ff0000">如果想要干涉生命周期做事</font>：<code>SpringApplicationRunListener</code></li>
+<li><font color="#ff0000">如果想要用事件机制</font>：<code>ApplicationListener</code></li>
+</ul>
+<h3 id="完整触发流程"><a href="#完整触发流程" class="headerlink" title="完整触发流程"></a>完整触发流程</h3><p>9大事件 触发顺序&amp;时机</p>
+<ul>
+<li><code>ApplicationStartingEvent</code>：应用启动但未做任何事情，除了注册<code>Listener</code>and<code>Initializer</code></li>
+<li><code>ApplicationEnvironmentPreparedEvent</code>：Environment准备好，但context未创建</li>
+<li><code>ApplicationContextInitializedEvent</code>：ApplicationContext准备好,<code>ApplicationContextInitializers</code>调用，但是任何bean都未加载</li>
+<li><code>ApplicationPreparedEvent</code>：容器刷新之前，bean定义信息加载</li>
+<li><code>ApplicationStartedEvent</code>：容器刷新完成，runner未调用</li>
+</ul>
+<p>———–以下就开始插入了探针机制———–</p>
+<ul>
+<li><code>AvailabilityChangeEvent</code>：<code>LivenessState.CORRECT</code>应用存活；<strong>存活探针</strong></li>
+<li><code>ApplicationReadyEvent</code>：所有runner被调用</li>
+<li><code>AvailabilityChangeEvent</code>：<code>ReadinessState.ACCEPTING_TRAFFIC</code><strong>就绪探针</strong>，可以接请求</li>
+<li><code>ApplicationFailedEvent</code>：启动出错</li>
+</ul>
+<p><img src="/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%85%A8%E6%B5%81%E7%A8%8B%E5%9B%BE%E7%A4%BA1.png" alt="生命周期全流程图示"></p>
+<p>应用实践发送顺序如下<br><img src="/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E5%BA%94%E7%94%A8%E5%AE%9E%E8%B7%B5%E5%8F%91%E9%80%81%E9%A1%BA%E5%BA%8F%E5%9B%BE%E7%A4%BA.png" alt="应用实践发送顺序图示"></p>
+<p>感知应用是否<strong>存活</strong>了：可能是植物状态，虽然活着但是不能处理请求。<br>应用是否<strong>就绪</strong>了：能响应请求，说明确实活的比较好</p>
+<h3 id="SpringBoot事件驱动开发"><a href="#SpringBoot事件驱动开发" class="headerlink" title="SpringBoot事件驱动开发"></a>SpringBoot事件驱动开发</h3><blockquote>
+<p>应用启动过程生命周期事件感知（9大事件）、应用运行中事件感知（无数种）。</p>
+</blockquote>
+<ul>
+<li>事件发布：<code>ApplicationEventPublisherAware</code>或者注入<code>ApplicationEventMulticaster</code></li>
+<li>事件监听：<code>组件 + @EventListener</code><br><img src="/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E5%9B%BE%E7%A4%BA.png" alt="事件监听图示"></li>
+</ul>
+<p><img src="/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC%E5%9B%BE%E7%A4%BA1.png" alt="事件监听图示"></p>
+<p><strong>事件发布者</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EventPublisher</span> <span class="keyword">implements</span> <span class="title">ApplicationEventPublisherAware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 底层发送事件用的组件，SpringBoot会通过ApplicationEventPublisherAware接口自动注入给我们</span></span><br><span class="line"><span class="comment">     * 事件是广播出去的。所有监听这个事件的监听器都可以收到</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    ApplicationEventPublisher applicationEventPublisher;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 所有事件都可以发</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> event</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendEvent</span><span class="params">(ApplicationEvent event)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//调用底层API发送事件</span></span><br><span class="line">        applicationEventPublisher.publishEvent(event);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 会被自动调用，把真正发事件的底层组组件给我们注入进来</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> applicationEventPublisher event publisher to be used by this object</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setApplicationEventPublisher</span><span class="params">(ApplicationEventPublisher applicationEventPublisher)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.applicationEventPublisher = applicationEventPublisher;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>事件订阅者</strong><br>也可以实现<code>ApplicationListener</code>接口监听事件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CouponService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Order(1)</span></span><br><span class="line">    <span class="meta">@EventListener</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onEvent</span><span class="params">(LoginSuccessEvent loginSuccessEvent)</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;===== CouponService ====感知到事件&quot;</span>+loginSuccessEvent);</span><br><span class="line">        UserEntity source = (UserEntity) loginSuccessEvent.getSource();</span><br><span class="line">        sendCoupon(source.getUsername());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sendCoupon</span><span class="params">(String username)</span></span>&#123;</span><br><span class="line">        System.out.println(username + <span class="string">&quot; 随机得到了一张优惠券&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="自动配置原理"><a href="#自动配置原理" class="headerlink" title="自动配置原理"></a>自动配置原理</h1><h2 id="入门理解"><a href="#入门理解" class="headerlink" title="入门理解"></a>入门理解</h2><blockquote>
+<p>应用关注的三大核心：<strong>场景</strong>、<strong>配置</strong>、<strong>组件</strong></p>
+</blockquote>
+<h3 id="自动配置流程"><a href="#自动配置流程" class="headerlink" title="自动配置流程"></a>自动配置流程</h3><p><img src="/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%E6%B5%81%E7%A8%8B%E5%9B%BE%E7%A4%BA.png" alt="自动配置流程图示"></p>
+<ol>
+<li>导入<code>starter</code></li>
+<li>依赖导入<code>autoconfigure</code></li>
+<li>寻找类路径下 <code>META-INF\spring\org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> 文件</li>
+<li>启动，加载所有<code>自动配置类</code> <code>xxxAutoConfiguration</code><ul>
+<li>给容器种配置功能(组件)</li>
+<li><code>组件参数</code>绑定到<code>属性类</code>种。<code>xxxProperties</code></li>
+<li><code>属性类</code>和<code>配置文件</code>前缀绑定</li>
+<li><code>@Conditional派生的条件注解</code> 进行判断组件是否生效</li>
+</ul>
+</li>
+<li>效果<ul>
+<li>修改配置文件，即可修改底层参数</li>
+<li>所有场景自动配置好直接使用</li>
+<li>可以注入SpringBoot配置好的组件随时使用</li>
+</ul>
+</li>
+</ol>
+<h3 id="SPI机制"><a href="#SPI机制" class="headerlink" title="SPI机制"></a>SPI机制</h3><ul>
+<li><strong>Java中的SPI（Service Provider Interface）是一种软件设计模式，用于<strong><strong>在应用程序中动态地发现和加载组件</strong></strong>。****SPI的思想</strong>是，定义一个接口或抽象类，然后通过在classpath中定义实现该接口的类来实现对组件的动态发现和加载。</li>
+<li>SPI的主要目的是解决在应用程序中使用可插拔组件的问题。例如，一个应用程序可能需要使用不同的日志框架或数据库连接池，但是这些组件的选择可能取决于运行时的条件。通过使用SPI，应用程序可以在运行时发现并加载适当的组件，而无需在代码中硬编码这些组件的实现类。</li>
+<li>在Java中，<strong>SPI</strong>的实现方式是通过在<code>META-INF/services</code>目录下创建一个以服务接口全限定名为名字的文件，文件中包含实现该服务接口的类的全限定名。当应用程序启动时，Java的SPI机制会自动扫描classpath中的这些文件，并根据文件中指定的类名来加载实现类。</li>
+<li>通过使用SPI，应用程序可以实现更灵活、可扩展的架构，同时也可以避免硬编码依赖关系和增加代码的可维护性。</li>
+</ul>
+<p>在SpringBoot中，<code>META-INF\spring\org.springframework.boot.autoconfigure.AutoConfiguration.imports</code></p>
+<h3 id="功能开关"><a href="#功能开关" class="headerlink" title="功能开关"></a>功能开关</h3><ul>
+<li>自动配置：全都配置好，什么都不用管，自动批量导入<ul>
+<li>项目一启动，spi文件中指定的所有都加载</li>
+</ul>
+</li>
+<li><code>@EnableXxxx</code>：手动控制哪些功能的开启，手动导入<ul>
+<li>开启xxx功能</li>
+<li>都是利用<code>@Import</code>把此功能要用的组件导入进去</li>
+</ul>
+</li>
+</ul>
+<h2 id="进阶理解"><a href="#进阶理解" class="headerlink" title="进阶理解"></a>进阶理解</h2><h3 id="SpringBootApplication"><a href="#SpringBootApplication" class="headerlink" title="@SpringBootApplication"></a>@SpringBootApplication</h3><h4 id="SpringBootConfiguration"><a href="#SpringBootConfiguration" class="headerlink" title="@SpringBootConfiguration"></a>@SpringBootConfiguration</h4><p>就是<code>@Configuration</code>，容器中的组件，配置类。spring ioc启动就会加载创建整个类对象</p>
+<h4 id="EnableAutoConfiguration：开启自动配置"><a href="#EnableAutoConfiguration：开启自动配置" class="headerlink" title="@EnableAutoConfiguration：开启自动配置"></a>@EnableAutoConfiguration：开启自动配置</h4><p>开启自动配置</p>
+<h5 id="AutoConfigurationPackage：扫描主程序包，加载自己的组件"><a href="#AutoConfigurationPackage：扫描主程序包，加载自己的组件" class="headerlink" title="@AutoConfigurationPackage：扫描主程序包，加载自己的组件"></a>@AutoConfigurationPackage：扫描主程序包，加载自己的组件</h5><ul>
+<li>利用<code>@Import(AutoConfigurationPackages.Registrar.class)</code>想要给容器中导入组件。</li>
+<li>把主程序所在的包的所有组件导入进来（如果指定了包路径，使用指定的路径，如果没有指定，默认是主启动类所在路径）</li>
+</ul>
+<h5 id="Import-AutoConfigurationImportSelector-class-：加载所有自动配置类：加载starter导入的组件"><a href="#Import-AutoConfigurationImportSelector-class-：加载所有自动配置类：加载starter导入的组件" class="headerlink" title="@Import(AutoConfigurationImportSelector.class)：加载所有自动配置类：加载starter导入的组件"></a>@Import(AutoConfigurationImportSelector.class)：加载所有自动配置类：加载starter导入的组件</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; configurations = ImportCandidates.load(AutoConfiguration.class, getBeanClassLoader()).getCandidates();</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>扫描SPI文件:<code>META-INF\spring\org.springframework.boot.autoconfigure.AutoConfiguration.imports</code></p>
+</blockquote>
+<h4 id="ComponentScan"><a href="#ComponentScan" class="headerlink" title="@ComponentScan"></a>@ComponentScan</h4><blockquote>
+<p>组件扫描：排除一些组件（哪些不要）<br>排除前面已经扫描进来的<code>配置类</code> 和 <code>自动配置类</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ComponentScan(excludeFilters = &#123; @Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),  </span></span><br><span class="line"><span class="meta">       @Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) &#125;)</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="完整启动加载流程"><a href="#完整启动加载流程" class="headerlink" title="完整启动加载流程"></a>完整启动加载流程</h3><blockquote>
+<p>生命周期i东加载流程</p>
+</blockquote>
+<p><img src="/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9Fi%E4%B8%9C%E5%8A%A0%E8%BD%BD%E6%B5%81%E7%A8%8B.png" alt="生命周期i东加载流程"></p>
+<h1 id="自定义starter"><a href="#自定义starter" class="headerlink" title="自定义starter"></a>自定义starter</h1><blockquote>
+<p>场景：抽取聊天机器人场景，它可以打招呼。<br>效果：任何项目导入此<code>starter</code>都具有打招呼功能，并且问候语中的人名需要可以在配置文件中修改</p>
+</blockquote>
+<ol>
+<li>创建<code>自定义starter</code>项目，引入<code>spring-boot-starter</code>基础依赖</li>
+<li>编写模块功能，引入模块所有需要的依赖</li>
+<li>编写<code>xxxAutoConfiguration</code>自动配置类，帮其他项目导入整个模块需要的所有组件</li>
+<li>编写配置文件<code>META-INF\spring\org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> 指定启动需要加载的自动配置</li>
+<li>其他项目引入即可使用</li>
+</ol>
+<h2 id="业务代码"><a href="#业务代码" class="headerlink" title="业务代码"></a>业务代码</h2><blockquote>
+<p>自定义配置有提示，导入以下依赖重启项目，再写配置文件就有提示了</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--        导入配置处理器，配置文件自定义的properties配置都会有提示--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-configuration-processor<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties(prefix = &quot;robot&quot;)</span>  <span class="comment">//此属性类和配置文件指定前缀绑定</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RobotProperties</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String age;</span><br><span class="line">    <span class="keyword">private</span> String email;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="基本抽取"><a href="#基本抽取" class="headerlink" title="基本抽取"></a>基本抽取</h2><ul>
+<li>创建starter项目，把公共代码需要的所有依赖导入</li>
+<li>把公共代码复制进来</li>
+<li>自己写一个<code>RobotAutoConfiguration</code>，给容器中导入这个场景需要的所有组件<ul>
+<li>为什么这些组件默认不会扫描进去？</li>
+<li>starter所在的包和引入它的项目的主程序所在的包不是父子层级</li>
+</ul>
+</li>
+<li>别人引入这个<code>starter</code>，直接导入这个<code>RobotAutoConfiguration</code>，就能把这个场景的组件导入进来</li>
+<li>功能生效</li>
+<li>测试编写配置文件</li>
+</ul>
+<h2 id="使用-EnableXxx机制"><a href="#使用-EnableXxx机制" class="headerlink" title="使用@EnableXxx机制"></a>使用@EnableXxx机制</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE&#125;)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Import(RobotAutoConfiguration.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnableRobot &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>别人引入<code>starter</code>只需要使用<code>@EnableRobot</code>注解即可开启功能</p>
+<h2 id="完全自动配置"><a href="#完全自动配置" class="headerlink" title="完全自动配置"></a>完全自动配置</h2><ul>
+<li>依赖SpringBoot的SPI机制</li>
+<li><code>META-INF\spring\org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> 文件中编写好我们自动配置类的全类名即可</li>
+<li>项目启动，自动加载我们的自动配置类。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/springboot3/" rel="tag"># springboot3</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/12/19/spring/%E5%B0%9A%E7%A1%85%E8%B0%B7springboot3%E6%A0%B8%E5%BF%83%E7%89%B9%E6%80%A7-%E5%9F%BA%E7%A1%80%E7%89%B9%E6%80%A7/" rel="prev" title="尚硅谷springboot3核心特性-基础特性(四)">
+                  <i class="fa fa-angle-left"></i> 尚硅谷springboot3核心特性-基础特性(四)
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+<hr>
+<div id="comment-container"></div>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#comment-container',
+        appId: 'SsNHix8sOQXkmksOkIvo0jkf-gzGzoHsz',
+        appKey: 'BCtPpmnU41TOE7Wr5O0CJFgS'
+    })
+</script>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">YS</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">699k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">21:10</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancyapps-ui/5.0.28/fancybox/fancybox.umd.js" integrity="sha256-ytMJGN3toR+a84u7g7NuHm91VIR06Q41kMWDr2pq7Zo=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
