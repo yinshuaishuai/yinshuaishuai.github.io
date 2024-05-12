@@ -50,7 +50,7 @@
 <meta property="og:image" content="http://ysymj.gitee.io/2022/01/22/netty/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E6%95%99%E7%A8%8BNetty%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%85%A8%E5%A5%97%E6%95%99%E7%A8%8B/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E6%95%99%E7%A8%8BNetty%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%85%A8%E5%A5%97%E6%95%99%E7%A8%8B%E2%80%94%E2%80%94NIO%E5%9F%BA%E7%A1%80/transferTo-transferFrom%E6%96%B9%E6%B3%95%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
 <meta property="og:image" content="http://ysymj.gitee.io/2022/01/22/netty/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E6%95%99%E7%A8%8BNetty%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%85%A8%E5%A5%97%E6%95%99%E7%A8%8B/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E6%95%99%E7%A8%8BNetty%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%85%A8%E5%A5%97%E6%95%99%E7%A8%8B%E2%80%94%E2%80%94NIO%E5%9F%BA%E7%A1%80/linux2.4%E9%9B%B6%E6%8B%B7%E8%B4%9D%E4%BC%98%E5%8C%96.png">
 <meta property="article:published_time" content="2022-01-22T03:28:20.000Z">
-<meta property="article:modified_time" content="2023-03-25T13:34:07.016Z">
+<meta property="article:modified_time" content="2024-05-11T03:40:07.667Z">
 <meta property="article:author" content="YS">
 <meta property="article:tag" content="Java网络编程教程-Netty深入浅出全套教程">
 <meta name="twitter:card" content="summary">
@@ -253,7 +253,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-03-25 21:34:07" itemprop="dateModified" datetime="2023-03-25T21:34:07+08:00">2023-03-25</time>
+      <time title="修改时间：2024-05-11 11:40:07" itemprop="dateModified" datetime="2024-05-11T11:40:07+08:00">2024-05-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -690,7 +690,7 @@
 <p><strong>多路复用</strong><br>用户线程使用<code>select</code>方法等待数据，当有了数据之后会获取所有的数据信息返回，然后根据不同数据类型在分别进行处理<br><img src="/2022/01/22/netty/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E6%95%99%E7%A8%8BNetty%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%85%A8%E5%A5%97%E6%95%99%E7%A8%8B/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E6%95%99%E7%A8%8BNetty%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%85%A8%E5%A5%97%E6%95%99%E7%A8%8B%E2%80%94%E2%80%94NIO%E5%9F%BA%E7%A1%80/%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8%E5%9B%BE%E7%A4%BA.png" alt="多路复用图示"></p>
 <p><strong>异步IO</strong><br>用户线程发起<code>read</code>方法后，如果没有数据，会立即返回，然后去做其他的处理，等有数据之后内核会调用回调方法返回数据<br><img src="/2022/01/22/netty/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E6%95%99%E7%A8%8BNetty%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%85%A8%E5%A5%97%E6%95%99%E7%A8%8B/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E6%95%99%E7%A8%8BNetty%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%85%A8%E5%A5%97%E6%95%99%E7%A8%8B%E2%80%94%E2%80%94NIO%E5%9F%BA%E7%A1%80/%E5%BC%82%E6%AD%A5IO%E5%9B%BE%E7%A4%BA.png" alt="异步IO"></p>
 <h2 id="零拷贝"><a href="#零拷贝" class="headerlink" title="零拷贝"></a>零拷贝</h2><p><strong>传统IO问题</strong><br>传统IO将一个文件通过<code>socket</code>写出</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">File f = new File(&quot;test/data.txt&quot;);</span><br><span class="line">RandomAccessFile file = new RandomAccessFile(file,&quot;r&quot;);</span><br><span class="line">byte[] buf = new byte[(int)f.length()];</span><br><span class="line">file.read(buf);</span><br><span class="line">Socket socket = ...;</span><br><span class="line">socket.getOutputStream().write(buf);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">File f = <span class="keyword">new</span> File(<span class="string">&quot;test/data.txt&quot;</span>);</span><br><span class="line">RandomAccessFile file = <span class="keyword">new</span> RandomAccessFile(file,<span class="string">&quot;r&quot;</span>);</span><br><span class="line"><span class="keyword">byte</span>[] buf = <span class="keyword">new</span> <span class="keyword">byte</span>[(<span class="keyword">int</span>)f.length()];</span><br><span class="line">file.read(buf);</span><br><span class="line">Socket socket = ...;</span><br><span class="line">socket.getOutputStream().write(buf);</span><br></pre></td></tr></table></figure>
 <p>内部工作流程是这样的：<br><img src="/2022/01/22/netty/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E6%95%99%E7%A8%8BNetty%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%85%A8%E5%A5%97%E6%95%99%E7%A8%8B/Java%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E6%95%99%E7%A8%8BNetty%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%85%A8%E5%A5%97%E6%95%99%E7%A8%8B%E2%80%94%E2%80%94NIO%E5%9F%BA%E7%A1%80/%E6%96%87%E4%BB%B6%E5%86%99%E5%87%BA%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="文件写出工作流程图"></p>
 <ol>
 <li>java本身并不具备IO读写能力，因此<code>read</code>方法调用后，要从java程序的<strong>用户态</strong>，切换至<strong>内核态</strong>，去调用操作系统的（Kernel）的读写能力，将数据读入<strong>内核缓存区</strong>。这期间用户线程阻塞，操作系统使用DMA（Direct Memory Access）来实现文件读，期间也不会使用cpu</li>
@@ -828,7 +828,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">787k</span>
+    <span title="站点总字数">788k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
